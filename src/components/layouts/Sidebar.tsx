@@ -1,5 +1,4 @@
 import {
-  Users,
   LayoutDashboard,
   Home,
   SquareScissors,

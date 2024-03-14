@@ -21,12 +21,6 @@ export default function Topbar() {
       </div>
       <div className="flex items-center gap-1">
         <DropdownMenu>
-
-          <Button variant="outline" size="icon" className="rounded-full">
-            <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Bell className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          </Button>
-
           <Button variant="outline" size="icon" className="rounded-full">
             <Globe className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Globe className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
@@ -38,6 +32,10 @@ export default function Topbar() {
               <span className="sr-only">Toggle theme</span>
             </Button>
           </DropdownMenuTrigger>
+          <Button variant="outline" size="icon" className="rounded-full">
+            <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Bell className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          </Button>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => setTheme("light")}>
               Light
