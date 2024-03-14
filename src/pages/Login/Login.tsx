@@ -59,7 +59,7 @@ export default function Login() {
                   />
                 )}
               />
-              <div>
+              <div className="flex justify-end">
                 <Button type="submit" className="ml-auto">
                   Login
                 </Button>
@@ -67,11 +67,11 @@ export default function Login() {
             </form>
           </Form>
         </CardContent>
-        <CardFooter>
+        {/* <CardFooter>
           <p className="text-center w-full">
             Forgot password? Please contact with your manager.
           </p>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </div>
   );
