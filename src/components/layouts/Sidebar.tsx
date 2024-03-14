@@ -17,47 +17,47 @@ export default function Sidebar() {
       childs: [
         {
           name: "Home",
-          link: "/home/home",
+          link: "/dashboard/home",
           icon: Home,
         },
           {
           name: "Reports",
-          link: "/reports/reports",
+          link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
           name: "Statistics",
-          link: "/statistics/statistics",
+          link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
           name: "Product Catalogues",
-          link: "/productcatalogues/productcatalogues",
+          link: "/dashboard/productcatalogues",
           icon: FolderOpen,
         },
         {
           name: "Templates",
-          link: "/templates/templates",
+          link: "/dashboard/templates",
           icon: SquareScissors,
         },
         {
           name: "Orders",
-          link: "/orders/orders",
+          link: "/dashboard/orders",
           icon: ListOrdered,
         },
         {
           name: "Models",
-          link: "/models/models",
+          link: "/dashboard/models",
           icon: Shirt,
         },
         {
           name: "Tasks",
-          link: "/tasks/tasks",
+          link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
           name: "Notes",
-          link: "/notes/notes",
+          link: "/dashboard/notes",
           icon: NotebookPen,
         },
       ],
@@ -67,42 +67,42 @@ export default function Sidebar() {
       childs: [
         {
           name: "Home",
-          link: "/home/home",
+          link: "/dashboard/home",
           icon: Home,
         },
         {
           name: "Reports",
-          link: "/reports/reports",
+          link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
           name: "Statistics",
-          link: "/statistics/statistics",
+          link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
           name: "Users",
-          link: "/users/users",
+          link: "/dashboard/users",
           icon: UsersRound,
         },
         {
           name: "Departments",
-          link: "/departments/departments",
+          link: "/dashboard/departments",
           icon: LayoutPanelTop,
         },
         {
           name: "Stores",
-          link: "/stores/stores",
+          link: "/dashboard/stores",
           icon: Store,
         },
         {
           name: "Tasks",
-          link: "/tasks/tasks",
+          link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
           name: "Notes",
-          link: "/notes/notes",
+          link: "/dashboard/notes",
           icon: NotebookPen,
         },
       ]    },
