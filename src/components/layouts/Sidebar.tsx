@@ -7,7 +7,7 @@ import {
   Shirt,
   ListOrdered,
   ListChecks,
-  NotebookPen, UsersRound, LayoutPanelTop, FileBarChart2
+  NotebookPen, UsersRound, LayoutPanelTop, FileBarChart2, Store
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -90,6 +90,11 @@ export default function Sidebar() {
           name: "Departments",
           link: "/departments/departments",
           icon: LayoutPanelTop,
+        },
+        {
+          name: "Stores",
+          link: "/stores/stores",
+          icon: Store,
         },
         {
           name: "Tasks",
