@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { LogOut, Moon, Sun } from "lucide-react";
+import {Bell, Globe, LogOut, Moon, Sun} from "lucide-react";
 import { useTheme } from "../theme-provider";
 
 export default function Topbar() {
@@ -21,6 +21,16 @@ export default function Topbar() {
       </div>
       <div className="flex items-center gap-1">
         <DropdownMenu>
+
+          <Button variant="outline" size="icon" className="rounded-full">
+            <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Bell className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          </Button>
+
+          <Button variant="outline" size="icon" className="rounded-full">
+            <Globe className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Globe className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          </Button>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="rounded-full">
               <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
