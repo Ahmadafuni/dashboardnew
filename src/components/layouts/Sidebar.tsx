@@ -6,7 +6,11 @@ import {
   Shirt,
   ListOrdered,
   ListChecks,
-  NotebookPen, UsersRound, LayoutPanelTop, FileBarChart2, Store
+  NotebookPen,
+  UsersRound,
+  LayoutPanelTop,
+  FileBarChart2,
+  Store,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -17,47 +21,47 @@ export default function Sidebar() {
       childs: [
         {
           name: "Home",
-          link: "/home/home",
+          link: "/dashboard/home",
           icon: Home,
         },
-          {
+        {
           name: "Reports",
-          link: "/reports/reports",
+          link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
           name: "Statistics",
-          link: "/statistics/statistics",
+          link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
           name: "Product Catalogues",
-          link: "/productcatalogues/productcatalogues",
+          link: "/dashboard/productcatalogues",
           icon: FolderOpen,
         },
         {
           name: "Templates",
-          link: "/templates/templates",
+          link: "/dashboard/templates",
           icon: SquareScissors,
         },
         {
           name: "Orders",
-          link: "/orders/orders",
+          link: "/dashboard/orders",
           icon: ListOrdered,
         },
         {
           name: "Models",
-          link: "/models/models",
+          link: "/dashboard/models",
           icon: Shirt,
         },
         {
           name: "Tasks",
-          link: "/tasks/tasks",
+          link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
           name: "Notes",
-          link: "/notes/notes",
+          link: "/dashboard/notes",
           icon: NotebookPen,
         },
       ],
@@ -67,57 +71,58 @@ export default function Sidebar() {
       childs: [
         {
           name: "Home",
-          link: "/home/home",
+          link: "/dashboard/home",
           icon: Home,
         },
         {
           name: "Reports",
-          link: "/reports/reports",
+          link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
           name: "Statistics",
-          link: "/statistics/statistics",
+          link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
           name: "Users",
-          link: "/users/users",
+          link: "/dashboard/users",
           icon: UsersRound,
         },
         {
           name: "Departments",
-          link: "/departments/departments",
+          link: "/dashboard/departments",
           icon: LayoutPanelTop,
         },
         {
           name: "Stores",
-          link: "/stores/stores",
+          link: "/dashboard/stores",
           icon: Store,
         },
         {
           name: "Tasks",
-          link: "/tasks/tasks",
+          link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
           name: "Notes",
-          link: "/notes/notes",
+          link: "/dashboard/notes",
           icon: NotebookPen,
         },
-      ]    },
+      ],
+    },
   ];
   return (
     <div className="w-[300px] border-r-2 ">
       <div className="p-1">
-        {menus.map((menu) => (
-          <>
+        {menus.map((menu, index) => (
+          <div key={index}>
             <p className="text-muted-foreground font-medium text-xs px-2 py-[6px]">
               {menu.gName}
             </p>
             <ul className="flex flex-col gap-y-1">
-              {menu.childs.map((child) => (
-                <li>
+              {menu.childs.map((child, idx) => (
+                <li key={idx}>
                   <NavLink
                     to={child.link}
                     className={({ isActive }) => {
@@ -132,7 +137,7 @@ export default function Sidebar() {
                 </li>
               ))}
             </ul>
-          </>
+          </div>
         ))}
       </div>
     </div>
