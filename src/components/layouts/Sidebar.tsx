@@ -1,4 +1,13 @@
-import { Users, LayoutDashboard } from "lucide-react";
+import {
+  LayoutDashboard,
+  Home,
+  SquareScissors,
+  FolderOpen,
+  Shirt,
+  ListOrdered,
+  ListChecks,
+  NotebookPen, UsersRound, LayoutPanelTop, FileBarChart2, Store
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
@@ -7,16 +16,96 @@ export default function Sidebar() {
       gName: "System",
       childs: [
         {
-          name: "Dashboard",
-          link: "/dashboard/dashboard",
+          name: "Home",
+          link: "/dashboard/home",
+          icon: Home,
+        },
+          {
+          name: "Reports",
+          link: "/dashboard/reports",
           icon: LayoutDashboard,
+        },
+        {
+          name: "Statistics",
+          link: "/dashboard/statistics",
+          icon: FileBarChart2,
+        },
+        {
+          name: "Product Catalogues",
+          link: "/dashboard/productcatalogues",
+          icon: FolderOpen,
+        },
+        {
+          name: "Templates",
+          link: "/dashboard/templates",
+          icon: SquareScissors,
+        },
+        {
+          name: "Orders",
+          link: "/dashboard/orders",
+          icon: ListOrdered,
+        },
+        {
+          name: "Models",
+          link: "/dashboard/models",
+          icon: Shirt,
+        },
+        {
+          name: "Tasks",
+          link: "/dashboard/tasks",
+          icon: ListChecks,
+        },
+        {
+          name: "Notes",
+          link: "/dashboard/notes",
+          icon: NotebookPen,
         },
       ],
     },
     {
-      gName: "HR",
-      childs: [{ name: "User", link: "/dashboard/user", icon: Users }],
-    },
+      gName: "Manager",
+      childs: [
+        {
+          name: "Home",
+          link: "/dashboard/home",
+          icon: Home,
+        },
+        {
+          name: "Reports",
+          link: "/dashboard/reports",
+          icon: LayoutDashboard,
+        },
+        {
+          name: "Statistics",
+          link: "/dashboard/statistics",
+          icon: FileBarChart2,
+        },
+        {
+          name: "Users",
+          link: "/dashboard/users",
+          icon: UsersRound,
+        },
+        {
+          name: "Departments",
+          link: "/dashboard/departments",
+          icon: LayoutPanelTop,
+        },
+        {
+          name: "Stores",
+          link: "/dashboard/stores",
+          icon: Store,
+        },
+        {
+          name: "Tasks",
+          link: "/dashboard/tasks",
+          icon: ListChecks,
+        },
+        {
+          name: "Notes",
+          link: "/dashboard/notes",
+          icon: NotebookPen,
+        },
+      ]    },
   ];
   return (
     <div className="w-[300px] border-r-2 ">

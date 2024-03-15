@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -30,7 +29,7 @@ export default function Login() {
     <div className="bg-background text-foreground h-screen flex items-center justify-center">
       <Card className="w-1/4">
         <CardHeader>
-          <CardTitle>Beshara</CardTitle>
+          <CardTitle>Beshara Factory Management</CardTitle>
           <CardDescription>Login to Beshara dashboard.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -41,7 +40,7 @@ export default function Login() {
                 name="username"
                 render={({ field }) => (
                   <TextInputFieldForForm
-                    placeholder={"jhon.doe"}
+                    placeholder={"Username"}
                     label={"Username"}
                     field={field}
                   />
