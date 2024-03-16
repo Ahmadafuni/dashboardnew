@@ -10,10 +10,28 @@ import {
 import { Form, FormField } from "@/components/ui/form";
 import { loginSchema } from "@/form_schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios, { AxiosError } from "axios";
+import { userInfo } from "../../store/authentication.ts";
 import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
+import { toast } from "sonner";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import Cookies from "js-cookie";
 
 export default function Login() {
+  // Loding
+  const [isLoading, setIsLoading] = useState(false);
+
+  // User State
+  const setUser = useSetRecoilState(userInfo);
+
+  // Navigation state
+  const navigate = useNavigate();
+
+  // Form fields
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -22,9 +40,22 @@ export default function Login() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof loginSchema>) {
-    console.log(data);
-  }
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    setIsLoading(true);
+    try {
+      const result = await axios.post("auth/login", data);
+      toast.success(result.data.message);
+      Cookies.set("access_token", result.data.data.access_token);
+      setIsLoading(false);
+      setUser(result.data.data.user);
+      navigate("/dashboard/users");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="bg-background text-foreground h-screen flex items-center justify-center">
       <Card className="w-1/4">
@@ -59,18 +90,20 @@ export default function Login() {
                 )}
               />
               <div className="flex justify-end">
-                <Button type="submit" className="ml-auto">
-                  Login
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait
+                    </>
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
               </div>
             </form>
           </Form>
         </CardContent>
-        {/* <CardFooter>
-          <p className="text-center w-full">
-            Forgot password? Please contact with your manager.
-          </p>
-        </CardFooter> */}
       </Card>
     </div>
   );

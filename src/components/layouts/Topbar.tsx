@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   DropdownMenu,
@@ -9,11 +9,46 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import {Bell, Globe, LogOut, Moon, Sun} from "lucide-react";
+import { Bell, Globe, LogOut, Moon, Sun } from "lucide-react";
 import { useTheme } from "../theme-provider";
+import { useRecoilState } from "recoil";
+import { userInfo } from "@/store/authentication";
+import { useEffect } from "react";
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 export default function Topbar() {
+  // Navigation state
+  const navigate = useNavigate();
+  // Theme
   const { setTheme } = useTheme();
+  // User Info
+  const [user, setUser] = useRecoilState(userInfo);
+  // Recheck User
+  const checkUser = async () => {
+    try {
+      const result = await axios.get("auth/session");
+      setUser(result.data.user);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+        Cookies.remove("access_token");
+        navigate("/");
+      }
+    }
+  };
+  // Logout
+  const logout = () => {
+    setUser(null);
+    Cookies.remove("access_token");
+    navigate("/");
+  };
+  useEffect(() => {
+    if (user === null) {
+      checkUser();
+    }
+  }, []);
   return (
     <div className="flex border-b-2 px-4 py-2 items-center justify-between">
       <div>
@@ -48,38 +83,43 @@ export default function Topbar() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex gap-2 items-center rounded-full px-3 py-1 hover:bg-secondary transition ease-in-out duration-150 cursor-pointer">
-              <div className="text-right">
-                <p className="text-sm font-medium">Nafis Muhymeen</p>
-                <p className="text-xs text-muted-foreground font-semibold">
-                  muhymeennafis@gmail.com
-                </p>
+        {user !== null && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex gap-2 items-center rounded-full px-3 py-1 hover:bg-secondary transition ease-in-out duration-150 cursor-pointer">
+                <div className="text-right">
+                  <p className="text-sm font-medium">{user.name}</p>
+                  <p className="text-xs text-muted-foreground font-semibold">
+                    {user.userRole}
+                  </p>
+                </div>
+                <Avatar>
+                  <AvatarImage
+                    src={
+                      "https://dashboardbackendnew.onrender.com" +
+                      user.userImage
+                    }
+                    alt="Profile Image"
+                  />
+                  <AvatarFallback>{user.name.split(" ")[0][0]}</AvatarFallback>
+                </Avatar>
               </div>
-              <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="Profile Image"
-                />
-                <AvatarFallback>NM</AvatarFallback>
-              </Avatar>
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to="/">Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="flex items-center">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Logout</span>
-              </div>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link to="/">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <div className="flex items-center" onClick={logout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </div>
   );

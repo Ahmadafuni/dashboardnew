@@ -6,7 +6,11 @@ import {
   Shirt,
   ListOrdered,
   ListChecks,
-  NotebookPen, UsersRound, LayoutPanelTop, FileBarChart2, Store
+  NotebookPen,
+  UsersRound,
+  LayoutPanelTop,
+  FileBarChart2,
+  Store,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -20,7 +24,7 @@ export default function Sidebar() {
           link: "/dashboard/home",
           icon: Home,
         },
-          {
+        {
           name: "Reports",
           link: "/dashboard/reports",
           icon: LayoutDashboard,
@@ -105,19 +109,20 @@ export default function Sidebar() {
           link: "/dashboard/notes",
           icon: NotebookPen,
         },
-      ]    },
+      ],
+    },
   ];
   return (
     <div className="w-[300px] border-r-2 ">
       <div className="p-1">
-        {menus.map((menu) => (
-          <>
+        {menus.map((menu, index) => (
+          <div key={index}>
             <p className="text-muted-foreground font-medium text-xs px-2 py-[6px]">
               {menu.gName}
             </p>
             <ul className="flex flex-col gap-y-1">
-              {menu.childs.map((child) => (
-                <li>
+              {menu.childs.map((child, idx) => (
+                <li key={idx}>
                   <NavLink
                     to={child.link}
                     className={({ isActive }) => {
@@ -132,7 +137,7 @@ export default function Sidebar() {
                 </li>
               ))}
             </ul>
-          </>
+          </div>
         ))}
       </div>
     </div>
