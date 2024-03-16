@@ -95,7 +95,10 @@ export default function Topbar() {
                 </div>
                 <Avatar>
                   <AvatarImage
-                    src={"https://factorybackend.onrender.com" + user.userImage}
+                    src={
+                      "https://dashboardbackendnew.onrender.com" +
+                      user.userImage
+                    }
                     alt="Profile Image"
                   />
                   <AvatarFallback>{user.name.split(" ")[0][0]}</AvatarFallback>

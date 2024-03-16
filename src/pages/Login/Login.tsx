@@ -90,7 +90,7 @@ export default function Login() {
                 )}
               />
               <div className="flex justify-end">
-                <Button type="submit" className="ml-auto" disabled={isLoading}>
+                <Button type="submit" disabled={isLoading}>
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -104,11 +104,6 @@ export default function Login() {
             </form>
           </Form>
         </CardContent>
-        {/* <CardFooter>
-          <p className="text-center w-full">
-            Forgot password? Please contact with your manager.
-          </p>
-        </CardFooter> */}
       </Card>
     </div>
   );

@@ -4,14 +4,16 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import axios from "axios";
+import { Toaster } from "sonner";
+import Cookies from "js-cookie";
 // Theme and Layout
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import MainLayout from "./layouts/MainLayout.tsx";
 // Pages
 import Login from "./pages/Login/Login.tsx";
 import Users from "./pages/Users/Users.tsx";
-import { Toaster } from "sonner";
-import Cookies from "js-cookie";
+import NewUsers from "./pages/Users/NewUsers.tsx";
+import UpdateUser from "./pages/Users/UpdateUser.tsx";
 
 // Routes
 const router = createBrowserRouter([
@@ -19,12 +21,16 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <MainLayout />,
-    children: [{ path: "/dashboard/users", element: <Users /> }],
+    children: [
+      { path: "/dashboard/users", element: <Users /> },
+      { path: "/dashboard/users/new", element: <NewUsers /> },
+      { path: "/dashboard/users/:userID", element: <UpdateUser /> },
+    ],
   },
 ]);
 
 // Axios config
-axios.defaults.baseURL = "https://factorybackend.onrender.com/";
+axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 axios.defaults.headers.common = {
   authorization: `bearer ${Cookies.get("access_token")}`,
 };
