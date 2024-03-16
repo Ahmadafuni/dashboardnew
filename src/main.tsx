@@ -23,6 +23,8 @@ import Tasks from "@/pages/Tasks/Tasks.tsx";
 import Notes from "@/pages/Notes/Notes.tsx";
 import Home from "@/pages/Home/Home.tsx";
 import Stores from "@/pages/Stores/Stores.tsx";
+import NewUsers from "@/pages/Users/NewUsers.tsx";
+import UpdateUser from "@/pages/Users/UpdateUser.tsx";
 
 // Routes
 const router = createBrowserRouter([
@@ -34,20 +36,20 @@ const router = createBrowserRouter([
       { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/users/new", element: <NewUsers /> },
       { path: "/dashboard/users/:userID", element: <UpdateUser /> },
-    ],
-    children: [
-        { path: "/dashboard/home", element: <Home /> },
-        { path: "/dashboard/reports", element: <Reports /> },
-        { path: "/dashboard/statistics", element: <Statistics /> },
-        { path: "/dashboard/productcatalogues", element: <ProductCatalogues /> },
-        { path: "/dashboard/templates", element: <Templates /> },
-        { path: "/dashboard/orders", element: <Orders /> },
-        { path: "/dashboard/models", element: <Models /> },
-        { path: "/dashboard/tasks", element: <Tasks /> },
-        { path: "/dashboard/notes", element: <Notes /> },
-        { path: "/dashboard/users", element: <Users /> },
-        { path: "/dashboard/departments", element: <Departments /> },
-        { path: "/dashboard/stores", element: <Stores /> },
+
+
+      { path: "/dashboard/home", element: <Home /> },
+      { path: "/dashboard/reports", element: <Reports /> },
+      { path: "/dashboard/statistics", element: <Statistics /> },
+      { path: "/dashboard/productcatalogues", element: <ProductCatalogues /> },
+      { path: "/dashboard/templates", element: <Templates /> },
+      { path: "/dashboard/orders", element: <Orders /> },
+      { path: "/dashboard/models", element: <Models /> },
+      { path: "/dashboard/tasks", element: <Tasks /> },
+      { path: "/dashboard/notes", element: <Notes /> },
+      { path: "/dashboard/users", element: <Users /> },
+      { path: "/dashboard/departments", element: <Departments /> },
+      { path: "/dashboard/stores", element: <Stores /> },
     ],
   },
 ]);
