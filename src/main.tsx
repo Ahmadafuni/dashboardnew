@@ -12,7 +12,6 @@ import MainLayout from "./layouts/MainLayout.tsx";
 // Pages
 import Login from "./pages/Login/Login.tsx";
 import Users from "./pages/Users/Users.tsx";
-import Departments from "@/pages/Departmnets/Departments.tsx";
 import Reports from "@/pages/Reports/Reports.tsx";
 import ProductCatalogues from "@/pages/ProductCatalogues/ProductCatalogues.tsx";
 import Statistics from "@/pages/Statistics/Statistics.tsx";
@@ -25,6 +24,9 @@ import Home from "@/pages/Home/Home.tsx";
 import Stores from "@/pages/Stores/Stores.tsx";
 import NewUsers from "@/pages/Users/NewUsers.tsx";
 import UpdateUser from "@/pages/Users/UpdateUser.tsx";
+import Departments from "./pages/Departmnets/Departments.tsx";
+import NewDepartment from "./pages/Departments/NewDepartment.tsx";
+import UpdateDepartment from "./pages/Departments/UpdateDepartment.tsx";
 
 // Routes
 const router = createBrowserRouter([
@@ -37,7 +39,6 @@ const router = createBrowserRouter([
       { path: "/dashboard/users/new", element: <NewUsers /> },
       { path: "/dashboard/users/:userID", element: <UpdateUser /> },
 
-
       { path: "/dashboard/home", element: <Home /> },
       { path: "/dashboard/reports", element: <Reports /> },
       { path: "/dashboard/statistics", element: <Statistics /> },
@@ -49,6 +50,11 @@ const router = createBrowserRouter([
       { path: "/dashboard/notes", element: <Notes /> },
       { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/departments", element: <Departments /> },
+      { path: "/dashboard/departments/new", element: <NewDepartment /> },
+      {
+        path: "/dashboard/departments/:departmentID",
+        element: <UpdateDepartment />,
+      },
       { path: "/dashboard/stores", element: <Stores /> },
     ],
   },

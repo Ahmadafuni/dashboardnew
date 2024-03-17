@@ -8,25 +8,11 @@ import { userSchema } from "@/form_schemas/newUserSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const roles = [
-  { label: "CUTTING", value: "CUTTING" },
-  { label: "TAILORING", value: "TAILORING" },
-  { label: "PRINTING", value: "PRINTING" },
-  { label: "QUALITYASSURANCE", value: "QUALITYASSURANCE" },
-  { label: "ENGINEERING", value: "ENGINEERING" },
-  { label: "FACTORYMANAGER", value: "FACTORYMANAGER" },
-  { label: "WAREHOUSEMANAGER", value: "WAREHOUSEMANAGER" },
-];
-const categories = [
-  { label: "MANAGEMENT", value: "MANAGEMENT" },
-  { label: "PRODUCTION", value: "PRODUCTION" },
-  { label: "SERVICES", value: "SERVICES" },
-];
 export default function NewUsers() {
   // Loding
   const [isLoading, setIsLoading] = useState(false);
@@ -36,20 +22,28 @@ export default function NewUsers() {
     setFile(e.target.files[0]);
     console.log(e.target.files[0].name);
   };
+  // Departments
+  const [departments, setDepartments] = useState([]);
+  const getDepartments = async () => {
+    try {
+      const { data } = await axios.get("department");
+      setDepartments(data.data);
+    } catch (error) {}
+  };
   // Form fields
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       username: "",
       password: "",
-      role: "CUTTING",
       email: "",
       firstname: "",
       lastname: "",
       phoneNumber: "",
-      category: "PRODUCTION",
+      department: "",
     },
   });
+  // Form submit function
   const onSubmit = async (data: z.infer<typeof userSchema>) => {
     setIsLoading(true);
     if (!file) {
@@ -74,6 +68,10 @@ export default function NewUsers() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getDepartments();
+  }, []);
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
@@ -156,25 +154,13 @@ export default function NewUsers() {
             />
             <FormField
               control={form.control}
-              name="role"
+              name="department"
               render={({ field }) => (
                 <SelectFieldForForm
-                  label="Role"
                   field={field}
-                  placeholder="Select Role"
-                  items={roles}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <SelectFieldForForm
-                  label="Category"
-                  field={field}
-                  placeholder="Select Category"
-                  items={categories}
+                  label="Department"
+                  placeholder="Select a department"
+                  items={departments}
                 />
               )}
             />
