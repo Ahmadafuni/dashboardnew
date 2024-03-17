@@ -9,6 +9,7 @@ import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -22,6 +23,8 @@ const categories = [
   { label: "WAREHOUSEMANAGER", value: "WAREHOUSEMANAGER" },
 ];
 export default function NewDepartment() {
+  // Navigation state
+  const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Form fields
@@ -42,6 +45,7 @@ export default function NewDepartment() {
       toast.success(newDepartment.data.message);
       form.reset();
       setIsLoading(false);
+      navigate("/dashboard/departments");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -86,17 +90,6 @@ export default function NewDepartment() {
             />
             <FormField
               control={form.control}
-              name="description"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Description..."}
-                  label={"Description"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
               name="category"
               render={({ field }) => (
                 <SelectFieldForForm
@@ -104,6 +97,17 @@ export default function NewDepartment() {
                   label="Category"
                   placeholder="Select a category"
                   items={categories}
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <TextInputFieldForForm
+                  placeholder={"Description..."}
+                  label={"Description"}
+                  field={field}
                 />
               )}
             />

@@ -9,7 +9,7 @@ import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -25,6 +25,8 @@ const categories = [
 export default function UpdateDepartment() {
   // Param
   const { departmentID } = useParams();
+  // Navigation state
+  const navigate = useNavigate();
   // Department
   const [department, setDepartment] = useState({
     name: "",
@@ -65,8 +67,8 @@ export default function UpdateDepartment() {
         data
       );
       toast.success(updateDepartment.data.message);
-      getDepartment();
       setIsLoading(false);
+      navigate("/dashboard/departments");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -115,17 +117,6 @@ export default function UpdateDepartment() {
             />
             <FormField
               control={form.control}
-              name="description"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Description..."}
-                  label={"Description"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
               name="category"
               render={({ field }) => (
                 <SelectFieldForForm
@@ -133,6 +124,17 @@ export default function UpdateDepartment() {
                   label="Category"
                   placeholder="Select a category"
                   items={categories}
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <TextInputFieldForForm
+                  placeholder={"Description..."}
+                  label={"Description"}
+                  field={field}
                 />
               )}
             />

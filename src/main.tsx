@@ -24,9 +24,9 @@ import Home from "@/pages/Home/Home.tsx";
 import Stores from "@/pages/Stores/Stores.tsx";
 import NewUsers from "@/pages/Users/NewUsers.tsx";
 import UpdateUser from "@/pages/Users/UpdateUser.tsx";
-import Departments from "./pages/Departmnets/Departments.tsx";
 import NewDepartment from "./pages/Departments/NewDepartment.tsx";
 import UpdateDepartment from "./pages/Departments/UpdateDepartment.tsx";
+import Departments from "./pages/Departments/Departments.tsx";
 
 // Routes
 const router = createBrowserRouter([

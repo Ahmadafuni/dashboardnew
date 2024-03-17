@@ -10,10 +10,13 @@ import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
 export default function NewUsers() {
+  // Navigation state
+  const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // File
@@ -60,7 +63,7 @@ export default function NewUsers() {
       toast.success(newUser.data.message);
       form.reset();
       setIsLoading(false);
-      setFile(null);
+      navigate("/dashboard/users");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);

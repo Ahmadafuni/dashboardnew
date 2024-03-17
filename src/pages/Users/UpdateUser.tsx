@@ -10,13 +10,15 @@ import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
 export default function UpdateUser() {
   // Param
   const { userID } = useParams();
+  // Navigation state
+  const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // User
@@ -79,9 +81,8 @@ export default function UpdateUser() {
     try {
       const updateUser = await axios.put(`auth/${userID}`, formData);
       toast.success(updateUser.data.message);
-      getUser();
       setIsLoading(false);
-      setFile(null);
+      navigate("/dashboard/users");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
