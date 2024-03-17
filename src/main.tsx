@@ -25,6 +25,13 @@ import Home from "@/pages/Home/Home.tsx";
 import Stores from "@/pages/Stores/Stores.tsx";
 import NewUsers from "@/pages/Users/NewUsers.tsx";
 import UpdateUser from "@/pages/Users/UpdateUser.tsx";
+import Colors from "@/pages/Entities/Colors/Colors.tsx";
+import Sizes from "@/pages/Entities/Sizes/Sizes.tsx";
+import ProductCategory1 from "@/pages/Entities/ProductCategory1/ProductCategory1.tsx";
+import ProductCategory2 from "@/pages/Entities/ProductCategory2/ProductCategory2.tsx";
+import TemplatePatterns from "@/pages/Entities/TemplatePatterns/TemplatePatterns.tsx";
+import TemplateTypes from "@/pages/Entities/TemplateTypes/TemplateTypes.tsx";
+import ColorDialog from "@/pages/Entities/Colors/ColorDialog.tsx";
 
 // Routes
 const router = createBrowserRouter([
@@ -47,9 +54,19 @@ const router = createBrowserRouter([
       { path: "/dashboard/models", element: <Models /> },
       { path: "/dashboard/tasks", element: <Tasks /> },
       { path: "/dashboard/notes", element: <Notes /> },
-      { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/departments", element: <Departments /> },
       { path: "/dashboard/stores", element: <Stores /> },
+
+      { path: "/dashboard/entities/colors", element: <Colors /> },
+      { path: "/dashboard/entities/colors/new", element: <ColorDialog /> },
+      { path: "/dashboard/entities/colors/:colorID", element: <Colors /> },
+
+      { path: "/dashboard/entities/sizes", element: <Sizes /> },
+      { path: "/dashboard/entities/productcategory1", element: <ProductCategory1 /> },
+      { path: "/dashboard/entities/productcategory2", element: <ProductCategory2 /> },
+      { path: "/dashboard/entities/templatepatterns", element: <TemplatePatterns /> },
+      { path: "/dashboard/entities/templatetypes", element: <TemplateTypes /> },
+
     ],
   },
 ]);

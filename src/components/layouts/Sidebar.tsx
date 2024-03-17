@@ -10,7 +10,7 @@ import {
   UsersRound,
   LayoutPanelTop,
   FileBarChart2,
-  Store,
+  Store, Proportions, Ruler, Palette, ClipboardType, SquareAsterisk, SquareKanban, SquareGanttChart,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -63,6 +63,40 @@ export default function Sidebar() {
           name: "Notes",
           link: "/dashboard/notes",
           icon: NotebookPen,
+        },
+        {
+          name: "Entities",
+          icon: Proportions,
+        },
+        {
+          name: "Color",
+          link: "/dashboard/entities/colors",
+          icon: Palette,
+        },
+        {
+          name: "Sizes",
+          link: "/dashboard/entities/sizes",
+          icon: Ruler,
+        },
+        {
+          name: "Product Category |",
+          link: "/dashboard/entities/productcategory1",
+          icon: SquareGanttChart,
+        },
+        {
+          name: "Product Category ||",
+          link: "/dashboard/entities/productcategory2",
+          icon: SquareKanban,
+        },
+        {
+          name: "Template Patterns",
+          link: "/dashboard/entities/templatepatterns",
+          icon: SquareAsterisk,
+        },
+        {
+          name: "Template Types",
+          link: "/dashboard/entities/templatetypes",
+          icon: ClipboardType,
         },
       ],
     },
