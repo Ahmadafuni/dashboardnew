@@ -71,7 +71,9 @@ export default function UpdateUser() {
   const onSubmit = async (data: z.infer<typeof userUpdateSchema>) => {
     setIsLoading(true);
     const formData = new FormData();
-    formData.append("profiles", file);
+    if (file !== null) {
+      formData.append("profiles", file);
+    }
     const userInfo = JSON.stringify(data);
     formData.append("userInfo", userInfo);
     try {
