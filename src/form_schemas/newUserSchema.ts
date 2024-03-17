@@ -32,24 +32,15 @@ export const userSchema = z.object({
       message: "Please enter last name.",
     })
     .max(50),
-  role: z
-    .string()
-    .min(1, {
-      message: "Please enter user role.",
-    })
-    .max(50),
-  category: z
-    .string()
-    .min(1, {
-      message: "Please enter user category.",
-    })
-    .max(50),
   phoneNumber: z
     .string()
     .min(10, {
       message: "Please enter valid phone number.",
     })
     .max(50),
+  department: z
+    .string({ required_error: "Please select department." })
+    .min(1, { message: "Please select department." }),
 });
 
 export const userUpdateSchema = z.object({
@@ -79,22 +70,13 @@ export const userUpdateSchema = z.object({
       message: "Please enter last name.",
     })
     .max(50),
-  role: z
-    .string()
-    .min(1, {
-      message: "Please enter user role.",
-    })
-    .max(50),
-  category: z
-    .string()
-    .min(1, {
-      message: "Please enter user category.",
-    })
-    .max(50),
   phoneNumber: z
     .string()
     .min(10, {
       message: "Please enter valid phone number.",
     })
     .max(50),
+  department: z
+    .string({ required_error: "Please select department." })
+    .min(1, { message: "Please select department." }),
 });

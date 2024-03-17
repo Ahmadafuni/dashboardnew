@@ -14,20 +14,6 @@ import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const roles = [
-  { label: "CUTTING", value: "CUTTING" },
-  { label: "TAILORING", value: "TAILORING" },
-  { label: "PRINTING", value: "PRINTING" },
-  { label: "QUALITYASSURANCE", value: "QUALITYASSURANCE" },
-  { label: "ENGINEERING", value: "ENGINEERING" },
-  { label: "FACTORYMANAGER", value: "FACTORYMANAGER" },
-  { label: "WAREHOUSEMANAGER", value: "WAREHOUSEMANAGER" },
-];
-const categories = [
-  { label: "MANAGEMENT", value: "MANAGEMENT" },
-  { label: "PRODUCTION", value: "PRODUCTION" },
-  { label: "SERVICES", value: "SERVICES" },
-];
 export default function UpdateUser() {
   // Param
   const { userID } = useParams();
@@ -36,14 +22,21 @@ export default function UpdateUser() {
   // User
   const [user, setUser] = useState({
     username: "",
-    role: "",
     email: "",
     firstname: "",
     lastname: "",
     phoneNumber: "",
-    category: "",
     password: "",
+    department: "",
   });
+  // Departments
+  const [departments, setDepartments] = useState([]);
+  const getDepartments = async () => {
+    try {
+      const { data } = await axios.get("department");
+      setDepartments(data.data);
+    } catch (error) {}
+  };
   // Get User
   const getUser = async () => {
     try {
@@ -66,13 +59,12 @@ export default function UpdateUser() {
     resolver: zodResolver(userUpdateSchema),
     defaultValues: {
       username: "",
-      role: "",
       email: "",
       firstname: "",
       lastname: "",
       phoneNumber: "",
-      category: "",
       password: "",
+      department: "",
     },
     values: { ...user },
   });
@@ -83,8 +75,8 @@ export default function UpdateUser() {
     const userInfo = JSON.stringify(data);
     formData.append("userInfo", userInfo);
     try {
-      const newUser = await axios.put(`auth/${userID}`, formData);
-      toast.success(newUser.data.message);
+      const updateUser = await axios.put(`auth/${userID}`, formData);
+      toast.success(updateUser.data.message);
       getUser();
       setIsLoading(false);
       setFile(null);
@@ -97,6 +89,7 @@ export default function UpdateUser() {
   };
 
   useEffect(() => {
+    getDepartments();
     getUser();
   }, []);
   return (
@@ -180,25 +173,13 @@ export default function UpdateUser() {
             />
             <FormField
               control={form.control}
-              name="role"
+              name="department"
               render={({ field }) => (
                 <SelectFieldForForm
-                  label="Role"
                   field={field}
-                  placeholder="Select Role"
-                  items={roles}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <SelectFieldForForm
-                  label="Category"
-                  field={field}
-                  placeholder="Select Category"
-                  items={categories}
+                  label="Department"
+                  placeholder="Select a department"
+                  items={departments}
                 />
               )}
             />

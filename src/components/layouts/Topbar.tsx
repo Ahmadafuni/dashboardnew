@@ -32,8 +32,8 @@ export default function Topbar() {
       setUser(result.data.user);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
         Cookies.remove("access_token");
+        toast.error(error.response?.data.message);
         navigate("/");
       }
     }

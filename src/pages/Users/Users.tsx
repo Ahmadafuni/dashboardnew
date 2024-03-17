@@ -23,6 +23,18 @@ import {
 export default function Users() {
   // Navigation state
   const navigate = useNavigate();
+  // Toggle user
+  const toggleUser = async (id: number) => {
+    try {
+      const { data } = await axios.get(`auth/toggle-user/${id}`);
+      toast.success(data.message);
+      getUsers();
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    }
+  };
   // Column Def
   const userColumns: ColumnDef<UserType>[] = [
     {
@@ -42,10 +54,6 @@ export default function Users() {
       header: "Email",
     },
     {
-      accessorKey: "Role",
-      header: "Role",
-    },
-    {
       accessorKey: "PhoneNumber",
       header: "PhoneNumber",
     },
@@ -54,12 +62,21 @@ export default function Users() {
       accessorFn: (row) => row.Department?.Name,
     },
     {
-      header: "Warehouse",
-      accessorFn: (row) => row.Warehouse?.WarehouseName,
-    },
-    {
       accessorKey: "IsActive",
       header: "IsActive",
+      cell: ({ row }) => {
+        return (
+          <Button
+            variant={row.original.IsActive ? "default" : "destructive"}
+            className={
+              row.original.IsActive ? "bg-green-500 hover:bg-green-400" : ""
+            }
+            onClick={() => toggleUser(row.original.Id)}
+          >
+            {row.original.IsActive ? "Activated" : "Disabled"}
+          </Button>
+        );
+      },
     },
     {
       accessorKey: "PhotoPath",
@@ -83,7 +100,7 @@ export default function Users() {
       header: "Action",
       cell: ({ row }) => {
         return (
-          <div className="space-x-1">
+          <div className="flex gap-1">
             <Button
               onClick={() => {
                 navigate(`/dashboard/users/${row.original.Id}`);
@@ -166,7 +183,7 @@ export default function Users() {
             Add User
           </Button>
         </div>
-        <div className="rounded-md border">
+        <div className="rounded-md border overflow-x-scroll">
           <UsersDataTable columns={userColumns} data={users} />
         </div>
       </div>

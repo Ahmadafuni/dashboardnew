@@ -8,7 +8,7 @@ export default function MainLayout() {
       <Topbar />
       <div className="min-w-full min-h-full flex grow">
         <Sidebar />
-        <div className="p-4 grow">
+        <div className="p-4 grow overflow-x-hidden">
           <Outlet />
         </div>
       </div>

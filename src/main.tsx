@@ -14,6 +14,9 @@ import Login from "./pages/Login/Login.tsx";
 import Users from "./pages/Users/Users.tsx";
 import NewUsers from "./pages/Users/NewUsers.tsx";
 import UpdateUser from "./pages/Users/UpdateUser.tsx";
+import Departments from "./pages/Departments/Departments.tsx";
+import NewDepartment from "./pages/Departments/NewDepartment.tsx";
+import UpdateDepartment from "./pages/Departments/UpdateDepartment.tsx";
 
 // Routes
 const router = createBrowserRouter([
@@ -25,6 +28,12 @@ const router = createBrowserRouter([
       { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/users/new", element: <NewUsers /> },
       { path: "/dashboard/users/:userID", element: <UpdateUser /> },
+      { path: "/dashboard/departments", element: <Departments /> },
+      { path: "/dashboard/departments/new", element: <NewDepartment /> },
+      {
+        path: "/dashboard/departments/:departmentID",
+        element: <UpdateDepartment />,
+      },
     ],
   },
 ]);
