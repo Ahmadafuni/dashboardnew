@@ -13,13 +13,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
+import {useTranslation} from "react-i18next";
 
 export default function NewUsers() {
-  // Navigation state
+  const {t} = useTranslation();
   const navigate = useNavigate();
-  // Loding
   const [isLoading, setIsLoading] = useState(false);
-  // File
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
     setFile(e.target.files[0]);
@@ -78,7 +77,7 @@ export default function NewUsers() {
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">New User</h1>
+        <h1 className="text-3xl font-bold w-full">{t("Newuser")}</h1>
         <Separator />
       </div>
       <div className="space-y-1">
@@ -93,8 +92,8 @@ export default function NewUsers() {
               name="firstname"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Jhon"}
-                  label={"Firstname"}
+                  placeholder={""}
+                  label={t("Firstname")}
                   field={field}
                 />
               )}
@@ -104,8 +103,8 @@ export default function NewUsers() {
               name="lastname"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Doe"}
-                  label={"Lastname"}
+                  placeholder={""}
+                  label={t("Lastname")}
                   field={field}
                 />
               )}
@@ -115,8 +114,8 @@ export default function NewUsers() {
               name="username"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"jhon.doe"}
-                  label={"Username"}
+                  placeholder={""}
+                  label={t("Username")}
                   field={field}
                 />
               )}
@@ -127,7 +126,7 @@ export default function NewUsers() {
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder={"jhon.doe@emaple.com"}
-                  label={"Email"}
+                  label={t("Email")}
                   field={field}
                 />
               )}
@@ -138,7 +137,7 @@ export default function NewUsers() {
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder={"+9320000000"}
-                  label={"Phone Number"}
+                  label={t("PhoneNumber")}
                   field={field}
                 />
               )}
@@ -149,7 +148,7 @@ export default function NewUsers() {
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder={"Password"}
-                  label={"Password"}
+                  label={t("Password")}
                   field={field}
                   type="text"
                 />
@@ -161,14 +160,14 @@ export default function NewUsers() {
               render={({ field }) => (
                 <SelectFieldForForm
                   field={field}
-                  label="Department"
+                  label={t("Department")}
                   placeholder="Select a department"
                   items={departments}
                 />
               )}
             />
             <FormItem>
-              <FormLabel>Profile Photo</FormLabel>
+              <FormLabel>{t("ProfilePhoto")}</FormLabel>
               <Input type="file" accept="image/*" onChange={handleFileChange} />
             </FormItem>
           </form>
@@ -181,7 +180,7 @@ export default function NewUsers() {
                 Please wait
               </>
             ) : (
-              "Add"
+              t("AddUser")
             )}
           </Button>
         </div>

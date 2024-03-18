@@ -12,17 +12,20 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-
-const categories = [
-  { label: "CUTTING", value: "CUTTING" },
-  { label: "TAILORING", value: "TAILORING" },
-  { label: "PRINTING", value: "PRINTING" },
-  { label: "QUALITYASSURANCE", value: "QUALITYASSURANCE" },
-  { label: "ENGINEERING", value: "ENGINEERING" },
-  { label: "FACTORYMANAGER", value: "FACTORYMANAGER" },
-  { label: "WAREHOUSEMANAGER", value: "WAREHOUSEMANAGER" },
-];
+import {useTranslation} from 'react-i18next';
 export default function NewDepartment() {
+
+  const {t} = useTranslation();
+
+  const categories = [
+    { label:  t("CUTTING"), value: "CUTTING" },
+    { label: t("TAILORING"), value: "TAILORING" },
+    { label: t("PRINTING"), value: "PRINTING" },
+    { label: t("QUALITYASSURANCE"), value: "QUALITYASSURANCE" },
+    { label: t("ENGINEERING"), value: "ENGINEERING" },
+    { label: t("FACTORYMANAGER"), value: "FACTORYMANAGER" },
+    { label: t("WAREHOUSEMANAGER"), value: "WAREHOUSEMANAGER" },
+  ];
   // Navigation state
   const navigate = useNavigate();
   // Loding
@@ -56,7 +59,7 @@ export default function NewDepartment() {
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">New department</h1>
+        <h1 className="text-3xl font-bold w-full">{t("Newdepartment")}</h1>
         <Separator />
       </div>
       <div className="space-y-1">
@@ -71,8 +74,8 @@ export default function NewDepartment() {
               name="name"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Cutting"}
-                  label={"Name"}
+                  placeholder={""}
+                  label={t("Name")}
                   field={field}
                 />
               )}
@@ -82,8 +85,8 @@ export default function NewDepartment() {
               name="location"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Sector-1"}
-                  label={"Location"}
+                  placeholder={""}
+                  label={t("Location")}
                   field={field}
                 />
               )}
@@ -94,8 +97,8 @@ export default function NewDepartment() {
               render={({ field }) => (
                 <SelectFieldForForm
                   field={field}
-                  label="Category"
-                  placeholder="Select a category"
+                  label={t("Category")}
+                  placeholder=""
                   items={categories}
                 />
               )}
@@ -105,8 +108,8 @@ export default function NewDepartment() {
               name="description"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Description..."}
-                  label={"Description"}
+                  placeholder={""}
+                  label={t("Description")}
                   field={field}
                 />
               )}
@@ -121,7 +124,7 @@ export default function NewDepartment() {
                 Please wait
               </>
             ) : (
-              "Add"
+                t("Add")
             )}
           </Button>
         </div>

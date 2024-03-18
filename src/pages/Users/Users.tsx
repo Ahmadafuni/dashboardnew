@@ -9,6 +9,8 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
+import {useTranslation} from 'react-i18next';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,9 +23,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 export default function Users() {
-  // Navigation state
+
+  const {t} = useTranslation();
   const navigate = useNavigate();
-  // Toggle user
   const toggleUser = async (id: number) => {
     try {
       const { data } = await axios.get(`auth/toggle-user/${id}`);
@@ -39,31 +41,31 @@ export default function Users() {
   const userColumns: ColumnDef<UserType>[] = [
     {
       accessorKey: "Firstname",
-      header: "Firstname",
+      header: t("Firstname"),
     },
     {
       accessorKey: "Lastname",
-      header: "Lastname",
+      header: t("Lastname"),
     },
     {
       accessorKey: "Username",
-      header: "Username",
+      header: t("Username"),
     },
     {
       accessorKey: "Email",
-      header: "Email",
+      header: t("Email"),
     },
     {
       accessorKey: "PhoneNumber",
-      header: "PhoneNumber",
+      header: t("PhoneNumber"),
     },
     {
-      header: "Department",
+      header: t("Department"),
       accessorFn: (row) => row.Department?.Name,
     },
     {
       accessorKey: "IsActive",
-      header: "IsActive",
+      header: t("IsActive"),
       cell: ({ row }) => {
         return (
           <Button
@@ -80,7 +82,7 @@ export default function Users() {
     },
     {
       accessorKey: "PhotoPath",
-      header: "Photo",
+      header: t("ProfilePhoto"),
       cell: (cell) => {
         return (
           <Avatar>
@@ -97,7 +99,7 @@ export default function Users() {
       },
     },
     {
-      header: "Action",
+      header:  t("Action"),
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
@@ -180,7 +182,7 @@ export default function Users() {
         <div className="flex justify-end">
           <Button onClick={() => navigate("/dashboard/users/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            Add User
+            {t("AddUser")}
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
