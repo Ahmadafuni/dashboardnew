@@ -6,6 +6,12 @@ import { RecoilRoot } from "recoil";
 import axios from "axios";
 import { Toaster } from "sonner";
 import Cookies from "js-cookie";
+import i18n from 'i18next';
+import {initReactI18next} from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import enTranslations from './locales/en.json';
+import arTranslations from './locales/ar.json';
+
 // Theme and Layout
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import MainLayout from "./layouts/MainLayout.tsx";
@@ -28,6 +34,25 @@ import NewDepartment from "./pages/Departments/NewDepartment.tsx";
 import UpdateDepartment from "./pages/Departments/UpdateDepartment.tsx";
 import Departments from "./pages/Departments/Departments.tsx";
 
+
+i18n
+    .use(LanguageDetector) // Detect user's language
+    .use(initReactI18next) // Bind i18n to React
+    .init({
+      resources: {
+        en: {
+          translation: enTranslations
+        },
+        ar: {
+          translation: arTranslations
+        },
+      },
+      lng: 'ar', // Set Arabic as the default language
+      fallbackLng: 'en', // Fallback to English if user's language is not available
+      interpolation: {
+        escapeValue: false, // React already escapes values
+      },
+    });
 // Routes
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },

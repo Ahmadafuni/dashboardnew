@@ -1,0 +1,42 @@
+{
+  "Home": "الصفحة الرئيسية",
+  "Reports": "التقارير",
+  "Statistics": "الإحصائيات",
+  "ProductCatalogues": "كتالوج المنتجات",
+  "Templates": "القوالب",
+  "Orders": "الطلبيات",
+  "Models": "الموديلات",
+  "Tasks": "المهام",
+  "Notes": "الملاحظات",
+  "Departments": "الأقسام",
+  "Stores": "المستودعات",
+  "AddUser": "إضافة مستخدم",
+  "Firstname": "الاسم الأول",
+  "Lastname": "الاسم الأخير",
+  "Username": "اسم المستخدم",
+  "Email": "البريد الإلكتروني",
+  "PhoneNumber": "رقم الهاتف",
+  "Department": "القسم",
+  "IsActive": "الحالة",
+  "ProfilePhoto": "الصورة الشخصية",
+  "Newuser": "انشاء مستخدم",
+
+  "AddDepartment": "إضافة قسم",
+  "Name": "الاسم",
+  "Category": "الفئة",
+  "Location": "الموقع",
+  "Description": "الوصف",
+  "Action": "العمليات",
+  "Add": "إضافة",
+  "Newdepartment": "انشاء قسم",
+
+
+  "CUTTING": "القص",
+  "TAILORING": "الخياطة",
+  "PRINTING": "الطباعة",
+  "QUALITYASSURANCE": "امبلاج",
+  "ENGINEERING": "الهندسة",
+  "FACTORYMANAGER": "مدير المصنع",
+  "WAREHOUSEMANAGER": "مدير المستودع"
+
+}

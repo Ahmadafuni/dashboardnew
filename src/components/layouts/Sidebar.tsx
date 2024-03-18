@@ -13,54 +13,56 @@ import {
   Store,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import {useTranslation} from 'react-i18next';
 
 export default function Sidebar() {
+  const {t} = useTranslation();
   const menus = [
     {
       gName: "System",
       childs: [
         {
-          name: "Home",
+          name: t("Home"),
           link: "/dashboard/home",
           icon: Home,
         },
         {
-          name: "Reports",
+          name: t("Reports"),
           link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
-          name: "Statistics",
+          name: t("Statistics"),
           link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
-          name: "Product Catalogues",
+          name: t("ProductCatalogues"),
           link: "/dashboard/productcatalogues",
           icon: FolderOpen,
         },
         {
-          name: "Templates",
+          name: t("Templates"),
           link: "/dashboard/templates",
           icon: SquareScissors,
         },
         {
-          name: "Orders",
+          name: t("Orders"),
           link: "/dashboard/orders",
           icon: ListOrdered,
         },
         {
-          name: "Models",
+          name: t("Models"),
           link: "/dashboard/models",
           icon: Shirt,
         },
         {
-          name: "Tasks",
+          name: t("Tasks"),
           link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
-          name: "Notes",
+          name: t("Notes"),
           link: "/dashboard/notes",
           icon: NotebookPen,
         },
@@ -70,42 +72,42 @@ export default function Sidebar() {
       gName: "Manager",
       childs: [
         {
-          name: "Home",
+          name: t("Home"),
           link: "/dashboard/home",
           icon: Home,
         },
         {
-          name: "Reports",
+          name: t("Reports"),
           link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
-          name: "Statistics",
+          name: t("Statistics"),
           link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
-          name: "Users",
+          name: t("Users"),
           link: "/dashboard/users",
           icon: UsersRound,
         },
         {
-          name: "Departments",
+          name: t("Departments"),
           link: "/dashboard/departments",
           icon: LayoutPanelTop,
         },
         {
-          name: "Stores",
+          name: t("Stores"),
           link: "/dashboard/stores",
           icon: Store,
         },
         {
-          name: "Tasks",
+          name: t("Tasks"),
           link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
-          name: "Notes",
+          name: t("Notes"),
           link: "/dashboard/notes",
           icon: NotebookPen,
         },
