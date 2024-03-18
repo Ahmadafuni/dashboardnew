@@ -11,12 +11,19 @@ import {
   LayoutPanelTop,
   FileBarChart2,
   Store,
+  AlignJustify,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {useTranslation} from 'react-i18next';
+import {Menu, MenuItem, ProSidebar} from "react-pro-sidebar";
+import  {useState} from "react";
+import { Button } from "../ui/button";
+
 
 export default function Sidebar() {
   const {t} = useTranslation();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const menus = [
     {
       gName: "System",
@@ -114,34 +121,38 @@ export default function Sidebar() {
       ],
     },
   ];
+
+
   return (
-    <div className="w-[300px] border-r-2 ">
-      <div className="p-1">
-        {menus.map((menu, index) => (
-          <div key={index}>
-            <p className="text-muted-foreground font-medium text-xs px-2 py-[6px]">
-              {menu.gName}
-            </p>
-            <ul className="flex flex-col gap-y-1">
-              {menu.childs.map((child, idx) => (
-                <li key={idx}>
-                  <NavLink
-                    to={child.link}
-                    className={({ isActive }) => {
-                      return isActive
-                        ? "flex items-center text-primary bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer"
-                        : "flex items-center hover:text-primary hover:bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer";
-                    }}
-                  >
-                    <child.icon className="mr-2 h-4 w-4" />
-                    <span>{child.name}</span>
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
+      <ProSidebar collapsed={isCollapsed}>
+        <Menu iconShape="square">
+          <MenuItem
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <AlignJustify /> : undefined}
+              style={{ margin: "10px 0 20px 0" }}
+          >
+            {!isCollapsed && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginLeft: "15px" }}>
+                  <span>Department Name </span>
+                  <Button onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <AlignJustify />
+                  </Button>
+                </div>
+            )}
+          </MenuItem>
+          {menus.map((menu, index) => (
+              <MenuItem key={index} title={menu.gName}>
+                {menu.childs.map((child, idx) => (
+                    <NavLink key={idx} to={child.link} className="menu-item" style={{ marginBottom: "10px", display: "block" }}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <child.icon />
+                        {!isCollapsed && <span style={{ marginLeft: "10px" }}>{child.name}</span>}
+                      </div>
+                    </NavLink>
+                ))}
+              </MenuItem>
+          ))}
+        </Menu>
+      </ProSidebar>
   );
 }
