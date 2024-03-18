@@ -53,6 +53,7 @@ export default function Sidebar() {
   ];
 
   return (
+      <div className="p-2 border-r-2" >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           <MenuItem
@@ -71,7 +72,12 @@ export default function Sidebar() {
               <MenuItem key={index}>
                 <h5 style={{ marginBottom: "10px", display: "block" }}>{menu.gName}</h5>
                 {menu.childs.map((child, idx) => (
-                    <NavLink key={idx} to={child.link} className="menu-item" style={{ marginBottom: "10px", display: "block" }}>
+                    <NavLink key={idx} to={child.link}
+                             className={({ isActive }) => {
+                               return isActive
+                                   ? "flex items-center text-primary bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer"
+                                   : "flex items-center hover:text-primary hover:bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer"}}
+                    >
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <child.icon />
                         {!isCollapsed && <span style={{ marginLeft: "10px" }}>{child.name}</span>}
@@ -82,5 +88,6 @@ export default function Sidebar() {
           ))}
         </Menu>
       </ProSidebar>
+      </div>
   );
 }
