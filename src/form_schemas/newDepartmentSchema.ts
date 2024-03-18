@@ -7,10 +7,8 @@ export const departmentSchema = z.object({
       message: "Please enter a name for the department.",
     })
     .max(50),
-  location: z
-    .string({ required_error: "Location is required." })
-    .max(255, { message: "Maximum 255 charecters." }),
-  description: z.string({ required_error: "Description is required." }),
+  location: z.string().max(255, { message: "Maximum 255 charecters." }),
+  description: z.string(),
   category: z.string().min(1, {
     message: "Please select a category for the department.",
   }),

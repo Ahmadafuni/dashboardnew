@@ -15,11 +15,12 @@ import { z } from "zod";
 
 const categories = [
   { label: "CUTTING", value: "CUTTING" },
-  { label: "TAILORING", value: "TAILORING" },
-  { label: "PRINTING", value: "PRINTING" },
-  { label: "QUALITYASSURANCE", value: "QUALITYASSURANCE" },
   { label: "ENGINEERING", value: "ENGINEERING" },
   { label: "FACTORYMANAGER", value: "FACTORYMANAGER" },
+  { label: "DRAWING", value: "DRAWING" },
+  { label: "PRINTING", value: "PRINTING" },
+  { label: "QUALITYASSURANCE", value: "QUALITYASSURANCE" },
+  { label: "TAILORING", value: "TAILORING" },
   { label: "WAREHOUSEMANAGER", value: "WAREHOUSEMANAGER" },
 ];
 export default function NewDepartment() {
