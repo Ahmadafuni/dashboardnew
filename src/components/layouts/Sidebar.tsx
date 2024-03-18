@@ -1,4 +1,3 @@
-import React from "react";
 import {
   LayoutDashboard,
   Home,
@@ -18,7 +17,6 @@ import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
 import { useState } from "react";
-import { Button } from "../ui/button";
 
 export default function Sidebar() {
   const { t } = useTranslation();
@@ -63,11 +61,9 @@ export default function Sidebar() {
               style={{ margin: "10px 0 20px 0" }}
           >
             {!isCollapsed && (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginLeft: "15px" }}>
-                  <span>Department Name</span>
-                  <Button onClick={() => setIsCollapsed(!isCollapsed)}>
-                    <AlignJustify />
-                  </Button>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginLeft: "0px"}}>
+                  <span style={{ marginRight: "10px"}}>Department Name</span>
+                    <AlignJustify onClick={() => setIsCollapsed(!isCollapsed)}/>
                 </div>
             )}
           </MenuItem>
