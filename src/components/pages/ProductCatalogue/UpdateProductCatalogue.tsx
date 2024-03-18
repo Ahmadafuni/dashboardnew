@@ -10,6 +10,7 @@ import {
 import { Form, FormField } from "@/components/ui/form";
 import { productCatalogueSchema } from "@/form_schemas/newProductCatalogueSchema";
 import {
+  productCatalogue,
   productCatalogueId,
   updateProductCatalogueModal,
 } from "@/store/ProductCatalogue";
@@ -33,23 +34,7 @@ export default function UpdateProductCatalogue({ getCatalogues }: Props) {
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Catalogue
-  const [catalogue, setCatalogue] = useState({
-    name: "",
-    description: "",
-  });
-  // Get Catalogue
-  const getCatalogue = async () => {
-    try {
-      const { data } = await axios.get(`productcatalog/${catalogueID}`);
-      setCatalogue(data.data);
-    } catch (error) {
-      setIsLoading(false);
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
-  // Update Catalogue
+  const catalogue = useRecoilValue(productCatalogue);
   // Form fields
   const form = useForm<z.infer<typeof productCatalogueSchema>>({
     resolver: zodResolver(productCatalogueSchema),
@@ -78,10 +63,6 @@ export default function UpdateProductCatalogue({ getCatalogues }: Props) {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    getCatalogue();
-  }, []);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
@@ -129,7 +110,7 @@ export default function UpdateProductCatalogue({ getCatalogues }: Props) {
                 Please wait
               </>
             ) : (
-              "Add"
+              "Update"
             )}
           </Button>
         </DialogFooter>

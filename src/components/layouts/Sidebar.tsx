@@ -11,56 +11,65 @@ import {
   LayoutPanelTop,
   FileBarChart2,
   Store,
+  AlignJustify,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import {useTranslation} from 'react-i18next';
+import {Menu, MenuItem, ProSidebar} from "react-pro-sidebar";
+import  {useState} from "react";
+import { Button } from "../ui/button";
+
 
 export default function Sidebar() {
+  const {t} = useTranslation();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const menus = [
     {
       gName: "System",
       childs: [
         {
-          name: "Home",
+          name: t("Home"),
           link: "/dashboard/home",
           icon: Home,
         },
         {
-          name: "Reports",
+          name: t("Reports"),
           link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
-          name: "Statistics",
+          name: t("Statistics"),
           link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
-          name: "Product Catalogues",
+          name: t("ProductCatalogues"),
           link: "/dashboard/productcatalogues",
           icon: FolderOpen,
         },
         {
-          name: "Templates",
+          name: t("Templates"),
           link: "/dashboard/templates",
           icon: SquareScissors,
         },
         {
-          name: "Orders",
+          name: t("Orders"),
           link: "/dashboard/orders",
           icon: ListOrdered,
         },
         {
-          name: "Models",
+          name: t("Models"),
           link: "/dashboard/models",
           icon: Shirt,
         },
         {
-          name: "Tasks",
+          name: t("Tasks"),
           link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
-          name: "Notes",
+          name: t("Notes"),
           link: "/dashboard/notes",
           icon: NotebookPen,
         },
@@ -70,76 +79,80 @@ export default function Sidebar() {
       gName: "Manager",
       childs: [
         {
-          name: "Home",
+          name: t("Home"),
           link: "/dashboard/home",
           icon: Home,
         },
         {
-          name: "Reports",
+          name: t("Reports"),
           link: "/dashboard/reports",
           icon: LayoutDashboard,
         },
         {
-          name: "Statistics",
+          name: t("Statistics"),
           link: "/dashboard/statistics",
           icon: FileBarChart2,
         },
         {
-          name: "Users",
+          name: t("Users"),
           link: "/dashboard/users",
           icon: UsersRound,
         },
         {
-          name: "Departments",
+          name: t("Departments"),
           link: "/dashboard/departments",
           icon: LayoutPanelTop,
         },
         {
-          name: "Stores",
+          name: t("Stores"),
           link: "/dashboard/stores",
           icon: Store,
         },
         {
-          name: "Tasks",
+          name: t("Tasks"),
           link: "/dashboard/tasks",
           icon: ListChecks,
         },
         {
-          name: "Notes",
+          name: t("Notes"),
           link: "/dashboard/notes",
           icon: NotebookPen,
         },
       ],
     },
   ];
+
+
   return (
-    <div className="w-[300px] border-r-2 ">
-      <div className="p-1">
-        {menus.map((menu, index) => (
-          <div key={index}>
-            <p className="text-muted-foreground font-medium text-xs px-2 py-[6px]">
-              {menu.gName}
-            </p>
-            <ul className="flex flex-col gap-y-1">
-              {menu.childs.map((child, idx) => (
-                <li key={idx}>
-                  <NavLink
-                    to={child.link}
-                    className={({ isActive }) => {
-                      return isActive
-                        ? "flex items-center text-primary bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer"
-                        : "flex items-center hover:text-primary hover:bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer";
-                    }}
-                  >
-                    <child.icon className="mr-2 h-4 w-4" />
-                    <span>{child.name}</span>
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
+      <ProSidebar collapsed={isCollapsed}>
+        <Menu iconShape="square">
+          <MenuItem
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <AlignJustify /> : undefined}
+              style={{ margin: "10px 0 20px 0" }}
+          >
+            {!isCollapsed && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginLeft: "15px" }}>
+                  <span>Department Name </span>
+                  <Button onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <AlignJustify />
+                  </Button>
+                </div>
+            )}
+          </MenuItem>
+          {menus.map((menu, index) => (
+              <MenuItem key={index} title={menu.gName}>
+                {menu.childs.map((child, idx) => (
+                    <NavLink key={idx} to={child.link} className="menu-item" style={{ marginBottom: "10px", display: "block" }}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <child.icon />
+                        {!isCollapsed && <span style={{ marginLeft: "10px" }}>{child.name}</span>}
+                      </div>
+                    </NavLink>
+                ))}
+              </MenuItem>
+          ))}
+        </Menu>
+      </ProSidebar>
   );
 }

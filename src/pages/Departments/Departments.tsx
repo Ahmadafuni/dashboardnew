@@ -8,30 +8,30 @@ import { Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import {useTranslation} from 'react-i18next';
 
 export default function Departments() {
-  // Navigation state
+  const {t} = useTranslation();
   const navigate = useNavigate();
-  // Column Def
   const userColumns: ColumnDef<DepartmentType>[] = [
     {
       accessorKey: "Name",
-      header: "Name",
+      header: t("Name"),
     },
     {
       accessorKey: "Category",
-      header: "Category",
+      header: t("Category"),
     },
     {
       accessorKey: "Location",
-      header: "Location",
+      header: t("Location"),
     },
     {
       accessorKey: "Description",
-      header: "Description",
+      header: t("Description"),
     },
     {
-      header: "Action",
+      header: t("Action"),
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
@@ -74,7 +74,7 @@ export default function Departments() {
         <div className="flex justify-end">
           <Button onClick={() => navigate("/dashboard/departments/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            Add Department
+            {t("AddDepartment")}
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">

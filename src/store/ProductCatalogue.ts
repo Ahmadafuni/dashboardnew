@@ -14,3 +14,11 @@ export const productCatalogueId = atom({
   key: "productCatalogueId",
   default: 0,
 });
+
+export const productCatalogue = atom({
+  key: "productCatalogue",
+  default: {
+    name: "",
+    description: "",
+  },
+});

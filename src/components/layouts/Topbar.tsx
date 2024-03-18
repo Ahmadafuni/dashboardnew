@@ -9,23 +9,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Bell, Globe, LogOut, Moon, Sun } from "lucide-react";
+import { Bell, Globe, Languages, LogOut, Moon, Sun } from "lucide-react";
 import { useTheme } from "../theme-provider";
 import { useRecoilState } from "recoil";
 import { userInfo } from "@/store/authentication";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
+import {useTranslation} from 'react-i18next';
 
 export default function Topbar() {
-  // Navigation state
+  const {i18n} = useTranslation();
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
   const navigate = useNavigate();
-  // Theme
   const { setTheme } = useTheme();
-  // User Info
   const [user, setUser] = useRecoilState(userInfo);
-  // Recheck User
+
+  const toggleLanguage = () => {
+    const newLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+    setCurrentLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage);
+  };
+
   const checkUser = async () => {
     try {
       const result = await axios.get("auth/session");
@@ -56,9 +62,13 @@ export default function Topbar() {
       </div>
       <div className="flex items-center gap-1">
         <DropdownMenu>
-          <Button variant="outline" size="icon" className="rounded-full">
-            <Globe className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Globe className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Button variant="outline" size="icon" className="rounded-full" onClick={toggleLanguage}>
+            {currentLanguage === 'ar' ?
+            <Globe className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+            :
+              <Languages className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+            }
+
           </Button>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="rounded-full">
