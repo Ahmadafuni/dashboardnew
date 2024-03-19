@@ -1,4 +1,3 @@
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormField } from "@/components/ui/form";
 import { productCatalogueSchema } from "@/form_schemas/newProductCatalogueSchema";
 import {
   productCatalogue,
@@ -17,11 +15,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
+import ProductCatalogueForm from "./ProductCatalogueForm";
 
 type Props = {
   getCatalogues: any;
@@ -69,41 +68,12 @@ export default function UpdateProductCatalogue({ getCatalogues }: Props) {
         <DialogHeader>
           <DialogTitle>Update Product Catalogue</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-1 gap-2"
-            id="new-catalogue"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Product Catalogue Name"}
-                  label={"Product Catalogue Name"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Product Catalogue Description"}
-                  label={"Product Catalogue Description"}
-                  field={field}
-                />
-              )}
-            />
-          </form>
-        </Form>
+        <ProductCatalogueForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
             Close
           </Button>
-          <Button type="submit" disabled={isLoading} form="new-catalogue">
+          <Button type="submit" disabled={isLoading} form="catalogue">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

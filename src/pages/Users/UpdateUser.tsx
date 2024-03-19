@@ -1,10 +1,8 @@
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
+import UserForm from "@/components/pages/Users/UserForm";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { userUpdateSchema } from "@/form_schemas/newUserSchema";
+import { getUserById } from "@/services/Users.services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -31,25 +29,6 @@ export default function UpdateUser() {
     password: "",
     department: "",
   });
-  // Departments
-  const [departments, setDepartments] = useState([]);
-  const getDepartments = async () => {
-    try {
-      const { data } = await axios.get("department");
-      setDepartments(data.data);
-    } catch (error) {}
-  };
-  // Get User
-  const getUser = async () => {
-    try {
-      const { data } = await axios.get(`auth/${userID}`);
-      setUser(data.data);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
   // File
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
@@ -66,9 +45,9 @@ export default function UpdateUser() {
       lastname: "",
       phoneNumber: "",
       password: "",
-      department: "",
+      department: user.department,
     },
-    values: { ...user },
+    values: user,
   });
   const onSubmit = async (data: z.infer<typeof userUpdateSchema>) => {
     setIsLoading(true);
@@ -90,110 +69,24 @@ export default function UpdateUser() {
       setIsLoading(false);
     }
   };
-
+  // Page on load
   useEffect(() => {
-    getDepartments();
-    getUser();
+    getUserById(setUser, userID);
   }, []);
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">New User</h1>
+        <h1 className="text-3xl font-bold w-full">Update User</h1>
         <Separator />
       </div>
       <div className="space-y-1">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2 gap-2"
-            id="new-user"
-          >
-            <FormField
-              control={form.control}
-              name="firstname"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Jhon"}
-                  label={"Firstname"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastname"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Doe"}
-                  label={"Lastname"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"jhon.doe"}
-                  label={"Username"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"jhon.doe@emaple.com"}
-                  label={"Email"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"+9320000000"}
-                  label={"Phone Number"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Password"}
-                  label={"Password"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="department"
-              render={({ field }) => (
-                <SelectFieldForForm
-                  field={field}
-                  label="Department"
-                  placeholder="Select a department"
-                  items={departments}
-                />
-              )}
-            />
-            <FormItem>
-              <FormLabel>Profile Photo</FormLabel>
-              <Input type="file" accept="image/*" onChange={handleFileChange} />
-            </FormItem>
-          </form>
-        </Form>
+        <UserForm
+          form={form}
+          handleFileChange={handleFileChange}
+          onSubmit={onSubmit}
+        />
         <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="new-user">
+          <Button type="submit" disabled={isLoading} form="user">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

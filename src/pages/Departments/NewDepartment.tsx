@@ -1,7 +1,4 @@
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Button } from "@/components/ui/button";
-import { Form, FormField } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { departmentSchema } from "@/form_schemas/newDepartmentSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,18 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
+import DepartmentForm from "@/components/pages/Departments/DepartmentForm";
 export default function NewDepartment() {
+  // Translation
   const { t } = useTranslation();
-
-  const categories = [
-    { label: t("CUTTING"), value: "CUTTING" },
-    { label: t("TAILORING"), value: "TAILORING" },
-    { label: t("PRINTING"), value: "PRINTING" },
-    { label: t("QUALITYASSURANCE"), value: "QUALITYASSURANCE" },
-    { label: t("ENGINEERING"), value: "ENGINEERING" },
-    { label: t("FACTORYMANAGER"), value: "FACTORYMANAGER" },
-    { label: t("WAREHOUSEMANAGER"), value: "WAREHOUSEMANAGER" },
-  ];
   // Navigation state
   const navigate = useNavigate();
   // Loding
@@ -62,61 +51,9 @@ export default function NewDepartment() {
         <Separator />
       </div>
       <div className="space-y-1">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2 gap-2"
-            id="new-department"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={""}
-                  label={t("Name")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={""}
-                  label={t("Location")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <SelectFieldForForm
-                  field={field}
-                  label={t("Category")}
-                  placeholder=""
-                  items={categories}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={""}
-                  label={t("Description")}
-                  field={field}
-                />
-              )}
-            />
-          </form>
-        </Form>
+        <DepartmentForm form={form} onSubmit={onSubmit} />
         <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="new-department">
+          <Button type="submit" disabled={isLoading} form="department">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

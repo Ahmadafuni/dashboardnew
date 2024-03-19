@@ -5,6 +5,11 @@ import UpdateProductCatalogue from "@/components/pages/ProductCatalogue/UpdatePr
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
+  deleteProductCatalogue,
+  getAllProductCatalogues,
+  getProductCatalogueById,
+} from "@/services/ProductCatalogues.services";
+import {
   newProductCatalogueModal,
   productCatalogue,
   productCatalogueId,
@@ -12,11 +17,9 @@ import {
 } from "@/store/ProductCatalogue";
 import { ProductCatalogueType } from "@/types/ProductCatalogues/ProductCatalogues.types";
 import { ColumnDef } from "@tanstack/react-table";
-import axios, { AxiosError } from "axios";
 import { Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { toast } from "sonner";
+import { useSetRecoilState } from "recoil";
 
 export default function ProductCatalogues() {
   // Modal State
@@ -25,7 +28,11 @@ export default function ProductCatalogues() {
     updateProductCatalogueModal
   );
   const setCatalogueId = useSetRecoilState(productCatalogueId);
-
+  // Catalogue
+  const setCatalogue = useSetRecoilState(productCatalogue);
+  // Catalogues
+  const [catalogues, setCatalogues] = useState([]);
+  // Columns
   const userColumns: ColumnDef<ProductCatalogueType>[] = [
     {
       accessorKey: "ProductCatalogName",
@@ -43,65 +50,34 @@ export default function ProductCatalogues() {
             <Button
               onClick={() => {
                 setCatalogueId(row.original.Id);
-                getCatalogue(row.original.Id);
+                getProductCatalogueById(setCatalogue, row.original.Id);
                 setUpdateCatalogueModal(true);
               }}
             >
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteCatalogue={() => deleteCatalogue(row.original.Id)}
+              deleteRow={() =>
+                deleteProductCatalogue(setCatalogues, row.original.Id)
+              }
             />
           </div>
         );
       },
     },
   ];
-  // Catalogue
-  const setCatalogue = useSetRecoilState(productCatalogue);
-  // Get Catalogue
-  const getCatalogue = async (catalogueId: number) => {
-    try {
-      const { data } = await axios.get(`productcatalog/${catalogueId}`);
-      setCatalogue(data.data);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
-  // Catalogues
-  const [catalogues, setCatalogues] = useState([]);
-  const getCatalogues = async () => {
-    try {
-      const { data } = await axios.get("productcatalog/all");
-      setCatalogues(data.data);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
-  // Delete Catalogue
-  const deleteCatalogue = async (catalogueId: number) => {
-    try {
-      const { data } = await axios.delete(`productcatalog/${catalogueId}`);
-      toast.success(data.message);
-      getCatalogues();
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
-
+  // Page on load
   useEffect(() => {
-    getCatalogues();
+    getAllProductCatalogues(setCatalogues);
   }, []);
   return (
     <div className="w-full space-y-2">
-      <NewProductCatalogueModal getCatalogues={getCatalogues} />
-      <UpdateProductCatalogue getCatalogues={getCatalogues} />
+      <NewProductCatalogueModal
+        getCatalogues={() => getAllProductCatalogues(setCatalogues)}
+      />
+      <UpdateProductCatalogue
+        getCatalogues={() => getAllProductCatalogues(setCatalogues)}
+      />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Product Catalogues</h1>
         <Separator />

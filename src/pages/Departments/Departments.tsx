@@ -3,16 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DepartmentType } from "@/types/Departments/Departments.types";
 import { ColumnDef } from "@tanstack/react-table";
-import axios, { AxiosError } from "axios";
 import { Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import { getAllDepartments } from "@/services/Departments.services";
 
 export default function Departments() {
-  const {t} = useTranslation();
+  // Translation
+  const { t } = useTranslation();
+  // Navigate
   const navigate = useNavigate();
+  // Departments
+  const [departments, setDepartments] = useState([]);
+  // Columns
   const userColumns: ColumnDef<DepartmentType>[] = [
     {
       accessorKey: "Name",
@@ -47,22 +51,9 @@ export default function Departments() {
       },
     },
   ];
-
-  // Departments
-  const [departments, setDepartments] = useState([]);
-  const getDepartments = async () => {
-    try {
-      const { data } = await axios.get("department/all");
-      setDepartments(data.data);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
-
+  // Page on load
   useEffect(() => {
-    getDepartments();
+    getAllDepartments(setDepartments);
   }, []);
   return (
     <div className="w-full space-y-2">

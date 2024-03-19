@@ -13,9 +13,9 @@ import { Button } from "../ui/button";
 import { Trash } from "lucide-react";
 
 interface Props {
-  deleteCatalogue: any;
+  deleteRow: any;
 }
-export default function DeleteConfirmationDialog({ deleteCatalogue }: Props) {
+export default function DeleteConfirmationDialog({ deleteRow }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -33,7 +33,7 @@ export default function DeleteConfirmationDialog({ deleteCatalogue }: Props) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => deleteCatalogue()}>
+          <AlertDialogAction onClick={() => deleteRow()}>
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

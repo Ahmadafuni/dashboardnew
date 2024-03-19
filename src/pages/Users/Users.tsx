@@ -1,42 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { UserType } from "@/types/Users/Users.types";
-import { Pen, Plus, Trash } from "lucide-react";
+import { Pen, Plus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import UsersDataTable from "@/components/pages/Users/UsersDataTable";
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
-import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
-import {useTranslation} from 'react-i18next';
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { useTranslation } from "react-i18next";
+import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
+import DataTable from "@/components/common/DataTable";
+import { deleteUser, getAllUsers, toggleUser } from "@/services/Users.services";
 export default function Users() {
-
-  const {t} = useTranslation();
+  // Users
+  const [users, setUsers] = useState([]);
+  // Translation
+  const { t } = useTranslation();
+  // Navigation
   const navigate = useNavigate();
-  const toggleUser = async (id: number) => {
-    try {
-      const { data } = await axios.get(`auth/toggle-user/${id}`);
-      toast.success(data.message);
-      getUsers();
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
   // Column Def
   const userColumns: ColumnDef<UserType>[] = [
     {
@@ -73,7 +53,7 @@ export default function Users() {
             className={
               row.original.IsActive ? "bg-green-500 hover:bg-green-400" : ""
             }
-            onClick={() => toggleUser(row.original.Id)}
+            onClick={() => toggleUser(setUsers, row.original.Id)}
           >
             {row.original.IsActive ? "Activated" : "Disabled"}
           </Button>
@@ -99,7 +79,7 @@ export default function Users() {
       },
     },
     {
-      header:  t("Action"),
+      header: t("Action"),
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
@@ -110,67 +90,17 @@ export default function Users() {
             >
               <Pen className="h-4 w-4" />
             </Button>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant={"destructive"}>
-                  <Trash className="h-4 w-4" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    Do you want to delete this?
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    this account.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => deleteUser(row.original.Id)}
-                  >
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <DeleteConfirmationDialog
+              deleteRow={() => deleteUser(setUsers, row.original.Id)}
+            />
           </div>
         );
       },
     },
   ];
-
-  // Users
-  const [users, setUsers] = useState([]);
-
-  const getUsers = async () => {
-    try {
-      const { data } = await axios.get("auth/all");
-      setUsers(data.data);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
-
-  // delete user
-  const deleteUser = async (id: number) => {
-    try {
-      const { data } = await axios.delete(`auth/${id}`);
-      getUsers();
-      toast.success(data.message);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
-
+  // On page load
   useEffect(() => {
-    getUsers();
+    getAllUsers(setUsers);
   }, []);
   return (
     <div className="w-full space-y-2">
@@ -186,7 +116,7 @@ export default function Users() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <UsersDataTable columns={userColumns} data={users} />
+          <DataTable columns={userColumns} data={users} />
         </div>
       </div>
     </div>

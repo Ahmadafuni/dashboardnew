@@ -1,9 +1,8 @@
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
+import DepartmentForm from "@/components/pages/Departments/DepartmentForm";
 import { Button } from "@/components/ui/button";
-import { Form, FormField } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { departmentSchema } from "@/form_schemas/newDepartmentSchema";
+import { getDepartmentById } from "@/services/Departments.services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -13,15 +12,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const categories = [
-  { label: "CUTTING", value: "CUTTING" },
-  { label: "TAILORING", value: "TAILORING" },
-  { label: "PRINTING", value: "PRINTING" },
-  { label: "QUALITYASSURANCE", value: "QUALITYASSURANCE" },
-  { label: "ENGINEERING", value: "ENGINEERING" },
-  { label: "FACTORYMANAGER", value: "FACTORYMANAGER" },
-  { label: "WAREHOUSEMANAGER", value: "WAREHOUSEMANAGER" },
-];
 export default function UpdateDepartment() {
   // Param
   const { departmentID } = useParams();
@@ -34,17 +24,6 @@ export default function UpdateDepartment() {
     description: "",
     category: "",
   });
-  // Get Department
-  const getDepartment = async () => {
-    try {
-      const { data } = await axios.get(`department/${departmentID}`);
-      setDepartment(data.data);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-    }
-  };
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Form fields
@@ -76,9 +55,9 @@ export default function UpdateDepartment() {
       setIsLoading(false);
     }
   };
-
+  // Page on load
   useEffect(() => {
-    getDepartment();
+    getDepartmentById(setDepartment, departmentID);
   }, []);
   return (
     <div className="w-full space-y-2">
@@ -87,61 +66,9 @@ export default function UpdateDepartment() {
         <Separator />
       </div>
       <div className="space-y-1">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2 gap-2"
-            id="new-department"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Cutting"}
-                  label={"Name"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Sector-1"}
-                  label={"Location"}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <SelectFieldForForm
-                  field={field}
-                  label="Category"
-                  placeholder="Select a category"
-                  items={categories}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Description..."}
-                  label={"Description"}
-                  field={field}
-                />
-              )}
-            />
-          </form>
-        </Form>
+        <DepartmentForm form={form} onSubmit={onSubmit} />
         <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="new-department">
+          <Button type="submit" disabled={isLoading} form="department">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
