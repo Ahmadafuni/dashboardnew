@@ -47,7 +47,7 @@ i18n
           translation: arTranslations
         },
       },
-      lng: 'ar', // Set Arabic as the default language
+      lng: localStorage.getItem('currentLanguage') || 'ar', // Load language preference from localStorage if available
       fallbackLng: 'en', // Fallback to English if user's language is not available
       interpolation: {
         escapeValue: false, // React already escapes values
