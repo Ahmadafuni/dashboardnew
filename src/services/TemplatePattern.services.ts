@@ -6,7 +6,7 @@ export const getAllTemplatePatterns = async (
     setData: Dispatch<SetStateAction<any>>
 ) => {
     try {
-        const { data } = await axios.get("templatePatterns");
+        const { data } = await axios.get("templatepattern");
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -20,7 +20,7 @@ export const getTemplatePatternById = async (
     id: string | undefined
 ) => {
     try {
-        const { data } = await axios.get(`templatePatterns/${id}`);
+        const { data } = await axios.get(`templatepattern/${id}`);
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -33,7 +33,7 @@ export const createTemplatePattern = async (
     templatePatternData: any
 ) => {
     try {
-        await axios.post("templatePatterns", templatePatternData);
+        await axios.post("templatepattern", templatePatternData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -46,7 +46,7 @@ export const updateTemplatePattern = async (
     templatePatternData: any
 ) => {
     try {
-        await axios.put(`templatePatterns/${id}`, templatePatternData);
+        await axios.put(`templatepattern/${id}`, templatePatternData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -58,7 +58,7 @@ export const deleteTemplatePattern = async (
     id: string | undefined
 ) => {
     try {
-        await axios.delete(`templatePatterns/${id}`);
+        await axios.delete(`templatepattern/${id}`);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);

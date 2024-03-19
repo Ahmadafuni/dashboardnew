@@ -6,7 +6,7 @@ export const getAllSizes = async (
     setData: Dispatch<SetStateAction<any>>
 ) => {
     try {
-        const { data } = await axios.get("sizes");
+        const { data } = await axios.get("size");
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -20,7 +20,7 @@ export const getSizeById = async (
     id: string | undefined
 ) => {
     try {
-        const { data } = await axios.get(`sizes/${id}`);
+        const { data } = await axios.get(`size/${id}`);
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -33,7 +33,7 @@ export const createSize = async (
     sizeData: any
 ) => {
     try {
-        await axios.post("sizes", sizeData);
+        await axios.post("size", sizeData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -46,7 +46,7 @@ export const updateSize = async (
     sizeData: any
 ) => {
     try {
-        await axios.put(`sizes/${id}`, sizeData);
+        await axios.put(`size/${id}`, sizeData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -58,7 +58,7 @@ export const deleteSize = async (
     id: string | undefined
 ) => {
     try {
-        await axios.delete(`sizes/${id}`);
+        await axios.delete(`size/${id}`);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);

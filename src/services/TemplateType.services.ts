@@ -6,7 +6,7 @@ export const getAllTemplateTypes = async (
     setData: Dispatch<SetStateAction<any>>
 ) => {
     try {
-        const { data } = await axios.get("templateTypes");
+        const { data } = await axios.get("templatetype");
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -20,7 +20,7 @@ export const getTemplateTypeById = async (
     id: string | undefined
 ) => {
     try {
-        const { data } = await axios.get(`templateTypes/${id}`);
+        const { data } = await axios.get(`templatetype/${id}`);
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -33,7 +33,7 @@ export const createTemplateType = async (
     templateTypeData: any
 ) => {
     try {
-        await axios.post("templateTypes", templateTypeData);
+        await axios.post("templatetype", templateTypeData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -46,7 +46,7 @@ export const updateTemplateType = async (
     templateTypeData: any
 ) => {
     try {
-        await axios.put(`templateTypes/${id}`, templateTypeData);
+        await axios.put(`templatetype/${id}`, templateTypeData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -58,7 +58,7 @@ export const deleteTemplateType = async (
     id: string | undefined
 ) => {
     try {
-        await axios.delete(`templateTypes/${id}`);
+        await axios.delete(`templatetype/${id}`);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);

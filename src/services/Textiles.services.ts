@@ -6,7 +6,7 @@ export const getAllTextiles = async (
     setData: Dispatch<SetStateAction<any>>
 ) => {
     try {
-        const { data } = await axios.get("textiles");
+        const { data } = await axios.get("productcatalogtextile");
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -20,7 +20,7 @@ export const getTextileById = async (
     id: string | undefined
 ) => {
     try {
-        const { data } = await axios.get(`textiles/${id}`);
+        const { data } = await axios.get(`productcatalogtextile/${id}`);
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -33,7 +33,7 @@ export const createTextile = async (
     textileData: any
 ) => {
     try {
-        await axios.post("textiles", textileData);
+        await axios.post("productcatalogtextile", textileData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -46,7 +46,7 @@ export const updateTextile = async (
     textileData: any
 ) => {
     try {
-        await axios.put(`textiles/${id}`, textileData);
+        await axios.put(`productcatalogtextile/${id}`, textileData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -58,7 +58,7 @@ export const deleteTextile = async (
     id: string | undefined
 ) => {
     try {
-        await axios.delete(`textiles/${id}`);
+        await axios.delete(`productcatalogtextile/${id}`);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);

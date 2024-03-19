@@ -6,7 +6,7 @@ export const getAllProductCategoryOne = async (
     setData: Dispatch<SetStateAction<any>>
 ) => {
     try {
-        const { data } = await axios.get("productcategoryone");
+        const { data } = await axios.get("productcatalogcategoryone");
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -20,7 +20,7 @@ export const getProductCategoryOneById = async (
     id: string | undefined
 ) => {
     try {
-        const { data } = await axios.get(`productcategoryone/${id}`);
+        const { data } = await axios.get(`productcatalogcategoryone/${id}`);
         setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
@@ -33,7 +33,7 @@ export const createProductCategoryOne = async (
     categoryOneData: any
 ) => {
     try {
-        await axios.post("productcategoryone", categoryOneData);
+        await axios.post("productcatalogcategoryone", categoryOneData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -46,7 +46,7 @@ export const updateProductCategoryOne = async (
     categoryOneData: any
 ) => {
     try {
-        await axios.put(`productcategoryone/${id}`, categoryOneData);
+        await axios.put(`productcatalogcategoryone/${id}`, categoryOneData);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -58,7 +58,7 @@ export const deleteProductCategoryOne = async (
     id: string | undefined
 ) => {
     try {
-        await axios.delete(`productcategoryone/${id}`);
+        await axios.delete(`productcatalogcategoryone/${id}`);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
