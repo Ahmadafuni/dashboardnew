@@ -1,36 +1,28 @@
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { userSchema } from "@/form_schemas/newUserSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import UserForm from "@/components/pages/Users/UserForm";
 
 export default function NewUsers() {
-  const {t} = useTranslation();
+  // translation
+  const { t } = useTranslation();
+  // Naginate
   const navigate = useNavigate();
+  // Loading
   const [isLoading, setIsLoading] = useState(false);
+  // Profile Image
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
     setFile(e.target.files[0]);
-    console.log(e.target.files[0].name);
-  };
-  // Departments
-  const [departments, setDepartments] = useState([]);
-  const getDepartments = async () => {
-    try {
-      const { data } = await axios.get("department");
-      setDepartments(data.data);
-    } catch (error) {}
   };
   // Form fields
   const form = useForm<z.infer<typeof userSchema>>({
@@ -70,10 +62,6 @@ export default function NewUsers() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    getDepartments();
-  }, []);
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
@@ -81,99 +69,13 @@ export default function NewUsers() {
         <Separator />
       </div>
       <div className="space-y-1">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2 gap-2"
-            id="new-user"
-          >
-            <FormField
-              control={form.control}
-              name="firstname"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={""}
-                  label={t("Firstname")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastname"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={""}
-                  label={t("Lastname")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={""}
-                  label={t("Username")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"jhon.doe@emaple.com"}
-                  label={t("Email")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"+9320000000"}
-                  label={t("PhoneNumber")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder={"Password"}
-                  label={t("Password")}
-                  field={field}
-                  type="text"
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="department"
-              render={({ field }) => (
-                <SelectFieldForForm
-                  field={field}
-                  label={t("Department")}
-                  placeholder="Select a department"
-                  items={departments}
-                />
-              )}
-            />
-            <FormItem>
-              <FormLabel>{t("ProfilePhoto")}</FormLabel>
-              <Input type="file" accept="image/*" onChange={handleFileChange} />
-            </FormItem>
-          </form>
-        </Form>
+        <UserForm
+          form={form}
+          handleFileChange={handleFileChange}
+          onSubmit={onSubmit}
+        />
         <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="new-user">
+          <Button type="submit" disabled={isLoading} form="user">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
