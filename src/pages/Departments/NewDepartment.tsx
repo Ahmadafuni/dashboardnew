@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import DepartmentForm from "@/components/pages/Departments/DepartmentForm";
+import DepartmentForm from "@/components/DashboradComponents/Departments/DepartmentForm";
 export default function NewDepartment() {
   // Translation
   const { t } = useTranslation();

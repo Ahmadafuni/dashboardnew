@@ -1,7 +1,7 @@
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
-import NewProductCatalogueModal from "@/components/pages/ProductCatalogue/NewProductCatalogueModal";
-import UpdateProductCatalogue from "@/components/pages/ProductCatalogue/UpdateProductCatalogue";
+import NewProductCatalogueModal from "@/components/DashboradComponents/ProductCatalogue/NewProductCatalogueModal";
+import UpdateProductCatalogue from "@/components/DashboradComponents/ProductCatalogue/UpdateProductCatalogue";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {

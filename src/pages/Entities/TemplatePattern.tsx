@@ -1,0 +1,94 @@
+import DataTable from "@/components/common/DataTable.tsx";
+import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import {
+    deleteTemplatePattern,
+    getAllTemplatePatterns,
+    getTemplatePatternById,
+} from "@/services/TemplatePattern.services.ts";
+import {
+    newTemplatePatternModal,
+    templatePattern,
+    templatePatternId,
+    updateTemplatePatternModal,
+} from "@/store/TemplatePattern.ts";
+import { ColumnDef } from "@tanstack/react-table";
+import { Pen, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { TemplatePatternType } from "@/types/Entities/TemplatePattern.types.ts";
+import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
+import UpdateTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/UpdateTemplatePattern.tsx";
+
+export default function TemplatePattern() {
+    // Modal State
+    const setNewTemplatePatternModal = useSetRecoilState(newTemplatePatternModal);
+    const setUpdateTemplatePatternModal = useSetRecoilState(updateTemplatePatternModal);
+    const setTemplatePatternId = useSetRecoilState(templatePatternId);
+    // Template Pattern
+    const setTemplatePattern = useSetRecoilState(templatePattern);
+    // Template Patterns
+    const [templatePatterns, setTemplatePatterns] = useState<TemplatePatternType[]>([]);
+    // Columns
+    const templatePatternColumns: ColumnDef<TemplatePatternType>[] = [
+        {
+            accessorKey: "TemplatePatternName",
+            header: "TemplatePatternName",
+        },
+        {
+            accessorKey: "Description",
+            header: "Description",
+        },
+        {
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex gap-1">
+                        <Button
+                            onClick={() => {
+                                setTemplatePatternId(row.original.id);
+                                getTemplatePatternById(setTemplatePattern, row.original.id);
+                                setUpdateTemplatePatternModal(true);
+                            }}
+                        >
+                            <Pen className="h-4 w-4" />
+                        </Button>
+                        <DeleteConfirmationDialog
+                            deleteRow={() => deleteTemplatePattern(row.original.id)}
+                        />
+                    </div>
+                );
+            },
+        },
+    ];
+    // Page on load
+    useEffect(() => {
+        getAllTemplatePatterns(setTemplatePatterns);
+    }, []);
+    return (
+        <div className="w-full space-y-2">
+            <NewTemplatePattern getTemplatePatterns={() => getAllTemplatePatterns(setTemplatePatterns)} />
+            <UpdateTemplatePattern getTemplatePatterns={() => getAllTemplatePatterns(setTemplatePatterns)} />
+            <div className="w-full space-y-1">
+                <h1 className="text-3xl font-bold w-full">Template Patterns</h1>
+                <Separator />
+            </div>
+            <div className="space-y-2">
+                <div className="flex justify-end">
+                    <Button
+                        onClick={() => {
+                            setNewTemplatePatternModal(true);
+                        }}
+                    >
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Template Pattern
+                    </Button>
+                </div>
+                <div className="rounded-md border overflow-x-scroll">
+                    <DataTable columns={templatePatternColumns} data={templatePatterns} />
+                </div>
+            </div>
+        </div>
+    );
+}

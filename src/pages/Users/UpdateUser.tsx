@@ -1,4 +1,4 @@
-import UserForm from "@/components/pages/Users/UserForm";
+import UserForm from "@/components/DashboradComponents/Users/UserForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { userUpdateSchema } from "@/form_schemas/newUserSchema";

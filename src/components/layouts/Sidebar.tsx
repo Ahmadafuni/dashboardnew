@@ -11,7 +11,8 @@ import {
   LayoutPanelTop,
   FileBarChart2,
   Store,
-  AlignJustify,
+  AlignJustify, Palette, Ruler, SwatchBook, SquareAsterisk, Asterisk,
+  ArrowUpDown, ArrowLeftRight,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -48,6 +49,18 @@ export default function Sidebar() {
         { name: t("Stores"), link: "/dashboard/stores", icon: Store },
         { name: t("Tasks"), link: "/dashboard/tasks", icon: ListChecks },
         { name: t("Notes"), link: "/dashboard/notes", icon: NotebookPen },
+      ],
+    },
+    {
+      gName: "Business Entities",
+      childs: [
+        { name: t("Colors"), link: "/dashboard/entities/colors", icon: Palette },
+        { name: t("Sizes"), link: "/dashboard/entities/sizes", icon: Ruler },
+        { name: t("Textiles"), link: "/dashboard/entities/textiles", icon: SwatchBook },
+        { name: t("TemplateType"), link: "/dashboard/entities/templatetype", icon: Asterisk },
+        { name: t("TemplatePattern"), link: "/dashboard/entities/templatepattern", icon: SquareAsterisk },
+        { name: t("ProductCategoryOne"), link: "/dashboard/entities/productcategoryone", icon: ArrowUpDown },
+        { name: t("ProductCategoryTwo"), link: "/dashboard/entities/productcategorytwo", icon: ArrowLeftRight },
       ],
     },
   ];

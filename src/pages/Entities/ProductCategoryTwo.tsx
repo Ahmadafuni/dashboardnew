@@ -1,0 +1,95 @@
+import DataTable from "@/components/common/DataTable.tsx";
+import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import {
+    deleteProductCategoryTwo,
+    getAllProductCategoryTwo,
+    getProductCategoryTwoById,
+} from "@/services/ProductCategoryTwo.services.ts";
+import {
+    newProductCategoryTwoModal,
+    productCategoryTwo,
+    productCategoryTwoId,
+    updateProductCategoryTwoModal,
+} from "@/store/ProductCategoryTwo.ts";
+import { ColumnDef } from "@tanstack/react-table";
+import { Pen, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { ProductCategoryTwoType } from "@/types/Entities/ProductCategoryTwo.types.ts";
+import UpdateProductCategoryTwo from "@/components/DashboradComponents/Entities/ProductCategoryTwo/UpdateProductCategoryTwo.tsx";
+import NewProductCategoryTwo
+    from "@/components/DashboradComponents/Entities/ProductCategoryTwo/NewProductCategoryTwo.tsx";
+
+export default function ProductCategoryTwo() {
+    // Modal State
+    const setNewProductCategoryTwoModal = useSetRecoilState(newProductCategoryTwoModal);
+    const setUpdateProductCategoryTwoModal = useSetRecoilState(updateProductCategoryTwoModal);
+    const setProductCategoryTwoId = useSetRecoilState(productCategoryTwoId);
+    // Product Category Two
+    const setProductCategoryTwo = useSetRecoilState(productCategoryTwo);
+    // Product Category Twos
+    const [productCategoryTwos, setProductCategoryTwos] = useState<ProductCategoryTwoType[]>([]);
+    // Columns
+    const productCategoryTwoColumns: ColumnDef<ProductCategoryTwoType>[] = [
+        {
+            accessorKey: "ProductCatalogCategoryTwo",
+            header: "ProductCatalogCategoryTwo",
+        },
+        {
+            accessorKey: "Description",
+            header: "Description",
+        },
+        {
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex gap-1">
+                        <Button
+                            onClick={() => {
+                                setProductCategoryTwoId(row.original.id);
+                                getProductCategoryTwoById(setProductCategoryTwo, row.original.id);
+                                setUpdateProductCategoryTwoModal(true);
+                            }}
+                        >
+                            <Pen className="h-4 w-4" />
+                        </Button>
+                        <DeleteConfirmationDialog
+                            deleteRow={() => deleteProductCategoryTwo(row.original.id)}
+                        />
+                    </div>
+                );
+            },
+        },
+    ];
+    // Page on load
+    useEffect(() => {
+        getAllProductCategoryTwo(setProductCategoryTwos);
+    }, []);
+    return (
+        <div className="w-full space-y-2">
+            <NewProductCategoryTwo getProductCategoriesTwo={() => getAllProductCategoryTwo(setProductCategoryTwos)}  />
+            <UpdateProductCategoryTwo getProductCategoriesTwo={() => getAllProductCategoryTwo(setProductCategoryTwos)} />
+            <div className="w-full space-y-1">
+                <h1 className="text-3xl font-bold w-full">Product Category Two</h1>
+                <Separator />
+            </div>
+            <div className="space-y-2">
+                <div className="flex justify-end">
+                    <Button
+                        onClick={() => {
+                            setNewProductCategoryTwoModal(true);
+                        }}
+                    >
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Category Two
+                    </Button>
+                </div>
+                <div className="rounded-md border overflow-x-scroll">
+                    <DataTable columns={productCategoryTwoColumns} data={productCategoryTwos} />
+                </div>
+            </div>
+        </div>
+    );
+}
