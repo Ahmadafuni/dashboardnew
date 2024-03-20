@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import ProductCategoryOneDialog from "@/components/DashboradComponents/Entities/ProductCategoryOne/ProductCategoryOneDialog.tsx";
 import {ProductCategoryOneSchema} from "@/form_schemas/newProductCategoryOneSchema.ts";
 import {ProductCategoryOneType} from "@/types/Entities/ProductCategoryOne.types.ts";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     getProductCategoriesOne: any;
@@ -25,6 +26,7 @@ type Props = {
 export default function NewProductCategoryOne({ getProductCategoriesOne }: Props) {
     const [open, setOpen] = useRecoilState(newProductCategoryOneModal);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
     const form = useForm<ProductCategoryOneType>({
         resolver: zodResolver(ProductCategoryOneSchema),
         defaultValues: {
@@ -54,12 +56,12 @@ export default function NewProductCategoryOne({ getProductCategoriesOne }: Props
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Product Category One</DialogTitle>
+                    <DialogTitle> {t("NewProductCategoryOne")}</DialogTitle>
                 </DialogHeader>
                 <ProductCategoryOneDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
@@ -68,7 +70,7 @@ export default function NewProductCategoryOne({ getProductCategoriesOne }: Props
                                 Please wait
                             </>
                         ) : (
-                            "Add"
+                            t("Add")
                         )}
                     </Button>
                 </DialogFooter>

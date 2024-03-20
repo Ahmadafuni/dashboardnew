@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import TextilesDialog from "@/components/DashboradComponents/Entities/Textiles/TextilesDialog.tsx";
 import {TextilesType} from "@/types/Entities/Textiles.types.ts";
 import {newTextileModal} from "@/store/Textiles.ts";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getTextiles: any;
@@ -25,6 +26,7 @@ type Props = {
 export default function NewTextiles({ getTextiles }: Props) {
     const [open, setOpen] = useRecoilState(newTextileModal);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
     const form = useForm<TextilesType>({
         resolver: zodResolver(newTextilesSchema),
         defaultValues: {
@@ -56,12 +58,12 @@ export default function NewTextiles({ getTextiles }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Textile</DialogTitle>
+                    <DialogTitle>{t("NewTextile")}</DialogTitle>
                 </DialogHeader>
                 <TextilesDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
@@ -70,7 +72,7 @@ export default function NewTextiles({ getTextiles }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Add"
+                            t("Add")
                         )}
                     </Button>
                 </DialogFooter>

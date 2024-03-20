@@ -1,5 +1,6 @@
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm.tsx";
 import { Form, FormField } from "@/components/ui/form.tsx";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     form: any;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const TemplateTypeDialog = ({ form, onSubmit }: Props) => {
+    const { t } = useTranslation();
     return (
         <Form {...form}>
             <form
@@ -20,7 +22,7 @@ const TemplateTypeDialog = ({ form, onSubmit }: Props) => {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label="TemplateTypeName"
+                            label={t("TemplateTypeName")}
                             field={field}
                         />
                     )}
@@ -31,7 +33,7 @@ const TemplateTypeDialog = ({ form, onSubmit }: Props) => {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label="Description"
+                            label={t("Description")}
                             field={field}
                         />
                     )}

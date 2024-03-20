@@ -20,28 +20,27 @@ import { useSetRecoilState } from "recoil";
 import { TemplateTypeType } from "@/types/Entities/TemplateType.types.ts";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import UpdateTemplateType from "@/components/DashboradComponents/Entities/TemplateType/UpdateTemplateType.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function TemplateType() {
-    // Modal State
     const setNewTemplateTypeModal = useSetRecoilState(newTemplateTypeModal);
     const setUpdateTemplateTypeModal = useSetRecoilState(updateTemplateTypeModal);
     const setTemplateTypeId = useSetRecoilState(templateTypeId);
-    // Template Type
     const setTemplateType = useSetRecoilState(templateType);
-    // Template Types
     const [templateTypes, setTemplateTypes] = useState<TemplateTypeType[]>([]);
-    // Columns
+    const { t } = useTranslation();
+
     const templateTypeColumns: ColumnDef<TemplateTypeType>[] = [
         {
             accessorKey: "TemplateTypeName",
-            header: "TemplateTypeName",
+            header: t("TemplateTypeName"),
         },
         {
             accessorKey: "Description",
-            header: "Description",
+            header: t("Description"),
         },
         {
-            header: "Action",
+            header: t("Action"),
             cell: ({ row }) => {
                 return (
                     <div className="flex gap-1">
@@ -71,7 +70,7 @@ export default function TemplateType() {
             <NewTemplateType getTemplateTypes={() => getAllTemplateTypes(setTemplateTypes)} />
             <UpdateTemplateType getTemplateTypes={() => getAllTemplateTypes(setTemplateTypes)} />
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">Template Types</h1>
+                <h1 className="text-3xl font-bold w-full">{t("TemplateType")}</h1>
                 <Separator />
             </div>
             <div className="space-y-2">
@@ -82,7 +81,7 @@ export default function TemplateType() {
                         }}
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Template Type
+                        {t("Add")}
                     </Button>
                 </div>
                 <div className="rounded-md border overflow-x-scroll">

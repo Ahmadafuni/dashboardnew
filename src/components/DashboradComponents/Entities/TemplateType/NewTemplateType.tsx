@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import TemplateTypeDialog from "@/components/DashboradComponents/Entities/TemplateType/TemplateTypeDialog.tsx";
 import {newTemplateTypeModal} from "@/store/TemplateType.ts";
 import {TemplateTypeType} from "@/types/Entities/TemplateType.types.ts";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getTemplateTypes: any;
@@ -25,6 +26,7 @@ type Props = {
 export default function NewTemplateType({ getTemplateTypes }: Props) {
     const [open, setOpen] = useRecoilState(newTemplateTypeModal);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
     const form = useForm<TemplateTypeType>({
         resolver: zodResolver(newTemplateTypeSchema),
         defaultValues: {
@@ -54,12 +56,12 @@ export default function NewTemplateType({ getTemplateTypes }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Template Type</DialogTitle>
+                    <DialogTitle>{t("NewTemplateType")}</DialogTitle>
                 </DialogHeader>
                 <TemplateTypeDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
@@ -68,8 +70,8 @@ export default function NewTemplateType({ getTemplateTypes }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Add"
-                        )}
+                            t("Add")
+                            )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

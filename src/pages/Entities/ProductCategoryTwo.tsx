@@ -21,28 +21,28 @@ import { ProductCategoryTwoType } from "@/types/Entities/ProductCategoryTwo.type
 import UpdateProductCategoryTwo from "@/components/DashboradComponents/Entities/ProductCategoryTwo/UpdateProductCategoryTwo.tsx";
 import NewProductCategoryTwo
     from "@/components/DashboradComponents/Entities/ProductCategoryTwo/NewProductCategoryTwo.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function ProductCategoryTwo() {
     // Modal State
     const setNewProductCategoryTwoModal = useSetRecoilState(newProductCategoryTwoModal);
     const setUpdateProductCategoryTwoModal = useSetRecoilState(updateProductCategoryTwoModal);
     const setProductCategoryTwoId = useSetRecoilState(productCategoryTwoId);
-    // Product Category Two
     const setProductCategoryTwo = useSetRecoilState(productCategoryTwo);
-    // Product Category Twos
     const [productCategoryTwos, setProductCategoryTwos] = useState<ProductCategoryTwoType[]>([]);
-    // Columns
+    const { t } = useTranslation();
+
     const productCategoryTwoColumns: ColumnDef<ProductCategoryTwoType>[] = [
         {
             accessorKey: "ProductCatalogCategoryTwo",
-            header: "ProductCatalogCategoryTwo",
+            header: t("ProductCatalogCategoryTwo"),
         },
         {
             accessorKey: "Description",
-            header: "Description",
+            header: t("Description"),
         },
         {
-            header: "Action",
+            header: t("Action"),
             cell: ({ row }) => {
                 return (
                     <div className="flex gap-1">
@@ -72,7 +72,7 @@ export default function ProductCategoryTwo() {
             <NewProductCategoryTwo getProductCategoriesTwo={() => getAllProductCategoryTwo(setProductCategoryTwos)}  />
             <UpdateProductCategoryTwo getProductCategoriesTwo={() => getAllProductCategoryTwo(setProductCategoryTwos)} />
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">Product Category Two</h1>
+                <h1 className="text-3xl font-bold w-full"> {t("ProductCategoryTwo")}</h1>
                 <Separator />
             </div>
             <div className="space-y-2">
@@ -83,7 +83,7 @@ export default function ProductCategoryTwo() {
                         }}
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Category Two
+                        {t("Add")}
                     </Button>
                 </div>
                 <div className="rounded-md border overflow-x-scroll">

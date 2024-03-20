@@ -20,28 +20,27 @@ import { useSetRecoilState } from "recoil";
 import { TemplatePatternType } from "@/types/Entities/TemplatePattern.types.ts";
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
 import UpdateTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/UpdateTemplatePattern.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function TemplatePattern() {
-    // Modal State
     const setNewTemplatePatternModal = useSetRecoilState(newTemplatePatternModal);
     const setUpdateTemplatePatternModal = useSetRecoilState(updateTemplatePatternModal);
     const setTemplatePatternId = useSetRecoilState(templatePatternId);
-    // Template Pattern
     const setTemplatePattern = useSetRecoilState(templatePattern);
-    // Template Patterns
     const [templatePatterns, setTemplatePatterns] = useState<TemplatePatternType[]>([]);
-    // Columns
+    const { t } = useTranslation();
+
     const templatePatternColumns: ColumnDef<TemplatePatternType>[] = [
         {
             accessorKey: "TemplatePatternName",
-            header: "TemplatePatternName",
+            header: t("TemplatePatternName"),
         },
         {
             accessorKey: "Description",
-            header: "Description",
+            header: t("Description"),
         },
         {
-            header: "Action",
+            header: t("Action"),
             cell: ({ row }) => {
                 return (
                     <div className="flex gap-1">
@@ -71,7 +70,7 @@ export default function TemplatePattern() {
             <NewTemplatePattern getTemplatePatterns={() => getAllTemplatePatterns(setTemplatePatterns)} />
             <UpdateTemplatePattern getTemplatePatterns={() => getAllTemplatePatterns(setTemplatePatterns)} />
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">Template Patterns</h1>
+                <h1 className="text-3xl font-bold w-full">{t("TemplatePattern")}</h1>
                 <Separator />
             </div>
             <div className="space-y-2">
@@ -82,7 +81,7 @@ export default function TemplatePattern() {
                         }}
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Template Pattern
+                        {t("Add")}
                     </Button>
                 </div>
                 <div className="rounded-md border overflow-x-scroll">

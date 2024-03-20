@@ -20,28 +20,27 @@ import { useSetRecoilState } from "recoil";
 import { SizeType } from "@/types/Entities/Size.types.ts";
 import NewSize from "@/components/DashboradComponents/Entities/Sizes/NewSize.tsx";
 import UpdateSize from "@/components/DashboradComponents/Entities/Sizes/UpdateSize.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function Sizes() {
-    // Modal State
     const setNewSizeModal = useSetRecoilState(newSizeModal);
     const setUpdateSizeModal = useSetRecoilState(updateSizeModal);
     const setSizeId = useSetRecoilState(sizeId);
-    // Size
     const setSize = useSetRecoilState(size);
-    // Sizes
     const [sizes, setSizes] = useState<SizeType[]>([]);
-    // Columns
+    const { t } = useTranslation();
+
     const sizeColumns: ColumnDef<SizeType>[] = [
         {
             accessorKey: "SizeName",
-            header: "SizeName",
+            header: t("SizeName"),
         },
         {
             accessorKey: "Description",
-            header: "Description",
+            header: t("Description"),
         },
         {
-            header: "Action",
+            header: t("Action"),
             cell: ({ row }) => {
                 return (
                     <div className="flex gap-1">
@@ -71,7 +70,7 @@ export default function Sizes() {
             <NewSize getSizes={() => getAllSizes(setSizes)} />
             <UpdateSize getSizes={() => getAllSizes(setSizes)} />
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">Sizes</h1>
+                <h1 className="text-3xl font-bold w-full">{t("Sizes")}</h1>
                 <Separator />
             </div>
             <div className="space-y-2">
@@ -82,7 +81,7 @@ export default function Sizes() {
                         }}
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Size
+                        {t("Add")}
                     </Button>
                 </div>
                 <div className="rounded-md border overflow-x-scroll">

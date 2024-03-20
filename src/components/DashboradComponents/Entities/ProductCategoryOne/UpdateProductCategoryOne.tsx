@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import ProductCategoryOneDialog from "@/components/DashboradComponents/Entities/ProductCategoryOne/ProductCategoryOneDialog.tsx";
 import {ProductCategoryOneSchema} from "@/form_schemas/newProductCategoryOneSchema.ts";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     getProductCategoriesOne: () => void;
@@ -31,6 +32,7 @@ export default function UpdateProductCategoryOne({ getProductCategoriesOne }: Pr
     const [open, setOpen] = useRecoilState(updateProductCategoryOneModal);
     const [isLoading, setIsLoading] = useState(false);
     const currentProductCategoryOne = useRecoilValue(productCategoryOne);
+    const { t } = useTranslation();
     const form = useForm({
         resolver: zodResolver(ProductCategoryOneSchema),
         defaultValues: currentProductCategoryOne,
@@ -56,12 +58,12 @@ export default function UpdateProductCategoryOne({ getProductCategoriesOne }: Pr
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Update Product Category One</DialogTitle>
+                    <DialogTitle>{t("UpdateProductCategoryOne")}</DialogTitle>
                 </DialogHeader>
                 <ProductCategoryOneDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading} form="productCategoryOneForm">
                         {isLoading ? (
@@ -70,7 +72,7 @@ export default function UpdateProductCategoryOne({ getProductCategoriesOne }: Pr
                                 Please wait
                             </>
                         ) : (
-                            "Update"
+                            t("Update")
                         )}
                     </Button>
                 </DialogFooter>

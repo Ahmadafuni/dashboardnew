@@ -28,6 +28,8 @@
   "Description": "الوصف",
   "Action": "العمليات",
   "Add": "إضافة",
+  "Close": "إغلاق",
+  "Update": "تحديث",
   "Newdepartment": "انشاء قسم",
 
 
@@ -37,6 +39,53 @@
   "QUALITYASSURANCE": "امبلاج",
   "ENGINEERING": "الهندسة",
   "FACTORYMANAGER": "مدير المصنع",
-  "WAREHOUSEMANAGER": "مدير المستودع"
+  "WAREHOUSEMANAGER": "مدير المستودع",
+
+  "ColorName": "اسم اللون",
+  "ColorCode": "كود اللون",
+
+  "SizeName": "اسم المقاس",
+
+  "TemplatePatternName": "رمز القالب",
+  "TemplateTypeName": "نوع القالب",
+
+  "TextileName": "اسم القماش",
+  "TextileType": "نوع القماش",
+  "Composition": "التركيبة",
+
+  "NewColor": "لون جديد",
+  "UpdateColor": "تحديث اللون",
+  "NewProductCategoryOne": "فئة منتج جديدة (المستوى الأول)",
+  "UpdateProductCategoryOne": "تحديث فئة المنتج (المستوى الأول)",
+  "NewProductCategoryTwo": "فئة منتج جديدة (المستوى الثاني)",
+  "UpdateProductCategoryTwo": "تحديث فئة المنتج (المستوى الثاني)",
+  "NewSize": "مقاس جديد",
+  "UpdateSize": "تحديث المقاس",
+  "NewTemplatePattern": "رمز قالب جديد",
+  "UpdateTemplatePattern": "تحديث رمز القالب",
+  "NewTemplateType": "نوع قالب جديد",
+  "UpdateTemplateType": "تحديث نوع القالب",
+  "NewTextile": "قماش جديد",
+  "UpdateTextile": "تحديث القماش",
+  "NewProductCatalogue": "كتالوج منتج جديد",
+  "UpdateProductCatalogue": "تحديث كتالوج المنتج",
+
+  "ProductCatalogueName": " اسم كتالوج المنتج",
+
+  "ProductCatalogCategoryOne": "فئة منتج (المستوى الأول)",
+  "ProductCatalogCategoryTwo": "فئة منتج (المستوى الثاني)",
+
+  "Colors": "الألوان",
+  "Sizes": "المقاسات",
+  "Textiles": "الاقمشة",
+  "TemplateType": "انواع القالب",
+  "TemplatePattern": "رموز القالب",
+  "ProductCategoryOne": "فئات المنتج الأولى",
+  "ProductCategoryTwo": "فئات المنتج الثانية",
+
+  "DeleteConfirmationDialogTitle": "هل ترغب في حذف هذا؟",
+  "DeleteConfirmationDialogDescription": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف هذا بشكل دائم.",
+  "DeleteConfirmationDialogContinue": "متابعة",
+  "DeleteConfirmationDialogCancel": "إلغاء"
 
 }

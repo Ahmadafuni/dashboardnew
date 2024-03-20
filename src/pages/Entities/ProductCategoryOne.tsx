@@ -21,28 +21,26 @@ import { ProductCategoryOneType } from "@/types/Entities/ProductCategoryOne.type
 import UpdateProductCategoryOne from "@/components/DashboradComponents/Entities/ProductCategoryOne/UpdateProductCategoryOne.tsx";
 import NewProductCategoryOne
     from "@/components/DashboradComponents/Entities/ProductCategoryOne/NewProductCategoryOne.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function ProductCategoryOne() {
-    // Modal State
     const setNewProductCategoryOneModal = useSetRecoilState(newProductCategoryOneModal);
     const setUpdateProductCategoryOneModal = useSetRecoilState(updateProductCategoryOneModal);
     const setProductCategoryOneId = useSetRecoilState(productCategoryOneId);
-    // Product Category One
     const setProductCategoryOne = useSetRecoilState(productCategoryOne);
-    // Product Category Ones
     const [productCategoryOnes, setProductCategoryOnes] = useState<ProductCategoryOneType[]>([]);
-    // Columns
+    const { t } = useTranslation();
     const productCategoryOneColumns: ColumnDef<ProductCategoryOneType>[] = [
         {
             accessorKey: "ProductCatalogCategoryOne",
-            header: "ProductCatalogCategoryOne",
+            header: t("ProductCatalogCategoryOne"),
         },
         {
             accessorKey: "Description",
-            header: "Description",
+            header: t("Description"),
         },
         {
-            header: "Action",
+            header: t("Action"),
             cell: ({ row }) => {
                 return (
                     <div className="flex gap-1">
@@ -72,7 +70,7 @@ export default function ProductCategoryOne() {
             <NewProductCategoryOne getProductCategoriesOne={() => getAllProductCategoryOne(setProductCategoryOnes)}  />
             <UpdateProductCategoryOne getProductCategoriesOne={() => getAllProductCategoryOne(setProductCategoryOnes)} />
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">Product Category One</h1>
+                <h1 className="text-3xl font-bold w-full">{t("ProductCategoryOne")}</h1>
                 <Separator />
             </div>
             <div className="space-y-2">
@@ -83,7 +81,7 @@ export default function ProductCategoryOne() {
                         }}
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Category One
+                        {t("Add")}
                     </Button>
                 </div>
                 <div className="rounded-md border overflow-x-scroll">

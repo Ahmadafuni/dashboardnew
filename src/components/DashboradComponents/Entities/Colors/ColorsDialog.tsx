@@ -1,11 +1,14 @@
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm.tsx";
 import { Form, FormField } from "@/components/ui/form.tsx";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     form: any;
     onSubmit: any;
 }
 export default function ColorsDialog({ form, onSubmit }: Props) {
+    const { t } = useTranslation();
+
     return (
         <Form {...form}>
             <form
@@ -19,7 +22,7 @@ export default function ColorsDialog({ form, onSubmit }: Props) {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder={""}
-                            label={"ColorName"}
+                            label={t("ColorName")}
                             field={field}
                         />
                     )}
@@ -30,7 +33,7 @@ export default function ColorsDialog({ form, onSubmit }: Props) {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder={""}
-                            label={"ColorCode"}
+                            label={t("ColorCode")}
                             field={field}
                         />
                     )}
@@ -41,7 +44,7 @@ export default function ColorsDialog({ form, onSubmit }: Props) {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder={""}
-                            label={"Description"}
+                            label={t("Description")}
                             field={field}
                         />
                     )}

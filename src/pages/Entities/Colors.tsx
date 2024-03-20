@@ -20,32 +20,31 @@ import { useSetRecoilState } from "recoil";
 import {ColorType} from "@/types/Entities/Color.types.ts";
 import NewColor from "@/components/DashboradComponents/Entities/Colors/NewColor.tsx";
 import UpdateColor from "@/components/DashboradComponents/Entities/Colors/UpdateColor.tsx";
+import { useTranslation } from "react-i18next";
 
 export default function Colors() {
-    // Modal State
     const setNewColorModal = useSetRecoilState(newColorModal);
     const setUpdateColorModal = useSetRecoilState(updateColorModal);
     const setColorId = useSetRecoilState(colorId);
-    // Color
+    const { t } = useTranslation();
+
     const setColor = useSetRecoilState(color);
-    // Colors
     const [colors, setColors] = useState<ColorType[]>([]); // Assuming ColorType is a type for color objects
-    // Columns
     const colorColumns: ColumnDef<ColorType>[] = [
         {
             accessorKey: "ColorName",
-            header: "ColorName",
+            header: t("ColorName"),
         },
         {
             accessorKey: "ColorCode",
-            header: "ColorCode",
+            header: t("ColorCode"),
         },
         {
             accessorKey: "Description",
-            header: "Description",
+            header: t("Description"),
         },
         {
-            header: "Action",
+            header: t("Action"),
             cell: ({ row }) => {
                 return (
                     <div className="flex gap-1">
@@ -75,7 +74,7 @@ export default function Colors() {
             <NewColor getColors={() => getAllColors(setColors)} />
             <UpdateColor getColors={() => getAllColors(setColors)} />
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">Colors</h1>
+                <h1 className="text-3xl font-bold w-full"> {t("Colors")}</h1>
                 <Separator />
             </div>
             <div className="space-y-2">
@@ -86,7 +85,7 @@ export default function Colors() {
                         }}
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Color
+                        {t("Add")}
                     </Button>
                 </div>
                 <div className="rounded-md border overflow-x-scroll">

@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import TemplatePatternDialog from "@/components/DashboradComponents/Entities/TemplatePattern/TemplatePatternDialog.tsx";
 import {newTemplatePatternModal} from "@/store/TemplatePattern.ts";
 import {TemplatePatternType} from "@/types/Entities/TemplatePattern.types.ts";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getTemplatePatterns: any;
@@ -25,6 +26,7 @@ type Props = {
 export default function NewTemplatePattern({ getTemplatePatterns }: Props) {
     const [open, setOpen] = useRecoilState(newTemplatePatternModal);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
     const form = useForm<TemplatePatternType>({
         resolver: zodResolver(newTemplatePatternSchema),
         defaultValues: {
@@ -54,12 +56,12 @@ export default function NewTemplatePattern({ getTemplatePatterns }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Template Pattern</DialogTitle>
+                    <DialogTitle>{t("NewTemplatePattern")}</DialogTitle>
                 </DialogHeader>
                 <TemplatePatternDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
@@ -68,7 +70,7 @@ export default function NewTemplatePattern({ getTemplatePatterns }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Add"
+                            t("Add")
                         )}
                     </Button>
                 </DialogFooter>

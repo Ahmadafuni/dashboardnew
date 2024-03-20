@@ -17,6 +17,7 @@ import SizeDialog from "@/components/DashboradComponents/Entities/Sizes/SizesDia
 import {newSizeModal} from "@/store/Sizes.ts";
 import {SizeSchema} from "@/form_schemas/newSizeSchema.ts";
 import {SizeType} from "@/types/Entities/Size.types.ts";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getSizes: any;
@@ -25,6 +26,7 @@ type Props = {
 export default function NewSize({ getSizes }: Props) {
     const [open, setOpen] = useRecoilState(newSizeModal);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
     const form = useForm<SizeType>({
         resolver: zodResolver(SizeSchema),
         defaultValues: {
@@ -54,12 +56,12 @@ export default function NewSize({ getSizes }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Size</DialogTitle>
+                    <DialogTitle>{t("NewSize")}</DialogTitle>
                 </DialogHeader>
                 <SizeDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
@@ -68,8 +70,8 @@ export default function NewSize({ getSizes }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Add"
-                        )}
+                            t("Add")
+                            )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

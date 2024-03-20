@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { newTemplatePatternSchema } from "@/form_schemas/newTemplatePatternSchema.ts";
 import TemplatePatternDialog from "@/components/DashboradComponents/Entities/TemplatePattern/TemplatePatternDialog.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getTemplatePatterns: () => void;
@@ -31,6 +32,7 @@ export default function UpdateTemplatePattern({ getTemplatePatterns }: Props) {
     const [open, setOpen] = useRecoilState(updateTemplatePatternModal);
     const [isLoading, setIsLoading] = useState(false);
     const currentTemplatePattern = useRecoilValue(templatePattern);
+    const { t } = useTranslation();
     const form = useForm({
         resolver: zodResolver(newTemplatePatternSchema),
         defaultValues: currentTemplatePattern,
@@ -56,12 +58,12 @@ export default function UpdateTemplatePattern({ getTemplatePatterns }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Update Template Pattern</DialogTitle>
+                    <DialogTitle>{t("UpdateTemplatePattern")}</DialogTitle>
                 </DialogHeader>
                 <TemplatePatternDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading} form="templatePatternForm">
                         {isLoading ? (
@@ -70,7 +72,7 @@ export default function UpdateTemplatePattern({ getTemplatePatterns }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Update"
+                            t("Update")
                         )}
                     </Button>
                 </DialogFooter>

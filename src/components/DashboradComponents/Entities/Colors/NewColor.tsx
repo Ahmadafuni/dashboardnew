@@ -17,14 +17,17 @@ import { useRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import ColorsDialog from "@/components/DashboradComponents/Entities/Colors/ColorsDialog.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getColors: any;
 };
 
 export default function NewColor({ getColors }: Props) {
-    const [open, setOpen] = useRecoilState(newColorModal); // Recoil state for color modal
+    const [open, setOpen] = useRecoilState(newColorModal);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
+
     const form = useForm<z.infer<typeof colorSchema>>({
         resolver: zodResolver(colorSchema),
         defaultValues: {
@@ -55,12 +58,12 @@ export default function NewColor({ getColors }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Color</DialogTitle>
+                    <DialogTitle> {t("NewColor")}</DialogTitle>
                 </DialogHeader>
                 <ColorsDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
@@ -69,7 +72,7 @@ export default function NewColor({ getColors }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Add"
+                        t("Add")
                         )}
                     </Button>
                 </DialogFooter>

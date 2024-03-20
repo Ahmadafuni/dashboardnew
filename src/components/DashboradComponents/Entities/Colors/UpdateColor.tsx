@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import {z} from "zod";
 import {colorSchema} from "@/form_schemas/newColorSchema.ts";
 import ColorsDialog from "@/components/DashboradComponents/Entities/Colors/ColorsDialog.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getColors: () => void;
@@ -31,6 +32,7 @@ export default function UpdateColor({ getColors }: Props) {
     const [open, setOpen] = useRecoilState(updateColorModal);
     const [isLoading, setIsLoading] = useState(false);
     const currentColor = useRecoilValue(color);
+    const { t } = useTranslation();
     const form = useForm({
         resolver: zodResolver(colorSchema),
         defaultValues: currentColor,
@@ -55,12 +57,12 @@ export default function UpdateColor({ getColors }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Update Color</DialogTitle>
+                    <DialogTitle>{t("UpdateColor")}</DialogTitle>
                 </DialogHeader>
                 <ColorsDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading} form="colorForm">
                         {isLoading ? (
@@ -69,7 +71,7 @@ export default function UpdateColor({ getColors }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Update"
+                            t("Update")
                         )}
                     </Button>
                 </DialogFooter>

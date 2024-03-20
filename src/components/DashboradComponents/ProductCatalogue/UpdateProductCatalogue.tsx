@@ -20,21 +20,18 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
-import ProductCatalogueForm from "./ProductCatalogueForm";
+import ProductCatalogueDialog from "./ProductCatalogueDialog.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
   getCatalogues: any;
 };
 export default function UpdateProductCatalogue({ getCatalogues }: Props) {
-  // Catalogue Id
   const catalogueID = useRecoilValue(productCatalogueId);
-  // Modal
   const [open, setOpen] = useRecoilState(updateProductCatalogueModal);
-  // Loding
   const [isLoading, setIsLoading] = useState(false);
-  // Catalogue
   const catalogue = useRecoilValue(productCatalogue);
-  // Form fields
+  const { t } = useTranslation();
   const form = useForm<z.infer<typeof productCatalogueSchema>>({
     resolver: zodResolver(productCatalogueSchema),
     defaultValues: {
@@ -66,12 +63,12 @@ export default function UpdateProductCatalogue({ getCatalogues }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Update Product Catalogue</DialogTitle>
+          <DialogTitle>{t("UpdateProductCatalogue")}</DialogTitle>
         </DialogHeader>
-        <ProductCatalogueForm form={form} onSubmit={onSubmit} />
+        <ProductCatalogueDialog form={form} onSubmit={onSubmit} />
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Close
+            {t("Close")}
           </Button>
           <Button type="submit" disabled={isLoading} form="catalogue">
             {isLoading ? (
@@ -80,7 +77,7 @@ export default function UpdateProductCatalogue({ getCatalogues }: Props) {
                 Please wait
               </>
             ) : (
-              "Update"
+                t("Update")
             )}
           </Button>
         </DialogFooter>

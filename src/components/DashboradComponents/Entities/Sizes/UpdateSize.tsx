@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import {SizeSchema} from "@/form_schemas/newSizeSchema.ts";
 import SizesDialog from "@/components/DashboradComponents/Entities/Sizes/SizesDialog.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getSizes: () => void;
@@ -27,6 +28,7 @@ export default function UpdateSize({ getSizes }: Props) {
     const [open, setOpen] = useRecoilState(updateSizeModal);
     const [isLoading, setIsLoading] = useState(false);
     const currentSize = useRecoilValue(size);
+    const { t } = useTranslation();
     const form = useForm({
         resolver: zodResolver(SizeSchema),
         defaultValues: currentSize,
@@ -52,12 +54,12 @@ export default function UpdateSize({ getSizes }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Update Size</DialogTitle>
+                    <DialogTitle> {t("UpdateSize")}</DialogTitle>
                 </DialogHeader>
                 <SizesDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading} form="sizeForm">
                         {isLoading ? (
@@ -66,8 +68,9 @@ export default function UpdateSize({ getSizes }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Update"
-                        )}
+                            t("Update")
+
+                            )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

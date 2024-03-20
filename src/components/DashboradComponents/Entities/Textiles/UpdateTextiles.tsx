@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { newTextilesSchema } from "@/form_schemas/newTextilesSchema.ts";
 import TextilesDialog from "@/components/DashboradComponents/Entities/Textiles/TextilesDialog.tsx";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getTextiles: () => void;
@@ -31,6 +32,7 @@ export default function UpdateTextiles({ getTextiles }: Props) {
     const [open, setOpen] = useRecoilState(updateTextileModal);
     const [isLoading, setIsLoading] = useState(false);
     const currentTextiles = useRecoilValue(textile);
+    const { t } = useTranslation();
     const form = useForm({
         resolver: zodResolver(newTextilesSchema),
         defaultValues: currentTextiles,
@@ -56,12 +58,12 @@ export default function UpdateTextiles({ getTextiles }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Update Textile</DialogTitle>
+                    <DialogTitle>{t("UpdateTextile")}</DialogTitle>
                 </DialogHeader>
                 <TextilesDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading} form="textilesForm">
                         {isLoading ? (
@@ -70,8 +72,8 @@ export default function UpdateTextiles({ getTextiles }: Props) {
                                 Please wait
                             </>
                         ) : (
-                            "Update"
-                        )}
+                            t("Update")
+                            )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

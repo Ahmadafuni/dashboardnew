@@ -18,8 +18,8 @@ export const colorId = atom({
 export const color = atom({
     key: "color",
     default: {
-        name: "",
-        code: "",
-        description: "",
+        ColorName: "",
+        ColorCode: "",
+        Description: "",
     },
 });

@@ -1,5 +1,6 @@
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm.tsx";
 import { Form, FormField } from "@/components/ui/form.tsx";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     form: any;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const TextilesDialog = ({ form, onSubmit }: Props) => {
+    const { t } = useTranslation();
     return (
         <Form {...form}>
             <form
@@ -20,7 +22,7 @@ const TextilesDialog = ({ form, onSubmit }: Props) => {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label="Textile Name"
+                            label= {t("TextileName")}
                             field={field}
                         />
                     )}
@@ -31,7 +33,7 @@ const TextilesDialog = ({ form, onSubmit }: Props) => {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label="Textile Type"
+                            label= {t("TextileType")}
                             field={field}
                         />
                     )}
@@ -42,7 +44,7 @@ const TextilesDialog = ({ form, onSubmit }: Props) => {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label="Composition"
+                            label= {t("Composition")}
                             field={field}
                         />
                     )}
@@ -53,7 +55,7 @@ const TextilesDialog = ({ form, onSubmit }: Props) => {
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label="Description"
+                            label= {t("Description")}
                             field={field}
                         />
                     )}

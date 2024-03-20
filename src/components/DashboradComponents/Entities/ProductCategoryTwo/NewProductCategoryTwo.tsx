@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import ProductCategoryTwoDialog from "@/components/DashboradComponents/Entities/ProductCategoryTwo/ProductCategoryTwoDialog.tsx";
 import {ProductCategoryTwoType} from "@/types/Entities/ProductCategoryTwo.types.ts";
 import {ProductCategoryTwoSchema} from "@/form_schemas/newProductCategoryTwoSchema.ts";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     getProductCategoriesTwo: any;
@@ -25,6 +26,7 @@ type Props = {
 export default function NewProductCategoryTwo({ getProductCategoriesTwo }: Props) {
     const [open, setOpen] = useRecoilState(newProductCategoryTwoModal);
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
     const form = useForm<ProductCategoryTwoType>({
         resolver: zodResolver(ProductCategoryTwoSchema),
         defaultValues: {
@@ -54,12 +56,12 @@ export default function NewProductCategoryTwo({ getProductCategoriesTwo }: Props
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>New Product Category Two</DialogTitle>
+                    <DialogTitle>{t("NewProductCategoryTwo")}</DialogTitle>
                 </DialogHeader>
                 <ProductCategoryTwoDialog form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
-                        Close
+                        {t("Close")}
                     </Button>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
@@ -68,8 +70,8 @@ export default function NewProductCategoryTwo({ getProductCategoriesTwo }: Props
                                 Please wait
                             </>
                         ) : (
-                            "Add"
-                        )}
+                            t("Add")
+                            )}
                     </Button>
                 </DialogFooter>
             </DialogContent>
