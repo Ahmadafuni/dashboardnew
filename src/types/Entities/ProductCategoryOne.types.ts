@@ -1,5 +1,5 @@
 export type ProductCategoryOneType = {
-    id: number;
-    ProductCatalogCategoryOne: string;
-    Description?: string;
+  Id: number;
+  CategoryName: string;
+  CategoryDescription?: string;
 };

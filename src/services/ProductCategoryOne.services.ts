@@ -1,67 +1,84 @@
 import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const getAllProductCategoryOne = async (
-    setData: Dispatch<SetStateAction<any>>
+  setData: Dispatch<SetStateAction<any>>
 ) => {
-    try {
-        const { data } = await axios.get("productcatalogcategoryone");
-        setData(data.data);
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message);
-        }
+  try {
+    const { data } = await axios.get("productcatalogcategoryone/all", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
     }
+  }
 };
 
 export const getProductCategoryOneById = async (
-    setData: Dispatch<SetStateAction<any>>,
-    id: string | undefined
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
 ) => {
-    try {
-        const { data } = await axios.get(`productcatalogcategoryone/${id}`);
-        setData(data.data);
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message);
-        }
+  try {
+    const { data } = await axios.get(`productcatalogcategoryone/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
     }
+  }
 };
 
-export const createProductCategoryOne = async (
-    categoryOneData: any
-) => {
-    try {
-        await axios.post("productcatalogcategoryone", categoryOneData);
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message);
-        }
+export const createProductCategoryOne = async (categoryOneData: any) => {
+  try {
+    await axios.post("productcatalogcategoryone", categoryOneData, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
     }
+  }
 };
 
 export const updateProductCategoryOne = async (
-    id: string | undefined,
-    categoryOneData: any
+  id: number,
+  categoryOneData: any
 ) => {
-    try {
-        await axios.put(`productcatalogcategoryone/${id}`, categoryOneData);
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message);
-        }
+  try {
+    await axios.put(`productcatalogcategoryone/${id}`, categoryOneData, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
     }
+  }
 };
 
-export const deleteProductCategoryOne = async (
-    id: string | undefined
-) => {
-    try {
-        await axios.delete(`productcatalogcategoryone/${id}`);
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message);
-        }
+export const deleteProductCategoryOne = async (id: number) => {
+  try {
+    await axios.delete(`productcatalogcategoryone/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
     }
+  }
 };
