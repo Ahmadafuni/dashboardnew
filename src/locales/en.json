@@ -29,6 +29,8 @@
   "Description": "Description",
   "Action": "Action",
   "Add": "Add",
+  "Close": "Close",
+  "Update": "Update",
   "Newdepartment": "New Department",
 
   "CUTTING": "CUTTING",
@@ -37,5 +39,52 @@
   "QUALITYASSURANCE": "QUALITYASSURANCE",
   "ENGINEERING": "ENGINEERING",
   "FACTORYMANAGER": "FACTORYMANAGER",
-  "WAREHOUSEMANAGER": "WAREHOUSEMANAGER"
+  "WAREHOUSEMANAGER": "WAREHOUSEMANAGER",
+
+  "ColorName": "Color Name",
+  "ColorCode": "Color Code",
+
+  "ProductCatalogCategoryOne": "Product Category One",
+  "ProductCatalogCategoryTwo": "Product Category Two",
+
+  "TemplatePatternName": "Template Pattern",
+  "TemplateTypeName": "Template Type",
+
+  "TextileName": "Textile Name",
+  "TextileType": "TextileType",
+  "Composition": "Composition",
+
+  "NewColor": "New Textile",
+  "UpdateColor": "Update Color",
+  "NewProductCategoryOne": "New Product Category One",
+  "UpdateProductCategoryOne": "Update Product Category One",
+  "NewProductCategoryTwo": "New Product Category Two",
+  "UpdateProductCategoryTwo": "Update Product Category Two",
+  "NewSize": "New Size",
+  "UpdateSize": "Update Size",
+  "NewTemplatePattern": "New Template Pattern",
+  "UpdateTemplatePattern": "Update Template Pattern",
+  "NewTemplateType": "New Template Type",
+  "UpdateTemplateType": "Update Template Type",
+  "NewTextile": "New Textile",
+  "UpdateTextile": "UpdateTextile",
+  "NewProductCatalogue": "New Product Catalogue",
+  "UpdateProductCatalogue": "Update Product Catalogue",
+
+  "ProductCatalogueName": "Product Catalogue Name",
+
+  "Colors": "Colors",
+  "Sizes": "Sizes",
+  "Textiles": "Textiles",
+  "TemplateType": "Template Type",
+  "TemplatePattern": "Template Pattern",
+  "ProductCategoryOne": "Product tCategory One",
+  "ProductCategoryTwo": "Product Category Two",
+
+  "DeleteConfirmationDialogTitle": "Do you want to delete this?",
+  "DeleteConfirmationDialogDescription": "This action cannot be undone. This will permanently delete this.",
+  "DeleteConfirmationDialogContinue": "Continue",
+  "DeleteConfirmationDialogCancel": "Cancel"
+
+
 }

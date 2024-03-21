@@ -1,4 +1,4 @@
-import ProductCatalogueDetailForm from "@/components/pages/ProductCatalogue/ProductCatalogueDetailForm";
+import ProductCatalogueDetailForm from "@/components/DashboradComponents/ProductCatalogue/ProductCatalogueDetailForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { productCatalogueDetailSchema } from "@/form_schemas/newProductCatalogueSchema";

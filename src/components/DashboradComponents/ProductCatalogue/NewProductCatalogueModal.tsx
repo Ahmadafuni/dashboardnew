@@ -7,34 +7,25 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { productCatalogueSchema } from "@/form_schemas/newProductCatalogueSchema";
-import {
-  productCatalogue,
-  productCatalogueId,
-  updateProductCatalogueModal,
-} from "@/store/ProductCatalogue";
+import { newProductCatalogueModal } from "@/store/ProductCatalogue";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import ProductCatalogueForm from "./ProductCatalogueForm";
-import Cookies from "js-cookie";
 
 type Props = {
   getCatalogues: any;
 };
-export default function UpdateProductCatalogueModal({ getCatalogues }: Props) {
-  // Catalogue Id
-  const catalogueID = useRecoilValue(productCatalogueId);
+export default function NewProductCatalogueModal({ getCatalogues }: Props) {
   // Modal
-  const [open, setOpen] = useRecoilState(updateProductCatalogueModal);
+  const [open, setOpen] = useRecoilState(newProductCatalogueModal);
   // Loding
   const [isLoading, setIsLoading] = useState(false);
-  // Catalogue
-  const catalogue = useRecoilValue(productCatalogue);
   // Form fields
   const form = useForm<z.infer<typeof productCatalogueSchema>>({
     resolver: zodResolver(productCatalogueSchema),
@@ -42,23 +33,15 @@ export default function UpdateProductCatalogueModal({ getCatalogues }: Props) {
       name: "",
       description: "",
     },
-    values: catalogue,
   });
   // Form submit function
   const onSubmit = async (data: z.infer<typeof productCatalogueSchema>) => {
     setIsLoading(true);
     try {
-      const updateCatalogue = await axios.put(
-        `productcatalog/${catalogueID}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
-      toast.success(updateCatalogue.data.message);
+      const newCatalogue = await axios.post("productcatalog/", data);
+      toast.success(newCatalogue.data.message);
       getCatalogues();
+      form.reset();
       setIsLoading(false);
       setOpen(false);
     } catch (error) {
@@ -72,7 +55,7 @@ export default function UpdateProductCatalogueModal({ getCatalogues }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Update Product Catalogue</DialogTitle>
+          <DialogTitle>New Product Catalogue</DialogTitle>
         </DialogHeader>
         <ProductCatalogueForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
@@ -86,7 +69,7 @@ export default function UpdateProductCatalogueModal({ getCatalogues }: Props) {
                 Please wait
               </>
             ) : (
-              "Update"
+              "Add"
             )}
           </Button>
         </DialogFooter>

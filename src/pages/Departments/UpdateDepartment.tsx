@@ -1,4 +1,4 @@
-import DepartmentForm from "@/components/pages/Departments/DepartmentForm";
+import DepartmentForm from "@/components/DashboradComponents/Departments/DepartmentForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { departmentSchema } from "@/form_schemas/newDepartmentSchema";

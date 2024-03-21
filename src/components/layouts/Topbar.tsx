@@ -30,6 +30,7 @@ export default function Topbar() {
     const newLanguage = currentLanguage === "en" ? "ar" : "en";
     setCurrentLanguage(newLanguage);
     i18n.changeLanguage(newLanguage);
+    localStorage.setItem('currentLanguage', newLanguage);
   };
 
   const checkUser = async () => {

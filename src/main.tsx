@@ -34,6 +34,13 @@ import NewDepartment from "./pages/Departments/NewDepartment.tsx";
 import UpdateDepartment from "./pages/Departments/UpdateDepartment.tsx";
 import Departments from "./pages/Departments/Departments.tsx";
 import NewProductCatalogueDetail from "./pages/ProductCatalogues/NewProductCatalogueDetail.tsx";
+import Colors from "@/pages/Entities/Colors.tsx";
+import Sizes from "@/pages/Entities/Sizes.tsx";
+import Textiles from "@/pages/Entities/Textiles.tsx";
+import TemplateType from "@/pages/Entities/TemplateType.tsx";
+import TemplatePattern from "@/pages/Entities/TemplatePattern.tsx";
+import ProductCategoryOne from "@/pages/Entities/ProductCategoryOne.tsx";
+import ProductCategoryTwo from "@/pages/Entities/ProductCategoryTwo.tsx";
 
 // Axios config
 axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
@@ -54,7 +61,7 @@ i18n
         translation: arTranslations,
       },
     },
-    lng: "ar", // Set Arabic as the default language
+    lng: localStorage.getItem("currentLanguage") || "ar", // Load language preference from localStorage if available
     fallbackLng: "en", // Fallback to English if user's language is not available
     interpolation: {
       escapeValue: false, // React already escapes values
@@ -71,6 +78,13 @@ const router = createBrowserRouter([
       { path: "/dashboard/users/new", element: <NewUsers /> },
       { path: "/dashboard/users/:userID", element: <UpdateUser /> },
 
+      { path: "/dashboard/departments", element: <Departments /> },
+      { path: "/dashboard/departments/new", element: <NewDepartment /> },
+      {
+        path: "/dashboard/departments/:departmentID",
+        element: <UpdateDepartment />,
+      },
+
       { path: "/dashboard/home", element: <Home /> },
       { path: "/dashboard/reports", element: <Reports /> },
       { path: "/dashboard/statistics", element: <Statistics /> },
@@ -85,13 +99,24 @@ const router = createBrowserRouter([
       { path: "/dashboard/tasks", element: <Tasks /> },
       { path: "/dashboard/notes", element: <Notes /> },
       { path: "/dashboard/users", element: <Users /> },
-      { path: "/dashboard/departments", element: <Departments /> },
-      { path: "/dashboard/departments/new", element: <NewDepartment /> },
-      {
-        path: "/dashboard/departments/:departmentID",
-        element: <UpdateDepartment />,
-      },
       { path: "/dashboard/stores", element: <Stores /> },
+
+      { path: "/dashboard/entities/colors", element: <Colors /> },
+      { path: "/dashboard/entities/sizes", element: <Sizes /> },
+      { path: "/dashboard/entities/textiles", element: <Textiles /> },
+      { path: "/dashboard/entities/templatetype", element: <TemplateType /> },
+      {
+        path: "/dashboard/entities/templatepattern",
+        element: <TemplatePattern />,
+      },
+      {
+        path: "/dashboard/entities/productcategoryone",
+        element: <ProductCategoryOne />,
+      },
+      {
+        path: "/dashboard/entities/productcategorytwo",
+        element: <ProductCategoryTwo />,
+      },
     ],
   },
 ]);

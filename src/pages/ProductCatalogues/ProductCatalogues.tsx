@@ -1,8 +1,8 @@
 import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure";
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
-import NewProductCatalogueModal from "@/components/pages/ProductCatalogue/NewProductCatalogueModal";
-import UpdateProductCatalogueModal from "@/components/pages/ProductCatalogue/UpdateProductCatalogueModal";
+import NewProductCatalogueModal from "@/components/DashboradComponents/ProductCatalogue/NewProductCatalogueModal";
+import UpdateProductCatalogueModal from "@/components/DashboradComponents/ProductCatalogue/UpdateProductCatalogueModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -22,9 +22,9 @@ import { ListPlus, Pen, Plus, View } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
 
 export default function ProductCatalogues() {
-  // Modal State
   const setNewCatalogueModal = useSetRecoilState(newProductCatalogueModal);
   const setUpdateCatalogueModal = useSetRecoilState(
     updateProductCatalogueModal
@@ -32,22 +32,21 @@ export default function ProductCatalogues() {
   // Navigate
   const navigate = useNavigate();
   const setCatalogueId = useSetRecoilState(productCatalogueId);
-  // Catalogue
   const setCatalogue = useSetRecoilState(productCatalogue);
-  // Catalogues
   const [catalogues, setCatalogues] = useState([]);
-  // Columns
+  const { t } = useTranslation();
+
   const userColumns: ColumnDef<ProductCatalogueType>[] = [
     {
       accessorKey: "ProductCatalogName",
-      header: "Product Catalogue Name",
+      header: t("ProductCatalogueName"),
     },
     {
       accessorKey: "ProductCatalogDescription",
-      header: "Product Catalogue Description",
+      header: t("Description"),
     },
     {
-      header: "Action",
+      header: t("Action"),
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
@@ -101,7 +100,7 @@ export default function ProductCatalogues() {
         getCatalogues={() => getAllProductCatalogues(setCatalogues)}
       />
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">Product Catalogues</h1>
+        <h1 className="text-3xl font-bold w-full">{t("ProductCatalogues")}</h1>
         <Separator />
       </div>
       <div className="space-y-2">
@@ -112,7 +111,7 @@ export default function ProductCatalogues() {
             }}
           >
             <Plus className="mr-2 h-4 w-4" />
-            Add Product Catalogue
+            {t("Add")}
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">

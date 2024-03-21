@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import UserForm from "@/components/pages/Users/UserForm";
+import UserForm from "@/components/DashboradComponents/Users/UserForm";
 import Cookies from "js-cookie";
 
 export default function NewUsers() {
