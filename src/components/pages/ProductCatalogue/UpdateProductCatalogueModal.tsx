@@ -21,11 +21,12 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import ProductCatalogueForm from "./ProductCatalogueForm";
+import Cookies from "js-cookie";
 
 type Props = {
   getCatalogues: any;
 };
-export default function UpdateProductCatalogue({ getCatalogues }: Props) {
+export default function UpdateProductCatalogueModal({ getCatalogues }: Props) {
   // Catalogue Id
   const catalogueID = useRecoilValue(productCatalogueId);
   // Modal
@@ -49,7 +50,12 @@ export default function UpdateProductCatalogue({ getCatalogues }: Props) {
     try {
       const updateCatalogue = await axios.put(
         `productcatalog/${catalogueID}`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
       );
       toast.success(updateCatalogue.data.message);
       getCatalogues();

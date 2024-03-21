@@ -1,7 +1,8 @@
+import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure";
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 import NewProductCatalogueModal from "@/components/pages/ProductCatalogue/NewProductCatalogueModal";
-import UpdateProductCatalogue from "@/components/pages/ProductCatalogue/UpdateProductCatalogue";
+import UpdateProductCatalogueModal from "@/components/pages/ProductCatalogue/UpdateProductCatalogueModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -17,8 +18,9 @@ import {
 } from "@/store/ProductCatalogue";
 import { ProductCatalogueType } from "@/types/ProductCatalogues/ProductCatalogues.types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Pen, Plus } from "lucide-react";
+import { ListPlus, Pen, Plus, View } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 export default function ProductCatalogues() {
@@ -27,6 +29,8 @@ export default function ProductCatalogues() {
   const setUpdateCatalogueModal = useSetRecoilState(
     updateProductCatalogueModal
   );
+  // Navigate
+  const navigate = useNavigate();
   const setCatalogueId = useSetRecoilState(productCatalogueId);
   // Catalogue
   const setCatalogue = useSetRecoilState(productCatalogue);
@@ -47,15 +51,33 @@ export default function ProductCatalogues() {
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
-            <Button
-              onClick={() => {
-                setCatalogueId(row.original.Id);
-                getProductCatalogueById(setCatalogue, row.original.Id);
-                setUpdateCatalogueModal(true);
-              }}
-            >
-              <Pen className="h-4 w-4" />
-            </Button>
+            <ButtonTooltipStructure description="Edit product catalogue">
+              <Button
+                onClick={() => {
+                  setCatalogueId(row.original.Id);
+                  getProductCatalogueById(setCatalogue, row.original.Id);
+                  setUpdateCatalogueModal(true);
+                }}
+              >
+                <Pen className="h-4 w-4" />
+              </Button>
+            </ButtonTooltipStructure>
+            <ButtonTooltipStructure description="Add product catalogue detail">
+              <Button
+                onClick={() =>
+                  navigate(
+                    `/dashboard/productcatalogues/cataloguedetails/new/${row.original.Id}`
+                  )
+                }
+              >
+                <ListPlus className="h-4 w-4" />
+              </Button>
+            </ButtonTooltipStructure>
+            <ButtonTooltipStructure description="View product catalogue details">
+              <Button>
+                <View className="h-4 w-4" />
+              </Button>
+            </ButtonTooltipStructure>
             <DeleteConfirmationDialog
               deleteRow={() =>
                 deleteProductCatalogue(setCatalogues, row.original.Id)
@@ -75,7 +97,7 @@ export default function ProductCatalogues() {
       <NewProductCatalogueModal
         getCatalogues={() => getAllProductCatalogues(setCatalogues)}
       />
-      <UpdateProductCatalogue
+      <UpdateProductCatalogueModal
         getCatalogues={() => getAllProductCatalogues(setCatalogues)}
       />
       <div className="w-full space-y-1">

@@ -11,6 +11,7 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Trash } from "lucide-react";
+import ButtonTooltipStructure from "./ButtonTooltipStructure";
 
 interface Props {
   deleteRow: any;
@@ -19,9 +20,11 @@ export default function DeleteConfirmationDialog({ deleteRow }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"destructive"}>
-          <Trash className="h-4 w-4" />
-        </Button>
+        <ButtonTooltipStructure description="Delete">
+          <Button variant={"destructive"}>
+            <Trash className="h-4 w-4" />
+          </Button>
+        </ButtonTooltipStructure>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

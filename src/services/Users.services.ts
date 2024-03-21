@@ -1,10 +1,15 @@
 import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const getAllUsers = async (setData: Dispatch<SetStateAction<any>>) => {
   try {
-    const { data } = await axios.get("auth/all");
+    const { data } = await axios.get("auth/all", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -18,7 +23,11 @@ export const getUserById = async (
   id: string | undefined
 ) => {
   try {
-    const { data } = await axios.get(`auth/${id}`);
+    const { data } = await axios.get(`auth/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -32,7 +41,11 @@ export const toggleUser = async (
   id: number
 ) => {
   try {
-    const { data } = await axios.get(`auth/toggle-user/${id}`);
+    const { data } = await axios.get(`auth/toggle-user/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
     toast.success(data.message);
     getAllUsers(setData);
   } catch (error) {
@@ -47,7 +60,11 @@ export const deleteUser = async (
   id: number
 ) => {
   try {
-    const { data } = await axios.delete(`auth/${id}`);
+    const { data } = await axios.delete(`auth/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
     getAllUsers(setData);
     toast.success(data.message);
   } catch (error) {

@@ -13,28 +13,32 @@ import { Bell, Globe, Languages, LogOut, Moon, Sun } from "lucide-react";
 import { useTheme } from "../theme-provider";
 import { useRecoilState } from "recoil";
 import { userInfo } from "@/store/authentication";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 export default function Topbar() {
-  const {i18n} = useTranslation();
+  const { i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const [user, setUser] = useRecoilState(userInfo);
 
   const toggleLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+    const newLanguage = currentLanguage === "en" ? "ar" : "en";
     setCurrentLanguage(newLanguage);
     i18n.changeLanguage(newLanguage);
   };
 
   const checkUser = async () => {
     try {
-      const result = await axios.get("auth/session");
+      const result = await axios.get("auth/session", {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
       setUser(result.data.user);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -46,8 +50,8 @@ export default function Topbar() {
   };
   // Logout
   const logout = () => {
-    setUser(null);
     Cookies.remove("access_token");
+    setUser(null);
     navigate("/");
   };
   useEffect(() => {
@@ -62,13 +66,17 @@ export default function Topbar() {
       </div>
       <div className="flex items-center gap-1">
         <DropdownMenu>
-          <Button variant="outline" size="icon" className="rounded-full" onClick={toggleLanguage}>
-            {currentLanguage === 'ar' ?
-            <Globe className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
-            :
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+            onClick={toggleLanguage}
+          >
+            {currentLanguage === "ar" ? (
+              <Globe className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+            ) : (
               <Languages className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
-            }
-
+            )}
           </Button>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="rounded-full">

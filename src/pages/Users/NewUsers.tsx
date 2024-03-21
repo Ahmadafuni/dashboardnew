@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import UserForm from "@/components/pages/Users/UserForm";
+import Cookies from "js-cookie";
 
 export default function NewUsers() {
   // translation
@@ -50,7 +51,11 @@ export default function NewUsers() {
     const userInfo = JSON.stringify(data);
     formData.append("userInfo", userInfo);
     try {
-      const newUser = await axios.post("auth/", formData);
+      const newUser = await axios.post("auth/", formData, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
       toast.success(newUser.data.message);
       form.reset();
       setIsLoading(false);
