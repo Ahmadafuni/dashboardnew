@@ -20,6 +20,23 @@ export const getAllTemplateTypes = async (
   }
 };
 
+export const getAllTemplateTypesList = async (
+  setData: Dispatch<SetStateAction<any>>
+) => {
+  try {
+    const { data } = await axios.get("templatetype", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const getTemplateTypeById = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number

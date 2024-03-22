@@ -20,6 +20,23 @@ export const getAllTemplatePatterns = async (
   }
 };
 
+export const getAllTemplatePatternsList = async (
+  setData: Dispatch<SetStateAction<any>>
+) => {
+  try {
+    const { data } = await axios.get("templatepattern", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const getTemplatePatternById = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number

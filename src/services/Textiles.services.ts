@@ -20,6 +20,23 @@ export const getAllTextiles = async (
   }
 };
 
+export const getAllTextilesList = async (
+  setData: Dispatch<SetStateAction<any>>
+) => {
+  try {
+    const { data } = await axios.get("productcatalogtextile", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const getTextileById = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number
