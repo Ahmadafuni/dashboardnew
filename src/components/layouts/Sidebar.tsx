@@ -28,8 +28,8 @@ export default function Sidebar() {
       gName: "System",
       childs: [
         { name: t("Home"), link: "/dashboard/home", icon: Home },
-        { name: t("Users"), link: "/dashboard/users", icon: UsersRound },
         { name: t("Departments"), link: "/dashboard/departments", icon: LayoutPanelTop },
+        { name: t("Users"), link: "/dashboard/users", icon: UsersRound },
         { name: t("Stores"), link: "/dashboard/stores", icon: Store },
         { name: t("Reports"), link: "/dashboard/reports", icon: LayoutDashboard },
         { name: t("Statistics"), link: "/dashboard/statistics", icon: FileBarChart2 },
