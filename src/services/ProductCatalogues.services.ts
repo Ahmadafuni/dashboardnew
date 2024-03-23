@@ -99,7 +99,7 @@ export const deleteProductCatalogueDetail = async (
   catalogueId: string | undefined
 ) => {
   try {
-    const { data } = await axios.delete(`productcatalogtdetail/${id}`, {
+    await axios.delete(`productcatalogtdetail/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },

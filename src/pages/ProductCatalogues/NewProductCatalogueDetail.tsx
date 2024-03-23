@@ -35,7 +35,7 @@ export default function NewProductCatalogueDetail() {
   // Param
   const { catalogueId } = useParams();
   // Navigation state
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Dropdown state

@@ -36,7 +36,7 @@ export default function UpdateProductCatalogueDetail() {
   // Param
   const { detailId } = useParams();
   // Navigation state
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Detail State

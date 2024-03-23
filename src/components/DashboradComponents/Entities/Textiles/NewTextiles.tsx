@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { toast } from "sonner";
 import TextilesDialog from "@/components/DashboradComponents/Entities/Textiles/TextilesDialog.tsx";
-import { TextilesType } from "@/types/Entities/Textiles.types.ts";
 import { newTextileModal } from "@/store/Textiles.ts";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
