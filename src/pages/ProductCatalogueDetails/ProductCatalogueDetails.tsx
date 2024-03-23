@@ -1,18 +1,18 @@
-import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure";
-import DataTable from "@/components/common/DataTable";
-import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  deleteProductCatalogueDetail,
-  getAllProductCatalogueDetails,
-} from "@/services/ProductCatalogues.services";
-import { ProductCatalogueDetailType } from "@/types/ProductCatalogues/ProductCatalogueDetails.types";
+import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
+import DataTable from "@/components/common/DataTable.tsx";
+import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { ProductCatalogueDetailType } from "@/types/ProductCatalogues/ProductCatalogueDetails.types.ts";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  deleteProductCatalogueDetail,
+  getAllProductCatalogueDetails
+} from "@/services/ProductCatalogueDetails.services.ts";
 
 export default function ProductCatalogueDetails() {
   // Param
@@ -26,55 +26,55 @@ export default function ProductCatalogueDetails() {
 
   const detailsColumns: ColumnDef<ProductCatalogueDetailType>[] = [
     {
-      header: "Category One",
+      header: t("ProductCatalogCategoryOne"),
       cell: ({ row }) => {
         return <p>{row.original.CategoryOne.CategoryName}</p>;
       },
     },
     {
-      header: "Category Two",
+      header: t("ProductCatalogCategoryTwo"),
       cell: ({ row }) => {
         return <p>{row.original.CategoryTwo.CategoryName}</p>;
       },
     },
     {
-      header: "Template Type",
+      header: t("TemplateType"),
       cell: ({ row }) => {
         return <p>{row.original.TemplateType.TemplateTypeName}</p>;
       },
     },
     {
-      header: "Template Pattern",
+      header: t("TemplatePattern"),
       cell: ({ row }) => {
         return <p>{row.original.TemplatePattern.TemplatePatternName}</p>;
       },
     },
     {
-      header: "Season",
+      header: t("Season"),
       cell: ({ row }) => {
         return <p>{row.original.Season}</p>;
       },
     },
     {
-      header: "Textile",
+      header: t("Textiles"),
       cell: ({ row }) => {
         return <p>{row.original.Textile.TextileName}</p>;
       },
     },
     {
-      header: "Grammage",
+      header: t("Grammage"),
       cell: ({ row }) => {
         return <p>{row.original.Grammage}</p>;
       },
     },
     {
-      header: "Standard Weight",
+      header: t("StandardWeight"),
       cell: ({ row }) => {
         return <p>{row.original.StandardWeight}</p>;
       },
     },
     {
-      header: "Description",
+      header: t("Description"),
       cell: ({ row }) => {
         return <p>{row.original.Description}</p>;
       },
@@ -97,11 +97,7 @@ export default function ProductCatalogueDetails() {
             </ButtonTooltipStructure>
             <DeleteConfirmationDialog
               deleteRow={() =>
-                deleteProductCatalogueDetail(
-                  setDetails,
-                  row.original.Id,
-                  catalogueId
-                )
+                deleteProductCatalogueDetail(setDetails, row.original.Id)
               }
             />
           </div>
@@ -116,7 +112,7 @@ export default function ProductCatalogueDetails() {
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">Product Catalogue Details</h1>
+        <h1 className="text-3xl font-bold w-full">{t("ProductCatalogueDetails")}</h1>
         <Separator />
       </div>
       <div className="space-y-2">

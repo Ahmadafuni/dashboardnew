@@ -40,9 +40,9 @@ import TemplateType from "@/pages/Entities/TemplateType.tsx";
 import TemplatePattern from "@/pages/Entities/TemplatePattern.tsx";
 import ProductCategoryOne from "@/pages/Entities/ProductCategoryOne.tsx";
 import ProductCategoryTwo from "@/pages/Entities/ProductCategoryTwo.tsx";
-import NewProductCatalogueDetail from "./pages/ProductCatalogues/NewProductCatalogueDetail.tsx";
-import UpdateProductCatalogueDetail from "./pages/ProductCatalogues/UpdateProductCatalogueDetail.tsx";
-import ProductCatalogueDetails from "./pages/ProductCatalogues/ProductCatalogueDetails.tsx";
+import NewProductCatalogueDetail from "./components/DashboradComponents/ProductCatalogueDetails/NewProductCatalogueDetail.tsx";
+import UpdateProductCatalogueDetail from "./components/DashboradComponents/ProductCatalogueDetails/UpdateProductCatalogueDetail.tsx";
+import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCatalogueDetails.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";

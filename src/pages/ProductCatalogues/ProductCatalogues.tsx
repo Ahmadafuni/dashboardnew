@@ -1,7 +1,7 @@
 import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure";
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
-import NewProductCatalogueModal from "@/components/DashboradComponents/ProductCatalogue/NewProductCatalogueModal";
+import NewProductCatalogueDialog from "@/components/DashboradComponents/ProductCatalogue/NewProductCatalogueDialog.tsx";
 import UpdateProductCatalogueModal from "@/components/DashboradComponents/ProductCatalogue/UpdateProductCatalogueModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -99,7 +99,7 @@ export default function ProductCatalogues() {
   }, []);
   return (
     <div className="w-full space-y-2">
-      <NewProductCatalogueModal
+      <NewProductCatalogueDialog
         getCatalogues={() => getAllProductCatalogues(setCatalogues)}
       />
       <UpdateProductCatalogueModal

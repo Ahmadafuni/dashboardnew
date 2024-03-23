@@ -1,20 +1,20 @@
-import ProductCatalogueDetailForm from "@/components/DashboradComponents/ProductCatalogue/ProductCatalogueDetailForm";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { productCatalogueDetailSchema } from "@/form_schemas/newProductCatalogueSchema";
-import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.services";
-import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services";
-import { getAllTemplatePatternsList } from "@/services/TemplatePattern.services";
-import { getAllTemplateTypesList } from "@/services/TemplateType.services";
-import { getAllTextilesList } from "@/services/Textiles.services";
-import { productCategoryOneList } from "@/store/ProductCategoryOne";
-import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
-import { templatePatternList } from "@/store/TemplatePattern";
-import { templateTypeList } from "@/store/TemplateType";
-import { textileList } from "@/store/Textiles";
+import ProductCatalogueDetailForm from "@/components/DashboradComponents/ProductCatalogueDetails/ProductCatalogueDetailForm.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { productCatalogueDetailSchema } from "@/form_schemas/newProductCatalogueSchema.ts";
+import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.services.ts";
+import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services.ts";
+import { getAllTemplatePatternsList } from "@/services/TemplatePattern.services.ts";
+import { getAllTemplateTypesList } from "@/services/TemplateType.services.ts";
+import { getAllTextilesList } from "@/services/Textiles.services.ts";
+import { productCategoryOneList } from "@/store/ProductCategoryOne.ts";
+import { productCategoryTwoList } from "@/store/ProductCategoryTwo.ts";
+import { templatePatternList } from "@/store/TemplatePattern.ts";
+import { templateTypeList } from "@/store/TemplateType.ts";
+import { textileList } from "@/store/Textiles.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -22,12 +22,12 @@ import { toast } from "sonner";
 import { z } from "zod";
 import axios, { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
-import NewProductCategoryOne from "@/components/DashboradComponents/Entities/ProductCategoryOne/NewProductCategoryOne";
-import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/ProductCategoryTwo/NewProductCategoryTwo";
-import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern";
-import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType";
-import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles";
-import {useParams} from "react-router-dom";
+import NewProductCategoryOne from "@/components/DashboradComponents/Entities/ProductCategoryOne/NewProductCategoryOne.tsx";
+import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/ProductCategoryTwo/NewProductCategoryTwo.tsx";
+import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
+import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
+import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
+import {useNavigate, useParams} from "react-router-dom";
 
 export default function NewProductCatalogueDetail() {
   // Translation
@@ -35,7 +35,7 @@ export default function NewProductCatalogueDetail() {
   // Param
   const { catalogueId } = useParams();
   // Navigation state
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Dropdown state
@@ -119,13 +119,14 @@ export default function NewProductCatalogueDetail() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <NewTextiles getTextiles={() => getAllTextilesList(setTextilesList)} />
-      <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">
-          New Product Catalogue Detail
-        </h1>
+
+        <div className="w-full space-y-1 flex items-center">
+            <ArrowLeft  className="m-1 cursor-pointer"
+                        onClick={() => {navigate("/dashboard/productcatalogues")}}/>
+            <h1 className="text-3xl font-bold">{t("ProductCatalogueDetailsNew")}</h1>
+        </div>
         <Separator />
-      </div>
-      <div className="space-y-1">
+        <div className="space-y-1">
         <ProductCatalogueDetailForm form={form} onSubmit={onSubmit} />
         <div className="flex justify-end">
           <Button type="submit" disabled={isLoading} form="catalogue-detail">

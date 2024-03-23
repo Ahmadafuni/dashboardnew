@@ -1,25 +1,26 @@
-import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
-import { Button } from "@/components/ui/button";
-import { Form, FormField } from "@/components/ui/form";
+import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm.tsx";
+import SelectFieldForForm from "@/components/common/SelectFieldForForm.tsx";
+import TextInputFieldForForm from "@/components/common/TextInputFieldForForm.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Form, FormField } from "@/components/ui/form.tsx";
 import {
   newProductCategoryOneModal,
   productCategoryOneList,
-} from "@/store/ProductCategoryOne";
+} from "@/store/ProductCategoryOne.ts";
 import {
   newProductCategoryTwoModal,
   productCategoryTwoList,
-} from "@/store/ProductCategoryTwo";
+} from "@/store/ProductCategoryTwo.ts";
 import {
   newTemplatePatternModal,
   templatePatternList,
-} from "@/store/TemplatePattern";
-import { newTemplateTypeModal, templateTypeList } from "@/store/TemplateType";
-import { newTextileModal, textileList } from "@/store/Textiles";
+} from "@/store/TemplatePattern.ts";
+import { newTemplateTypeModal, templateTypeList } from "@/store/TemplateType.ts";
+import { newTextileModal, textileList } from "@/store/Textiles.ts";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
   form: any;
@@ -36,9 +37,9 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
   const textilesList = useRecoilValue(textileList);
   const seasons = [
     { label: "SUMMER", value: "SUMMER" },
+    { label: "SPRING", value: "SPRING" },
     { label: "FALL", value: "FALL" },
     { label: "WINTER", value: "WINTER" },
-    { label: "SPRING", value: "SPRING" },
   ];
   // Modals States
   const setNewProductCategoryOneModal = useSetRecoilState(
@@ -50,10 +51,15 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
   const setNewTemplatePatternModal = useSetRecoilState(newTemplatePatternModal);
   const setNewTemplateTypeModal = useSetRecoilState(newTemplateTypeModal);
   const setNewTextileModal = useSetRecoilState(newTextileModal);
+  const navigate = useNavigate();
+  const handleSubmit = async (data: any) => {
+        await onSubmit(data);
+        navigate("/dashboard/productcatalogues/cataloguedetails/1");
+    };
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="grid grid-cols-2 gap-2"
         id="catalogue-detail"
       >
@@ -64,7 +70,7 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={"Category One"}
+                label={t("ProductCategoryOne")}
                 placeholder="Search Category One..."
                 emptyBox="No category one found"
                 form={form}
@@ -90,7 +96,7 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={"Category Two"}
+                label={t("ProductCategoryTwo")}
                 placeholder="Search Category Two..."
                 emptyBox="No category two found"
                 form={form}
@@ -116,7 +122,7 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={"Template Type"}
+                label={t("TemplateType")}
                 placeholder="Search Template Type..."
                 emptyBox="No template type found"
                 form={form}
@@ -142,7 +148,7 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={"Template Pattern"}
+                label={t("TemplatePattern")}
                 placeholder="Search Template Pattern..."
                 emptyBox="No template pattern found"
                 form={form}
@@ -180,7 +186,7 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={"Textile"}
+                label={t("Textiles")}
                 placeholder="Search Textile..."
                 emptyBox="No textile found"
                 form={form}
@@ -204,8 +210,8 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
           name="grammage"
           render={({ field }) => (
             <TextInputFieldForForm
-              placeholder={"Enter grammage"}
-              label={"Grammage"}
+              placeholder=""
+              label={t("Grammage")}
               field={field}
             />
           )}
@@ -215,8 +221,8 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
           name="standardWeight"
           render={({ field }) => (
             <TextInputFieldForForm
-              placeholder={"Enter standard weight"}
-              label={"Standard Weight"}
+              placeholder=""
+              label={t("StandardWeight")}
               field={field}
             />
           )}
@@ -226,8 +232,8 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
           name="description"
           render={({ field }) => (
             <TextInputFieldForForm
-              placeholder={"Description"}
-              label={"Description"}
+              placeholder=""
+              label={t("Description")}
               field={field}
             />
           )}

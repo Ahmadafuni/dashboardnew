@@ -72,6 +72,8 @@
   "UpdateProductCatalogue": "تحديث كتالوج المنتج",
 
   "ProductCatalogueName": " اسم كتالوج المنتج",
+  "ProductCatalogueDetailsNew": "انشاء تفاصيل كتالوج المنتج",
+  "ProductCatalogueDetails": "تفاصيل كتالوج المنتجات",
 
   "ProductCatalogCategoryOne": "فئة منتج (المستوى الأول)",
   "ProductCatalogCategoryTwo": "فئة منتج (المستوى الثاني)",
@@ -83,6 +85,9 @@
   "TemplatePattern": "رموز القالب",
   "ProductCategoryOne": "فئات المنتج الأولى",
   "ProductCategoryTwo": "فئات المنتج الثانية",
+  "Season": "المواسم",
+  "Grammage": "جراماج",
+  "StandardWeight": "الوزن القياسي",
 
   "DeleteConfirmationDialogTitle": "هل ترغب في حذف هذا؟",
   "DeleteConfirmationDialogDescription": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف هذا بشكل دائم.",

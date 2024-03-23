@@ -22,7 +22,7 @@ import Cookies from "js-cookie";
 type Props = {
   getCatalogues: any;
 };
-export default function NewProductCatalogueModal({ getCatalogues }: Props) {
+export default function NewProductCatalogueDialog({ getCatalogues }: Props) {
   // Modal
   const [open, setOpen] = useRecoilState(newProductCatalogueModal);
   // Loding
