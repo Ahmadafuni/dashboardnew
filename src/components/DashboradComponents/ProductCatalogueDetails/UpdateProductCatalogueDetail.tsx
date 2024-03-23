@@ -27,8 +27,8 @@ import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/Pro
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
-import { getProductCatalogueDetailById } from "@/services/ProductCatalogues.services.ts";
 import {useParams} from "react-router-dom";
+import {getProductCatalogueDetailById} from "@/services/ProductCatalogueDetails.services.ts";
 
 export default function UpdateProductCatalogueDetail() {
   // Translation
