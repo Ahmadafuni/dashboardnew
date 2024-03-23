@@ -97,7 +97,7 @@ export default function ProductCatalogueDetails() {
             </ButtonTooltipStructure>
             <DeleteConfirmationDialog
               deleteRow={() =>
-                deleteProductCatalogueDetail(setDetails, row.original.Id)
+                deleteProductCatalogueDetail(setDetails, row.original.Id, catalogueId)
               }
             />
           </div>

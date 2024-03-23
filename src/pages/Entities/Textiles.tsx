@@ -62,7 +62,7 @@ export default function Textiles() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteTextile(row.original.Id)}
+              deleteRow={() => deleteTextile(setTextiles, row.original.Id)}
             />
           </div>
         );

@@ -58,7 +58,7 @@ export default function TemplatePattern() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteTemplatePattern(row.original.Id)}
+              deleteRow={() => deleteTemplatePattern(setTemplatePatterns, row.original.Id)}
             />
           </div>
         );

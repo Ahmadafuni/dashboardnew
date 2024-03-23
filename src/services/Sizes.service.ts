@@ -81,13 +81,17 @@ export const updateSize = async (id: number, sizeData: any) => {
   }
 };
 
-export const deleteSize = async (id: number) => {
+export const deleteSize = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number) => {
   try {
-    await axios.delete(`size/${id}`, {
+    const { data } = await axios.delete(`size/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    getAllSizes(setData);
+    toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);

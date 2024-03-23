@@ -62,7 +62,7 @@ export default function ProductCategoryOne() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteProductCategoryOne(row.original.Id)}
+              deleteRow={() => deleteProductCategoryOne(setProductCategoryOnes, row.original.Id)}
             />
           </div>
         );

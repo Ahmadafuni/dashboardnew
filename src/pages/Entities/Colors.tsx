@@ -58,7 +58,7 @@ export default function Colors() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteColor(row.original.Id)}
+              deleteRow={() => deleteColor(setColors, row.original.Id)}
             />
           </div>
         );

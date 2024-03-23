@@ -86,13 +86,17 @@ export const updateTemplatePattern = async (
   }
 };
 
-export const deleteTemplatePattern = async (id: number) => {
+export const deleteTemplatePattern = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number) => {
   try {
-    await axios.delete(`templatepattern/${id}`, {
+    const { data } = await axios.delete(`templatepattern/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    getAllTemplatePatterns(setData);
+    toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);

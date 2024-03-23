@@ -49,7 +49,7 @@ export default function Sizes() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteSize(row.original.Id)}
+              deleteRow={() => deleteSize(setSizes, row.original.Id)}
             />
           </div>
         );

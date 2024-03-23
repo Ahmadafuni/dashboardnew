@@ -47,12 +47,13 @@ export const deleteProductCatalogueDetail = async (
     catalogueId: string | undefined
 ) => {
     try {
-        await axios.delete(`productcatalogtdetail/${id}`, {
+        const { data } =  await axios.delete(`productcatalogtdetail/${id}`, {
             headers: {
                 Authorization: `bearer ${Cookies.get("access_token")}`,
             },
         });
         getAllProductCatalogueDetails(setData, catalogueId);
+        toast.success(data.message);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);

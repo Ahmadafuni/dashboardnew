@@ -86,13 +86,17 @@ export const updateTextile = async (
   }
 };
 
-export const deleteTextile = async (id: number) => {
+export const deleteTextile = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number) => {
   try {
-    await axios.delete(`productcatalogtextile/${id}`, {
+    const { data } =  await axios.delete(`productcatalogtextile/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    getAllTextiles(setData);
+    toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);

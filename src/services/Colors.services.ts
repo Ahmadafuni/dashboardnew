@@ -81,13 +81,17 @@ export const updateColor = async (id: number, colorData: any) => {
   }
 };
 
-export const deleteColor = async (id: number) => {
+export const deleteColor = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number) => {
   try {
-    await axios.delete(`color/${id}`, {
+    const { data } = await axios.delete(`color/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    getAllColors(setData);
+    toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
