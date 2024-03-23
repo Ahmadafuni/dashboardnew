@@ -1,63 +1,70 @@
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { userSchema } from "@/form_schemas/newUserSchema";
+import UserForm from "@/components/DashboradComponents/Users/UserForm.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { userUpdateSchema } from "@/form_schemas/newUserSchema.ts";
+import { getUserById } from "@/services/Users.services.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useTranslation } from "react-i18next";
-import UserForm from "@/components/DashboradComponents/Users/UserForm";
-import Cookies from "js-cookie";
 
-export default function NewUsers() {
-  // translation
-  const { t } = useTranslation();
-  // Naginate
+export default function UpdateUser() {
+  // Param
+  const { userID } = useParams();
+  // Navigation state
   const navigate = useNavigate();
-  // Loading
+  // Loding
   const [isLoading, setIsLoading] = useState(false);
-  // Profile Image
+  // User
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    firstname: "",
+    lastname: "",
+    phoneNumber: "",
+    password: "",
+    department: "",
+  });
+  // File
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
     setFile(e.target.files[0]);
+    console.log(e.target.files[0].name);
   };
   // Form fields
-  const form = useForm<z.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
+  const form = useForm<z.infer<typeof userUpdateSchema>>({
+    resolver: zodResolver(userUpdateSchema),
     defaultValues: {
       username: "",
-      password: "",
       email: "",
       firstname: "",
       lastname: "",
       phoneNumber: "",
-      department: "",
+      password: "",
+      department: user.department,
     },
+    values: user,
   });
-  // Form submit function
-  const onSubmit = async (data: z.infer<typeof userSchema>) => {
+  const onSubmit = async (data: z.infer<typeof userUpdateSchema>) => {
     setIsLoading(true);
-    if (!file) {
-      toast.error("Profile photo is required!");
-      setIsLoading(false);
-      return;
-    }
     const formData = new FormData();
-    formData.append("profiles", file);
+    if (file !== null) {
+      formData.append("profiles", file);
+    }
     const userInfo = JSON.stringify(data);
     formData.append("userInfo", userInfo);
     try {
-      const newUser = await axios.post("auth/", formData, {
+      const updateUser = await axios.put(`auth/${userID}`, formData, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
       });
-      toast.success(newUser.data.message);
-      form.reset();
+      toast.success(updateUser.data.message);
       setIsLoading(false);
       navigate("/dashboard/users");
     } catch (error) {
@@ -67,10 +74,14 @@ export default function NewUsers() {
       setIsLoading(false);
     }
   };
+  // Page on load
+  useEffect(() => {
+    getUserById(setUser, userID);
+  }, []);
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">{t("Newuser")}</h1>
+        <h1 className="text-3xl font-bold w-full">Update User</h1>
         <Separator />
       </div>
       <div className="space-y-1">
@@ -87,7 +98,7 @@ export default function NewUsers() {
                 Please wait
               </>
             ) : (
-              t("AddUser")
+              "Update"
             )}
           </Button>
         </div>

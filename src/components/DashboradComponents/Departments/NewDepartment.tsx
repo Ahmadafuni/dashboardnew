@@ -1,30 +1,22 @@
-import DepartmentForm from "@/components/DashboradComponents/Departments/DepartmentForm";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { departmentSchema } from "@/form_schemas/newDepartmentSchema";
-import { getDepartmentById } from "@/services/Departments.services";
+import { Button } from "@/components/ui/button.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { departmentSchema } from "@/form_schemas/newDepartmentSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-
-export default function UpdateDepartment() {
-  // Param
-  const { departmentID } = useParams();
+import { useTranslation } from "react-i18next";
+import DepartmentForm from "@/components/DashboradComponents/Departments/DepartmentForm.tsx";
+import Cookies from "js-cookie";
+export default function NewDepartment() {
+  // Translation
+  const { t } = useTranslation();
   // Navigation state
   const navigate = useNavigate();
-  // Department
-  const [department, setDepartment] = useState({
-    name: "",
-    location: "",
-    description: "",
-    category: "",
-  });
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Form fields
@@ -36,22 +28,18 @@ export default function UpdateDepartment() {
       description: "",
       category: "",
     },
-    values: department,
   });
   // Form submit function
   const onSubmit = async (data: z.infer<typeof departmentSchema>) => {
     setIsLoading(true);
     try {
-      const updateDepartment = await axios.put(
-        `department/${departmentID}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
-      toast.success(updateDepartment.data.message);
+      const newDepartment = await axios.post("department/", data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      toast.success(newDepartment.data.message);
+      form.reset();
       setIsLoading(false);
       navigate("/dashboard/departments");
     } catch (error) {
@@ -61,14 +49,10 @@ export default function UpdateDepartment() {
       setIsLoading(false);
     }
   };
-  // Page on load
-  useEffect(() => {
-    getDepartmentById(setDepartment, departmentID);
-  }, []);
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">Update department</h1>
+        <h1 className="text-3xl font-bold w-full">{t("Newdepartment")}</h1>
         <Separator />
       </div>
       <div className="space-y-1">
@@ -81,7 +65,7 @@ export default function UpdateDepartment() {
                 Please wait
               </>
             ) : (
-              "Update"
+              t("Add")
             )}
           </Button>
         </div>
