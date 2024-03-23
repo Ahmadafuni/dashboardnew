@@ -1,12 +1,14 @@
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Form, FormField } from "@/components/ui/form";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   form: any;
   onSubmit: any;
 }
 export default function ProductCatalogueForm({ form, onSubmit }: Props) {
-  return (
+    const { t } = useTranslation();
+    return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -18,8 +20,8 @@ export default function ProductCatalogueForm({ form, onSubmit }: Props) {
           name="name"
           render={({ field }) => (
             <TextInputFieldForForm
-              placeholder={"Product Catalogue Name"}
-              label={"Product Catalogue Name"}
+              placeholder=""
+              label={t("ProductCatalogueName")}
               field={field}
             />
           )}
@@ -29,8 +31,8 @@ export default function ProductCatalogueForm({ form, onSubmit }: Props) {
           name="description"
           render={({ field }) => (
             <TextInputFieldForForm
-              placeholder={"Product Catalogue Description"}
-              label={"Product Catalogue Description"}
+              placeholder=""
+              label={t("Description")}
               field={field}
             />
           )}

@@ -18,16 +18,15 @@ import { toast } from "sonner";
 import { z } from "zod";
 import ProductCatalogueForm from "./ProductCatalogueForm";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   getCatalogues: any;
 };
 export default function NewProductCatalogueDialog({ getCatalogues }: Props) {
-  // Modal
   const [open, setOpen] = useRecoilState(newProductCatalogueModal);
-  // Loding
   const [isLoading, setIsLoading] = useState(false);
-  // Form fields
+  const { t } = useTranslation();
   const form = useForm<z.infer<typeof productCatalogueSchema>>({
     resolver: zodResolver(productCatalogueSchema),
     defaultValues: {
@@ -60,12 +59,12 @@ export default function NewProductCatalogueDialog({ getCatalogues }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New Product Catalogue</DialogTitle>
+          <DialogTitle>{t("NewProductCatalogue")}</DialogTitle>
         </DialogHeader>
         <ProductCatalogueForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Close
+            {t("Close")}
           </Button>
           <Button type="submit" disabled={isLoading} form="catalogue">
             {isLoading ? (
@@ -74,7 +73,7 @@ export default function NewProductCatalogueDialog({ getCatalogues }: Props) {
                 Please wait
               </>
             ) : (
-              "Add"
+                t("Add")
             )}
           </Button>
         </DialogFooter>
