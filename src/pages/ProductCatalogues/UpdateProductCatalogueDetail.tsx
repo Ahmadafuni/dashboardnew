@@ -28,6 +28,7 @@ import NewTemplatePattern from "@/components/DashboradComponents/Entities/Templa
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles";
 import { getProductCatalogueDetailById } from "@/services/ProductCatalogues.services";
+import {useParams} from "react-router-dom";
 
 export default function UpdateProductCatalogueDetail() {
   // Translation
