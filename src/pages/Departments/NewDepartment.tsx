@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import DepartmentForm from "@/components/pages/Departments/DepartmentForm";
+import DepartmentForm from "@/components/DashboradComponents/Departments/DepartmentForm";
+import Cookies from "js-cookie";
 export default function NewDepartment() {
   // Translation
   const { t } = useTranslation();
@@ -32,7 +33,11 @@ export default function NewDepartment() {
   const onSubmit = async (data: z.infer<typeof departmentSchema>) => {
     setIsLoading(true);
     try {
-      const newDepartment = await axios.post("department/", data);
+      const newDepartment = await axios.post("department/", data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
       toast.success(newDepartment.data.message);
       form.reset();
       setIsLoading(false);

@@ -1,10 +1,11 @@
-import UserForm from "@/components/pages/Users/UserForm";
+import UserForm from "@/components/DashboradComponents/Users/UserForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { userUpdateSchema } from "@/form_schemas/newUserSchema";
 import { getUserById } from "@/services/Users.services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -58,7 +59,11 @@ export default function UpdateUser() {
     const userInfo = JSON.stringify(data);
     formData.append("userInfo", userInfo);
     try {
-      const updateUser = await axios.put(`auth/${userID}`, formData);
+      const updateUser = await axios.put(`auth/${userID}`, formData, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
       toast.success(updateUser.data.message);
       setIsLoading(false);
       navigate("/dashboard/users");

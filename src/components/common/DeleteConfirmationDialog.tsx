@@ -11,30 +11,38 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Trash } from "lucide-react";
+import ButtonTooltipStructure from "./ButtonTooltipStructure";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   deleteRow: any;
 }
 export default function DeleteConfirmationDialog({ deleteRow }: Props) {
+  const { t } = useTranslation();
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"destructive"}>
-          <Trash className="h-4 w-4" />
-        </Button>
+        <ButtonTooltipStructure description="Delete">
+          <Button variant={"destructive"}>
+            <Trash className="h-4 w-4" />
+          </Button>
+        </ButtonTooltipStructure>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Do you want to delete this?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t("DeleteConfirmationDialogTitle")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this
-            account.
+            {t("DeleteConfirmationDialogDescription")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>
+            {t("DeleteConfirmationDialogCancel")}
+          </AlertDialogCancel>
           <AlertDialogAction onClick={() => deleteRow()}>
-            Continue
+            {t("DeleteConfirmationDialogContinue")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

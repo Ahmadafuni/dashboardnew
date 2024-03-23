@@ -25,7 +25,7 @@ import ProductCatalogueForm from "./ProductCatalogueForm";
 type Props = {
   getCatalogues: any;
 };
-export default function UpdateProductCatalogue({ getCatalogues }: Props) {
+export default function UpdateProductCatalogueModal({ getCatalogues }: Props) {
   // Catalogue Id
   const catalogueID = useRecoilValue(productCatalogueId);
   // Modal

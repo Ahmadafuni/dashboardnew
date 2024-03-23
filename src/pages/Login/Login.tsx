@@ -44,10 +44,10 @@ export default function Login() {
     setIsLoading(true);
     try {
       const result = await axios.post("auth/login", data);
-      toast.success(result.data.message);
-      Cookies.set("access_token", result.data.data.access_token);
-      setIsLoading(false);
       setUser(result.data.data.user);
+      await Cookies.set("access_token", result.data.data.access_token);
+      toast.success(result.data.message);
+      setIsLoading(false);
       navigate("/dashboard/users");
     } catch (error) {
       if (error instanceof AxiosError) {

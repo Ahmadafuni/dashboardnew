@@ -1,13 +1,11 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.tsx";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { productCatalogueSchema } from "@/form_schemas/newProductCatalogueSchema";
-import { newProductCatalogueModal } from "@/store/ProductCatalogue";
+} from "@/components/ui/dialog.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -15,32 +13,39 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { toast } from "sonner";
+import SizeDialog from "@/components/DashboradComponents/Entities/Sizes/SizesDialog.tsx";
+import { newSizeModal } from "@/store/Sizes.ts";
+import { SizeSchema } from "@/form_schemas/newSizeSchema.ts";
+import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 import { z } from "zod";
-import ProductCatalogueForm from "./ProductCatalogueForm";
 
 type Props = {
-  getCatalogues: any;
+  getSizes: any;
 };
-export default function NewProductCatalogueModal({ getCatalogues }: Props) {
-  // Modal
-  const [open, setOpen] = useRecoilState(newProductCatalogueModal);
-  // Loding
+
+export default function NewSize({ getSizes }: Props) {
+  const [open, setOpen] = useRecoilState(newSizeModal);
   const [isLoading, setIsLoading] = useState(false);
-  // Form fields
-  const form = useForm<z.infer<typeof productCatalogueSchema>>({
-    resolver: zodResolver(productCatalogueSchema),
+  const { t } = useTranslation();
+  const form = useForm<z.infer<typeof SizeSchema>>({
+    resolver: zodResolver(SizeSchema),
     defaultValues: {
-      name: "",
+      sizeName: "",
       description: "",
     },
   });
-  // Form submit function
-  const onSubmit = async (data: z.infer<typeof productCatalogueSchema>) => {
+
+  const onSubmit = async (data: z.infer<typeof SizeSchema>) => {
     setIsLoading(true);
     try {
-      const newCatalogue = await axios.post("productcatalog/", data);
-      toast.success(newCatalogue.data.message);
-      getCatalogues();
+      const newSize = await axios.post("size", data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      toast.success(newSize.data.message);
+      getSizes();
       form.reset();
       setIsLoading(false);
       setOpen(false);
@@ -51,25 +56,26 @@ export default function NewProductCatalogueModal({ getCatalogues }: Props) {
       setIsLoading(false);
     }
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New Product Catalogue</DialogTitle>
+          <DialogTitle>{t("NewSize")}</DialogTitle>
         </DialogHeader>
-        <ProductCatalogueForm form={form} onSubmit={onSubmit} />
+        <SizeDialog form={form} onSubmit={onSubmit} />
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Close
+            {t("Close")}
           </Button>
-          <Button type="submit" disabled={isLoading} form="catalogue">
+          <Button type="submit" disabled={isLoading} form="size">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </>
             ) : (
-              "Add"
+              t("Add")
             )}
           </Button>
         </DialogFooter>

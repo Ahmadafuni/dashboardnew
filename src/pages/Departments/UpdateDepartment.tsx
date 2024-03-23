@@ -1,10 +1,11 @@
-import DepartmentForm from "@/components/pages/Departments/DepartmentForm";
+import DepartmentForm from "@/components/DashboradComponents/Departments/DepartmentForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { departmentSchema } from "@/form_schemas/newDepartmentSchema";
 import { getDepartmentById } from "@/services/Departments.services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -43,7 +44,12 @@ export default function UpdateDepartment() {
     try {
       const updateDepartment = await axios.put(
         `department/${departmentID}`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
       );
       toast.success(updateDepartment.data.message);
       setIsLoading(false);
