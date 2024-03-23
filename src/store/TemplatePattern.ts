@@ -22,3 +22,8 @@ export const templatePattern = atom({
     description: "",
   },
 });
+
+export const templatePatternList = atom({
+  key: "templatePatternList",
+  default: [],
+});

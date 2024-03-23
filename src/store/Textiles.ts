@@ -24,3 +24,8 @@ export const textile = atom({
     description: "",
   },
 });
+
+export const textileList = atom({
+  key: "textileList",
+  default: [],
+});

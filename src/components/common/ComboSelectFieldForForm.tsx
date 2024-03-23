@@ -49,7 +49,7 @@ export default function ComboSelectFieldForForm({
   };
 
   return (
-    <FormItem className="flex flex-col">
+    <FormItem className="flex flex-col grow">
       <FormLabel className="h-[19px] mt-[5px] flex items-center">
         {label}
       </FormLabel>

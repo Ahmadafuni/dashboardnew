@@ -17,6 +17,7 @@ import { useRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import ProductCatalogueForm from "./ProductCatalogueForm";
+import Cookies from "js-cookie";
 
 type Props = {
   getCatalogues: any;
@@ -38,7 +39,11 @@ export default function NewProductCatalogueModal({ getCatalogues }: Props) {
   const onSubmit = async (data: z.infer<typeof productCatalogueSchema>) => {
     setIsLoading(true);
     try {
-      const newCatalogue = await axios.post("productcatalog/", data);
+      const newCatalogue = await axios.post("productcatalog/", data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
       toast.success(newCatalogue.data.message);
       getCatalogues();
       form.reset();

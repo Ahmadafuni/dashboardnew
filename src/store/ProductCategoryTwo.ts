@@ -22,3 +22,8 @@ export const productCategoryTwo = atom({
     description: "",
   },
 });
+
+export const productCategoryTwoList = atom({
+  key: "productCategoryTwoList",
+  default: [],
+});

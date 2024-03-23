@@ -28,16 +28,29 @@ import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/Pro
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles";
+import { getProductCatalogueDetailById } from "@/services/ProductCatalogues.services";
 
-export default function NewProductCatalogueDetail() {
+export default function UpdateProductCatalogueDetail() {
   // Translation
   const { t } = useTranslation();
   // Param
-  const { catalogueId } = useParams();
+  const { detailId } = useParams();
   // Navigation state
   const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
+  // Detail State
+  const [detail, setDetail] = useState({
+    category1: "",
+    category2: "",
+    description: "",
+    grammage: "",
+    standardWeight: "",
+    season: "",
+    templatePattern: "",
+    templateType: "",
+    textile: "",
+  });
   // Dropdown state
   const setCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setCategoryTwoList = useSetRecoilState(productCategoryTwoList);
@@ -58,6 +71,7 @@ export default function NewProductCatalogueDetail() {
       templateType: "",
       textile: "",
     },
+    values: detail,
   });
   // Form submit function
   const onSubmit = async (
@@ -65,13 +79,12 @@ export default function NewProductCatalogueDetail() {
   ) => {
     setIsLoading(true);
     try {
-      const newDetail = await axios.post(
-        "productcatalogtdetail/",
+      const updateDetail = await axios.put(
+        `productcatalogtdetail/${detailId}`,
         {
           ...data,
           grammage: parseFloat(data.grammage),
           standardWeight: parseFloat(data.standardWeight),
-          productCatalog: catalogueId,
         },
         {
           headers: {
@@ -79,8 +92,7 @@ export default function NewProductCatalogueDetail() {
           },
         }
       );
-      toast.success(newDetail.data.message);
-      form.reset();
+      toast.success(updateDetail.data.message);
       setIsLoading(false);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -92,6 +104,7 @@ export default function NewProductCatalogueDetail() {
 
   // Page on load
   useEffect(() => {
+    getProductCatalogueDetailById(setDetail, detailId);
     getAllProductCategoryOneList(setCategoryOneList);
     getAllProductCategoryTwoList(setCategoryTwoList);
     getAllTemplatePatternsList(setTemplatePatternList);
@@ -121,7 +134,7 @@ export default function NewProductCatalogueDetail() {
       <NewTextiles getTextiles={() => getAllTextilesList(setTextilesList)} />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">
-          New Product Catalogue Detail
+          Update Product Catalogue Detail
         </h1>
         <Separator />
       </div>
@@ -135,7 +148,7 @@ export default function NewProductCatalogueDetail() {
                 Please wait
               </>
             ) : (
-              t("Add")
+              t("Update")
             )}
           </Button>
         </div>

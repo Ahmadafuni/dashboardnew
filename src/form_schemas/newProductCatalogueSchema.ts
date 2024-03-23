@@ -14,13 +14,18 @@ export const productCatalogueSchema = z.object({
 
 export const productCatalogueDetailSchema = z.object({
   grammage: z
-    .number()
-    .multipleOf(0.01)
-    .positive({ message: "Enter a value greater than zero!" }),
+    .string()
+    .min(1, { message: "Please enter grammage!" })
+    .regex(/^\d+(\.\d{1,2})?$/, {
+      message: "Please enter a valid decimal point number(e.x 0.1, 12.11, 12)",
+    }),
   standardWeight: z
-    .number()
-    .multipleOf(0.01)
-    .positive({ message: "Enter a value greater than zero!" }),
+    .string()
+    .min(1, { message: "Please enter standard weight!" })
+    .regex(/^\d+(\.\d{1,2})?$/, {
+      message: "Please enter a valid decimal point number(e.x 0.1, 12.11, 12)",
+    }),
+  // name: z.string(),
   category1: z.string().min(1, { message: "Please select category one!" }),
   category2: z.string().min(1, { message: "Please select category two!" }),
   season: z.string().min(1, { message: "Please select season!" }),
@@ -28,6 +33,6 @@ export const productCatalogueDetailSchema = z.object({
   textile: z.string().min(1, { message: "Please select textile!" }),
   templatePattern: z
     .string()
-    .min(1, { message: "Please select template pattern!" }),
+    .min(1, { message: "Please select template pattern" }),
   description: z.string(),
 });

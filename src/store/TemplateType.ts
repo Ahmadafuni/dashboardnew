@@ -22,3 +22,8 @@ export const templateType = atom({
     description: "",
   },
 });
+
+export const templateTypeList = atom({
+  key: "templateTypeList",
+  default: [],
+});

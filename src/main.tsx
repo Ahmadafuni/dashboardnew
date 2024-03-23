@@ -33,7 +33,6 @@ import UpdateUser from "@/pages/Users/UpdateUser.tsx";
 import NewDepartment from "./pages/Departments/NewDepartment.tsx";
 import UpdateDepartment from "./pages/Departments/UpdateDepartment.tsx";
 import Departments from "./pages/Departments/Departments.tsx";
-import NewProductCatalogueDetail from "./pages/ProductCatalogues/NewProductCatalogueDetail.tsx";
 import Colors from "@/pages/Entities/Colors.tsx";
 import Sizes from "@/pages/Entities/Sizes.tsx";
 import Textiles from "@/pages/Entities/Textiles.tsx";
@@ -41,9 +40,13 @@ import TemplateType from "@/pages/Entities/TemplateType.tsx";
 import TemplatePattern from "@/pages/Entities/TemplatePattern.tsx";
 import ProductCategoryOne from "@/pages/Entities/ProductCategoryOne.tsx";
 import ProductCategoryTwo from "@/pages/Entities/ProductCategoryTwo.tsx";
+import NewProductCatalogueDetail from "./pages/ProductCatalogues/NewProductCatalogueDetail.tsx";
+import UpdateProductCatalogueDetail from "./pages/ProductCatalogues/UpdateProductCatalogueDetail.tsx";
+import ProductCatalogueDetails from "./pages/ProductCatalogues/ProductCatalogueDetails.tsx";
 
 // Axios config
-axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+axios.defaults.baseURL = "http://localhost:3002/";
+// axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
 };
@@ -90,8 +93,16 @@ const router = createBrowserRouter([
       { path: "/dashboard/statistics", element: <Statistics /> },
       { path: "/dashboard/productcatalogues", element: <ProductCatalogues /> },
       {
+        path: "/dashboard/productcatalogues/cataloguedetails/:catalogueId",
+        element: <ProductCatalogueDetails />,
+      },
+      {
         path: "/dashboard/productcatalogues/cataloguedetails/new/:catalogueId",
         element: <NewProductCatalogueDetail />,
+      },
+      {
+        path: "/dashboard/productcatalogues/cataloguedetails/update/:detailId",
+        element: <UpdateProductCatalogueDetail />,
       },
       { path: "/dashboard/templates", element: <Templates /> },
       { path: "/dashboard/orders", element: <Orders /> },

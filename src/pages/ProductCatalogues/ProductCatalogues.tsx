@@ -36,7 +36,7 @@ export default function ProductCatalogues() {
   const [catalogues, setCatalogues] = useState([]);
   const { t } = useTranslation();
 
-  const userColumns: ColumnDef<ProductCatalogueType>[] = [
+  const catalogueColumns: ColumnDef<ProductCatalogueType>[] = [
     {
       accessorKey: "ProductCatalogName",
       header: t("ProductCatalogueName"),
@@ -73,7 +73,13 @@ export default function ProductCatalogues() {
               </Button>
             </ButtonTooltipStructure>
             <ButtonTooltipStructure description="View product catalogue details">
-              <Button>
+              <Button
+                onClick={() =>
+                  navigate(
+                    `/dashboard/productcatalogues/cataloguedetails/${row.original.Id}`
+                  )
+                }
+              >
                 <View className="h-4 w-4" />
               </Button>
             </ButtonTooltipStructure>
@@ -115,7 +121,7 @@ export default function ProductCatalogues() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={userColumns} data={catalogues} />
+          <DataTable columns={catalogueColumns} data={catalogues} />
         </div>
       </div>
     </div>

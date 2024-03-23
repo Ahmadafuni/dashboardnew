@@ -5,7 +5,7 @@ type TextInputFieldForFormProp = {
   label: string;
   placeholder: string;
   field: any;
-  type?: "text" | "password" | "file";
+  type?: "text" | "password" | "file" | "number";
 };
 
 export default function TextInputFieldForForm({
