@@ -20,7 +20,6 @@ import { newTextileModal, textileList } from "@/store/Textiles.ts";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {useNavigate} from "react-router-dom";
 
 interface Props {
   form: any;
@@ -51,10 +50,8 @@ export default function ProductCatalogueDetailForm({ form, onSubmit }: Props) {
   const setNewTemplatePatternModal = useSetRecoilState(newTemplatePatternModal);
   const setNewTemplateTypeModal = useSetRecoilState(newTemplateTypeModal);
   const setNewTextileModal = useSetRecoilState(newTextileModal);
-  const navigate = useNavigate();
-  const handleSubmit = async (data: any) => {
+    const handleSubmit = async (data: any) => {
         await onSubmit(data);
-        navigate("/dashboard/productcatalogues/cataloguedetails/1");
     };
   return (
     <Form {...form}>

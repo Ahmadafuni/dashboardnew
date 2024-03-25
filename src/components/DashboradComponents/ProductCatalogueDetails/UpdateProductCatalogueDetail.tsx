@@ -27,7 +27,7 @@ import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/Pro
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
-import {useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {getProductCatalogueDetailById} from "@/services/ProductCatalogueDetails.services.ts";
 
 export default function UpdateProductCatalogueDetail() {
@@ -36,7 +36,7 @@ export default function UpdateProductCatalogueDetail() {
   // Param
   const { detailId } = useParams();
   // Navigation state
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Detail State
@@ -94,6 +94,7 @@ export default function UpdateProductCatalogueDetail() {
       );
       toast.success(updateDetail.data.message);
       setIsLoading(false);
+      navigate(-1);// Navigate back to the previous page
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
