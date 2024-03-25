@@ -59,7 +59,7 @@ export default function TemplateProductCatalogueDetailSearchForm({
     };
 
     return (
-        <Card>
+        <Card style={{ backgroundColor: "var(--card-background)" }}>
             <CardHeader>
                 <CardDescription>Search Product Catalogue Details</CardDescription>
             </CardHeader>

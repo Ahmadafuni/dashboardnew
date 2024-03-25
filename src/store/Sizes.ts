@@ -22,3 +22,8 @@ export const size = atom({
     description: "",
   },
 });
+
+export const sizeList = atom({
+  key: "sizeList",
+  default: [],
+});

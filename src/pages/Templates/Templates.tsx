@@ -13,11 +13,12 @@ import {
 import { template, templateId, updateTemplateModal } from "@/store/Template";
 import { TemplateType } from "@/types/Templates/Templates.types";
 import { ColumnDef } from "@tanstack/table-core";
-import { Download, Pen, Plus } from "lucide-react";
+import {Download, Pen, Plus, Route, Ruler} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
 
 export default function Templates() {
   // Translation
@@ -86,9 +87,28 @@ export default function Templates() {
             >
               <Pen className="h-4 w-4" />
             </Button>
+
+            <ButtonTooltipStructure description="Add Template Sizes">
+                <Button
+                    onClick={() =>
+                        navigate(
+                            `/dashboard/templates/templatesizes/new/${row.original.Id}`
+                        )
+                    }
+                >                <Ruler className="h-4 w-4" />
+              </Button>
+            </ButtonTooltipStructure>
+
+            <ButtonTooltipStructure description="Add Stages">
+              <Button>
+                <Route className="h-4 w-4" />
+              </Button>
+            </ButtonTooltipStructure>
+
             <DeleteConfirmationDialog
-              deleteRow={() => deleteTemplate(setTemplates, row.original.Id)}
+                deleteRow={() => deleteTemplate(setTemplates, row.original.Id)}
             />
+
           </div>
         );
       },

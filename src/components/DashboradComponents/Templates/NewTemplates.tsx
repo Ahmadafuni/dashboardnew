@@ -23,13 +23,9 @@ import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.serv
 import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services";
 
 export default function NewTemplates() {
-  // Translation
   const { t } = useTranslation();
-  // Navigation state
   const navigate = useNavigate();
-  // Loding
   const [isLoading, setIsLoading] = useState(false);
-  // File
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
     setFile(e.target.files[0]);
