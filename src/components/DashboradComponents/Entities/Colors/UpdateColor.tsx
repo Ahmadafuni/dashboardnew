@@ -18,6 +18,7 @@ import { z } from "zod";
 import { colorSchema } from "@/form_schemas/newColorSchema.ts";
 import ColorForm from "@/components/DashboradComponents/Entities/Colors/ColorForm";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 type Props = {
   getColors: () => void;
@@ -41,7 +42,11 @@ export default function UpdateColor({ getColors }: Props) {
   const onSubmit = async (data: z.infer<typeof colorSchema>) => {
     setIsLoading(true);
     try {
-      const response = await axios.put(`color/${colorID}`, data);
+      const response = await axios.put(`color/${colorID}`, data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
       toast.success(response.data.message);
       getColors(); // Refresh colors after update
       setIsLoading(false);

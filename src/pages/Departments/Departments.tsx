@@ -17,7 +17,7 @@ export default function Departments() {
   // Departments
   const [departments, setDepartments] = useState([]);
   // Columns
-  const userColumns: ColumnDef<DepartmentType>[] = [
+  const departmentColumns: ColumnDef<DepartmentType>[] = [
     {
       accessorKey: "Name",
       header: t("Name"),
@@ -69,7 +69,7 @@ export default function Departments() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={userColumns} data={departments} />
+          <DataTable columns={departmentColumns} data={departments} />
         </div>
       </div>
     </div>
