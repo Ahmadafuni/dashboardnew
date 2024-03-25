@@ -15,9 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import TemplateForm from "./TemplateForm";
-import TemplateProductCatelogueDetailSearchForm from "./TemplateProductCatelogueDetailSearchForm";
+import TemplateProductCatalogueDetailSearchForm from "./TemplateProductCatalogueDetailSearchForm.tsx";
 import { useSetRecoilState } from "recoil";
-import { productCatalogueDetailsList } from "@/store/ProductCatalogueDetails";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.services";
@@ -38,7 +37,6 @@ export default function NewTemplates() {
   // Dropdown state
   const setCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setCategoryTwoList = useSetRecoilState(productCategoryTwoList);
-  const setPCDS = useSetRecoilState(productCatalogueDetailsList);
 
   // Search Form fields
   const formSearch = useForm<
@@ -50,37 +48,6 @@ export default function NewTemplates() {
       categoryTwo: "",
     },
   });
-
-  // Search submit function
-  const onSubmitSearch = async (
-    data: z.infer<typeof templateProductCatalogueDetailSearchSchema>
-  ) => {
-    setIsLoading(true);
-    try {
-      if (data.categoryOne.length <= 0 && data.categoryTwo.length <= 0) {
-        toast.warning("Please select at least one category to search!");
-        setIsLoading(false);
-        return;
-      }
-      const pcds = await axios.post(
-        "productcatalogtdetail/search-by-category",
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
-      setPCDS(pcds.data.data);
-      toast.success(pcds.data.message);
-      setIsLoading(false);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-      setIsLoading(false);
-    }
-  };
 
   // Form fields
   const form = useForm<z.infer<typeof templateSchema>>({
@@ -132,25 +99,10 @@ export default function NewTemplates() {
         <Separator />
       </div>
       <div className="space-y-1">
-        <h2 className="text-2xl font-bold w-full">
-          Search Product Catalogue Details
-        </h2>
-        <TemplateProductCatelogueDetailSearchForm
+        <TemplateProductCatalogueDetailSearchForm
           form={formSearch}
-          onSubmit={onSubmitSearch}
         />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="template-pcd-search">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </>
-            ) : (
-              "Search"
-            )}
-          </Button>
-        </div>
+
       </div>
       <div className="space-y-1">
         <TemplateForm
