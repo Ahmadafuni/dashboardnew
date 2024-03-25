@@ -4,7 +4,6 @@ import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDial
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { downLoadFile } from "@/services/Commons.services";
-// import { downLoadFile } from "@/services/Commons.services";
 import {
   deleteTemplate,
   getAllTemplates,
@@ -13,12 +12,26 @@ import {
 import { template, templateId, updateTemplateModal } from "@/store/Template";
 import { TemplateType } from "@/types/Templates/Templates.types";
 import { ColumnDef } from "@tanstack/table-core";
-import {Download, Pen, Plus, Route, Ruler} from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+    CirclePlus,
+    Download,
+    Ellipsis,
+    Pen,
+    Plus,
+    Route,
+    Ruler
+} from "lucide-react";
+import  { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function Templates() {
   // Translation
@@ -31,7 +44,8 @@ export default function Templates() {
   const setUpdateTemplateModal = useSetRecoilState(updateTemplateModal);
   const setTemplateId = useSetRecoilState(templateId);
   const setTemplate = useSetRecoilState(template);
-  // Columns
+
+    // Columns
   const templateColumns: ColumnDef<TemplateType>[] = [
     {
       accessorKey: "TemplateName",
@@ -87,28 +101,32 @@ export default function Templates() {
             >
               <Pen className="h-4 w-4" />
             </Button>
-
-            <ButtonTooltipStructure description="Add Template Sizes">
-                <Button
-                    onClick={() =>
-                        navigate(
-                            `/dashboard/templates/templatesizes/new/${row.original.Id}`
-                        )
-                    }
-                >                <Ruler className="h-4 w-4" />
-              </Button>
-            </ButtonTooltipStructure>
-
-            <ButtonTooltipStructure description="Add Stages">
-              <Button>
-                <Route className="h-4 w-4" />
-              </Button>
-            </ButtonTooltipStructure>
-
             <DeleteConfirmationDialog
                 deleteRow={() => deleteTemplate(setTemplates, row.original.Id)}
             />
-
+              <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                      <Button variant="outline">
+                          <Ellipsis>Open</Ellipsis>
+                      </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                      <DropdownMenuGroup>
+                          <DropdownMenuItem onClick={() => navigate(`/dashboard/templates/templatesizes/new/${row.original.Id}`)}>
+                              <CirclePlus className="mr-2 h-4 w-4"/>
+                              <span>Add Template Size</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => navigate("/dashboard/templates/templatesizes")}>
+                              <Ruler className="mr-2 h-4 w-4"/>
+                              <span>View Template Sizes</span>
+                          </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => navigate("/dashboard/ManufacturingStageForm")}>
+                              <Route className="mr-2 h-4 w-4" />
+                              <span>Stages</span>
+                          </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                  </DropdownMenuContent>
+              </DropdownMenu>
           </div>
         );
       },

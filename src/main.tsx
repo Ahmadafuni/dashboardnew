@@ -45,6 +45,8 @@ import UpdateProductCatalogueDetail from "./components/DashboradComponents/Produ
 import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCatalogueDetails.tsx";
 import NewTemplates from "./components/DashboradComponents/Templates/NewTemplates.tsx";
 import NewTemplateSizes from "@/components/DashboradComponents/TemplateSizes/NewTemplateSizes.tsx";
+import TemplateSizes from "@/pages/TemplateSizes/TemplateSizes.tsx";
+import NewManufacturingStages from "@/components/DashboradComponents/ManufacturingStages/NewManufacturingStages.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";
@@ -108,9 +110,19 @@ const router = createBrowserRouter([
       },
       { path: "/dashboard/templates", element: <Templates /> },
       { path: "/dashboard/templates/new", element: <NewTemplates /> },
+
+      {
+        path: "/dashboard/templates/templatesizes",
+        element: <TemplateSizes />,
+      },
       {
         path: "/dashboard/templates/templatesizes/new/:templateId",
         element: <NewTemplateSizes />,
+      },
+
+      {
+        path: "/dashboard/ManufacturingStageForm",
+        element: <NewManufacturingStages />,
       },
       { path: "/dashboard/orders", element: <Orders /> },
       { path: "/dashboard/models", element: <Models /> },
