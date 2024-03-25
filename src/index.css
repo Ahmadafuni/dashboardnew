@@ -47,13 +47,28 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-}
 
-@layer base {
-  * {
+  /* Global styles for all components */
+  *,
+  *::before,
+  *::after {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Define the form-input class */
+  .form-input {
+    @apply border border-gray-300 rounded-md px-1 py-2;
+    background-color: var(--card);
+    color: var(--card-foreground);
+    border-color: var(--input);
+    border-width: 0.5px;
+    border-radius: var(--radius);
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
 }

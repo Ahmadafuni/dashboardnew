@@ -127,28 +127,23 @@ export default function TemplateSizeForm({ form, onSubmit }: Props) {
                     <h2 className="text-lg font-semibold">Measurements</h2>
                 </CardHeader>
                 <CardContent>
-                    {/* Measurements form fields go here */}
-
-
-
-
                     <div className="flex flex-col space-y-2" >
                         {measurements.map((measurement, index) => (
                             <div key={index} className="flex items-center space-x-2">
                                 <input
                                     type="text"
                                     value={measurement.name}
-                                    className="form-input w-1/3 bg-gray-800 text-gray-100 border-gray-700 rounded-md px-3 py-2"
+                                    className="form-input"
                                 />
                                 <input
                                     type="text"
                                     value={measurement.value}
-                                    className="form-input w-1/3 bg-gray-800 text-gray-100 border-gray-700 rounded-md px-3 py-2"
+                                    className="form-input"
                                 />
                                 <input
                                     type="text"
                                     value={measurement.unit}
-                                    className="form-input w-1/3 bg-gray-800 text-gray-100 border-gray-700 rounded-md px-3 py-2"
+                                    className="form-input"
                                 />
                                 <button
                                     type="button"
@@ -165,7 +160,7 @@ export default function TemplateSizeForm({ form, onSubmit }: Props) {
                                 placeholder="Measurement Name"
                                 value={measurementName}
                                 onChange={(e) => setMeasurementName(e.target.value)}
-                                className="form-input w-1/3 bg-gray-800 text-gray-100 border-gray-700 rounded-md px-3 py-2"
+                                className="form-input"
                             />
 
                             <input
@@ -173,14 +168,14 @@ export default function TemplateSizeForm({ form, onSubmit }: Props) {
                                 placeholder="Value"
                                 value={measurementValue}
                                 onChange={(e) => setMeasurementValue(e.target.value)}
-                                className="form-input w-1/3 bg-gray-800 text-gray-100 border-gray-700 rounded-md px-3 py-2"
+                                className="form-input"
                             />
                             <input
                                 type="text"
                                 placeholder="Unit"
                                 value={measurementUnit}
                                 onChange={(e) => setMeasurementUnit(e.target.value)}
-                                className="form-input w-1/3 bg-gray-800 text-gray-100 border-gray-700 rounded-md px-3 py-2"
+                                className="form-input"
                             />
                             <button
                                 type="button"
