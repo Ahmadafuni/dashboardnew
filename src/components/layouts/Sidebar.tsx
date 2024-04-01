@@ -12,7 +12,7 @@ import {
   FileBarChart2,
   Store,
   AlignJustify, Palette, Ruler, SwatchBook, SquareAsterisk, Asterisk,
-  ArrowUpDown, ArrowLeftRight,
+  ArrowUpDown, ArrowLeftRight, ShoppingBasket, LibraryBig, Album,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -30,7 +30,6 @@ export default function Sidebar() {
         { name: t("Home"), link: "/dashboard/home", icon: Home },
         { name: t("Departments"), link: "/dashboard/departments", icon: LayoutPanelTop },
         { name: t("Users"), link: "/dashboard/users", icon: UsersRound },
-        { name: t("Stores"), link: "/dashboard/stores", icon: Store },
         { name: t("Reports"), link: "/dashboard/reports", icon: LayoutDashboard },
         { name: t("Statistics"), link: "/dashboard/statistics", icon: FileBarChart2 },
         { name: t("ProductCatalogues"), link: "/dashboard/productcatalogues", icon: FolderOpen },
@@ -51,6 +50,17 @@ export default function Sidebar() {
         { name: t("TemplatePattern"), link: "/dashboard/entities/templatepattern", icon: SquareAsterisk },
         { name: t("ProductCategoryOne"), link: "/dashboard/entities/productcategoryone", icon: ArrowUpDown },
         { name: t("ProductCategoryTwo"), link: "/dashboard/entities/productcategorytwo", icon: ArrowLeftRight },
+      ],
+    },
+    {
+      gName: "Store Management",
+      childs: [
+        { name: t("Home"), link: "/dashboard/home", icon: Home },
+        { name: t("Reports"), link: "/dashboard/reports", icon: LayoutDashboard },
+        { name: t("Warehouses"), link: "/dashboard/warehouses", icon: Store },
+        { name: t("Suppliers"), link: "/dashboard/suppliers", icon: ShoppingBasket },
+        { name: t("Materials"), link: "/dashboard/materials", icon: LibraryBig },
+        { name: t("Materials Category"), link: "/dashboard/materialcategory", icon: Album },
       ],
     },
   ];

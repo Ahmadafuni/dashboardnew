@@ -27,7 +27,7 @@ import Models from "@/pages/Models/Models.tsx";
 import Tasks from "@/pages/Tasks/Tasks.tsx";
 import Notes from "@/pages/Notes/Notes.tsx";
 import Home from "@/pages/Home/Home.tsx";
-import Stores from "@/pages/Stores/Stores.tsx";
+import Warehouses from "@/pages/Warehouses/Warehouses.tsx";
 import NewUsers from "@/components/DashboradComponents/Users/NewUsers.tsx";
 import UpdateUser from "@/components/DashboradComponents/Users/UpdateUser.tsx";
 import NewDepartment from "./components/DashboradComponents/Departments/NewDepartment.tsx";
@@ -44,6 +44,11 @@ import NewProductCatalogueDetail from "./components/DashboradComponents/ProductC
 import UpdateProductCatalogueDetail from "./components/DashboradComponents/ProductCatalogueDetails/UpdateProductCatalogueDetail.tsx";
 import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCatalogueDetails.tsx";
 import NewTemplates from "./components/DashboradComponents/Templates/NewTemplates.tsx";
+import Suppliers from "@/pages/Warehouses/Suppliers.tsx";
+import MaterialCategories from "@/pages/Warehouses/MaterialCategory.tsx";
+import Materials from "@/pages/Warehouses/Materials.tsx";
+import NewMaterial from "@/components/DashboradComponents/Materials/NewMaterial.tsx";
+import UpdateMaterial from "@/components/DashboradComponents/Materials/UpdateMaterial.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";
@@ -84,27 +89,17 @@ const router = createBrowserRouter([
 
       { path: "/dashboard/departments", element: <Departments /> },
       { path: "/dashboard/departments/new", element: <NewDepartment /> },
-      {
-        path: "/dashboard/departments/:departmentID",
-        element: <UpdateDepartment />,
-      },
+      { path: "/dashboard/departments/:departmentID", element: <UpdateDepartment />,},
 
       { path: "/dashboard/home", element: <Home /> },
       { path: "/dashboard/reports", element: <Reports /> },
       { path: "/dashboard/statistics", element: <Statistics /> },
+
       { path: "/dashboard/productcatalogues", element: <ProductCatalogues /> },
-      {
-        path: "/dashboard/productcatalogues/cataloguedetails/:catalogueId",
-        element: <ProductCatalogueDetails />,
-      },
-      {
-        path: "/dashboard/productcatalogues/cataloguedetails/new/:catalogueId",
-        element: <NewProductCatalogueDetail />,
-      },
-      {
-        path: "/dashboard/productcatalogues/cataloguedetails/update/:detailId",
-        element: <UpdateProductCatalogueDetail />,
-      },
+      { path: "/dashboard/productcatalogues/cataloguedetails/:catalogueId", element: <ProductCatalogueDetails />,},
+      { path: "/dashboard/productcatalogues/cataloguedetails/new/:catalogueId", element: <NewProductCatalogueDetail />,},
+      { path: "/dashboard/productcatalogues/cataloguedetails/update/:detailId", element: <UpdateProductCatalogueDetail />,},
+
       { path: "/dashboard/templates", element: <Templates /> },
       { path: "/dashboard/templates/new", element: <NewTemplates /> },
       { path: "/dashboard/orders", element: <Orders /> },
@@ -112,24 +107,23 @@ const router = createBrowserRouter([
       { path: "/dashboard/tasks", element: <Tasks /> },
       { path: "/dashboard/notes", element: <Notes /> },
       { path: "/dashboard/users", element: <Users /> },
-      { path: "/dashboard/stores", element: <Stores /> },
+
+      { path: "/dashboard/warehouses", element: <Warehouses /> },
+      { path: "/dashboard/suppliers", element: <Suppliers /> },
+      { path: "/dashboard/materialcategory", element: <MaterialCategories /> },
+      { path: "/dashboard/materials", element: <Materials /> },
+      { path: "/dashboard/materials/new", element: <NewMaterial /> },
+      { path: "/dashboard/materials/:materialID", element: <UpdateMaterial />,},
+
+
 
       { path: "/dashboard/entities/colors", element: <Colors /> },
       { path: "/dashboard/entities/sizes", element: <Sizes /> },
       { path: "/dashboard/entities/textiles", element: <Textiles /> },
       { path: "/dashboard/entities/templatetype", element: <TemplateType /> },
-      {
-        path: "/dashboard/entities/templatepattern",
-        element: <TemplatePattern />,
-      },
-      {
-        path: "/dashboard/entities/productcategoryone",
-        element: <ProductCategoryOne />,
-      },
-      {
-        path: "/dashboard/entities/productcategorytwo",
-        element: <ProductCategoryTwo />,
-      },
+      { path: "/dashboard/entities/templatepattern", element: <TemplatePattern />,},
+      { path: "/dashboard/entities/productcategoryone", element: <ProductCategoryOne />,},
+      { path: "/dashboard/entities/productcategorytwo", element: <ProductCategoryTwo />,},
     ],
   },
 ]);
