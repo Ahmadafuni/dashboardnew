@@ -1,13 +1,13 @@
-import {MaterialsType} from "@/types/Warehouses/Materials.types.ts";
+import {MaterialType} from "@/types/Warehouses/Materials.types.ts";
 
-export type MaterialMovementsType = {
+export type MaterialMovementType = {
     Id: number;
-    MaterialId: MaterialsType;
-    FromLocationType: 'Supplier' | 'Department' | 'Warehouse'; // Type of the source location
+    MaterialId: MaterialType;
+    FromLocationType: string;
     FromLocationId: number; // Reference to the ID of the source location (Supplier, Department, Warehouse, etc.)
-    ToLocationType: 'Supplier' | 'Department' | 'Warehouse'; // Type of the destination location
+    ToLocationType: string
     ToLocationId: number; // Reference to the ID of the destination location (Supplier, Department, Warehouse, etc.)
-    MovementType: 'Incoming' | 'Outgoing';
+    MovementType: string;
     Quantity: number;
     UnitOfMeasure: string;
     Description: string;

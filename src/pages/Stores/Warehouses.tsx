@@ -1,16 +1,16 @@
-import DataTable from "@/components/common/DataTable";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import DataTable from "@/components/common/DataTable.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {WarehouseType} from "@/types/Warehouses/Warehouses.types.ts";
 import {deleteWarehouse, getAllWarehouses, getWarehouseById} from "@/services/Warehouse.services.ts";
-import NewWarehouse from "@/components/DashboradComponents/Warehouses/NewWarehouse.tsx";
+import NewWarehouse from "@/components/DashboradComponents/Stores/Warehouses/NewWarehouse.tsx";
 import {useSetRecoilState} from "recoil";
 import {newWarehouseModal} from "@/store/Warehouse.ts";
-import UpdateWarehouse from "@/components/DashboradComponents/Warehouses/UpdateWarehouse.tsx";
+import UpdateWarehouse from "@/components/DashboradComponents/Stores/Warehouses/UpdateWarehouse.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import {updateWarehouseModal, warehouseId} from "@/store/Warehouse.ts";
 

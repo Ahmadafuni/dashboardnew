@@ -10,8 +10,8 @@ import { useSetRecoilState } from "recoil";
 import { newSupplierModal, updateSupplierModal, supplierId } from "@/store/Supplier.ts";
 import {SupplierType} from "@/types/Warehouses/Suppliers.type.ts";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
-import NewSupplier from "@/components/DashboradComponents/Suppliers/NewSupplier.tsx";
-import UpdateSupplier from "@/components/DashboradComponents/Suppliers/UpdateSupplier.tsx";
+import NewSupplier from "@/components/DashboradComponents/Stores/Suppliers/NewSupplier.tsx";
+import UpdateSupplier from "@/components/DashboradComponents/Stores/Suppliers/UpdateSupplier.tsx";
 
 export default function Suppliers() {
     const { t } = useTranslation();

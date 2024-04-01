@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import MaterialForm from "@/components/DashboradComponents/Materials/MaterialForm.tsx";
+import MaterialForm from "@/components/DashboradComponents/Stores/Materials/MaterialForm.tsx";
 import Cookies from "js-cookie";
 import {useTranslation} from "react-i18next";
 

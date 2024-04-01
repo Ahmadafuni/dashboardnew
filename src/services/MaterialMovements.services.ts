@@ -3,11 +3,15 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export const getAllMaterialMovements = async (setData: Dispatch<SetStateAction<any[]>>) => {
+export const getAllMaterialMovements = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: string | undefined
+) => {
+
     try {
-        const { data } = await axios.get("materialmovement/all", {
+        const { data } = await axios.get(`materialmovement/all/${id}`, {
             headers: {
-                Authorization: `Bearer ${Cookies.get("access_token")}`,
+                Authorization: `bearer ${Cookies.get("access_token")}`,
             },
         });
         setData(data);
@@ -25,7 +29,7 @@ export const getMaterialMovementById = async (
     try {
         const { data } = await axios.get(`materialmovement/${id}`, {
             headers: {
-                Authorization: `Bearer ${Cookies.get("access_token")}`,
+                Authorization: `bearer ${Cookies.get("access_token")}`,
             },
         });
         setData(data);
@@ -39,14 +43,16 @@ export const getMaterialMovementById = async (
 export const deleteMaterialMovement = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number,
+    materialId: string | undefined
+
 ) => {
     try {
         const { data } = await axios.delete(`materialmovement/${id}`, {
             headers: {
-                Authorization: `Bearer ${Cookies.get("access_token")}`,
+                Authorization: `bearer ${Cookies.get("access_token")}`,
             },
         });
-        getAllMaterialMovements(setData);
+        getAllMaterialMovements(setData, materialId);
         toast.success(data.message);
     } catch (error) {
         if (error instanceof AxiosError) {

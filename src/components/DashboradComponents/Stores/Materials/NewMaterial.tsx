@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import MaterialForm from "@/components/DashboradComponents/Materials/MaterialForm.tsx";
+import MaterialForm from "@/components/DashboradComponents/Stores/Materials/MaterialForm.tsx";
 import Cookies from "js-cookie";
 
 export default function NewMaterial ()  {

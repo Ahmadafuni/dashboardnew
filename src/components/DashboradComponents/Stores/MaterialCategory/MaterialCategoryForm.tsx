@@ -1,5 +1,5 @@
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
-import { Form, FormField } from "@/components/ui/form";
+import TextInputFieldForForm from "@/components/common/TextInputFieldForForm.tsx";
+import { Form, FormField } from "@/components/ui/form.tsx";
 import { useTranslation } from "react-i18next";
 
 interface Props {

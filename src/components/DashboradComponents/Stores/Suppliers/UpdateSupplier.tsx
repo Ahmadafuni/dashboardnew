@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button.tsx";
+import { supplierSchema } from "@/form_schemas/newSupplierSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -7,39 +8,41 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import Cookies from "js-cookie";
+import SupplierForm from "@/components/DashboradComponents/Stores/Suppliers/SupplierForm.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { materialCategory, materialCategoryId } from "@/store/MaterialCategory.ts";
-import { updateMaterialCategoryModal } from "@/store/MaterialCategory.ts";
+import { supplier, supplierId } from "@/store/Supplier.ts";
+import { updateSupplierModal } from "@/store/Supplier.ts";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
 import { useTranslation } from "react-i18next";
-import MaterialCategoryForm from "@/components/DashboradComponents/MaterialCategory/MaterialCategoryForm.tsx";
-import {materialCategorySchema} from "@/form_schemas/newMaterialCategorySchema.ts";
 
 type Props = {
-    getMaterialCategories: any;
+    getSuppliers: any;
 };
 
-export default function UpdateMaterialCategory({ getMaterialCategories }: Props) {
-    const categoryId = useRecoilValue(materialCategoryId);
-    const [open, setOpen] = useRecoilState(updateMaterialCategoryModal);
+export default function UpdateSupplier({ getSuppliers }: Props) {
+    const supplierID = useRecoilValue(supplierId);
+    const [open, setOpen] = useRecoilState(updateSupplierModal);
     const [isLoading, setIsLoading] = useState(false);
-    const currentMaterialCategory = useRecoilValue(materialCategory);
+    const currentSupplier = useRecoilValue(supplier);
     const { t } = useTranslation();
 
-    const form = useForm<z.infer<typeof materialCategorySchema>>({
-        resolver: zodResolver(materialCategorySchema),
+    const form = useForm<z.infer<typeof supplierSchema>>({
+        resolver: zodResolver(supplierSchema),
         defaultValues: {
-            CategoryName: "",
+            Name: "",
+            Address: "",
+            PhoneNumber: "",
+            email: "",
             Description: "",
         },
-        values: currentMaterialCategory,
+        values: currentSupplier,
     });
 
-    const onSubmit = async (data: z.infer<typeof materialCategorySchema>) => {
+    const onSubmit = async (data: z.infer<typeof supplierSchema>) => {
         setIsLoading(true);
         try {
-            const updateMaterialCategory = await axios.put(
-                `materialcategory/${categoryId}`,
+            const updateSupplier = await axios.put(
+                `supplier/${supplierID}`,
                 data,
                 {
                     headers: {
@@ -47,8 +50,8 @@ export default function UpdateMaterialCategory({ getMaterialCategories }: Props)
                     },
                 }
             );
-            toast.success(updateMaterialCategory.data.message);
-            getMaterialCategories();
+            toast.success(updateSupplier.data.message);
+            getSuppliers();
             setIsLoading(false);
             setOpen(false);
         } catch (error) {
@@ -63,12 +66,12 @@ export default function UpdateMaterialCategory({ getMaterialCategories }: Props)
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t("Update Material Category")}</DialogTitle>
+                    <DialogTitle>{t("Update Supplier")}</DialogTitle>
                 </DialogHeader>
-                <MaterialCategoryForm form={form} onSubmit={onSubmit} />
+                <SupplierForm form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-                    <Button type="submit" disabled={isLoading} form="material-category-form">
+                    <Button type="submit" disabled={isLoading} form="supplier-form">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

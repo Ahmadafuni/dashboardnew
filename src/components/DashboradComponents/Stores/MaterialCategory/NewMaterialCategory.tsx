@@ -18,7 +18,7 @@ import Cookies from "js-cookie";
 import { useRecoilState } from "recoil";
 import { newMaterialCategoryModal } from "@/store/MaterialCategory.ts";
 import {materialCategorySchema} from "@/form_schemas/newMaterialCategorySchema.ts";
-import MaterialCategoryForm from "@/components/DashboradComponents/MaterialCategory/MaterialCategoryForm.tsx";
+import MaterialCategoryForm from "@/components/DashboradComponents/Stores/MaterialCategory/MaterialCategoryForm.tsx";
 
 type Props = {
     getMaterialCategories: any;

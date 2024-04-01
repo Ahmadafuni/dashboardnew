@@ -7,7 +7,7 @@ interface Props {
     onSubmit: any;
 }
 
-export default function SupplierForm({ form, onSubmit }: Props) {
+export default function MaterialMovementForm({ form, onSubmit }: Props) {
     const { t } = useTranslation();
 
     return (
@@ -15,48 +15,92 @@ export default function SupplierForm({ form, onSubmit }: Props) {
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="grid grid-cols-1 gap-2"
-                id="supplier"
+                id="materialMovement"
             >
                 <FormField
                     control={form.control}
-                    name="Name"
+                    name="MaterialId"
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label={t("Name")}
+                            label={t("MaterialId")}
                             field={field}
                         />
                     )}
                 />
                 <FormField
                     control={form.control}
-                    name="Address"
+                    name="FromLocationType"
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label={t("Address")}
+                            label={t("FromLocationType")}
                             field={field}
                         />
                     )}
                 />
                 <FormField
                     control={form.control}
-                    name="PhoneNumber"
+                    name="FromLocationId"
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label={t("PhoneNumber")}
+                            label={t("FromLocationId")}
                             field={field}
                         />
                     )}
                 />
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="ToLocationType"
                     render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label={t("Email")}
+                            label={t("ToLocationType")}
+                            field={field}
+                        />
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="ToLocationId"
+                    render={({ field }) => (
+                        <TextInputFieldForForm
+                            placeholder=""
+                            label={t("ToLocationId")}
+                            field={field}
+                        />
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="MovementType"
+                    render={({ field }) => (
+                        <TextInputFieldForForm
+                            placeholder=""
+                            label={t("MovementType")}
+                            field={{field}}
+                        />
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="Quantity"
+                    render={({ field }) => (
+                        <TextInputFieldForForm
+                            placeholder=""
+                            label={t("Quantity")}
+                            field={field}
+                        />
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="UnitOfMeasure"
+                    render={({ field }) => (
+                        <TextInputFieldForForm
+                            placeholder=""
+                            label={t("UnitOfMeasure")}
                             field={field}
                         />
                     )}

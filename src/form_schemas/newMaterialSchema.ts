@@ -20,20 +20,10 @@ export const materialSchema = z.object({
         .max(255, {
             message: "Maximum characters for the material type is 255.",
         }),
-    CategoryId: z.number()
-        .int()
-        .min(1, {
-            message: "Please select a valid category ID.",
-        }),
+    CategoryId: z.number().optional(),
     Color: z.string().optional(),
-    MinimumStockLevel: z.number()
-        .min(0, {
-            message: "Minimum stock level must be a non-negative number.",
-        }),
-    MaximumStockLevel: z.number()
-        .min(0, {
-            message: "Maximum stock level must be a non-negative number.",
-        }),
+    MinimumStockLevel: z.number().optional(),
+    MaximumStockLevel: z.number().optional(),
     UnitOfMeasure: z.string()
         .min(1, {
             message: "Please enter a unit of measure.",

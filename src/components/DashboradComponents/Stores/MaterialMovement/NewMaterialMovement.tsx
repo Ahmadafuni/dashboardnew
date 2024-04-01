@@ -1,11 +1,4 @@
 import { Button } from "@/components/ui/button.tsx";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -13,47 +6,49 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
-import SupplierForm from "@/components/DashboradComponents/Suppliers/SupplierForm.tsx";
 import { useRecoilState } from "recoil";
-import { newSupplierModal } from "@/store/Supplier.ts";
-import {supplierSchema} from "@/form_schemas/newSupplierSchema.ts";
+import { newMaterialMovementModal } from "@/store/MaterialMovement.ts";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
+import { useTranslation } from "react-i18next";
+import { materialMovementSchema } from "@/form_schemas/newMaterialMovementSchema.ts";
+import MaterialMovementForm from "@/components/DashboradComponents/Stores/MaterialMovement/MaterialMovementForm.tsx";
 
 type Props = {
-    getSuppliers: any;
+    movementType: string;
 };
 
-export default function NewSupplier({ getSuppliers }: Props) {
-    const { t } = useTranslation();
+export default function NewMaterialMovement({ movementType }: Props) {
+    const [open, setOpen] = useRecoilState(newMaterialMovementModal);
     const [isLoading, setIsLoading] = useState(false);
-    const [open, setOpen] = useRecoilState(newSupplierModal);
+    const { t } = useTranslation();
 
-    // Form fields
-    const form = useForm<z.infer<typeof supplierSchema>>({
-        resolver: zodResolver(supplierSchema),
+    const form = useForm<z.infer<typeof materialMovementSchema>>({
+        resolver: zodResolver(materialMovementSchema),
         defaultValues: {
-            Name: "",
-            Address: "",
-            PhoneNumber: "",
-            email: "",
+            MaterialId: 0,
+            FromLocationType: "",
+            FromLocationId: 0,
+            ToLocationType: "",
+            ToLocationId: 0,
+            MovementType: movementType ,
+            Quantity: 0,
+            UnitOfMeasure: "",
             Description: "",
         },
     });
 
-    const onSubmit = async (data: z.infer<typeof supplierSchema>) => {
+    const onSubmit = async (data: z.infer<typeof materialMovementSchema>) => {
         setIsLoading(true);
         try {
-            const newSupplier = await axios.post("supplier/", data, {
+            const newMaterialMovement = await axios.post("materialmovement", data, {
                 headers: {
                     Authorization: `bearer ${Cookies.get("access_token")}`,
                 },
             });
-            toast.success(newSupplier.data.message);
-            getSuppliers();
-            form.reset();
+            toast.success(newMaterialMovement.data.message);
             setIsLoading(false);
-            setOpen(false); // Close dialog after successful submission
+            setOpen(false);
         } catch (error) {
             if (error instanceof AxiosError) {
                 toast.error(error.response?.data.message);
@@ -66,12 +61,12 @@ export default function NewSupplier({ getSuppliers }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t("New Supplier")}</DialogTitle>
+                    <DialogTitle>{t("New Material Movement")}</DialogTitle>
                 </DialogHeader>
-                <SupplierForm form={form} onSubmit={onSubmit} />
+                <MaterialMovementForm form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-                    <Button type="submit" disabled={isLoading} form="supplier-form">
+                    <Button type="submit" disabled={isLoading} form="material-movement-form">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

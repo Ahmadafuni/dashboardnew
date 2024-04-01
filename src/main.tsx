@@ -27,7 +27,7 @@ import Models from "@/pages/Models/Models.tsx";
 import Tasks from "@/pages/Tasks/Tasks.tsx";
 import Notes from "@/pages/Notes/Notes.tsx";
 import Home from "@/pages/Home/Home.tsx";
-import Warehouses from "@/pages/Warehouses/Warehouses.tsx";
+import Warehouses from "@/pages/Stores/Warehouses.tsx";
 import NewUsers from "@/components/DashboradComponents/Users/NewUsers.tsx";
 import UpdateUser from "@/components/DashboradComponents/Users/UpdateUser.tsx";
 import NewDepartment from "./components/DashboradComponents/Departments/NewDepartment.tsx";
@@ -44,11 +44,12 @@ import NewProductCatalogueDetail from "./components/DashboradComponents/ProductC
 import UpdateProductCatalogueDetail from "./components/DashboradComponents/ProductCatalogueDetails/UpdateProductCatalogueDetail.tsx";
 import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCatalogueDetails.tsx";
 import NewTemplates from "./components/DashboradComponents/Templates/NewTemplates.tsx";
-import Suppliers from "@/pages/Warehouses/Suppliers.tsx";
-import MaterialCategories from "@/pages/Warehouses/MaterialCategory.tsx";
-import Materials from "@/pages/Warehouses/Materials.tsx";
-import NewMaterial from "@/components/DashboradComponents/Materials/NewMaterial.tsx";
-import UpdateMaterial from "@/components/DashboradComponents/Materials/UpdateMaterial.tsx";
+import Suppliers from "@/pages/Stores/Suppliers.tsx";
+import MaterialCategories from "@/pages/Stores/MaterialCategory.tsx";
+import Materials from "@/pages/Stores/Materials.tsx";
+import NewMaterial from "@/components/DashboradComponents/Stores/Materials/NewMaterial.tsx";
+import UpdateMaterial from "@/components/DashboradComponents/Stores/Materials/UpdateMaterial.tsx";
+import MaterialMovement from "@/pages/Stores/MaterialMovement.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";
@@ -114,8 +115,7 @@ const router = createBrowserRouter([
       { path: "/dashboard/materials", element: <Materials /> },
       { path: "/dashboard/materials/new", element: <NewMaterial /> },
       { path: "/dashboard/materials/:materialID", element: <UpdateMaterial />,},
-
-
+      { path: "/dashboard/materialmovements/:materialId", element: <MaterialMovement />,},
 
       { path: "/dashboard/entities/colors", element: <Colors /> },
       { path: "/dashboard/entities/sizes", element: <Sizes /> },
