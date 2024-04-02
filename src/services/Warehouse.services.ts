@@ -9,7 +9,7 @@ export const getAllWarehouses = async (
     try {
         const {data} = await axios.get("warehouse/all", {
             headers: {
-                Authorization: `Bearer ${Cookies.get("access_token")}`,
+                Authorization: `bearer ${Cookies.get("access_token")}`,
             },
         });
         setData(data);

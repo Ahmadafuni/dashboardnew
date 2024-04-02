@@ -71,7 +71,7 @@ export default function NewSupplier({ getSuppliers }: Props) {
                 <SupplierForm form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-                    <Button type="submit" disabled={isLoading} form="supplier-form">
+                    <Button type="submit" disabled={isLoading} form="supplier">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

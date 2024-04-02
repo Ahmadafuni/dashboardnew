@@ -9,13 +9,15 @@ import {WarehouseType} from "@/types/Warehouses/Warehouses.types.ts";
 import {deleteWarehouse, getAllWarehouses, getWarehouseById} from "@/services/Warehouse.services.ts";
 import NewWarehouse from "@/components/DashboradComponents/Stores/Warehouses/NewWarehouse.tsx";
 import {useSetRecoilState} from "recoil";
-import {newWarehouseModal} from "@/store/Warehouse.ts";
+import {newWarehouseModal, warehouse} from "@/store/Warehouse.ts";
 import UpdateWarehouse from "@/components/DashboradComponents/Stores/Warehouses/UpdateWarehouse.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import {updateWarehouseModal, warehouseId} from "@/store/Warehouse.ts";
 
 export default function Warehouses() {
     const { t } = useTranslation();
+
+    const setWarehouse = useSetRecoilState(warehouse);
     const [warehouses, setWarehouses] = useState<WarehouseType[]>([]);
     const setNewWareHouseModal = useSetRecoilState(newWarehouseModal);
     const setUpdateWareHouseModal = useSetRecoilState(updateWarehouseModal);
@@ -50,7 +52,7 @@ export default function Warehouses() {
                         <Button
                             onClick={() => {
                                 setWareHouseId(row.original.Id);
-                                getWarehouseById(setWarehouses, row.original.Id);
+                                getWarehouseById(setWarehouse, row.original.Id);
                                 setUpdateWareHouseModal(true);
                             }}
                         >
@@ -70,8 +72,8 @@ export default function Warehouses() {
     }, []);
     return (
         <div className="w-full space-y-2">
-            <NewWarehouse getWarehouse ={getAllWarehouses(setWarehouses)} />
-            <UpdateWarehouse getWarehouse ={getAllWarehouses(setWarehouses)} />
+            <NewWarehouse getWarehouse = {() => getAllWarehouses(setWarehouses)} />
+            <UpdateWarehouse getWarehouse = {() =>getAllWarehouses(setWarehouses)} />
             <div className="w-full space-y-1">
                 <h1 className="text-3xl font-bold w-full">{t("Warehouses")}</h1>
                 <Separator />
@@ -79,10 +81,8 @@ export default function Warehouses() {
             <div className="space-y-2">
                 <div className="flex justify-end">
                     <Button
-                        onClick={() => {
-                            setNewWareHouseModal(true);
-                        }}
-                    >                        <Plus className="mr-2 h-4 w-4" />
+                        onClick={() => {setNewWareHouseModal(true);}}>
+                        <Plus className="mr-2 h-4 w-4" />
                         {t("AddWarehouse")}
                     </Button>
                 </div>

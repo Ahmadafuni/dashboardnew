@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
 import WarehouseForm from "@/components/DashboradComponents/Stores/Warehouses/WarehouseForm.tsx";
 import {useRecoilState} from "recoil";
 import {newWarehouseModal} from "@/store/Warehouse.ts";
@@ -42,11 +41,7 @@ export default function NewWarehouse({ getWarehouse }: Props) {
     const onSubmit = async (data: z.infer<typeof warehouseSchema>) => {
         setIsLoading(true);
         try {
-            const newWarehouse = await axios.post("warehouse/", data, {
-                headers: {
-                    Authorization: `bearer ${Cookies.get("access_token")}`,
-                },
-            });
+            const newWarehouse = await axios.post("warehouse", data);
             toast.success(newWarehouse.data.message);
             getWarehouse();
             form.reset();
@@ -69,7 +64,7 @@ export default function NewWarehouse({ getWarehouse }: Props) {
                     <WarehouseForm form={form} onSubmit={onSubmit} />
                     <DialogFooter>
                         <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-                        <Button type="submit" disabled={isLoading} form="warehouse-form">
+                        <Button type="submit" disabled={isLoading} form="warehouse">
                             {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

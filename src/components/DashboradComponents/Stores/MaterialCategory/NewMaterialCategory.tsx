@@ -68,7 +68,7 @@ export default function NewMaterialCategory({ getMaterialCategories }: Props) {
                 <MaterialCategoryForm form={form} onSubmit={onSubmit} />
                 <DialogFooter>
                     <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-                    <Button type="submit" disabled={isLoading} form="material-category-form">
+                    <Button type="submit" disabled={isLoading} form="materialCategory">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

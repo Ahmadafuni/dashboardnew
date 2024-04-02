@@ -7,7 +7,7 @@ export const getAllSuppliers = async (setData: Dispatch<SetStateAction<any[]>>) 
     try {
         const { data } = await axios.get("supplier/all", {
             headers: {
-                Authorization: `Bearer ${Cookies.get("access_token")}`,
+                Authorization: `bearer ${Cookies.get("access_token")}`,
             },
         });
         setData(data);
