@@ -3,7 +3,9 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export const getAllMaterialCategories = async (setData: Dispatch<SetStateAction<any[]>>) => {
+export const getAllMaterialCategories = async (
+    setData: Dispatch<SetStateAction<any>>
+) => {
     try {
         const { data } = await axios.get("materialcategory/all", {
             headers: {

@@ -2,7 +2,7 @@ import DataTable from "@/components/common/DataTable.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ColumnDef } from "@tanstack/react-table";
-import {CircleChevronDown, CirclePlay, DeleteIcon, Pen, Plus, SquareMinus, SquarePlus} from "lucide-react";
+import {CircleChevronDown, DeleteIcon, Pen, Plus, SquareMinus, SquarePlus, View} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -36,7 +36,7 @@ export default function Materials() {
                     <div className="flex gap-1">
                         <ButtonTooltipStructure description="View Movements">
                             <Button onClick={() => navigate(`/dashboard/materialmovements/${row.original.Id}`)}>
-                            <CirclePlay className="h-4 w-4" />
+                            <View className="h-4 w-4" />
                         </Button>
                         </ButtonTooltipStructure>
                         <DropdownMenu>

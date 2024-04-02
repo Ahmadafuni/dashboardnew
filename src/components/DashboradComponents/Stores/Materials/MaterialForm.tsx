@@ -1,7 +1,11 @@
-import SelectFieldForForm from "@/components/common/SelectFieldForForm.tsx";
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm.tsx";
 import { Form, FormField } from "@/components/ui/form.tsx";
 import { useTranslation } from "react-i18next";
+import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {Plus} from "lucide-react";
+import {useRecoilValue, useSetRecoilState} from "recoil";
+import {materialCategoryList, newMaterialCategoryModal} from "@/store/MaterialCategory.ts";
 
 interface Props {
     form: any;
@@ -10,6 +14,9 @@ interface Props {
 
 export default function MaterialForm ({ form, onSubmit }: Props)  {
     const { t } = useTranslation();
+
+    const categoryList = useRecoilValue(materialCategoryList);
+    const setNewMaterialCategoryModal = useSetRecoilState(newMaterialCategoryModal);
 
     return (
         <Form {...form}>
@@ -42,14 +49,28 @@ export default function MaterialForm ({ form, onSubmit }: Props)  {
                 />
                 <FormField
                     control={form.control}
-                    name="Category"
+                    name="category"
                     render={({ field }) => (
-                        <SelectFieldForForm
-                            field={field}
-                            label={t("Category")}
-                            placeholder=""
-                            items={[]}
-                        />
+                        <div className="flex gap-x-1">
+                            <ComboSelectFieldForForm
+                                field={field}
+                                label={t("MaterialCategory")}
+                                placeholder="Search Material Category..."
+                                emptyBox="No category found"
+                                form={form}
+                                name="category"
+                                selectText="Select Category"
+                                items={categoryList}
+                            />
+                            <Button
+                                variant="outline"
+                                className="mt-8"
+                                onClick={() => setNewMaterialCategoryModal(true)}
+                                type="button"
+                            >
+                                <Plus className="h-4 w-4" />
+                            </Button>
+                        </div>
                     )}
                 />
                 <FormField
