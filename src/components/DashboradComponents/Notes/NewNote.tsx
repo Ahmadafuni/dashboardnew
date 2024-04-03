@@ -1,74 +1,69 @@
-import { Button } from "@/components/ui/button.tsx";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog.tsx";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button.tsx";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog.tsx";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
 import { useRecoilState } from "recoil";
-import { newMaterialCategoryModal } from "@/store/MaterialCategory.ts";
-import {materialCategorySchema} from "@/form_schemas/newMaterialCategorySchema.ts";
-import MaterialCategoryForm from "@/components/DashboradComponents/Stores/MaterialCategory/MaterialCategoryForm.tsx";
+import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
+import { noteSchema } from "@/form_schemas/newNoteSchema.ts";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {newNoteModal} from "@/store/Notes.ts";
+import NoteForm from "@/components/DashboradComponents/Notes/NoteForm.tsx";
 
-type Props = {
-    getMaterialCategories: any;
-};
+interface Props {
+    getNotes: any;
+}
 
-export default function NewMaterialCategory({ getMaterialCategories }: Props) {
+export default function NewNote({ getNotes }: Props) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
-    const [open, setOpen] = useRecoilState(newMaterialCategoryModal);
+    const [open, setOpen] = useRecoilState(newNoteModal);
 
-    // Form fields
-    const form = useForm<z.infer<typeof materialCategorySchema>>({
-        resolver: zodResolver(materialCategorySchema),
+    const form = useForm<z.infer<typeof noteSchema>>({
+        resolver: zodResolver(noteSchema),
         defaultValues: {
-            CategoryName: "",
+            NoteType: "",
+            AssignedToDepartmentId: 0,
+            AssignedToWarehouseId: 0,
             Description: "",
         },
     });
 
-    const onSubmit = async (data: z.infer<typeof materialCategorySchema>) => {
+    const handleSubmit = async (data: z.infer<typeof noteSchema>) => {
         setIsLoading(true);
         try {
-            const newMaterialCategory = await axios.post("materialcategory/", data, {
+            const newNote = await axios.post("notes/", data, {
                 headers: {
                     Authorization: `bearer ${Cookies.get("access_token")}`,
                 },
             });
-            toast.success(newMaterialCategory.data.message);
-            getMaterialCategories();
+            toast.success(newNote.data.message);
+            getNotes();
             form.reset();
             setIsLoading(false);
-            setOpen(false); // Close dialog after successful submission
+            setOpen(false);
         } catch (error) {
             if (error instanceof AxiosError) {
                 toast.error(error.response?.data.message);
             }
             setIsLoading(false);
         }
-    }
+    };
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t("New Material Category")}</DialogTitle>
+                    <DialogTitle>{t("New Note")}</DialogTitle>
                 </DialogHeader>
-                <MaterialCategoryForm form={form} onSubmit={onSubmit} />
+                <NoteForm form={form} onSubmit={handleSubmit} />
                 <DialogFooter>
                     <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-                    <Button type="submit" disabled={isLoading} form="materialCategory">
+                    <Button type="submit" disabled={isLoading} form="note">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
