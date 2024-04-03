@@ -6,7 +6,8 @@ import { useSearchParams } from "react-router-dom";
 import NewMeasurement from "../Measurements/NewMeasurement";
 
 export function NewTemplateBlock() {
-  let [searchParams, setSearchParams] = useSearchParams();
+    // @ts-expect-error
+    let [searchParams, setSearchParams] = useSearchParams();
   const [currentTab, setCurrentTab] = useState(
     searchParams.get("tab") !== null ? searchParams.get("tab") : "template"
   );

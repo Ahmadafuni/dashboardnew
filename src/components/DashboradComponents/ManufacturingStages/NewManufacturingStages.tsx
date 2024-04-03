@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button.tsx";
 import { ArrowDown, ArrowUp, Loader2, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ManufacturingStageForm from "@/components/DashboradComponents/ManufacturingStages/ManufacturingStageForm.tsx";
 import { useRecoilState } from "recoil";
@@ -24,9 +23,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getAllDepartmentList } from "@/services/Departments.services";
 
 export default function NewManufacturingStages() {
-  const { t } = useTranslation(); // Ensure templateId is of type string
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  // @ts-expect-error
   const [searchParams, setSearchParams] = useSearchParams();
   // Departments
   const [departments, setDepartments] = useState([]);

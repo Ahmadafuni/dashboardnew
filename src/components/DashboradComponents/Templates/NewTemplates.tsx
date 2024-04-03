@@ -9,7 +9,6 @@ import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -27,7 +26,7 @@ interface Props {
   setNext: Dispatch<SetStateAction<any>>;
 }
 export default function NewTemplates({ setNext }: Props) {
-  const { t } = useTranslation();
+  // @ts-expect-error
   let [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);

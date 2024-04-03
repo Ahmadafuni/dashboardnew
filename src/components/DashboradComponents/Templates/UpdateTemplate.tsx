@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import UpdateTemplateForm from "./UpdateTemplateForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +15,6 @@ import { getTemplateById } from "@/services/Templates.services";
 export default function UpdateTemplate() {
   const { templateId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const { t } = useTranslation();
   // Current Template
   const [currentTemplate, setCurrentTemplate] = useState({});
   // File

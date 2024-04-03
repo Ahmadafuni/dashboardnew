@@ -17,6 +17,7 @@ export default function NewMeasurementForm() {
   // Sizes State
   const [sizes, setSizes] = useState<any[]>([]);
   // Measurement Group
+  // @ts-expect-error
   const [measurementsGroups, setMeasurementsGroups] =
     useRecoilState(measurementsGroup);
   const [measurements, setMeasurements] = useRecoilState(newMeasurementsNext);
