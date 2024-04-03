@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   templateProductCatalogueDetailSearchSchema,
   templateSchema,
@@ -8,29 +7,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import TemplateForm from "./TemplateForm";
-import TemplateProductCatelogueDetailSearchForm from "./TemplateProductCatelogueDetailSearchForm";
+import TemplateProductCatalogueDetailSearchForm from "./TemplateProductCatalogueDetailSearchForm.tsx";
 import { useSetRecoilState } from "recoil";
-import { productCatalogueDetailsList } from "@/store/ProductCatalogueDetails";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.services";
 import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services";
+import { productCatalogueList } from "@/store/ProductCatalogue.ts";
+import { getAllProductCataloguesList } from "@/services/ProductCatalogues.services.ts";
 
-export default function NewTemplates() {
-  // Translation
+interface Props {
+  setNext: Dispatch<SetStateAction<any>>;
+}
+export default function NewTemplates({ setNext }: Props) {
   const { t } = useTranslation();
-  // Navigation state
-  const navigate = useNavigate();
-  // Loding
+  let [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
-  // File
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
     setFile(e.target.files[0]);
@@ -38,7 +37,7 @@ export default function NewTemplates() {
   // Dropdown state
   const setCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setCategoryTwoList = useSetRecoilState(productCategoryTwoList);
-  const setPCDS = useSetRecoilState(productCatalogueDetailsList);
+  const setProductCatalogueList = useSetRecoilState(productCatalogueList);
 
   // Search Form fields
   const formSearch = useForm<
@@ -48,39 +47,9 @@ export default function NewTemplates() {
     defaultValues: {
       categoryOne: "",
       categoryTwo: "",
+      productCatalogue: "",
     },
   });
-
-  // Search submit function
-  const onSubmitSearch = async (
-    data: z.infer<typeof templateProductCatalogueDetailSearchSchema>
-  ) => {
-    setIsLoading(true);
-    try {
-      if (data.categoryOne.length <= 0 && data.categoryTwo.length <= 0) {
-        toast.warning("Please select at least one category to search!");
-        setIsLoading(false);
-        return;
-      }
-      const pcds = await axios.post(
-        "productcatalogtdetail/search-by-category",
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
-      setPCDS(pcds.data.data);
-      toast.success(pcds.data.message);
-      setIsLoading(false);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
-      setIsLoading(false);
-    }
-  };
 
   // Form fields
   const form = useForm<z.infer<typeof templateSchema>>({
@@ -111,7 +80,8 @@ export default function NewTemplates() {
       toast.success(newTemplate.data.message);
       form.reset();
       setIsLoading(false);
-      navigate("/dashboard/templates");
+      setSearchParams({ template: newTemplate.data.data.Id, tab: "cutting" });
+      setNext("cutting");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -124,33 +94,13 @@ export default function NewTemplates() {
   useEffect(() => {
     getAllProductCategoryOneList(setCategoryOneList);
     getAllProductCategoryTwoList(setCategoryTwoList);
-  });
+    getAllProductCataloguesList(setProductCatalogueList);
+  }, []);
+
   return (
     <div className="w-full space-y-2">
-      <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">New Template</h1>
-        <Separator />
-      </div>
       <div className="space-y-1">
-        <h2 className="text-2xl font-bold w-full">
-          Search Product Catalogue Details
-        </h2>
-        <TemplateProductCatelogueDetailSearchForm
-          form={formSearch}
-          onSubmit={onSubmitSearch}
-        />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="template-pcd-search">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </>
-            ) : (
-              "Search"
-            )}
-          </Button>
-        </div>
+        <TemplateProductCatalogueDetailSearchForm form={formSearch} />
       </div>
       <div className="space-y-1">
         <TemplateForm
@@ -166,7 +116,7 @@ export default function NewTemplates() {
                 Please wait
               </>
             ) : (
-              t("Add")
+              "Next"
             )}
           </Button>
         </div>

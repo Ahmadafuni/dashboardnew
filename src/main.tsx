@@ -43,7 +43,8 @@ import ProductCategoryTwo from "@/pages/Entities/ProductCategoryTwo.tsx";
 import NewProductCatalogueDetail from "./components/DashboradComponents/ProductCatalogueDetails/NewProductCatalogueDetail.tsx";
 import UpdateProductCatalogueDetail from "./components/DashboradComponents/ProductCatalogueDetails/UpdateProductCatalogueDetail.tsx";
 import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCatalogueDetails.tsx";
-import NewTemplates from "./components/DashboradComponents/Templates/NewTemplates.tsx";
+import { NewTemplateBlock } from "./components/DashboradComponents/Templates/NewTemplateBlock.tsx";
+import UpdateTemplateBlock from "./components/DashboradComponents/Templates/UpdateTemplateBlock.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";
@@ -78,6 +79,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <MainLayout />,
     children: [
+      // { path: "/dashboard/test", element: <Test /> },
       { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/users/new", element: <NewUsers /> },
       { path: "/dashboard/users/:userID", element: <UpdateUser /> },
@@ -106,7 +108,11 @@ const router = createBrowserRouter([
         element: <UpdateProductCatalogueDetail />,
       },
       { path: "/dashboard/templates", element: <Templates /> },
-      { path: "/dashboard/templates/new", element: <NewTemplates /> },
+      { path: "/dashboard/templates/new", element: <NewTemplateBlock /> },
+      {
+        path: "/dashboard/templates/update/:templateId",
+        element: <UpdateTemplateBlock />,
+      },
       { path: "/dashboard/orders", element: <Orders /> },
       { path: "/dashboard/models", element: <Models /> },
       { path: "/dashboard/tasks", element: <Tasks /> },

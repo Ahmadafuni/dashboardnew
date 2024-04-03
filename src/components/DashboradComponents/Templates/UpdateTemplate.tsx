@@ -1,16 +1,7 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { template, templateId, updateTemplateModal } from "@/store/Template";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue } from "recoil";
 import UpdateTemplateForm from "./UpdateTemplateForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,16 +10,15 @@ import { z } from "zod";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
-
-type Props = {
-  getTemplates: () => void;
-};
-export default function UpdateTemplate({ getTemplates }: Props) {
-  const templateID = useRecoilValue(templateId);
-  const [open, setOpen] = useRecoilState(updateTemplateModal);
+import { useParams } from "react-router-dom";
+import { Separator } from "@/components/ui/separator";
+import { getTemplateById } from "@/services/Templates.services";
+export default function UpdateTemplate() {
+  const { templateId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const currentTemplate = useRecoilValue(template);
   const { t } = useTranslation();
+  // Current Template
+  const [currentTemplate, setCurrentTemplate] = useState({});
   // File
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
@@ -49,17 +39,17 @@ export default function UpdateTemplate({ getTemplates }: Props) {
       if (file !== null) {
         formData.append("template", file);
       }
-      formData.append("description", data.description);
       formData.append("name", data.name);
-      const response = await axios.put(`template/${templateID}`, formData, {
+      formData.append("description", data.description);
+      console.log(formData.get("name"));
+
+      const response = await axios.put(`template/${templateId}`, formData, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
       });
       toast.success(response.data.message);
-      getTemplates();
       setIsLoading(false);
-      setOpen(false);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -67,33 +57,35 @@ export default function UpdateTemplate({ getTemplates }: Props) {
       setIsLoading(false);
     }
   };
+  // Page on load
+  useEffect(() => {
+    getTemplateById(setCurrentTemplate, templateId);
+  }, []);
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Update Template</DialogTitle>
-        </DialogHeader>
+    <div className="w-full space-y-2">
+      <div className="w-full space-y-1">
+        <h1 className="text-3xl font-bold w-full">Update Template</h1>
+        <Separator />
+      </div>
+      <div className="space-y-1">
         <UpdateTemplateForm
           form={form}
           onSubmit={onSubmit}
           handleFileChange={handleFileChange}
         />
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            {t("Close")}
-          </Button>
-          <Button type="submit" disabled={isLoading} form="color">
+        <div className="flex justify-end">
+          <Button type="submit" disabled={isLoading} form="template-update">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </>
             ) : (
-              t("Update")
+              "Update"
             )}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </div>
+    </div>
   );
 }

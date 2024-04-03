@@ -19,8 +19,8 @@ export default function UpdateTemplateForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-2"
-        id="color"
+        className="grid grid-cols-3 gap-2"
+        id="template-update"
       >
         <FormField
           control={form.control}

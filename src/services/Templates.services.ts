@@ -22,7 +22,7 @@ export const getAllTemplates = async (
 
 export const getTemplateById = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: any
 ) => {
   try {
     const { data } = await axios.get(`template/${id}`, {

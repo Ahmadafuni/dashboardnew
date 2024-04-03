@@ -27,13 +27,17 @@ export default function DeleteConfirmationDialog({ deleteRow }: Props) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("DeleteConfirmationDialogTitle")}</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t("DeleteConfirmationDialogTitle")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
             {t("DeleteConfirmationDialogDescription")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("DeleteConfirmationDialogCancel")}</AlertDialogCancel>
+          <AlertDialogCancel>
+            {t("DeleteConfirmationDialogCancel")}
+          </AlertDialogCancel>
           <AlertDialogAction onClick={() => deleteRow()}>
             {t("DeleteConfirmationDialogContinue")}
           </AlertDialogAction>
