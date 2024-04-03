@@ -81,7 +81,7 @@
   "Textiles": "Textiles",
   "TemplateType": "Template Type",
   "TemplatePattern": "Template Pattern",
-  "ProductCategoryOne": "Product tCategory One",
+  "ProductCategoryOne": "Product Category One",
   "ProductCategoryTwo": "Product Category Two",
   "Season": "Season",
   "Grammage": "Grammage",
@@ -91,6 +91,4 @@
   "DeleteConfirmationDialogDescription": "This action cannot be undone. This will permanently delete this.",
   "DeleteConfirmationDialogContinue": "Continue",
   "DeleteConfirmationDialogCancel": "Cancel"
-
-
 }

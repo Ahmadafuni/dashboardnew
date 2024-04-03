@@ -1,37 +1,15 @@
-import UpdateTemplate from "@/components/DashboradComponents/Templates/UpdateTemplate";
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { downLoadFile } from "@/services/Commons.services";
-import {
-  deleteTemplate,
-  getAllTemplates,
-  getTemplateById,
-} from "@/services/Templates.services";
-import { template, templateId, updateTemplateModal } from "@/store/Template";
+import { deleteTemplate, getAllTemplates } from "@/services/Templates.services";
 import { TemplateType } from "@/types/Templates/Templates.types";
 import { ColumnDef } from "@tanstack/table-core";
-import {
-    CirclePlus,
-    Download,
-    Ellipsis,
-    Pen,
-    Plus,
-    Route,
-    Ruler
-} from "lucide-react";
-import  { useEffect, useState } from "react";
+import { Download, Pen, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 export default function Templates() {
   // Translation
@@ -40,12 +18,8 @@ export default function Templates() {
   const navigate = useNavigate();
   // Departments
   const [templates, setTemplates] = useState([]);
-  // States
-  const setUpdateTemplateModal = useSetRecoilState(updateTemplateModal);
-  const setTemplateId = useSetRecoilState(templateId);
-  const setTemplate = useSetRecoilState(template);
 
-    // Columns
+  // Columns
   const templateColumns: ColumnDef<TemplateType>[] = [
     {
       accessorKey: "TemplateName",
@@ -93,40 +67,15 @@ export default function Templates() {
         return (
           <div className="flex gap-1">
             <Button
-              onClick={() => {
-                setTemplateId(row.original.Id);
-                getTemplateById(setTemplate, row.original.Id);
-                setUpdateTemplateModal(true);
-              }}
+              onClick={() =>
+                navigate(`/dashboard/templates/update/${row.original.Id}`)
+              }
             >
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-                deleteRow={() => deleteTemplate(setTemplates, row.original.Id)}
+              deleteRow={() => deleteTemplate(setTemplates, row.original.Id)}
             />
-              <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                      <Button variant="outline">
-                          <Ellipsis>Open</Ellipsis>
-                      </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                      <DropdownMenuGroup>
-                          <DropdownMenuItem onClick={() => navigate(`/dashboard/templates/templatesizes/new/${row.original.Id}`)}>
-                              <CirclePlus className="mr-2 h-4 w-4"/>
-                              <span>Add Template Size</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => navigate("/dashboard/templates/templatesizes")}>
-                              <Ruler className="mr-2 h-4 w-4"/>
-                              <span>View Template Sizes</span>
-                          </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => navigate("/dashboard/ManufacturingStageForm")}>
-                              <Route className="mr-2 h-4 w-4" />
-                              <span>Stages</span>
-                          </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                  </DropdownMenuContent>
-              </DropdownMenu>
           </div>
         );
       },
@@ -138,7 +87,6 @@ export default function Templates() {
   }, []);
   return (
     <div className="w-full space-y-2">
-      <UpdateTemplate getTemplates={() => getAllTemplates(setTemplates)} />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Templates</h1>
         <Separator />

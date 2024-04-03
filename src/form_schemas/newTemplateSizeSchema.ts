@@ -1,9 +1,12 @@
 import { z } from "zod";
 
 export const templateSizeSchema = z.object({
-  TemplateId:  z.string().min(1, {message: "Please select a Template!",}),
-  SizeId:  z.string().min(1, {message: "Please select a Size!",}),
-  TemplateSizeType: z.enum(["CUTTING", "DRESSUP"], {required_error: "You need to select a template size type.",}),
-  Description: z.string(),
+  name: z.string().min(1, { message: "Please enter a name!" }),
+  size: z.string().min(1, { message: "Please select a Size!" }),
+  templateSizeType: z
+    .string()
+    .min(1, { message: "You need to select a template size type." }),
+  description: z.string(),
 });
 
+// name, templateSizeType, size, description

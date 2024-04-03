@@ -16,6 +16,7 @@ export const templateSchema = z.object({
 export const templateProductCatalogueDetailSearchSchema = z.object({
   categoryOne: z.string(),
   categoryTwo: z.string(),
+  productCatalogue: z.string(),
 });
 
 export const templateUpdateSchema = z.object({

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   templateProductCatalogueDetailSearchSchema,
   templateSchema,
@@ -8,10 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import TemplateForm from "./TemplateForm";
@@ -21,10 +20,15 @@ import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.services";
 import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services";
+import { productCatalogueList } from "@/store/ProductCatalogue.ts";
+import { getAllProductCataloguesList } from "@/services/ProductCatalogues.services.ts";
 
-export default function NewTemplates() {
+interface Props {
+  setNext: Dispatch<SetStateAction<any>>;
+}
+export default function NewTemplates({ setNext }: Props) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  let [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
   const handleFileChange = (e: any) => {
@@ -33,6 +37,7 @@ export default function NewTemplates() {
   // Dropdown state
   const setCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setCategoryTwoList = useSetRecoilState(productCategoryTwoList);
+  const setProductCatalogueList = useSetRecoilState(productCatalogueList);
 
   // Search Form fields
   const formSearch = useForm<
@@ -42,6 +47,7 @@ export default function NewTemplates() {
     defaultValues: {
       categoryOne: "",
       categoryTwo: "",
+      productCatalogue: "",
     },
   });
 
@@ -74,7 +80,8 @@ export default function NewTemplates() {
       toast.success(newTemplate.data.message);
       form.reset();
       setIsLoading(false);
-      navigate("/dashboard/templates");
+      setSearchParams({ template: newTemplate.data.data.Id, tab: "cutting" });
+      setNext("cutting");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -87,18 +94,13 @@ export default function NewTemplates() {
   useEffect(() => {
     getAllProductCategoryOneList(setCategoryOneList);
     getAllProductCategoryTwoList(setCategoryTwoList);
-  });
+    getAllProductCataloguesList(setProductCatalogueList);
+  }, []);
+
   return (
     <div className="w-full space-y-2">
-      <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">New Template</h1>
-        <Separator />
-      </div>
       <div className="space-y-1">
-        <TemplateProductCatalogueDetailSearchForm
-          form={formSearch}
-        />
-
+        <TemplateProductCatalogueDetailSearchForm form={formSearch} />
       </div>
       <div className="space-y-1">
         <TemplateForm
@@ -114,7 +116,7 @@ export default function NewTemplates() {
                 Please wait
               </>
             ) : (
-              t("Add")
+              "Next"
             )}
           </Button>
         </div>

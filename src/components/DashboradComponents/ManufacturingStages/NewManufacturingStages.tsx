@@ -1,83 +1,206 @@
 import { Button } from "@/components/ui/button.tsx";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { ArrowDown, ArrowUp, Loader2, Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
-import Cookies from "js-cookie";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ManufacturingStageForm from "@/components/DashboradComponents/ManufacturingStages/ManufacturingStageForm.tsx";
-import {manufacturingStageSchema} from "@/form_schemas/newManufacturingStageSchema.ts";
-
+import { useRecoilState } from "recoil";
+import { manufacturingStages } from "@/store/ManufacturingStage";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { UUID } from "crypto";
+import { createMultipleStages } from "@/services/ManufacturingStages.services";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { manufacturingStageSchema } from "@/form_schemas/newManufacturingStageSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { getAllDepartmentList } from "@/services/Departments.services";
 
 export default function NewManufacturingStages() {
-    const { t } = useTranslation();
-    const { templateId } = useParams<{ templateId: string }>(); // Ensure templateId is of type string
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation(); // Ensure templateId is of type string
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Departments
+  const [departments, setDepartments] = useState([]);
+  // Stages
+  const [steps, setSteps] = useRecoilState(manufacturingStages);
 
-    const form = useForm<z.infer<typeof manufacturingStageSchema>>({
-        resolver: zodResolver(manufacturingStageSchema),
-        defaultValues: {
-            TemplateId: templateId,
-            DepartmentId: "",
-            StageNumber: 0,
-            StageName: "",
-            WorkDescription: "",
-            Duration: 0,
-            Description: "",
-        },
-    });
-
-    const onSubmit = async (data: z.infer<typeof manufacturingStageSchema>) => {
-        setIsLoading(true);
-        try {
-            const newManufacturingStage = await axios.post(
-                "manufacturingstage/",
-                {
-                    ...data,
-                    TemplateId: templateId,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get("access_token")}`,
-                    },
-                }
-            );
-            toast.success(newManufacturingStage.data.message);
-            form.reset();
-            setIsLoading(false);
-            navigate("/dashboard/templates");
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                toast.error(error.response?.data.message ?? t("An error occurred"));
-            }
-            setIsLoading(false);
-        }
-    };
-
+  const SubmitButton = () => {
     return (
-        <div className="space-y-1">
-            <div className="w-full space-y-1 flex items-center">
-                <ArrowLeft className="m-1 cursor-pointer" onClick={() => {navigate(-1)}} />
-                <h1 className="text-3xl font-bold">{t("TemplateSizes")}</h1>
-            </div>
-            <ManufacturingStageForm form={form} onSubmit={onSubmit} />
-            <div className="flex justify-end">
-                <Button type="submit" disabled={isLoading} form="templatesize">
-                    {isLoading ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Please wait
-                        </>
-                    ) : (
-                        t("Add")
-                    )}
-                </Button>
-            </div>
-        </div>
+      <Button type="submit" form="stages">
+        Addd
+      </Button>
     );
+  };
+
+  const form = useForm<z.infer<typeof manufacturingStageSchema>>({
+    resolver: zodResolver(manufacturingStageSchema),
+    defaultValues: {
+      department: "",
+      stageName: "",
+      workDescription: "",
+      duration: "",
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof manufacturingStageSchema>) => {
+    const uid = crypto.randomUUID();
+    const stageObj = {
+      ...data,
+      id: uid,
+      template: searchParams.get("template"),
+      stageNumber: steps.length + 1,
+      // @ts-expect-error
+      departmentName: departments.find((d) => d.value === data.department)
+        .label,
+    };
+    setSteps([...steps, stageObj]);
+
+    form.reset();
+  };
+
+  // Go Down
+  const goDown = (idx: number) => {
+    const temp_ary = [...steps];
+
+    const forUp = { ...temp_ary[idx + 1] };
+    const forDown = { ...temp_ary[idx] };
+
+    forUp.stageNumber--;
+    forDown.stageNumber++;
+
+    temp_ary[idx + 1] = forDown;
+    temp_ary[idx] = forUp;
+
+    setSteps(temp_ary);
+  };
+  // Go Up
+  const goUp = (idx: number) => {
+    const temp_ary = [...steps];
+
+    const forUp = { ...temp_ary[idx] };
+    const forDown = { ...temp_ary[idx - 1] };
+
+    forUp.stageNumber--;
+    forDown.stageNumber++;
+
+    temp_ary[idx] = forDown;
+    temp_ary[idx - 1] = forUp;
+
+    setSteps(temp_ary);
+  };
+  // Delete Stage
+  const deleteStage = (id: UUID) => {
+    let temp_ary: any[] = [];
+    const filtered_ary = steps.filter((s) => s.id !== id);
+    filtered_ary.forEach((step, i) => {
+      temp_ary.push({ ...step, stageNumber: i + 1 });
+    });
+    setSteps(temp_ary);
+  };
+
+  const createStages = async () => {
+    setIsLoading(true);
+    try {
+      const newStages = await createMultipleStages({ stages: steps });
+      if (newStages) {
+        setIsLoading(false);
+        navigate("/dashboard/templates");
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+
+  // Page on load
+  useEffect(() => {
+    getAllDepartmentList(setDepartments);
+  }, []);
+  return (
+    <div className="space-y-1">
+      <ManufacturingStageForm
+        form={form}
+        onSubmit={onSubmit}
+        SubmitButton={SubmitButton}
+      />
+      {steps.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Stages</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Stage Number</TableHead>
+                  <TableHead>Stage Name</TableHead>
+                  <TableHead>Department</TableHead>
+                  <TableHead>Duration</TableHead>
+                  <TableHead>Work Description</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {steps.map((step, i) => (
+                  <TableRow key={step.id}>
+                    <TableCell>{step.stageNumber}</TableCell>
+                    <TableCell>{step.stageName}</TableCell>
+                    <TableCell>{step.departmentName}</TableCell>
+                    <TableCell>{step.duration}</TableCell>
+                    <TableCell>{step.workDescription}</TableCell>
+                    <TableCell className="space-x-1">
+                      <Button
+                        variant="outline"
+                        disabled={i === 0}
+                        onClick={() => goUp(i)}
+                      >
+                        <ArrowUp className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        disabled={i === steps.length - 1}
+                        onClick={() => goDown(i)}
+                      >
+                        <ArrowDown className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => deleteStage(step.id)}
+                      >
+                        <Trash className="w-4 h-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+      <div className="flex justify-end">
+        <Button
+          disabled={isLoading || steps.length <= 0}
+          onClick={() => createStages()}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </>
+          ) : (
+            "Finish"
+          )}
+        </Button>
+      </div>
+    </div>
+  );
 }

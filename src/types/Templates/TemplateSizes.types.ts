@@ -1,10 +1,18 @@
-import {SizeType} from "@/types/Entities/Size.types.ts";
-import {TemplateType} from "@/types/Templates/Templates.types.ts";
+export type TemplateSizesType = {
+  Id: number;
+  Name: string;
+  Template: TemplateType;
+  Size: SizeType;
+  TemplateSizeType: string;
+  Description: string;
+};
 
-export type TemplateSizesType ={
-    Id: number;
-    TemplateId: TemplateType;
-    SizeId: SizeType;
-    TemplateSizeType: string;
-    Description: string;
-}
+type TemplateType = {
+  Id: number;
+  TemplateName: string;
+};
+
+type SizeType = {
+  Id: number;
+  SizeName: string;
+};
