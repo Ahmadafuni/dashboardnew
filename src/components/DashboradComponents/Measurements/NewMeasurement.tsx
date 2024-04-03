@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import { measurementsGroup } from "@/store/Measurement";
 import { newMeasurementsNext } from "@/store/templateSize";
@@ -24,7 +23,6 @@ interface Props {
   setNext: any;
 }
 export default function NewMeasurement({ sizeType, setNext }: Props) {
-  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
