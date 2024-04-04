@@ -18,7 +18,7 @@ import {
 } from "@/store/ProductCatalogue";
 import { ProductCatalogueType } from "@/types/ProductCatalogues/ProductCatalogues.types";
 import { ColumnDef } from "@tanstack/react-table";
-import { ListPlus, Pen, Plus, View } from "lucide-react";
+import { ListPlus, Pen, Plus, View} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";

@@ -27,7 +27,7 @@ import Models from "@/pages/Models/Models.tsx";
 import Tasks from "@/pages/Tasks/Tasks.tsx";
 import Notes from "@/pages/Notes/Notes.tsx";
 import Home from "@/pages/Home/Home.tsx";
-import Stores from "@/pages/Stores/Stores.tsx";
+import Warehouses from "@/pages/Stores/Warehouses.tsx";
 import NewUsers from "@/components/DashboradComponents/Users/NewUsers.tsx";
 import UpdateUser from "@/components/DashboradComponents/Users/UpdateUser.tsx";
 import NewDepartment from "./components/DashboradComponents/Departments/NewDepartment.tsx";
@@ -45,6 +45,12 @@ import UpdateProductCatalogueDetail from "./components/DashboradComponents/Produ
 import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCatalogueDetails.tsx";
 import { NewTemplateBlock } from "./components/DashboradComponents/Templates/NewTemplateBlock.tsx";
 import UpdateTemplateBlock from "./components/DashboradComponents/Templates/UpdateTemplateBlock.tsx";
+import Suppliers from "@/pages/Stores/Suppliers.tsx";
+import MaterialCategories from "@/pages/Stores/MaterialCategory.tsx";
+import Materials from "@/pages/Stores/Materials.tsx";
+import NewMaterial from "@/components/DashboradComponents/Stores/Materials/NewMaterial.tsx";
+import UpdateMaterial from "@/components/DashboradComponents/Stores/Materials/UpdateMaterial.tsx";
+import MaterialMovement from "@/pages/Stores/MaterialMovement.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";
@@ -94,6 +100,7 @@ const router = createBrowserRouter([
       { path: "/dashboard/home", element: <Home /> },
       { path: "/dashboard/reports", element: <Reports /> },
       { path: "/dashboard/statistics", element: <Statistics /> },
+
       { path: "/dashboard/productcatalogues", element: <ProductCatalogues /> },
       {
         path: "/dashboard/productcatalogues/cataloguedetails/:catalogueId",
@@ -118,7 +125,17 @@ const router = createBrowserRouter([
       { path: "/dashboard/tasks", element: <Tasks /> },
       { path: "/dashboard/notes", element: <Notes /> },
       { path: "/dashboard/users", element: <Users /> },
-      { path: "/dashboard/stores", element: <Stores /> },
+
+      { path: "/dashboard/warehouses", element: <Warehouses /> },
+      { path: "/dashboard/suppliers", element: <Suppliers /> },
+      { path: "/dashboard/materialcategory", element: <MaterialCategories /> },
+      { path: "/dashboard/materials", element: <Materials /> },
+      { path: "/dashboard/materials/new", element: <NewMaterial /> },
+      { path: "/dashboard/materials/:materialID", element: <UpdateMaterial /> },
+      {
+        path: "/dashboard/materialmovements/:materialId",
+        element: <MaterialMovement />,
+      },
 
       { path: "/dashboard/entities/colors", element: <Colors /> },
       { path: "/dashboard/entities/sizes", element: <Sizes /> },
