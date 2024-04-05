@@ -6,7 +6,7 @@ import { downLoadFile } from "@/services/Commons.services";
 import { deleteTemplate, getAllTemplates } from "@/services/Templates.services";
 import { TemplateType } from "@/types/Templates/Templates.types";
 import { ColumnDef } from "@tanstack/table-core";
-import { Download, Pen, Plus } from "lucide-react";
+import { Download, Pen, Plus, ScanEye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -72,6 +72,16 @@ export default function Templates() {
               }
             >
               <Pen className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={() =>
+                window.open(
+                  `/templates/viewdetails/${row.original.Id}`,
+                  "_blank"
+                )
+              }
+            >
+              <ScanEye className="w-4 h-4" />
             </Button>
             <DeleteConfirmationDialog
               deleteRow={() => deleteTemplate(setTemplates, row.original.Id)}

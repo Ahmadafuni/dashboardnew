@@ -38,6 +38,24 @@ export const getTemplateById = async (
   }
 };
 
+export const getTemplateDetail = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: any
+) => {
+  try {
+    const { data } = await axios.get(`template//view-details/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const deleteTemplate = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number

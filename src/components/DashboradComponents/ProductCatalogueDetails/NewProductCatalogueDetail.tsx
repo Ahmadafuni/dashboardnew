@@ -14,7 +14,7 @@ import { templateTypeList } from "@/store/TemplateType.ts";
 import { textileList } from "@/store/Textiles.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
-import { ArrowLeft, Loader2} from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -27,7 +27,8 @@ import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/Pro
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProductCatalogueById } from "@/services/ProductCatalogues.services";
 
 export default function NewProductCatalogueDetail() {
   // Translation
@@ -38,6 +39,9 @@ export default function NewProductCatalogueDetail() {
   const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
+
+  // Product Catalogue
+  const [pCatalogue, setPCatalogue] = useState({});
   // Dropdown state
   const setCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setCategoryTwoList = useSetRecoilState(productCategoryTwoList);
@@ -92,12 +96,15 @@ export default function NewProductCatalogueDetail() {
 
   // Page on load
   useEffect(() => {
+    getProductCatalogueById(setPCatalogue, catalogueId);
     getAllProductCategoryOneList(setCategoryOneList);
     getAllProductCategoryTwoList(setCategoryTwoList);
     getAllTemplatePatternsList(setTemplatePatternList);
     getAllTemplateTypesList(setTemplateTypeList);
     getAllTextilesList(setTextilesList);
-  });
+  }, []);
+  console.log(pCatalogue);
+
   return (
     <div className="w-full space-y-2">
       <NewProductCategoryOne
@@ -119,14 +126,25 @@ export default function NewProductCatalogueDetail() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <NewTextiles getTextiles={() => getAllTextilesList(setTextilesList)} />
-
-        <div className="w-full space-y-1 flex items-center">
-            <ArrowLeft  className="m-1 cursor-pointer"
-                        onClick={() => {navigate("/dashboard/productcatalogues")}}/>
-            <h1 className="text-3xl font-bold">{t("ProductCatalogueDetailsNew")}</h1>
-        </div>
-        <Separator />
-        <div className="space-y-1">
+      <div>
+        <h2
+          onClick={() => {
+            navigate("/dashboard/productcatalogues");
+          }}
+          className="flex items-center gap-x-1 cursor-pointer max-w-fit"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Go Back</span>
+        </h2>
+      </div>
+      <div className="w-full space-y-1 flex items-center">
+        <h1 className="text-3xl font-bold">
+          {/* @ts-expect-error */}
+          New Product Catalouge Details for {pCatalogue?.name}
+        </h1>
+      </div>
+      <Separator />
+      <div className="space-y-1">
         <ProductCatalogueDetailForm form={form} onSubmit={onSubmit} />
         <div className="flex justify-end">
           <Button type="submit" disabled={isLoading} form="catalogue-detail">

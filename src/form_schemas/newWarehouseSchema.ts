@@ -1,33 +1,32 @@
 import { z } from "zod";
 
-
 export const warehouseSchema = z.object({
-    WarehouseName: z
-        .string()
-        .min(1, {
-            message: "Please enter a warehouse name.",
-        })
-        .max(255, {
-            message: "Maximum characters for the warehouse name is 255.",
-        }),
-    CategoryName: z
-        .string()
-        .min(1, {
-            message: "Please enter a category name.",
-        })
-        .max(255, {
-            message: "Maximum characters for the category name is 255.",
-        }),
-    Location: z
-        .string()
-        .min(1, {
-            message: "Please enter a location.",
-        })
-        .max(255, {
-            message: "Maximum characters for the location is 255.",
-        }),
-    Capacity: z.number().positive({
-        message: "Capacity must be a positive number.",
+  name: z
+    .string()
+    .min(1, {
+      message: "Please enter a warehouse name.",
+    })
+    .max(255, {
+      message: "Maximum characters for the warehouse name is 255.",
     }),
-    Description: z.string().max(255).optional(),
+  category: z.string().min(1, {
+    message: "Please select a category.",
+  }),
+  manager: z.string().min(1, {
+    message: "Please select a manager.",
+  }),
+  location: z
+    .string()
+    .min(1, {
+      message: "Please enter a location.",
+    })
+    .max(255, {
+      message: "Maximum characters for the location is 255.",
+    }),
+  capacity: z
+    .string()
+    .min(1, { message: "Please enter standard weight!" })
+    .regex(/^\d+(\.\d{1,2})?$/, {
+      message: "Please enter a valid decimal point number(e.x 0.1, 12.11, 12)",
+    }),
 });
