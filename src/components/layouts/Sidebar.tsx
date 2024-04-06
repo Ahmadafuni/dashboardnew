@@ -12,7 +12,7 @@ import {
   FileBarChart2,
   Store,
   AlignJustify, Palette, Ruler, SwatchBook, SquareAsterisk, Asterisk,
-  ArrowUpDown, ArrowLeftRight,
+  ArrowUpDown, ArrowLeftRight, Boxes,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -44,6 +44,7 @@ export default function Sidebar() {
     {
       gName: "Business Entities",
       childs: [
+        { name: t("Collections"), link: "/dashboard/entities/collections", icon: Boxes },
         { name: t("Colors"), link: "/dashboard/entities/colors", icon: Palette },
         { name: t("Sizes"), link: "/dashboard/entities/sizes", icon: Ruler },
         { name: t("Textiles"), link: "/dashboard/entities/textiles", icon: SwatchBook },

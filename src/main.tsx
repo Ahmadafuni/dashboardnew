@@ -45,6 +45,7 @@ import UpdateProductCatalogueDetail from "./components/DashboradComponents/Produ
 import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCatalogueDetails.tsx";
 import { NewTemplateBlock } from "./components/DashboradComponents/Templates/NewTemplateBlock.tsx";
 import UpdateTemplateBlock from "./components/DashboradComponents/Templates/UpdateTemplateBlock.tsx";
+import Collections from "@/pages/Entities/Collections.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";
@@ -120,6 +121,7 @@ const router = createBrowserRouter([
       { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/stores", element: <Stores /> },
 
+      { path: "/dashboard/entities/collections", element: <Collections /> },
       { path: "/dashboard/entities/colors", element: <Colors /> },
       { path: "/dashboard/entities/sizes", element: <Sizes /> },
       { path: "/dashboard/entities/textiles", element: <Textiles /> },
