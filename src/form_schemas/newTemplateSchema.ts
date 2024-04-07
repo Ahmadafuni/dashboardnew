@@ -8,9 +8,16 @@ export const templateSchema = z.object({
     })
     .max(255),
   description: z.string(),
-  productCatalogDetailId: z.string().min(1, {
-    message: "Please select a product catalogue detail!",
-  }),
+  productCatalog: z
+    .string()
+    .min(1, { message: "Please select product catalogue!" }),
+  category1: z.string().min(1, { message: "Please select category one!" }),
+  category2: z.string().min(1, { message: "Please select category two!" }),
+  season: z.string().min(1, { message: "Please select season!" }),
+  templateType: z.string().min(1, { message: "Please select template type!" }),
+  templatePattern: z
+    .string()
+    .min(1, { message: "Please select template pattern" }),
 });
 
 export const templateProductCatalogueDetailSearchSchema = z.object({

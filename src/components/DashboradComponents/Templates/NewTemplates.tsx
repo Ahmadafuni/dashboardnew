@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
-  templateProductCatalogueDetailSearchSchema,
+  // templateProductCatalogueDetailSearchSchema,
   templateSchema,
 } from "@/form_schemas/newTemplateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +13,7 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import TemplateForm from "./TemplateForm";
-import TemplateProductCatalogueDetailSearchForm from "./TemplateProductCatalogueDetailSearchForm.tsx";
+// import TemplateProductCatalogueDetailSearchForm from "./TemplateProductCatalogueDetailSearchForm.tsx";
 import { useSetRecoilState } from "recoil";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
@@ -21,6 +21,14 @@ import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.serv
 import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services";
 import { productCatalogueList } from "@/store/ProductCatalogue.ts";
 import { getAllProductCataloguesList } from "@/services/ProductCatalogues.services.ts";
+import { getAllTemplatePatternsList } from "@/services/TemplatePattern.services";
+import { getAllTemplateTypesList } from "@/services/TemplateType.services";
+import { templatePatternList } from "@/store/TemplatePattern";
+import { templateTypeList } from "@/store/TemplateType";
+import NewProductCategoryOne from "../Entities/ProductCategoryOne/NewProductCategoryOne";
+import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCategoryTwo";
+import NewTemplatePattern from "../Entities/TemplatePattern/NewTemplatePattern";
+import NewTemplateType from "../Entities/TemplateType/NewTemplateType";
 
 interface Props {
   setNext: Dispatch<SetStateAction<any>>;
@@ -36,27 +44,34 @@ export default function NewTemplates({ setNext }: Props) {
   // Dropdown state
   const setCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setCategoryTwoList = useSetRecoilState(productCategoryTwoList);
+  const setTemplatePatternList = useSetRecoilState(templatePatternList);
+  const setTemplateTypeList = useSetRecoilState(templateTypeList);
   const setProductCatalogueList = useSetRecoilState(productCatalogueList);
 
   // Search Form fields
-  const formSearch = useForm<
-    z.infer<typeof templateProductCatalogueDetailSearchSchema>
-  >({
-    resolver: zodResolver(templateProductCatalogueDetailSearchSchema),
-    defaultValues: {
-      categoryOne: "",
-      categoryTwo: "",
-      productCatalogue: "",
-    },
-  });
+  // const formSearch = useForm<
+  //   z.infer<typeof templateProductCatalogueDetailSearchSchema>
+  // >({
+  //   resolver: zodResolver(templateProductCatalogueDetailSearchSchema),
+  //   defaultValues: {
+  //     categoryOne: "",
+  //     categoryTwo: "",
+  //     productCatalogue: "",
+  //   },
+  // });
 
   // Form fields
   const form = useForm<z.infer<typeof templateSchema>>({
     resolver: zodResolver(templateSchema),
     defaultValues: {
       name: "",
-      productCatalogDetailId: "",
       description: "",
+      category1: "",
+      category2: "",
+      season: "",
+      templatePattern: "",
+      templateType: "",
+      productCatalog: "",
     },
   });
 
@@ -70,7 +85,12 @@ export default function NewTemplates({ setNext }: Props) {
       }
       formData.append("description", data.description);
       formData.append("name", data.name);
-      formData.append("productCatalogDetailId", data.productCatalogDetailId);
+      formData.append("category1", data.category1);
+      formData.append("category2", data.category2);
+      formData.append("season", data.season);
+      formData.append("templatePattern", data.templatePattern);
+      formData.append("templateType", data.templateType);
+      formData.append("productCatalog", data.productCatalog);
       const newTemplate = await axios.post("template/", formData, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -93,14 +113,34 @@ export default function NewTemplates({ setNext }: Props) {
   useEffect(() => {
     getAllProductCategoryOneList(setCategoryOneList);
     getAllProductCategoryTwoList(setCategoryTwoList);
+    getAllTemplatePatternsList(setTemplatePatternList);
+    getAllTemplateTypesList(setTemplateTypeList);
     getAllProductCataloguesList(setProductCatalogueList);
   }, []);
 
   return (
     <div className="w-full space-y-2">
-      <div className="space-y-1">
+      <NewProductCategoryOne
+        getProductCategoriesOne={() =>
+          getAllProductCategoryOneList(setCategoryOneList)
+        }
+      />
+      <NewProductCategoryTwo
+        getProductCategoriesTwo={() =>
+          getAllProductCategoryTwoList(setCategoryTwoList)
+        }
+      />
+      <NewTemplatePattern
+        getTemplatePatterns={() =>
+          getAllTemplatePatternsList(setTemplatePatternList)
+        }
+      />
+      <NewTemplateType
+        getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
+      />
+      {/* <div className="space-y-1">
         <TemplateProductCatalogueDetailSearchForm form={formSearch} />
-      </div>
+      </div> */}
       <div className="space-y-1">
         <TemplateForm
           form={form}

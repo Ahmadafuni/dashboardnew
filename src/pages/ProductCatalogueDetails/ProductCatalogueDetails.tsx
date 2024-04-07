@@ -3,7 +3,10 @@ import DataTable from "@/components/common/DataTable.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { ProductCatalogueDetailType } from "@/types/ProductCatalogues/ProductCatalogueDetails.types.ts";
+import {
+  ProductCatalogueDetailType,
+  ProductCatalogueDetailsListType,
+} from "@/types/ProductCatalogues/ProductCatalogueDetails.types.ts";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -11,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   deleteProductCatalogueDetail,
-  getAllProductCatalogueDetails
+  getAllProductCatalogueDetails,
 } from "@/services/ProductCatalogueDetails.services.ts";
 
 export default function ProductCatalogueDetails() {
@@ -22,7 +25,11 @@ export default function ProductCatalogueDetails() {
   // Translation
   const { t } = useTranslation();
   // details
-  const [details, setDetails] = useState([]);
+  const [details, setDetails] = useState<ProductCatalogueDetailsListType>({
+    Id: 0,
+    ProductCatalogName: "",
+    ProductCatalogDetails: [],
+  });
 
   const detailsColumns: ColumnDef<ProductCatalogueDetailType>[] = [
     {
@@ -97,7 +104,11 @@ export default function ProductCatalogueDetails() {
             </ButtonTooltipStructure>
             <DeleteConfirmationDialog
               deleteRow={() =>
-                deleteProductCatalogueDetail(setDetails, row.original.Id, catalogueId)
+                deleteProductCatalogueDetail(
+                  setDetails,
+                  row.original.Id,
+                  catalogueId
+                )
               }
             />
           </div>
@@ -112,7 +123,9 @@ export default function ProductCatalogueDetails() {
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">{t("ProductCatalogueDetails")}</h1>
+        <h1 className="text-3xl font-bold w-full">
+          Product Catalogue Details for {details?.ProductCatalogName}
+        </h1>
         <Separator />
       </div>
       <div className="space-y-2">
@@ -129,7 +142,10 @@ export default function ProductCatalogueDetails() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={detailsColumns} data={details} />
+          <DataTable
+            columns={detailsColumns}
+            data={details?.ProductCatalogDetails}
+          />
         </div>
       </div>
     </div>

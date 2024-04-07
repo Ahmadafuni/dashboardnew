@@ -28,14 +28,37 @@ export default function Templates() {
     {
       header: "Product Catalogue",
       cell: ({ row }) => {
-        return (
-          <p>
-            {
-              row.original.ProductCatalogDetail.ProductCatalog
-                .ProductCatalogName
-            }
-          </p>
-        );
+        return <p>{row.original.ProductCatalogue.ProductCatalogName}</p>;
+      },
+    },
+    {
+      header: "Season",
+      cell: ({ row }) => {
+        return <p>{row.original.Season}</p>;
+      },
+    },
+    {
+      header: "Category One",
+      cell: ({ row }) => {
+        return <p>{row.original.CategoryOne.CategoryName}</p>;
+      },
+    },
+    {
+      header: "Category Two",
+      cell: ({ row }) => {
+        return <p>{row.original.CategoryTwo.CategoryName}</p>;
+      },
+    },
+    {
+      header: "Template Type",
+      cell: ({ row }) => {
+        return <p>{row.original.TemplateType.TemplateTypeName}</p>;
+      },
+    },
+    {
+      header: "Template Pattern",
+      cell: ({ row }) => {
+        return <p>{row.original.TemplatePattern.TemplatePatternName}</p>;
       },
     },
     {
