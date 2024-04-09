@@ -14,15 +14,12 @@ export type ModelTypes = {
     CategoryTwo: ProductCategoryOneType;
     Textile: TextilesType;
     TemplateID: TemplateType;
-    TotalQuantity: number;
-
-    ModelNumber: string; // generated from Backend but the user can change it
-    ModelName: string; // generated from Backend =ProductCatalogName + CategoryOneName   but the user can change it
     Sizes: SizeType;  // can select many sizes
     Colors: ColorType; // can select many colors
 
-    ModelColorQuantity?: number; // given by the user
-    ModeSizeQuantity?: number; // generated from backend = ModelColorQuantity * sizes
+    ModelNumber: string; // generated from Backend but the user can change it
+    ModelName: string; // generated from Backend =ProductCatalogName + CategoryOneName   but the user can change it
+    TotalQuantity: number;
 
     Characteristics: string;
     Barcode: string;
@@ -30,5 +27,12 @@ export type ModelTypes = {
     PrintName: string;
     PrintLocation: string;
     Images: string; // I want to store many images
+    Status: string; // From backend
     Description: string;
 };
+
+
+/* To Discuss with Nafis
+ModelColorQuantity?: number; // given by the user
+ModeSizeQuantity?: number; // generated from backend = ModelColorQuantity * sizes
+*/

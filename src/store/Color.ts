@@ -23,3 +23,8 @@ export const color = atom({
     Description: "",
   },
 });
+
+export const colorList = atom({
+  key: "colorList",
+  default: [],
+});
