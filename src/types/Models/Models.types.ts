@@ -14,12 +14,15 @@ export type ModelTypes = {
     CategoryTwo: ProductCategoryOneType;
     Textile: TextilesType;
     TemplateID: TemplateType;
-    Sizes: SizeType;  // can select many sizes
-    Colors: ColorType; // can select many colors
+    TotalQuantity: number;
+
+    Sizes: SizeType;  // can select many sizes  M L XL
+    Colors: ColorType; // can select many colors  Red Black
 
     ModelNumber: string; // generated from Backend but the user can change it
+    ModelNumberTest: string;
     ModelName: string; // generated from Backend =ProductCatalogName + CategoryOneName   but the user can change it
-    TotalQuantity: number;
+    Quantity: number;
 
     Characteristics: string;
     Barcode: string;
@@ -32,7 +35,3 @@ export type ModelTypes = {
 };
 
 
-/* To Discuss with Nafis
-ModelColorQuantity?: number; // given by the user
-ModeSizeQuantity?: number; // generated from backend = ModelColorQuantity * sizes
-*/
