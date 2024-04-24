@@ -1,32 +1,48 @@
 import { z } from "zod";
 
 export const ModelSchema = z.object({
-    OrderID: z.number(),
-    ProductCatalogID: z.number(),
-    CategoryOne: z.number(),
-    CategoryTwo: z.number(),
-    Textile: z.number(),
-    TemplateID: z.number(),
-    TotalQuantity: z.number().min(0, {
-        message: "Quantity must be a positive number.",
+  ProductCatalog: z
+    .string()
+    .min(1, { message: "Please select product catalogue." }),
+  CategoryOne: z.string().min(1, { message: "Please select category one." }),
+  CategoryTwo: z.string().min(1, { message: "Please select category two." }),
+  Textile: z.string().min(1, { message: "Please select textile." }),
+  Template: z.string().min(1, { message: "Please select template." }),
+  Characteristics: z.string(),
+  Barcode: z.string(),
+  LabelType: z.string(),
+  PrintName: z.string(),
+  PrintLocation: z.string(),
+  Description: z.string(),
+});
+
+export const UpdateModelSchema = z.object({
+  ProductCatalog: z
+    .string()
+    .min(1, { message: "Please select product catalogue." }),
+  CategoryOne: z.string().min(1, { message: "Please select category one." }),
+  CategoryTwo: z.string().min(1, { message: "Please select category two." }),
+  Textile: z.string().min(1, { message: "Please select textile." }),
+  Template: z.string().min(1, { message: "Please select template." }),
+  ModelName: z.string().min(1, { message: "Model name is required." }),
+  Characteristics: z.string(),
+  Barcode: z.string(),
+  LabelType: z.string(),
+  PrintName: z.string(),
+  PrintLocation: z.string(),
+  Description: z.string(),
+});
+
+export const ModelVarientSchema = z.object({
+  Sizes: z
+    .object({ label: z.string(), value: z.string() })
+    .array()
+    .nonempty({ message: "Select at least one size." }),
+  Color: z.string().min(1, { message: "Please select a color." }),
+  Quantity: z
+    .string()
+    .min(1, { message: "Please enter total quantity" })
+    .regex(/^\d+$/, {
+      message: "Please enter a valid integer number(e.x 1, 12)",
     }),
-    ModelNumber: z.string().min(1, {
-        message: "Please enter a model number.",
-    }),
-    ModelName: z.string().min(1, {
-        message: "Please enter a model name.",
-    }),
-    Sizes: z.array(z.string()).min(1, {
-        message: "Please select at least one size.",
-    }),
-    Colors: z.array(z.string()).min(1, {
-        message: "Please select at least one color.",
-    }),
-    Characteristics: z.string().optional(),
-    Barcode: z.string().optional(),
-    LabelType: z.string().optional(),
-    PrintName: z.string().optional(),
-    PrintLocation: z.string().optional(),
-    Images: z.any().optional(),
-    Description: z.string().optional(),
 });

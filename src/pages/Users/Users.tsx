@@ -61,19 +61,18 @@ export default function Users() {
       },
     },
     {
-      accessorKey: "PhotoPath",
       header: t("ProfilePhoto"),
-      cell: (cell) => {
+      cell: ({ row }) => {
         return (
           <Avatar>
             <AvatarImage
               src={
                 "https://dashboardbackendnew.onrender.com" +
-                cell.row.original.PhotoPath
+                row.original.PhotoPath
               }
               alt="Profile Image"
             />
-            <AvatarFallback>{cell.row.original.Firstname[0]}</AvatarFallback>
+            <AvatarFallback>{row.original.Firstname[0]}</AvatarFallback>
           </Avatar>
         );
       },

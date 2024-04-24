@@ -17,3 +17,8 @@ export const template = atom({
     description: "",
   },
 });
+
+export const templateList = atom({
+  key: "templateList",
+  default: [],
+});

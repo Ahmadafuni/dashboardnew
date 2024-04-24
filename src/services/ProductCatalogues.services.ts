@@ -39,7 +39,7 @@ export const getAllProductCataloguesList = async (
 
 export const getProductCatalogueById = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: any
 ) => {
   try {
     const { data } = await axios.get(`productcatalog/${id}`, {

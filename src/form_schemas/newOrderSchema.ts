@@ -1,19 +1,19 @@
 import { z } from "zod";
 
 export const OrderSchema = z.object({
-    OrderNumber: z.string(),
-    OrderName: z.string().min(1, {
-        message: "Please enter a name for the order.",
+  orderName: z.string().min(1, {
+    message: "Please enter a name for the order.",
+  }),
+  collection: z.string().min(1, {
+    message: "Please select a collection.",
+  }),
+  quantity: z
+    .string()
+    .min(1, { message: "Please enter duration!" })
+    .regex(/^\d+$/, {
+      message: "Please enter a valid integer number(e.x 1, 12)",
     }),
-    CollectionID: z.string().min(1, {
-        message: "Please select a collection.",
-    }),
-    Quantity: z.number().min(0, {
-        message: "Quantity must be a positive number.",
-    }),
-    DeadlineDate: z.any(),
-    File: z.string().regex(/\.xlsx$/, {
-        message: "File must be in .xlsx format.",
-    }),
-    Description: z.string().optional(),
+  deadline: z.any(),
+  description: z.string(),
 });
+// orderName, amount, collection, description, deadline, quantity;

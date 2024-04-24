@@ -23,6 +23,9 @@ type SelectFieldForFormProp = {
   emptyBox: string;
   name: string;
   selectText: string;
+  getRelatedOptions?: any;
+  willRelated?: boolean;
+  setRelatedOptions?: any;
 };
 export default function ComboSelectFieldForForm({
   label,
@@ -33,6 +36,9 @@ export default function ComboSelectFieldForForm({
   emptyBox,
   name,
   selectText,
+  getRelatedOptions,
+  willRelated = false,
+  setRelatedOptions,
 }: SelectFieldForFormProp) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -88,6 +94,9 @@ export default function ComboSelectFieldForForm({
                     <li
                       onClick={() => {
                         form.setValue(name, item.value);
+                        if (willRelated) {
+                          getRelatedOptions(setRelatedOptions, item.value);
+                        }
                         setOpen(false);
                       }}
                       key={item.value}

@@ -3,7 +3,7 @@ import {
   Home,
   SquareScissors,
   FolderOpen,
-  Shirt,
+  // Shirt,
   ListOrdered,
   ListChecks,
   NotebookPen,
@@ -11,8 +11,18 @@ import {
   LayoutPanelTop,
   FileBarChart2,
   Store,
-  AlignJustify, Palette, Ruler, SwatchBook, SquareAsterisk, Asterisk,
-  ArrowUpDown, ArrowLeftRight, Boxes,
+  AlignJustify,
+  Palette,
+  Ruler,
+  SwatchBook,
+  SquareAsterisk,
+  Asterisk,
+  ArrowUpDown,
+  ArrowLeftRight,
+  Boxes,
+  ShoppingBasket,
+  LibraryBig,
+  Album,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -28,70 +38,163 @@ export default function Sidebar() {
       gName: "System",
       childs: [
         { name: t("Home"), link: "/dashboard/home", icon: Home },
-        { name: t("Departments"), link: "/dashboard/departments", icon: LayoutPanelTop },
-        { name: t("Users"), link: "/dashboard/users", icon: UsersRound },
-        { name: t("Stores"), link: "/dashboard/stores", icon: Store },
-        { name: t("Reports"), link: "/dashboard/reports", icon: LayoutDashboard },
-        { name: t("Statistics"), link: "/dashboard/statistics", icon: FileBarChart2 },
-        { name: t("ProductCatalogues"), link: "/dashboard/productcatalogues", icon: FolderOpen },
-        { name: t("Templates"), link: "/dashboard/templates", icon: SquareScissors },
+        {
+          name: t("Reports"),
+          link: "/dashboard/reports",
+          icon: LayoutDashboard,
+        },
+        {
+          name: t("Statistics"),
+          link: "/dashboard/statistics",
+          icon: FileBarChart2,
+        },
+        {
+          name: t("ProductCatalogues"),
+          link: "/dashboard/productcatalogues",
+          icon: FolderOpen,
+        },
+        {
+          name: t("Templates"),
+          link: "/dashboard/templates",
+          icon: SquareScissors,
+        },
         { name: t("Orders"), link: "/dashboard/orders", icon: ListOrdered },
-        { name: t("Models"), link: "/dashboard/models", icon: Shirt },
-        { name: t("Tasks"), link: "/dashboard/tasks", icon: ListChecks },
-        { name: t("Notes"), link: "/dashboard/notes", icon: NotebookPen },
+        // { name: t("Models"), link: "/dashboard/models", icon: Shirt },
       ],
     },
     {
       gName: "Business Entities",
       childs: [
-        { name: t("Collections"), link: "/dashboard/entities/collections", icon: Boxes },
-        { name: t("Colors"), link: "/dashboard/entities/colors", icon: Palette },
+        {
+          name: t("Collections"),
+          link: "/dashboard/entities/collections",
+          icon: Boxes,
+        },
+        {
+          name: t("Colors"),
+          link: "/dashboard/entities/colors",
+          icon: Palette,
+        },
         { name: t("Sizes"), link: "/dashboard/entities/sizes", icon: Ruler },
-        { name: t("Textiles"), link: "/dashboard/entities/textiles", icon: SwatchBook },
-        { name: t("TemplateType"), link: "/dashboard/entities/templatetype", icon: Asterisk },
-        { name: t("TemplatePattern"), link: "/dashboard/entities/templatepattern", icon: SquareAsterisk },
-        { name: t("ProductCategoryOne"), link: "/dashboard/entities/productcategoryone", icon: ArrowUpDown },
-        { name: t("ProductCategoryTwo"), link: "/dashboard/entities/productcategorytwo", icon: ArrowLeftRight },
+        {
+          name: t("Textiles"),
+          link: "/dashboard/entities/textiles",
+          icon: SwatchBook,
+        },
+        {
+          name: t("TemplateType"),
+          link: "/dashboard/entities/templatetype",
+          icon: Asterisk,
+        },
+        {
+          name: t("TemplatePattern"),
+          link: "/dashboard/entities/templatepattern",
+          icon: SquareAsterisk,
+        },
+        {
+          name: t("ProductCategoryOne"),
+          link: "/dashboard/entities/productcategoryone",
+          icon: ArrowUpDown,
+        },
+        {
+          name: t("ProductCategoryTwo"),
+          link: "/dashboard/entities/productcategorytwo",
+          icon: ArrowLeftRight,
+        },
+      ],
+    },
+    {
+      gName: "Staff-related Data",
+      childs: [
+        {
+          name: t("Departments"),
+          link: "/dashboard/departments",
+          icon: LayoutPanelTop,
+        },
+        { name: t("Users"), link: "/dashboard/users", icon: UsersRound },
+        { name: t("Tasks"), link: "/dashboard/tasks", icon: ListChecks },
+        { name: t("Notes"), link: "/dashboard/notes", icon: NotebookPen },
+      ],
+    },
+    {
+      gName: "Store Management",
+      childs: [
+        { name: t("Home"), link: "/dashboard/home", icon: Home },
+        {
+          name: t("Reports"),
+          link: "/dashboard/reports",
+          icon: LayoutDashboard,
+        },
+        { name: t("Warehouses"), link: "/dashboard/warehouses", icon: Store },
+        {
+          name: t("Suppliers"),
+          link: "/dashboard/suppliers",
+          icon: ShoppingBasket,
+        },
+        {
+          name: t("Materials"),
+          link: "/dashboard/materials",
+          icon: LibraryBig,
+        },
+        {
+          name: t("Materials Category"),
+          link: "/dashboard/materialcategory",
+          icon: Album,
+        },
       ],
     },
   ];
 
   return (
-      <div className="p-2 border-r-2" >
+    <div className="p-2 border-r-2">
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           <MenuItem
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              icon={isCollapsed ? <AlignJustify /> : undefined}
-              style={{ margin: "10px 0 20px 0" }}
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            icon={isCollapsed ? <AlignJustify /> : undefined}
+            style={{ margin: "10px 0 20px 0" }}
           >
             {!isCollapsed && (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginLeft: "0px"}}>
-                  <span style={{ marginRight: "10px"}}>Department Name</span>
-                    <AlignJustify onClick={() => setIsCollapsed(!isCollapsed)}/>
-                </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginLeft: "0px",
+                }}
+              >
+                <span style={{ marginRight: "10px" }}>Department Name</span>
+                <AlignJustify onClick={() => setIsCollapsed(!isCollapsed)} />
+              </div>
             )}
           </MenuItem>
           {menus.map((menu, index) => (
-              <MenuItem key={index}>
-                <h5 style={{ marginBottom: "10px", display: "block" }}>{menu.gName}</h5>
-                {menu.childs.map((child, idx) => (
-                    <NavLink key={idx} to={child.link}
-                             className={({ isActive }) => {
-                               return isActive
-                                   ? "flex items-center text-primary bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer"
-                                   : "flex items-center hover:text-primary hover:bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer"}}
-                    >
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <child.icon />
-                        {!isCollapsed && <span style={{ marginLeft: "10px" }}>{child.name}</span>}
-                      </div>
-                    </NavLink>
-                ))}
-              </MenuItem>
+            <MenuItem key={index}>
+              <h5 style={{ marginBottom: "10px", display: "block" }}>
+                {menu.gName}
+              </h5>
+              {menu.childs.map((child, idx) => (
+                <NavLink
+                  key={idx}
+                  to={child.link}
+                  className={({ isActive }) => {
+                    return isActive
+                      ? "flex items-center text-primary bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer"
+                      : "flex items-center hover:text-primary hover:bg-primary-foreground text-sm px-2 py-[6px] rounded-sm cursor-pointer";
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <child.icon />
+                    {!isCollapsed && (
+                      <span style={{ marginLeft: "10px" }}>{child.name}</span>
+                    )}
+                  </div>
+                </NavLink>
+              ))}
+            </MenuItem>
           ))}
         </Menu>
       </ProSidebar>
-      </div>
+    </div>
   );
 }

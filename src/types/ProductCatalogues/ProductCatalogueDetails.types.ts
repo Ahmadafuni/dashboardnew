@@ -15,3 +15,9 @@ export type ProductCatalogueDetailType = {
   TemplateType: TemplateTypeType;
   Textile: TextilesType;
 };
+
+export type ProductCatalogueDetailsListType = {
+  Id: number;
+  ProductCatalogName: string;
+  ProductCatalogDetails: ProductCatalogueDetailType[];
+};

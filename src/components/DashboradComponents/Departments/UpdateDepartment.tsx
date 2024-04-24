@@ -12,20 +12,18 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
+import {useTranslation} from "react-i18next";
 
 export default function UpdateDepartment() {
-  // Param
   const { departmentID } = useParams();
-  // Navigation state
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  // Department
   const [department, setDepartment] = useState({
     name: "",
     location: "",
     description: "",
     category: "",
   });
-  // Loding
   const [isLoading, setIsLoading] = useState(false);
   // Form fields
   const form = useForm<z.infer<typeof departmentSchema>>({
@@ -81,8 +79,8 @@ export default function UpdateDepartment() {
                 Please wait
               </>
             ) : (
-              "Update"
-            )}
+               t("Update")
+              )}
           </Button>
         </div>
       </div>

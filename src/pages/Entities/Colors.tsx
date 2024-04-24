@@ -40,6 +40,17 @@ export default function Colors() {
       header: t("ColorCode"),
     },
     {
+      header: t("Demo"),
+      cell: ({ row }) => {
+        return (
+          <div
+            className="w-4 h-4 border-1 rounded-sm"
+            style={{ backgroundColor: row.original.ColorCode }}
+          ></div>
+        );
+      },
+    },
+    {
       accessorKey: "Description",
       header: t("Description"),
     },

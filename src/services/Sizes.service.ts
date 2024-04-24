@@ -35,6 +35,24 @@ export const getAllSizesList = async (
   }
 };
 
+export const getAllSizesListByTemplate = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: string
+) => {
+  try {
+    const { data } = await axios.get(`size/by-template/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const getSizeById = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number
@@ -82,8 +100,9 @@ export const updateSize = async (id: number, sizeData: any) => {
 };
 
 export const deleteSize = async (
-    setData: Dispatch<SetStateAction<any>>,
-    id: number) => {
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
+) => {
   try {
     const { data } = await axios.delete(`size/${id}`, {
       headers: {
