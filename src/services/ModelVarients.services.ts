@@ -3,12 +3,12 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export const getAllModels = async (
+export const getAllModelVarients = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: string | undefined
+  id: any
 ) => {
   try {
-    const response = await axios.get(`model/all/${id}`, {
+    const response = await axios.get(`model/varients/all/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
@@ -21,12 +21,12 @@ export const getAllModels = async (
   }
 };
 
-export const getModelById = async (
+export const getModelVarientById = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: string | undefined
+  id: any
 ) => {
   try {
-    const response = await axios.get(`model/${id}`, {
+    const response = await axios.get(`model/varients/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
@@ -39,19 +39,19 @@ export const getModelById = async (
   }
 };
 
-export const deleteModel = async (
+export const deleteModelVarient = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number,
-  orderId: string | undefined
+  id: any,
+  modelId: any
 ) => {
   try {
-    await axios.delete(`model/${id}`, {
+    const response = await axios.delete(`model/varients/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    toast.success("Model deleted successfully");
-    getAllModels(setData, orderId);
+    toast.success(response.data.message);
+    getAllModelVarients(setData, modelId);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);

@@ -55,6 +55,7 @@ import MaterialMovement from "@/pages/Stores/MaterialMovement.tsx";
 import TemplateViewDetails from "@/components/DashboradComponents/Templates/TemplateViewDetails.tsx";
 import NewModel from "./components/DashboradComponents/Models/NewModel.tsx";
 import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
+import ModelVarients from "./pages/Models/ModelVarients.tsx";
 
 // Axios config
 axios.defaults.baseURL = "http://localhost:3002/";
@@ -126,6 +127,10 @@ const router = createBrowserRouter([
       },
       { path: "/dashboard/orders", element: <Orders /> },
       { path: "/dashboard/orders/model/:id", element: <Models /> },
+      {
+        path: "/dashboard/orders/model/varients/:id",
+        element: <ModelVarients />,
+      },
       {
         path: "/dashboard/orders/model/update/:modelId",
         element: <UpdateModel />,

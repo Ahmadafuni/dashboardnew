@@ -53,6 +53,24 @@ export const getAllSizesListByTemplate = async (
   }
 };
 
+export const getAllSizesListByModel = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: any
+) => {
+  try {
+    const { data } = await axios.get(`size/by-model/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const getSizeById = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number

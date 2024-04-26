@@ -18,16 +18,12 @@ export const modelId = atom({
 export const model = atom({
   key: "model",
   default: {
-    // ProductCatalog: 0,
-    // CategoryOne: 0,
-    // CategoryTwo: 0,
+    ProductCatalog: "",
+    CategoryOne: "",
+    CategoryTwo: "",
     Textile: "",
     Template: "",
-    TotalQuantity: "",
-    Quantity: "",
     ModelName: "",
-    Size: "",
-    Color: "",
     Characteristics: "",
     Barcode: "",
     LabelType: "",
@@ -43,6 +39,6 @@ export const modelList = atom({
 });
 
 export const modelVarientNew = atom({
-  key: "",
+  key: "modelVarientNew",
   default: [],
 });

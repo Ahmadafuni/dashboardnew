@@ -9,7 +9,7 @@ import {
   startOrder,
 } from "@/services/Order.services.ts";
 import { ColumnDef } from "@tanstack/react-table";
-import { Download, Pen, Plus } from "lucide-react";
+import { Download, EllipsisVertical, Eye, Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
@@ -24,6 +24,13 @@ import NewOrder from "@/components/DashboradComponents/Orders/NewOrder.tsx";
 import UpdateOrder from "@/components/DashboradComponents/Orders/UpdateOrder.tsx";
 import { downLoadFile } from "@/services/Commons.services";
 import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Orders() {
   const setNewOrderModal = useSetRecoilState(newOrderModal);
@@ -91,64 +98,62 @@ export default function Orders() {
       },
     },
     {
-      header: "Model",
-      cell: ({ row }) => {
-        return (
-          <div className="space-x-1">
-            <Button
-              onClick={() =>
-                navigate(`/dashboard/orders/model/new/${row.original.Id}`)
-              }
-            >
-              New Model
-            </Button>
-            <Button
-              onClick={() =>
-                navigate(`/dashboard/orders/model/${row.original.Id}`)
-              }
-            >
-              View Model
-            </Button>
-          </div>
-        );
-      },
-    },
-    {
-      header: t("File"),
-      cell: ({ row }) => {
-        return (
-          <Button
-            type="button"
-            disabled={row.original.FilePath.length <= 0 ? true : false}
-            onClick={() =>
-              downLoadFile(
-                "https://dashboardbackendnew.onrender.com" +
-                  row.original.FilePath
-              )
-            }
-          >
-            <Download className="w-4 h-4 mr-2" /> Download
-          </Button>
-        );
-      },
-    },
-    {
       header: t("Action"),
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
-            <Button
-              onClick={() => {
-                setOrderId(row.original.Id);
-                getOrderById(setOrder, row.original.Id);
-                setUpdateOrderModal(true);
-              }}
-            >
-              <Pen className="h-4 w-4" />
-            </Button>
             <DeleteConfirmationDialog
               deleteRow={() => deleteOrder(setOrders, row.original.Id)}
             />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <EllipsisVertical className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-52">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setOrderId(row.original.Id);
+                      getOrderById(setOrder, row.original.Id);
+                      setUpdateOrderModal(true);
+                    }}
+                  >
+                    <Pen className="mr-2 h-4 w-4" />
+                    <span>Edit Order</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      navigate(`/dashboard/orders/model/${row.original.Id}`)
+                    }
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    <span>View Model</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      navigate(`/dashboard/orders/model/new/${row.original.Id}`)
+                    }
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    <span>Add Model</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={row.original.FilePath.length <= 0 ? true : false}
+                    onClick={() =>
+                      downLoadFile(
+                        "https://dashboardbackendnew.onrender.com" +
+                          row.original.FilePath
+                      )
+                    }
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    <span>Download</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         );
       },

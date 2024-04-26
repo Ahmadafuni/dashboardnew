@@ -29,7 +29,7 @@ import { getAllTemplatesList } from "@/services/Templates.services";
 import NewTextiles from "../Entities/Textiles/NewTextiles";
 import NewProductCatalogueDialog from "../ProductCatalogue/NewProductCatalogueDialog";
 import NewColor from "../Entities/Colors/NewColor";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NewModelVarient from "./NewModelVarient";
 import { modelVarientNew } from "@/store/Models";
 
@@ -39,6 +39,9 @@ export default function NewModel() {
   const { id } = useParams();
   // Loading
   const [isLoading, setIsLoading] = useState(false);
+
+  // Navigate
+  const navigate = useNavigate();
 
   // Varients
   const varients = useRecoilValue(modelVarientNew);
@@ -109,6 +112,7 @@ export default function NewModel() {
       });
       toast.success(newModel.data.message);
       setIsLoading(false);
+      navigate(`/dashboard/orders/model/${id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);

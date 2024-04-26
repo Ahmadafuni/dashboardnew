@@ -4,13 +4,20 @@ import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { deleteModel, getAllModels } from "@/services/Model.services.ts";
 import { ColumnDef } from "@tanstack/react-table";
-import { Pen, Plus } from "lucide-react";
+import { EllipsisVertical, Eye, Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
 // import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Models() {
   // Navigate
@@ -55,18 +62,6 @@ export default function Models() {
         return <p>{row.original.Template.TemplateName}</p>;
       },
     },
-    // {
-    //   header: "Size",
-    //   cell: ({ row }) => {
-    //     return <p>{row.original.Size.SizeName}</p>;
-    //   },
-    // },
-    // {
-    //   header: "Color",
-    //   cell: ({ row }) => {
-    //     return <p>{row.original.Color.ColorName}</p>;
-    //   },
-    // },
     {
       accessorKey: "ModelNumber",
       header: "Model Number",
@@ -75,14 +70,6 @@ export default function Models() {
       accessorKey: "ModelName",
       header: "Model Name",
     },
-    // {
-    //   accessorKey: "TotalQuantity",
-    //   header: "Total Quantity",
-    // },
-    // {
-    //   accessorKey: "Quantity",
-    //   header: "Quantity",
-    // },
     {
       accessorKey: "Characteristics",
       header: "Characteristics",
@@ -133,19 +120,40 @@ export default function Models() {
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
-            {/* <ButtonTooltipStructure description="Edit Model">
-              <Button
-                // disabled={row.original.Status !== "AWAITING"}
-                onClick={() => {
-                  navigate(`/dashboard/orders/model/update/${row.original.Id}`);
-                }}
-              >
-                <Pen className="h-4 w-4" />
-              </Button>
-            </ButtonTooltipStructure> */}
             <DeleteConfirmationDialog
               deleteRow={() => deleteModel(setModels, row.original.Id, id)}
             />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <EllipsisVertical className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-52">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      navigate(
+                        `/dashboard/orders/model/update/${row.original.Id}`
+                      );
+                    }}
+                  >
+                    <Pen className="mr-2 h-4 w-4" />
+                    <span>Edit Model</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      navigate(
+                        `/dashboard/orders/model/varients/${row.original.Id}`
+                      )
+                    }
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    <span>View Varients</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         );
       },

@@ -23,7 +23,16 @@ import { textileList } from "@/store/Textiles";
 import { colorList } from "@/store/Color";
 import NewTextiles from "../Entities/Textiles/NewTextiles";
 import NewColor from "../Entities/Colors/NewColor";
-import { sizeList } from "@/store/Sizes";
+// import { sizeList } from "@/store/Sizes";
+import { productCategoryOneList } from "@/store/ProductCategoryOne";
+import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
+import { productCatalogueList } from "@/store/ProductCatalogue";
+import { getAllProductCataloguesList } from "@/services/ProductCatalogues.services";
+import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.services";
+import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services";
+import NewProductCategoryOne from "../Entities/ProductCategoryOne/NewProductCategoryOne";
+import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCategoryTwo";
+import NewProductCatalogueDialog from "../ProductCatalogue/NewProductCatalogueDialog";
 
 export default function UpdateModel() {
   // Translation
@@ -40,10 +49,10 @@ export default function UpdateModel() {
   const setTemplates = useSetRecoilState(templateList);
   const setTextile = useSetRecoilState(textileList);
   const setColor = useSetRecoilState(colorList);
-  const setSizesList = useSetRecoilState(sizeList);
-  //   const setCategoryOne = useSetRecoilState(productCategoryOneList);
-  //   const setCategoryTwo = useSetRecoilState(productCategoryTwoList);
-  //   const setProductCatalogue = useSetRecoilState(productCatalogueList);
+  // const setSizesList = useSetRecoilState(sizeList);
+  const setCategoryOne = useSetRecoilState(productCategoryOneList);
+  const setCategoryTwo = useSetRecoilState(productCategoryTwoList);
+  const setProductCatalogue = useSetRecoilState(productCatalogueList);
   // Files
   const [files, setFiles] = useState({});
   const handleFileChange = (e: any) => {
@@ -54,16 +63,12 @@ export default function UpdateModel() {
   const form = useForm<z.infer<typeof UpdateModelSchema>>({
     resolver: zodResolver(UpdateModelSchema),
     defaultValues: {
-      // ProductCatalog: 0,
-      // CategoryOne: 0,
-      // CategoryTwo: 0,
+      ProductCatalog: "",
+      CategoryOne: "",
+      CategoryTwo: "",
       Textile: "",
       Template: "",
-      TotalQuantity: "",
-      Quantity: "",
       ModelName: "",
-      Size: "",
-      Color: "",
       Characteristics: "",
       Barcode: "",
       LabelType: "",
@@ -86,18 +91,17 @@ export default function UpdateModel() {
         }
       }
 
+      formData.append("ProductCatalog", data.ProductCatalog);
+      formData.append("CategoryOne", data.CategoryOne);
+      formData.append("CategoryTwo", data.CategoryTwo);
       formData.append("Textile", data.Textile);
       formData.append("Template", data.Template);
-      formData.append("TotalQuantity", data.TotalQuantity);
-      formData.append("Size", data.Size);
-      formData.append("Color", data.Color);
       formData.append("Characteristics", data.Characteristics);
       formData.append("Barcode", data.Barcode);
       formData.append("LabelType", data.LabelType);
       formData.append("PrintName", data.PrintName);
       formData.append("PrintLocation", data.PrintLocation);
       formData.append("Description", data.Description);
-      formData.append("Quantity", data.Quantity);
       formData.append("ModelName", data.ModelName);
 
       const updateModel = await axios.put(`model/${modelId}`, formData, {
@@ -106,7 +110,7 @@ export default function UpdateModel() {
         },
       });
       toast.success(updateModel.data.message);
-      getModelById(setCurrentModel, modelId, setSizesList);
+      getModelById(setCurrentModel, modelId);
       setIsLoading(false);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -118,18 +122,18 @@ export default function UpdateModel() {
 
   // Page on load
   useEffect(() => {
-    // getAllProductCataloguesList(setProductCatalogue);
-    // getAllProductCategoryOneList(setCategoryOne);
-    // getAllProductCategoryTwoList(setCategoryTwo);
+    getAllProductCataloguesList(setProductCatalogue);
+    getAllProductCategoryOneList(setCategoryOne);
+    getAllProductCategoryTwoList(setCategoryTwo);
     getAllTextilesList(setTextile);
     getAllColorsList(setColor);
     getAllTemplatesList(setTemplates);
-    getModelById(setCurrentModel, modelId, setSizesList);
+    getModelById(setCurrentModel, modelId);
   }, []);
 
   return (
     <div className="w-full space-y-2">
-      {/* <NewProductCategoryOne
+      <NewProductCategoryOne
         getProductCategoriesOne={() =>
           getAllProductCategoryOneList(setCategoryOne)
         }
@@ -138,11 +142,11 @@ export default function UpdateModel() {
         getProductCategoriesTwo={() =>
           getAllProductCategoryTwoList(setCategoryTwo)
         }
-      /> */}
+      />
       <NewTextiles getTextiles={() => getAllTextilesList(setTextile)} />
-      {/* <NewProductCatalogueDialog
+      <NewProductCatalogueDialog
         getCatalogues={() => getAllProductCataloguesList(setProductCatalogue)}
-      /> */}
+      />
       <NewColor getColors={() => getAllColorsList(setColor)} />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Update Model</h1>

@@ -46,6 +46,7 @@ export default function NewModelVarient() {
       ...varients,
       // @ts-expect-error
       {
+        Id: crypto.randomUUID(),
         Color: data.Color,
         Quantity: data.Quantity,
         Sizes: data.Sizes,
@@ -55,10 +56,9 @@ export default function NewModelVarient() {
     form.reset();
   };
   // Remove Varient
-  const removeVarient = (color: string) => {
-    // const tempVarients = varients.filter((e) => e.Color !== color);
+  const removeVarient = (id: string) => {
     // @ts-expect-error
-    setVarients(varients.filter((e) => e.Color !== color));
+    setVarients(varients.filter((e) => e.Id !== id));
   };
   return (
     <div className="space-y-2">
@@ -66,7 +66,7 @@ export default function NewModelVarient() {
         <h1 className="text-3xl font-bold">Model Varient</h1>
       </div>
       <Separator />
-      <div className="space-y-1">
+      <div className="space-y-2">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -156,7 +156,7 @@ export default function NewModelVarient() {
                   <Button
                     variant="destructive"
                     // @ts-expect-error
-                    onClick={() => removeVarient(e.Color)}
+                    onClick={() => removeVarient(e.Id)}
                   >
                     <Trash className="h-4 w-4" />
                   </Button>
