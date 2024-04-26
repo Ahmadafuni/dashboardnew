@@ -54,12 +54,12 @@ import UpdateMaterial from "@/components/DashboradComponents/Stores/Materials/Up
 import MaterialMovement from "@/pages/Stores/MaterialMovement.tsx";
 import TemplateViewDetails from "@/components/DashboradComponents/Templates/TemplateViewDetails.tsx";
 import NewModel from "./components/DashboradComponents/Models/NewModel.tsx";
-import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
 import ModelVarients from "./pages/Models/ModelVarients.tsx";
+import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
 
 // Axios config
-axios.defaults.baseURL = "http://localhost:3002/";
-// axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+// axios.defaults.baseURL = "http://localhost:3002/";
+axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
 };
