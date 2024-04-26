@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { ModelSchema } from "@/form_schemas/newModelSchema.ts";
 import { templateList } from "@/store/Template";
 import { textileList } from "@/store/Textiles";
-import { colorList, newColorModal } from "@/store/Color";
+import { colorList } from "@/store/Color";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { productCatalogueList } from "@/store/ProductCatalogue";
