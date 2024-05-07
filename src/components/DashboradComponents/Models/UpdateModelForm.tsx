@@ -60,6 +60,17 @@ export default function UpdateModelForm({
       >
         <FormField
           control={form.control}
+          name="DemoModelNumber"
+          render={({ field }) => (
+            <TextInputFieldForForm
+              placeholder="Enter model number"
+              label={t("DemoModelNumber")}
+              field={field}
+            />
+          )}
+        />
+        <FormField
+          control={form.control}
           name="CategoryOne"
           render={({ field }) => (
             <div className="flex gap-x-1">

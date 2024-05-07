@@ -8,6 +8,7 @@
   "Models": "Models",
   "Tasks": "Tasks",
   "Notes": "Notes",
+  "NoteType": "Note Type",
   "Departments": "Departments",
   "Stores": "Stores",
   "Users": "Users",
@@ -90,5 +91,9 @@
   "DeleteConfirmationDialogTitle": "Do you want to delete this?",
   "DeleteConfirmationDialogDescription": "This action cannot be undone. This will permanently delete this.",
   "DeleteConfirmationDialogContinue": "Continue",
-  "DeleteConfirmationDialogCancel": "Cancel"
+  "DeleteConfirmationDialogCancel": "Cancel",
+
+  "AssignedToDepartment": "Assigned To Departmnet",
+  "DueDate": "Due Date",
+  "TaskName": "Task Name"
 }

@@ -134,7 +134,7 @@ export default function Models() {
                   <DropdownMenuItem
                     onClick={() => {
                       navigate(
-                        `/dashboard/orders/model/update/${row.original.Id}`
+                        `/dashboard/orders/model/update/${id}/${row.original.Id}`
                       );
                     }}
                   >

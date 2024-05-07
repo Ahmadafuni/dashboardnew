@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import axios, { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UpdateModelSchema } from "@/form_schemas/newModelSchema.ts";
 import { getModelById } from "@/services/Model.services.ts";
 import { model } from "@/store/Models.ts";
@@ -39,10 +39,13 @@ export default function UpdateModel() {
   const { t } = useTranslation();
 
   // Param
-  const { modelId } = useParams();
+  const { modelId, id } = useParams();
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
+
+  // Navigate
+  const navigate = useNavigate();
 
   // Recoil state
   const [currentModel, setCurrentModel] = useRecoilState(model);
@@ -75,6 +78,7 @@ export default function UpdateModel() {
       PrintName: "",
       PrintLocation: "",
       Description: "",
+      DemoModelNumber: "",
     },
     values: currentModel,
   });
@@ -112,6 +116,7 @@ export default function UpdateModel() {
       toast.success(updateModel.data.message);
       getModelById(setCurrentModel, modelId);
       setIsLoading(false);
+      navigate(`/dashboard/orders/model/${id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);

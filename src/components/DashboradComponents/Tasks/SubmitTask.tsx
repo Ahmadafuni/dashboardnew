@@ -1,38 +1,34 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog.tsx";
+} from "@/components/ui/dialog";
+import { feedbackData, feedbackId, submitTaskModal } from "@/store/Tasks";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useRecoilState, useRecoilValue } from "recoil";
+import SubmitTaskForm from "./SubmitTaskForm";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useTranslation } from "react-i18next";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { taskSchema } from "@/form_schemas/newTaskSchema.ts";
-import TaskForm from "./TaskForm";
-import { newTaskModal } from "@/store/Tasks.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { feedbackSchema } from "@/form_schemas/newTaskSchema";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
-import { getAllDepartmentList } from "@/services/Departments.services";
-import { departmentList } from "@/store/Department";
 
 interface Props {
   getTasks: any;
 }
-
-export default function NewTask({ getTasks }: Props) {
+export default function SubmitTask({ getTasks }: Props) {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useRecoilState(newTaskModal);
-
-  // Dropdown List
-  const setDepartmentList = useSetRecoilState(departmentList);
+  const [open, setOpen] = useRecoilState(submitTaskModal);
+  const feedbackID = useRecoilValue(feedbackId);
+  const currentFeedback = useRecoilValue(feedbackData);
 
   // Handle File
   const [file, setFile] = useState(null);
@@ -40,30 +36,24 @@ export default function NewTask({ getTasks }: Props) {
     setFile(e.target.files[0]);
   };
 
-  const form = useForm<z.infer<typeof taskSchema>>({
-    resolver: zodResolver(taskSchema),
+  const form = useForm<z.infer<typeof feedbackSchema>>({
+    resolver: zodResolver(feedbackSchema),
     defaultValues: {
-      TaskName: "",
-      DueDate: new Date(),
-      AssignedToDepartmentId: "",
-      Description: "",
+      Feedback: "",
     },
+    values: currentFeedback,
   });
 
-  const handleSubmit = async (data: z.infer<typeof taskSchema>) => {
+  const handleSubmit = async (data: z.infer<typeof feedbackSchema>) => {
     setIsLoading(true);
     const formData = new FormData();
     try {
       if (file !== null) {
         formData.append("task", file);
       }
-      formData.append("TaskName", data.TaskName);
-      // @ts-expect-error
-      formData.append("DueDate", data.DueDate);
-      formData.append("AssignedToDepartmentId", data.AssignedToDepartmentId);
-      formData.append("Description", data.Description);
+      formData.append("Feedback", data.Feedback);
 
-      const newTask = await axios.post("task/", formData, {
+      const newTask = await axios.put(`task/feedback/${feedbackID}`, formData, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
@@ -80,17 +70,14 @@ export default function NewTask({ getTasks }: Props) {
       setIsLoading(false);
     }
   };
-  // Page On load
-  useEffect(() => {
-    getAllDepartmentList(setDepartmentList);
-  }, []);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("NewTask")}</DialogTitle>
+          <DialogTitle>Submit Task</DialogTitle>
         </DialogHeader>
-        <TaskForm
+        <SubmitTaskForm
           form={form}
           onSubmit={handleSubmit}
           handleFileChange={handleFileChange}
@@ -99,14 +86,14 @@ export default function NewTask({ getTasks }: Props) {
           <Button onClick={() => setOpen(false)} variant="outline">
             {t("Cancel")}
           </Button>
-          <Button type="submit" disabled={isLoading} form="task">
+          <Button type="submit" disabled={isLoading} form="submit-task">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 {t("Please wait")}
               </>
             ) : (
-              t("Add")
+              t("Submit")
             )}
           </Button>
         </DialogFooter>

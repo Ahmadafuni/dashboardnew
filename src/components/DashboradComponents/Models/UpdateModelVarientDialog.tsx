@@ -60,6 +60,12 @@ export default function UpdateModelVarientDialog({
   });
 
   const onSubmit = async (data: z.infer<typeof ModelVarientSchema>) => {
+    if (+data.Quantity % data.Sizes.length !== 0) {
+      toast.error(
+        "Getting decimal value after splitting quantity into all sizes in equal part. Please change the quantity!"
+      );
+      return;
+    }
     setIsLoading(true);
     try {
       const newVarients = await axios.put(`model/varients/${varientId}`, data, {

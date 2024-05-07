@@ -74,6 +74,7 @@ export default function NewModel() {
       PrintName: "",
       PrintLocation: "",
       Description: "",
+      DemoModelNumber: "",
     },
   });
 

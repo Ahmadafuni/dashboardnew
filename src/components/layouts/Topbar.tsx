@@ -18,6 +18,14 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 
 export default function Topbar() {
   const { i18n } = useTranslation();
@@ -32,6 +40,8 @@ export default function Topbar() {
     i18n.changeLanguage(newLanguage);
     localStorage.setItem("currentLanguage", newLanguage);
   };
+
+  const [notes, setNotes] = useState([]);
 
   const checkUser = async () => {
     try {
@@ -49,6 +59,22 @@ export default function Topbar() {
       }
     }
   };
+
+  const getAllNotes = async () => {
+    try {
+      const { data } = await axios.get("notes/current-notes", {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      setNotes(data.data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    }
+  };
+
   // Logout
   const logout = () => {
     Cookies.remove("access_token");
@@ -60,6 +86,7 @@ export default function Topbar() {
       checkUser();
     }
   }, []);
+
   return (
     <div className="flex border-b-2 px-4 py-2 items-center justify-between">
       <div>
@@ -86,10 +113,45 @@ export default function Topbar() {
               <span className="sr-only">Toggle theme</span>
             </Button>
           </DropdownMenuTrigger>
-          <Button variant="outline" size="icon" className="rounded-full">
-            <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Bell className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          </Button>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full"
+                onClick={() => getAllNotes()}
+              >
+                {/* <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" /> */}
+                <Bell className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Notes</SheetTitle>
+                <SheetDescription>
+                  All notes about this department.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="grid gap-4 py-4">
+                {notes.map((n) => {
+                  return (
+                    // @ts-expect-error
+                    <div key={n.Id} className="border-2 p-2 rounded-sm">
+                      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                        {/* @ts-expect-error */}
+                        {n.NoteType}
+                      </h4>
+                      <p className="leading-7 [&:not(:first-child)]:mt-6">
+                        {/* @ts-expect-error */}
+                        {n.Description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </SheetContent>
+          </Sheet>
+
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => setTheme("light")}>
               Light

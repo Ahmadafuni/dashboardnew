@@ -66,6 +66,12 @@ export default function ModelVarients() {
       header: "Quantity",
     },
     {
+      header: "Quantity Details",
+      cell: ({ row }) => {
+        return <p>{+row.original.Quantity / row.original.Sizes.length}</p>;
+      },
+    },
+    {
       accessorKey: "Status",
       header: "Status",
     },

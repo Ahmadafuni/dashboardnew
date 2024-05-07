@@ -30,6 +30,7 @@ export const model = atom({
     PrintName: "",
     PrintLocation: "",
     Description: "",
+    DemoModelNumber: "",
   },
 });
 

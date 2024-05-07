@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export default function NewModelVarient() {
@@ -41,6 +42,17 @@ export default function NewModelVarient() {
   });
   // Form submit function
   const onSubmit = async (data: z.infer<typeof ModelVarientSchema>) => {
+    // @ts-expect-error
+    if (varients.some((v) => v.Color === data.Color)) {
+      toast.error("Cann't add same color twice!");
+      return;
+    }
+    if (+data.Quantity % data.Sizes.length !== 0) {
+      toast.error(
+        "Getting decimal value after splitting quantity into all sizes in equal part. Please change the quantity!"
+      );
+      return;
+    }
     setVarients([
       // @ts-expect-error
       ...varients,
@@ -49,6 +61,7 @@ export default function NewModelVarient() {
         Id: crypto.randomUUID(),
         Color: data.Color,
         Quantity: data.Quantity,
+        QuantityDetails: +data.Quantity / data.Sizes.length,
         Sizes: data.Sizes,
       },
     ]);
@@ -137,6 +150,7 @@ export default function NewModelVarient() {
               <TableHead>Color</TableHead>
               <TableHead>Sizes</TableHead>
               <TableHead>Quantity</TableHead>
+              <TableHead>Quantity Details</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -152,6 +166,8 @@ export default function NewModelVarient() {
                 <TableCell>{e.Sizes.map((e) => e.label).join(", ")}</TableCell>
                 {/* @ts-expect-error */}
                 <TableCell>{e.Quantity}</TableCell>
+                {/* @ts-expect-error */}
+                <TableCell>{e.QuantityDetails}</TableCell>
                 <TableCell>
                   <Button
                     variant="destructive"

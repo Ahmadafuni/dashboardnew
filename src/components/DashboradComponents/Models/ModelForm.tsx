@@ -49,7 +49,6 @@ export default function ModelForm({ form, onSubmit, handleFileChange }: Props) {
   const setNewProductCatalogueModal = useSetRecoilState(
     newProductCatalogueModal
   );
-
   const handleSubmit = async (data: any) => {
     await onSubmit(data);
   };
@@ -61,6 +60,17 @@ export default function ModelForm({ form, onSubmit, handleFileChange }: Props) {
         className="grid grid-cols-2 gap-2"
         id="model"
       >
+        <FormField
+          control={form.control}
+          name="DemoModelNumber"
+          render={({ field }) => (
+            <TextInputFieldForForm
+              placeholder="Enter model number"
+              label={t("DemoModelNumber")}
+              field={field}
+            />
+          )}
+        />
         <FormField
           control={form.control}
           name="CategoryOne"

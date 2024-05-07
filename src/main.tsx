@@ -132,7 +132,7 @@ const router = createBrowserRouter([
         element: <ModelVarients />,
       },
       {
-        path: "/dashboard/orders/model/update/:modelId",
+        path: "/dashboard/orders/model/update/:id/:modelId",
         element: <UpdateModel />,
       },
       { path: "/dashboard/orders/model/new/:id", element: <NewModel /> },
