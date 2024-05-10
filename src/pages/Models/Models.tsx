@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { deleteModel, getAllModels } from "@/services/Model.services.ts";
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical, Eye, Pen, Plus } from "lucide-react";
+import { EllipsisVertical, Eye, Pen, Plus, ScanEye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
@@ -150,6 +150,14 @@ export default function Models() {
                   >
                     <Eye className="mr-2 h-4 w-4" />
                     <span>View Varients</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      navigate(`/models/viewdetails/${row.original.Id}`)
+                    }
+                  >
+                    <ScanEye className="mr-2 h-4 w-4" />
+                    <span>View Summary</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>

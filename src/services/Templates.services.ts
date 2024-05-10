@@ -60,7 +60,7 @@ export const getTemplateDetail = async (
   id: any
 ) => {
   try {
-    const { data } = await axios.get(`template//view-details/${id}`, {
+    const { data } = await axios.get(`template/view-details/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },

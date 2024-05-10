@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -9,42 +8,67 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getTemplateDetail } from "@/services/Templates.services";
+import { getModelSummary } from "@/services/Model.services";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function TemplateViewDetails() {
+export default function ViewModelSummary() {
   const { id } = useParams();
-  const [details, setDetails] = useState<any>({});
+  // Model summary
+  const [summary, setSummary] = useState<any>({});
 
   useEffect(() => {
-    getTemplateDetail(setDetails, id);
+    getModelSummary(setSummary, id);
   }, []);
   return (
     <div className="p-4">
-      <div className="space-y-2">
-        <div className="grid grid-cols-2">
-          <p>Template Name: {details?.template?.TemplateName}</p>
-          <p>
-            Product Catalogue:{" "}
-            {details?.template?.ProductCatalogue?.ProductCatalogName}
-          </p>
-          <p>Category One: {details?.template?.CategoryOne?.CategoryName}</p>
-          <p>Category Two: {details?.template?.CategoryTwo?.CategoryName}</p>
-          <p>Season: {details?.template?.Season}</p>
-          <p>
-            Template Pattern:{" "}
-            {details?.template?.TemplatePattern?.TemplatePatternName}
-          </p>
-          <p>
-            Template Type: {details?.template?.TemplateType?.TemplateTypeName}
-          </p>
-          <p>Description: {details?.template?.Description}</p>
+      <div>
+        <div className="border-2 grid grid-cols-4 text-right">
+          <div className="border-2 p-2">{summary?.modelInfo?.ModelNumber}</div>
+          <div className="border-2 p-2">The Number</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.ModelDate}</div>
+          <div className="border-2 p-2">Date</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.Quantity}</div>
+          <div className="border-2 p-2">Quantity</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.ModelNumber}</div>
+          <div className="border-2 p-2">Model Number</div>
+          <div className="border-2 p-2">
+            {summary?.modelInfo?.Specification}
+          </div>
+          <div className="border-2 p-2">Specification</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.ModelName}</div>
+          <div className="border-2 p-2">Model Type</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.Barcode}</div>
+          <div className="border-2 p-2">Barcode</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.Sizes}</div>
+          <div className="border-2 p-2">Measurements</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.LabelType}</div>
+          <div className="border-2 p-2">Label Type</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.FabricType}</div>
+          <div className="border-2 p-2">Fabric Type</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.Template}</div>
+          <div className="border-2 p-2">Template Number</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.Colors}</div>
+          <div className="border-2 p-2">Fabric Color</div>
+          <div className="border-2 p-2">
+            {summary?.modelInfo?.PrintLocation}
+          </div>
+          <div className="border-2 p-2">Printing Place</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.DeliveryDate}</div>
+          <div className="border-2 p-2">Delivery Date</div>
+          <div className="border-2 p-2 col-span-3">
+            {summary?.modelInfo?.Description}
+          </div>
+          <div className="border-2 p-2">Comments</div>
         </div>
-        <Separator />
       </div>
-      {(details?.cutting?.length > 0 || details?.dressup?.length > 0) && (
-        <div className="grid grid-cols-1 gap-2 mt-4">
+      <div className="grid grid-cols-6 gap-2 mt-2">
+        {summary?.modelInfo?.Images.split(",").map((i: any) => (
+          <img key={i} src={`https://dashboardbackendnew.onrender.com${i}`} />
+        ))}
+      </div>
+      {summary?.cutting?.length > 0 && (
+        <div className="grid grid-cols-1 gap-2 mt-2">
           <Card>
             <CardHeader>
               <CardTitle>Cutting</CardTitle>
@@ -54,7 +78,7 @@ export default function TemplateViewDetails() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Measurement Name</TableHead>
-                    {Object.entries(details?.cutting[0])
+                    {Object.entries(summary?.cutting[0])
                       .sort()
                       // @ts-expect-error
                       .map(([key, value]) =>
@@ -69,7 +93,7 @@ export default function TemplateViewDetails() {
                 <TableBody>
                   {
                     // @ts-expect-error
-                    details.cutting.map((item) => (
+                    summary?.cutting.map((item) => (
                       <TableRow key={item.Id}>
                         <TableCell>{item.MeasurementName}</TableCell>
                         {Object.entries(item)
@@ -98,7 +122,7 @@ export default function TemplateViewDetails() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Measurement Name</TableHead>
-                    {Object.entries(details?.dressup[0])
+                    {Object.entries(summary?.dressup[0])
                       .sort()
                       // @ts-expect-error
                       .map(([key, value]) =>
@@ -113,7 +137,7 @@ export default function TemplateViewDetails() {
                 <TableBody>
                   {
                     // @ts-expect-error
-                    details.dressup.map((item) => (
+                    summary?.dressup.map((item) => (
                       <TableRow key={item.Id}>
                         <TableCell>{item.MeasurementName}</TableCell>
                         {Object.entries(item)
@@ -134,40 +158,6 @@ export default function TemplateViewDetails() {
             </CardContent>
           </Card>
         </div>
-      )}
-      {details?.stages?.length > 0 && (
-        <Card className="mt-4">
-          <CardHeader>
-            <CardTitle>Manufacturing Stages</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Stage Number</TableHead>
-                  <TableHead>Stage Name</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Work Description</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {
-                  // @ts-expect-error
-                  details?.stages?.map((step, i) => (
-                    <TableRow key={step.Id}>
-                      <TableCell>{step.StageNumber}</TableCell>
-                      <TableCell>{step.StageName}</TableCell>
-                      <TableCell>{step.Department.Name}</TableCell>
-                      <TableCell>{step.Duration}</TableCell>
-                      <TableCell>{step.WorkDescription}</TableCell>
-                    </TableRow>
-                  ))
-                }
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
       )}
       <div className="flex justify-end mt-4 print:hidden">
         <Button onClick={() => window.print()}>Download PDF</Button>

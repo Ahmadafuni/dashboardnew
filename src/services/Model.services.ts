@@ -58,3 +58,21 @@ export const deleteModel = async (
     }
   }
 };
+
+export const getModelSummary = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: string | undefined
+) => {
+  try {
+    const response = await axios.get(`model/model-summary/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(response.data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};

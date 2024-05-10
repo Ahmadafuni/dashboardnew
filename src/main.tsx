@@ -56,6 +56,7 @@ import TemplateViewDetails from "@/components/DashboradComponents/Templates/Temp
 import NewModel from "./components/DashboradComponents/Models/NewModel.tsx";
 import ModelVarients from "./pages/Models/ModelVarients.tsx";
 import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
+import ViewModelSummary from "./components/DashboradComponents/Models/ViewModelSummary.tsx";
 
 // Axios config
 // axios.defaults.baseURL = "http://localhost:3002/";
@@ -172,6 +173,10 @@ const router = createBrowserRouter([
   {
     path: "/templates/viewdetails/:id",
     element: <TemplateViewDetails />,
+  },
+  {
+    path: "/models/viewdetails/:id",
+    element: <ViewModelSummary />,
   },
 ]);
 
