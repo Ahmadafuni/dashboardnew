@@ -21,9 +21,11 @@ import { z } from "zod";
 import { manufacturingStageSchema } from "@/form_schemas/newManufacturingStageSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getAllDepartmentList } from "@/services/Departments.services";
+import {useTranslation} from "react-i18next";
 
 export default function NewManufacturingStages() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   // @ts-expect-error
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +37,7 @@ export default function NewManufacturingStages() {
   const SubmitButton = () => {
     return (
       <Button type="submit" form="stages">
-        Addd
+        {t("Add")}
       </Button>
     );
   };
@@ -134,18 +136,18 @@ export default function NewManufacturingStages() {
       {steps.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Stages</CardTitle>
+            <CardTitle>{t("Stages")}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Stage Number</TableHead>
-                  <TableHead>Stage Name</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Work Description</TableHead>
-                  <TableHead>Action</TableHead>
+                  <TableHead>{t("StageNumber")}</TableHead>
+                  <TableHead>{t("StageName")}</TableHead>
+                  <TableHead>{t("Department")}</TableHead>
+                  <TableHead>{t("Duration")}</TableHead>
+                  <TableHead>{t("WorkDescription")}</TableHead>
+                  <TableHead>{t("Action")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -196,7 +198,7 @@ export default function NewManufacturingStages() {
               Please wait
             </>
           ) : (
-            "Finish"
+            t("Done")
           )}
         </Button>
       </div>

@@ -34,10 +34,12 @@ import {
   manufacturingStageId,
   updateManufacturingStageModal,
 } from "@/store/ManufacturingStage";
+import {useTranslation} from "react-i18next";
 
 export default function ViewManufacturingStages() {
   const [isLoading, setIsLoading] = useState(false);
   const { templateId } = useParams();
+  const { t } = useTranslation();
 
   const setUpdateStageModal = useSetRecoilState(updateManufacturingStageModal);
   const setStageId = useSetRecoilState(manufacturingStageId);
@@ -86,7 +88,7 @@ export default function ViewManufacturingStages() {
             Please wait
           </>
         ) : (
-          "Add"
+            t("Add")
         )}
       </Button>
     );
@@ -129,12 +131,12 @@ export default function ViewManufacturingStages() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Stage Number</TableHead>
-                  <TableHead>Stage Name</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Work Description</TableHead>
-                  <TableHead>Action</TableHead>
+                  <TableHead>{t("StageNumber")}</TableHead>
+                  <TableHead>{t("StageName")}</TableHead>
+                  <TableHead>{t("Department")}</TableHead>
+                  <TableHead>{t("Duration")}</TableHead>
+                  <TableHead>{t("WorkDescription")}</TableHead>
+                  <TableHead>{t("Action")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

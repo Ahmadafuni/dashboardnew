@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   type: string;
@@ -25,6 +26,7 @@ export default function NewMeasurementSingleForm({
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const { templateId } = useParams();
+  const { t } = useTranslation();
   // Sizes State
   const [sizes, setSizes] = useState<any[]>([]);
 
@@ -83,7 +85,7 @@ export default function NewMeasurementSingleForm({
               render={({ field }) => (
                 <ComboSelectFieldForForm
                   field={field}
-                  label="Size"
+                  label={t("Sizes")}
                   placeholder="Select Size..."
                   emptyBox="No size found"
                   form={form}
@@ -99,7 +101,7 @@ export default function NewMeasurementSingleForm({
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder={"Enter measurement name"}
-                  label={"Measurement Name"}
+                  label={t("MeasurementName")}
                   field={field}
                 />
               )}
@@ -110,7 +112,7 @@ export default function NewMeasurementSingleForm({
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder="Enter measurement value"
-                  label={"Measurement Value"}
+                  label={t("MeasurementValue")}
                   field={field}
                 />
               )}
@@ -121,7 +123,7 @@ export default function NewMeasurementSingleForm({
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder="Enter measurement unite"
-                  label={"Measurement Unit"}
+                  label={t("MeasurementUnit")}
                   field={field}
                 />
               )}
@@ -136,7 +138,7 @@ export default function NewMeasurementSingleForm({
                 Please wait
               </>
             ) : (
-              "Add"
+                t("Add")
             )}
           </Button>
         </div>

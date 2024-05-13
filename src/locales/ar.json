@@ -92,6 +92,49 @@
   "DeleteConfirmationDialogTitle": "هل ترغب في حذف هذا؟",
   "DeleteConfirmationDialogDescription": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف هذا بشكل دائم.",
   "DeleteConfirmationDialogContinue": "متابعة",
-  "DeleteConfirmationDialogCancel": "إلغاء"
+  "DeleteConfirmationDialogCancel": "إلغاء",
+
+  "Dashboard": "لوحة التحكم",
+  "BusinessEntities": "كيانات الأعمال",
+  "Collections": "مجموعةالتصاميم",
+  "StaffRelatedData": "البيانات الإدارية",
+  "StoreManagement": "إدارة المستودع",
+  "Warehouses": "المستودعات",
+  "Suppliers": "الموردين",
+  "Materials": "المواد",
+  "MaterialsCategory": "تصنيف  المواد",
+  "TemplateName": "اسم القالب",
+  "File": "ملفات",
+  "Download": "تنزيل",
+
+  "Template": "القالب",
+  "Cutting": "جدول التفصيل",
+  "Dressup": "جدول التلبيس",
+  "Stages": "مراحل العمل",
+  "TemplatePDF": "تحميل ملف",
+  "DownloadPDF": "PDF تنزيل",
+
+  "Next": "التالي",
+
+  "SUMMER": "الصيف",
+  "SPRING": "الربيع",
+  "FALL": "الخريف",
+  "WINTER": "الشتاء",
+
+  "MeasurementName": "اسم القياس",
+  "MeasurementValue": "قيمة القياس",
+  "MeasurementUnit": "وحدة القياس",
+  "Measurements": "القياسات",
+  "UpdateMeasurement": "تحديث القياس",
+
+  "StageName": "اسم المرحلة",
+  "Duration": "المدة",
+  "WorkDescription": "وصف العمل",
+  "StageNumber": "رقم المرحلة",
+  "Done": "إنهاء",
+  "UpdateManufacturingStage": "تحديث مرحلة العمل",
+  "Update Template": "تحديث القالب"
+
+
 
 }

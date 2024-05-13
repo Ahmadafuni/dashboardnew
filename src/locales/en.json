@@ -95,5 +95,46 @@
 
   "AssignedToDepartment": "Assigned To Departmnet",
   "DueDate": "Due Date",
-  "TaskName": "Task Name"
+  "TaskName": "Task Name",
+
+  "Dashboard": "Dashboard",
+  "BusinessEntities": "Business Entities",
+  "Collections": "Collections",
+  "StaffRelatedData": "Staff-related Data",
+  "StoreManagement": "Store Management",
+  "Warehouses": "Warehouses",
+  "Suppliers": "Suppliers",
+  "Materials": "Materials",
+  "MaterialsCategory": "Materials Category",
+
+  "TemplateName": "Template Name",
+  "File": "File",
+  "Download": "Download",
+
+  "Template": "Template",
+  "Cutting": "Cutting",
+  "Dressup": "Dressup",
+  "Stages": "Stages",
+  "TemplatePDF": "Upload File",
+  "DownloadPDF": "Download PDF",
+  "Next": "Next",
+
+  "SUMMER": "Summer",
+  "SPRING": "Spring",
+  "FALL": "Fall",
+  "WINTER": "Winter",
+
+  "MeasurementName": "Measurement Name",
+  "MeasurementValue": "Measurement Value",
+  "MeasurementUnit": "Measurement Unit",
+  "Measurements": "Measurements",
+  "UpdateMeasurement": "Update Measurement",
+
+  "StageName": "Stage name",
+  "Duration": "Duration",
+  "WorkDescription": "Work Description",
+  "StageNumber": "Stage Number",
+  "Done": "Done",
+  "UpdateManufacturingStage": "Update Manufacturing Stage",
+  "Update Template": "Update Template"
 }

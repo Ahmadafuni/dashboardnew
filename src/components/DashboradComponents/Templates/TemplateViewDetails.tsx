@@ -12,10 +12,12 @@ import {
 import { getTemplateDetail } from "@/services/Templates.services";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 export default function TemplateViewDetails() {
   const { id } = useParams();
   const [details, setDetails] = useState<any>({});
+  const { t } = useTranslation();
 
   useEffect(() => {
     getTemplateDetail(setDetails, id);
@@ -23,23 +25,24 @@ export default function TemplateViewDetails() {
   return (
     <div className="p-4">
       <div className="space-y-2">
+        <br/>
         <div className="grid grid-cols-2">
-          <p>Template Name: {details?.template?.TemplateName}</p>
+          <p>{t("TemplateName")}: {details?.template?.TemplateName}</p>
           <p>
-            Product Catalogue:{" "}
+            {t("ProductCatalogueName")}:{" "}
             {details?.template?.ProductCatalogue?.ProductCatalogName}
           </p>
-          <p>Category One: {details?.template?.CategoryOne?.CategoryName}</p>
-          <p>Category Two: {details?.template?.CategoryTwo?.CategoryName}</p>
-          <p>Season: {details?.template?.Season}</p>
+          <p>{t("ProductCatalogCategoryOne")}: {details?.template?.CategoryOne?.CategoryName}</p>
+          <p>{t("ProductCatalogCategoryTwo")}: {details?.template?.CategoryTwo?.CategoryName}</p>
+          <p>{t("Season")}: {details?.template?.Season}</p>
           <p>
-            Template Pattern:{" "}
+            {t("TemplatePatternName")}:{" "}
             {details?.template?.TemplatePattern?.TemplatePatternName}
           </p>
           <p>
-            Template Type: {details?.template?.TemplateType?.TemplateTypeName}
+            {t("TemplateTypeName")}: {details?.template?.TemplateType?.TemplateTypeName}
           </p>
-          <p>Description: {details?.template?.Description}</p>
+          <p>{t("Description")}: {details?.template?.Description}</p>
         </div>
         <Separator />
       </div>
@@ -47,13 +50,13 @@ export default function TemplateViewDetails() {
         <div className="grid grid-cols-1 gap-2 mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Cutting</CardTitle>
+              <CardTitle>{t("Cutting")}</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Measurement Name</TableHead>
+                    <TableHead>{t("MeasurementName")}</TableHead>
                     {Object.entries(details?.cutting[0])
                       .sort()
                       // @ts-expect-error
@@ -63,7 +66,7 @@ export default function TemplateViewDetails() {
                           <TableHead key={key}>{key}</TableHead>
                         ) : null
                       )}
-                    <TableHead>Measurement Unit</TableHead>
+                    <TableHead>{t("MeasurementUnit")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -91,13 +94,13 @@ export default function TemplateViewDetails() {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Dressup</CardTitle>
+              <CardTitle>{t("Dressup")}</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Measurement Name</TableHead>
+                    <TableHead>{t("MeasurementName")}</TableHead>
                     {Object.entries(details?.dressup[0])
                       .sort()
                       // @ts-expect-error
@@ -107,7 +110,7 @@ export default function TemplateViewDetails() {
                           <TableHead key={key}>{key}</TableHead>
                         ) : null
                       )}
-                    <TableHead>Measurement Unit</TableHead>
+                    <TableHead>{t("MeasurementUnit")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -144,11 +147,11 @@ export default function TemplateViewDetails() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Stage Number</TableHead>
-                  <TableHead>Stage Name</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Work Description</TableHead>
+                  <TableHead>{t("StageNumber")}</TableHead>
+                  <TableHead>{t("StageName")}</TableHead>
+                  <TableHead>{t("Department")}</TableHead>
+                  <TableHead>{t("Duration")}</TableHead>
+                  <TableHead>{t("WorkDescription")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -170,7 +173,7 @@ export default function TemplateViewDetails() {
         </Card>
       )}
       <div className="flex justify-end mt-4 print:hidden">
-        <Button onClick={() => window.print()}>Download PDF</Button>
+        <Button onClick={() => window.print()}>{t("DownloadPDF")}</Button>
       </div>
     </div>
   );
