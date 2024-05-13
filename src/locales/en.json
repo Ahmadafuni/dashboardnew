@@ -169,7 +169,18 @@
   "AddDetail": "Add Detail",
   "QuantityDetails": "QuantityDetails",
   "ModelName": "Model Name",
-  "ModelCreatedDate": "Model Created Date"
+  "ModelCreatedDate": "Model Created Date",
 
+  "AddTask": "Add Task",
+  "NewTask": "New Task",
+  "UpdateTask": "Update Task",
+  "TaskFile": "Task File",
+
+  "GENERAL": "General",
+  "REMINDER": "Reminder",
+  "ATTENTION": "Attention",
+  "NewNote": "New Note",
+  "UpdateNote": "Update Note",
+  "AddNote": "Add Note"
 
 }

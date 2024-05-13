@@ -166,12 +166,24 @@
   "AddDetail": "إضافة تفصيل",
   "QuantityDetails": "تفاصيل الكمية",
   "ModelName": "اسم الموديل",
-  "ModelCreatedDate": "تاريخ إنشاء الموديل"
+  "ModelCreatedDate": "تاريخ إنشاء الموديل",
 
+  "AssignedToDepartment": "تعيين إلى القسم",
+  "DueDate": "تاريخ الاستحقاق",
+  "TaskName": "اسم المهمة",
+  "AddTask": " إضافة مهمة",
+  "UpdateTask": "تحديث مهمة",
+  "TaskFile": "ملف المهمة",
+  "NewTask": "مهمة جديدة",
 
-
-
-
+  "GENERAL": "عام",
+  "REMINDER": "تذكير",
+  "ATTENTION": "تنبيه",
+  "NoteType": "نوع الملاحظة",
+  "NewNote": "ملاحظة جديدة",
+  "UpdateNote": "تحديث ملاحظة",
+  "Note": "ملاحظات",
+  "AddNote": "إضافة ملاحظة"
 
 
 }

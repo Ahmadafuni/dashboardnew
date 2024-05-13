@@ -84,7 +84,7 @@ export default function SubmitTask({ getTasks }: Props) {
         />
         <DialogFooter>
           <Button onClick={() => setOpen(false)} variant="outline">
-            {t("Cancel")}
+            {t("Close")}
           </Button>
           <Button type="submit" disabled={isLoading} form="submit-task">
             {isLoading ? (

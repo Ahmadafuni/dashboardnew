@@ -65,7 +65,7 @@ export default function NoteUpdate({ getNotes }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("Update Note")}</DialogTitle>
+          <DialogTitle>{t("UpdateNote")}</DialogTitle>
         </DialogHeader>
         <NoteForm form={form} onSubmit={handleSubmit} />
         <DialogFooter>
