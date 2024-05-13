@@ -18,7 +18,6 @@ import {
   updateMaterialMovementModal,
 } from "@/store/MaterialMovement.ts";
 import { useParams } from "react-router-dom";
-import BackButton from "@/components/common/BackButton";
 
 export default function MaterialMovement() {
   const { t } = useTranslation();
@@ -73,7 +72,6 @@ export default function MaterialMovement() {
 
   return (
     <div className="w-full space-y-2">
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("MaterialMovements")}</h1>
         <Separator />

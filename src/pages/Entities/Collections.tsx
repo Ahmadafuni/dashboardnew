@@ -21,7 +21,6 @@ import { useTranslation } from "react-i18next";
 import { CollectionType } from "@/types/Entities/Collections.types.ts";
 import NewCollection from "@/components/DashboradComponents/Entities/Collections/NewCollection.tsx";
 import UpdateCollection from "@/components/DashboradComponents/Entities/Collections/UpdateCollection.tsx";
-import BackButton from "@/components/common/BackButton";
 
 export default function Collections() {
   const setNewCollectionModal = useSetRecoilState(newCollectionModal);
@@ -76,7 +75,6 @@ export default function Collections() {
       <UpdateCollection
         getAllCollections={() => getAllCollections(setCollections)}
       />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Collections")}</h1>
         <Separator />

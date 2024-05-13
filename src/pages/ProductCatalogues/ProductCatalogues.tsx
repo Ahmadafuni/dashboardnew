@@ -23,7 +23,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import BackButton from "@/components/common/BackButton";
 
 export default function ProductCatalogues() {
   const setNewCatalogueModal = useSetRecoilState(newProductCatalogueModal);
@@ -106,7 +105,6 @@ export default function ProductCatalogues() {
       <UpdateProductCatalogueModal
         getCatalogues={() => getAllProductCatalogues(setCatalogues)}
       />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("ProductCatalogues")}</h1>
         <Separator />

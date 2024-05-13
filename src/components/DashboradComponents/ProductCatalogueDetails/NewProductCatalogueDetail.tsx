@@ -125,8 +125,8 @@ export default function NewProductCatalogueDetail() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <NewTextiles getTextiles={() => getAllTextilesList(setTextilesList)} />
-      <BackButton />
       <div className="w-full space-y-1 flex items-center">
+        <BackButton />
         <h1 className="text-3xl font-bold">
           {/* @ts-expect-error */}
           New Product Catalouge Details for {pCatalogue?.name}

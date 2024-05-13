@@ -21,7 +21,6 @@ import { TextilesType } from "@/types/Entities/Textiles.types.ts";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
 import UpdateTextiles from "@/components/DashboradComponents/Entities/Textiles/UpdateTextiles.tsx";
 import { useTranslation } from "react-i18next";
-import BackButton from "@/components/common/BackButton";
 
 export default function Textiles() {
   const setNewTextileModal = useSetRecoilState(newTextileModal);
@@ -78,7 +77,6 @@ export default function Textiles() {
     <div className="w-full space-y-2">
       <NewTextiles getTextiles={() => getAllTextiles(setTextiles)} />
       <UpdateTextiles getTextiles={() => getAllTextiles(setTextiles)} />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Textiles")}</h1>
         <Separator />

@@ -52,11 +52,11 @@ export default function NewDepartment() {
   };
   return (
     <div className="w-full space-y-2">
-      <BackButton />
-      <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">{t("Newdepartment")}</h1>
-        <Separator />
+      <div className="w-full space-y-1 flex items-center">
+        <BackButton />
+        <h1 className="text-3xl font-bold">{t("Newdepartment")}</h1>
       </div>
+      <Separator />
       <div className="space-y-1">
         <DepartmentForm form={form} onSubmit={onSubmit} />
         <div className="flex justify-end">

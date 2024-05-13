@@ -150,8 +150,8 @@ export default function NewModel() {
         getCatalogues={() => getAllProductCataloguesList(setProductCatalogue)}
       />
       <NewColor getColors={() => getAllColorsList(setColor)} />
-      <BackButton />
       <div className="w-full space-y-1 flex items-center">
+        <BackButton />
         <h1 className="text-3xl font-bold">{t("NewModel")}</h1>
       </div>
       <Separator />

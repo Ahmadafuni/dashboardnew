@@ -21,7 +21,6 @@ import {
 import NewNote from "@/components/DashboradComponents/Notes/NewNote.tsx";
 import UpdateNote from "@/components/DashboradComponents/Notes/UpdateNote.tsx";
 import { NoteType } from "@/types/Notes/Notes.types.ts";
-import BackButton from "@/components/common/BackButton";
 
 export default function Notes() {
   const { t } = useTranslation();
@@ -77,7 +76,6 @@ export default function Notes() {
     <div className="w-full space-y-2">
       <NewNote getNotes={() => getAllNotes(setNotes)} />
       <UpdateNote getNotes={() => getAllNotes(setNotes)} />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Notes")}</h1>
         <Separator />

@@ -16,7 +16,6 @@ import {
   deleteProductCatalogueDetail,
   getAllProductCatalogueDetails,
 } from "@/services/ProductCatalogueDetails.services.ts";
-import BackButton from "@/components/common/BackButton";
 
 export default function ProductCatalogueDetails() {
   // Param
@@ -123,7 +122,6 @@ export default function ProductCatalogueDetails() {
   }, []);
   return (
     <div className="w-full space-y-2">
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">
           Product Catalogue Details for {details?.ProductCatalogName}

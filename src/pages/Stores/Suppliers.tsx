@@ -20,7 +20,6 @@ import { SupplierType } from "@/types/Warehouses/Suppliers.type.ts";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import NewSupplier from "@/components/DashboradComponents/Stores/Suppliers/NewSupplier.tsx";
 import UpdateSupplier from "@/components/DashboradComponents/Stores/Suppliers/UpdateSupplier.tsx";
-import BackButton from "@/components/common/BackButton";
 
 export default function Suppliers() {
   const { t } = useTranslation();
@@ -82,7 +81,6 @@ export default function Suppliers() {
     <div className="w-full space-y-2">
       <NewSupplier getSuppliers={getAllSuppliers} />
       <UpdateSupplier getSuppliers={getAllSuppliers} />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Suppliers")}</h1>
         <Separator />

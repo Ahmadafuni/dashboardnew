@@ -155,11 +155,11 @@ export default function UpdateModel() {
         getCatalogues={() => getAllProductCataloguesList(setProductCatalogue)}
       />
       <NewColor getColors={() => getAllColorsList(setColor)} />
-      <BackButton />
-      <div className="w-full space-y-1">
+      <div className="w-full space-y-1 flex items-center">
+        <BackButton />
         <h1 className="text-3xl font-bold w-full">Update Model</h1>
-        <Separator />
       </div>
+      <Separator />
       <div className="space-y-1">
         <UpdateModelForm
           form={form}

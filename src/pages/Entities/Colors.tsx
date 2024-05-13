@@ -21,7 +21,6 @@ import { ColorType } from "@/types/Entities/Color.types.ts";
 import NewColor from "@/components/DashboradComponents/Entities/Colors/NewColor.tsx";
 import UpdateColor from "@/components/DashboradComponents/Entities/Colors/UpdateColor.tsx";
 import { useTranslation } from "react-i18next";
-import BackButton from "@/components/common/BackButton";
 
 export default function Colors() {
   const setNewColorModal = useSetRecoilState(newColorModal);
@@ -85,7 +84,6 @@ export default function Colors() {
     <div className="w-full space-y-2">
       <NewColor getColors={() => getAllColors(setColors)} />
       <UpdateColor getColors={() => getAllColors(setColors)} />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full"> {t("Colors")}</h1>
         <Separator />

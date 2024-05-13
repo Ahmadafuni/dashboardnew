@@ -134,13 +134,13 @@ export default function UpdateProductCatalogueDetail() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <NewTextiles getTextiles={() => getAllTextilesList(setTextilesList)} />
-      <BackButton />
-      <div className="w-full space-y-1">
+      <div className="w-full space-y-1 flex items-center">
+        <BackButton />
         <h1 className="text-3xl font-bold w-full">
           Update Product Catalogue Detail
         </h1>
-        <Separator />
       </div>
+      <Separator />
       <div className="space-y-1">
         <ProductCatalogueDetailForm form={form} onSubmit={onSubmit} />
         <div className="flex justify-end">

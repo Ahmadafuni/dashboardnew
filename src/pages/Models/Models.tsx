@@ -18,7 +18,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import BackButton from "@/components/common/BackButton";
 
 export default function Models() {
   // Navigate
@@ -179,11 +178,8 @@ export default function Models() {
   useEffect(() => {
     getAllModels(setModels, id);
   }, []);
-  console.log(models);
-
   return (
     <div className="w-full space-y-2">
-      <BackButton />
       <div className="w-full space-y-1">
         {models.length > 0 && (
           <h1 className="text-3xl font-bold w-full">

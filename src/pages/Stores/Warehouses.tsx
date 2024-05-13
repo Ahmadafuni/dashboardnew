@@ -17,7 +17,6 @@ import { newWarehouseModal, warehouse } from "@/store/Warehouse.ts";
 import UpdateWarehouse from "@/components/DashboradComponents/Stores/Warehouses/UpdateWarehouse.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { updateWarehouseModal, warehouseId } from "@/store/Warehouse.ts";
-import BackButton from "@/components/common/BackButton";
 
 export default function Warehouses() {
   const { t } = useTranslation();
@@ -79,7 +78,6 @@ export default function Warehouses() {
     <div className="w-full space-y-2">
       <NewWarehouse getWarehouse={() => getAllWarehouses(setWarehouses)} />
       <UpdateWarehouse getWarehouse={() => getAllWarehouses(setWarehouses)} />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Warehouses")}</h1>
         <Separator />

@@ -20,7 +20,6 @@ import {
   getAllMaterialCategories,
   getMaterialCategoryById,
 } from "@/services/MaterialCategory.services.ts";
-import BackButton from "@/components/common/BackButton";
 
 export default function MaterialCategories() {
   const { t } = useTranslation();
@@ -79,7 +78,6 @@ export default function MaterialCategories() {
       <UpdateMaterialCategory
         getMaterialCategories={getAllMaterialCategories}
       />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("MaterialCategories")}</h1>
         <Separator />

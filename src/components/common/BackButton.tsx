@@ -6,14 +6,13 @@ export default function BackButton() {
   const navigate = useNavigate();
   return (
     <Button
-      variant="outline"
-      className="space-x-2"
+      variant="ghost"
+      className="mt-1"
       onClick={() => {
         navigate(-1);
       }}
     >
-      <ArrowLeft className="h-4 w-4" />
-      <span>Back</span>
+      <ArrowLeft className="h-8 w-8" />
     </Button>
   );
 }

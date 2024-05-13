@@ -70,11 +70,11 @@ export default function NewMaterial() {
           setMaterialCategoryList
         )}
       />
-      <BackButton />
-      <div className="w-full space-y-1">
+      <div className="w-full space-y-1 flex items-center">
+        <BackButton />
         <h1 className="text-3xl font-bold w-full">{t("New Material")}</h1>
-        <Separator />
       </div>
+      <Separator />
       <div className="space-y-1">
         <MaterialForm form={form} onSubmit={onSubmit} />
         <div className="flex justify-end">

@@ -21,7 +21,6 @@ import { TemplatePatternType } from "@/types/Entities/TemplatePattern.types.ts";
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
 import UpdateTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/UpdateTemplatePattern.tsx";
 import { useTranslation } from "react-i18next";
-import BackButton from "@/components/common/BackButton";
 
 export default function TemplatePattern() {
   const setNewTemplatePatternModal = useSetRecoilState(newTemplatePatternModal);
@@ -84,7 +83,6 @@ export default function TemplatePattern() {
         <h1 className="text-3xl font-bold w-full">{t("TemplatePattern")}</h1>
         <Separator />
       </div>
-      <BackButton />
       <div className="space-y-2">
         <div className="flex justify-end">
           <Button

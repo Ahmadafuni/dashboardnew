@@ -70,11 +70,11 @@ export default function NewUsers() {
   };
   return (
     <div className="w-full space-y-2">
-      <BackButton />
-      <div className="w-full space-y-1">
+      <div className="w-full space-y-1 flex items-center">
+        <BackButton />
         <h1 className="text-3xl font-bold w-full">{t("Newuser")}</h1>
-        <Separator />
       </div>
+      <Separator />
       <div className="space-y-1">
         <UserForm
           form={form}

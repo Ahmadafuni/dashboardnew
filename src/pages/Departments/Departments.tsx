@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getAllDepartments } from "@/services/Departments.services";
-import BackButton from "@/components/common/BackButton";
 
 export default function Departments() {
   // Translation
@@ -58,7 +57,6 @@ export default function Departments() {
   }, []);
   return (
     <div className="w-full space-y-2">
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Departments</h1>
         <Separator />

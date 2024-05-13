@@ -16,7 +16,6 @@ import { SizeType } from "@/types/Entities/Size.types.ts";
 import NewSize from "@/components/DashboradComponents/Entities/Sizes/NewSize.tsx";
 import UpdateSize from "@/components/DashboradComponents/Entities/Sizes/UpdateSize.tsx";
 import { useTranslation } from "react-i18next";
-import BackButton from "@/components/common/BackButton";
 
 export default function Sizes() {
   const setNewSizeModal = useSetRecoilState(newSizeModal);
@@ -65,7 +64,6 @@ export default function Sizes() {
     <div className="w-full space-y-2">
       <NewSize getSizes={() => getAllSizes(setSizes)} />
       <UpdateSize getSizes={() => getAllSizes(setSizes)} />
-      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Sizes")}</h1>
         <Separator />
