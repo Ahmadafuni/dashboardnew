@@ -29,10 +29,10 @@ export default function Models() {
   const { t } = useTranslation();
 
   const modelColumns: ColumnDef<ModelTypes>[] = [
-    {
-      accessorKey: "OrderNumber",
-      header: "Order Number",
-    },
+    // {
+    //   accessorKey: "OrderNumber",
+    //   header: "Order Number",
+    // },
     {
       header: "Product Catalog",
       cell: ({ row }) => {
@@ -179,7 +179,11 @@ export default function Models() {
     <div className="w-full space-y-2">
       <BackButton />
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">{t("Models")}</h1>
+        {models.length > 0 && (
+          <h1 className="text-3xl font-bold w-full">
+            {models[0].OrderNumber}-{t("Models")}
+          </h1>
+        )}
         <Separator />
       </div>
       <div className="space-y-2">

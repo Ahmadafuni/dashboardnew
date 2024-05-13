@@ -45,7 +45,7 @@ export default function ModelVarientForm({ form, onSubmit }: Props) {
           render={({ field }) => (
             <MultiSelectFieldForForm
               label="Sizes"
-              selectText="Select Color"
+              selectText="Select Sizes"
               form={form}
               name="Sizes"
               items={sizesList}
