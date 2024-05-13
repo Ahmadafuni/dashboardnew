@@ -59,8 +59,8 @@ import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx
 import ViewModelSummary from "./components/DashboradComponents/Models/ViewModelSummary.tsx";
 
 // Axios config
-axios.defaults.baseURL = "http://localhost:3002/";
-// axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+// axios.defaults.baseURL = "http://localhost:3002/";
+axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
 };
