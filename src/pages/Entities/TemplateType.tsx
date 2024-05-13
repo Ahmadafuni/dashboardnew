@@ -21,6 +21,7 @@ import { TemplateTypeType } from "@/types/Entities/TemplateType.types.ts";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import UpdateTemplateType from "@/components/DashboradComponents/Entities/TemplateType/UpdateTemplateType.tsx";
 import { useTranslation } from "react-i18next";
+import BackButton from "@/components/common/BackButton";
 
 export default function TemplateType() {
   const setNewTemplateTypeModal = useSetRecoilState(newTemplateTypeModal);
@@ -54,7 +55,9 @@ export default function TemplateType() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteTemplateType(setTemplateTypes, row.original.Id)}
+              deleteRow={() =>
+                deleteTemplateType(setTemplateTypes, row.original.Id)
+              }
             />
           </div>
         );
@@ -73,6 +76,7 @@ export default function TemplateType() {
       <UpdateTemplateType
         getTemplateTypes={() => getAllTemplateTypes(setTemplateTypes)}
       />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("TemplateType")}</h1>
         <Separator />

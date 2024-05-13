@@ -12,6 +12,7 @@ import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import DepartmentForm from "@/components/DashboradComponents/Departments/DepartmentForm.tsx";
 import Cookies from "js-cookie";
+import BackButton from "@/components/common/BackButton";
 export default function NewDepartment() {
   // Translation
   const { t } = useTranslation();
@@ -51,6 +52,7 @@ export default function NewDepartment() {
   };
   return (
     <div className="w-full space-y-2">
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Newdepartment")}</h1>
         <Separator />

@@ -32,6 +32,7 @@ import NewColor from "../Entities/Colors/NewColor";
 import { useNavigate, useParams } from "react-router-dom";
 import NewModelVarient from "./NewModelVarient";
 import { modelVarientNew } from "@/store/Models";
+import BackButton from "@/components/common/BackButton";
 
 export default function NewModel() {
   // Translation
@@ -148,6 +149,7 @@ export default function NewModel() {
         getCatalogues={() => getAllProductCataloguesList(setProductCatalogue)}
       />
       <NewColor getColors={() => getAllColorsList(setColor)} />
+      <BackButton />
       <div className="w-full space-y-1 flex items-center">
         <h1 className="text-3xl font-bold">{t("NewModel")}</h1>
       </div>

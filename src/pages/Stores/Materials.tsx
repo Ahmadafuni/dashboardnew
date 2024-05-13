@@ -31,6 +31,7 @@ import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.t
 import NewMaterialMovement from "@/components/DashboradComponents/Stores/MaterialMovement/NewMaterialMovement.tsx";
 import { useRecoilState } from "recoil";
 import { newMaterialMovementModal } from "@/store/MaterialMovement.ts";
+import BackButton from "@/components/common/BackButton";
 
 export default function Materials() {
   // @ts-expect-error
@@ -111,6 +112,7 @@ export default function Materials() {
   }, []);
   return (
     <div className="w-full space-y-2">
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Materials</h1>
         <Separator />

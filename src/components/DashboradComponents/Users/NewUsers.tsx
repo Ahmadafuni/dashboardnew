@@ -12,6 +12,7 @@ import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import UserForm from "@/components/DashboradComponents/Users/UserForm.tsx";
 import Cookies from "js-cookie";
+import BackButton from "@/components/common/BackButton";
 
 export default function NewUsers() {
   // translation
@@ -69,6 +70,7 @@ export default function NewUsers() {
   };
   return (
     <div className="w-full space-y-2">
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Newuser")}</h1>
         <Separator />

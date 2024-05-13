@@ -28,7 +28,8 @@ import NewTemplatePattern from "@/components/DashboradComponents/Entities/Templa
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import {getProductCatalogueDetailById} from "@/services/ProductCatalogueDetails.services.ts";
+import { getProductCatalogueDetailById } from "@/services/ProductCatalogueDetails.services.ts";
+import BackButton from "@/components/common/BackButton";
 
 export default function UpdateProductCatalogueDetail() {
   // Translation
@@ -94,7 +95,7 @@ export default function UpdateProductCatalogueDetail() {
       );
       toast.success(updateDetail.data.message);
       setIsLoading(false);
-      navigate(-1);// Navigate back to the previous page
+      navigate(-1); // Navigate back to the previous page
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -133,6 +134,7 @@ export default function UpdateProductCatalogueDetail() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <NewTextiles getTextiles={() => getAllTextilesList(setTextilesList)} />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">
           Update Product Catalogue Detail

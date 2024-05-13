@@ -29,6 +29,7 @@ import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateT
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductCatalogueById } from "@/services/ProductCatalogues.services";
+import BackButton from "@/components/common/BackButton";
 
 export default function NewProductCatalogueDetail() {
   // Translation
@@ -126,17 +127,7 @@ export default function NewProductCatalogueDetail() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <NewTextiles getTextiles={() => getAllTextilesList(setTextilesList)} />
-      <div>
-        <h2
-          onClick={() => {
-            navigate("/dashboard/productcatalogues");
-          }}
-          className="flex items-center gap-x-1 cursor-pointer max-w-fit"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Go Back</span>
-        </h2>
-      </div>
+      <BackButton />
       <div className="w-full space-y-1 flex items-center">
         <h1 className="text-3xl font-bold">
           {/* @ts-expect-error */}

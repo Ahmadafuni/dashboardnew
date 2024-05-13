@@ -43,6 +43,7 @@ import {
 import SubmitTask from "@/components/DashboradComponents/Tasks/SubmitTask";
 import { userInfo } from "@/store/authentication";
 import CheckSubmittedTask from "@/components/DashboradComponents/Tasks/CheckSubmittedTask";
+import BackButton from "@/components/common/BackButton";
 
 export default function Tasks() {
   const { t } = useTranslation();
@@ -201,6 +202,7 @@ export default function Tasks() {
       <UpdateTask getTasks={() => getAllTasks(setTasks)} />
       <SubmitTask getTasks={() => getAllTasks(setTasks)} />
       <CheckSubmittedTask />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Tasks")}</h1>
         <Separator />

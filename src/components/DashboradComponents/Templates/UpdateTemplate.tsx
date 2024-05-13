@@ -27,6 +27,7 @@ import NewProductCategoryOne from "../Entities/ProductCategoryOne/NewProductCate
 import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCategoryTwo";
 import NewTemplatePattern from "../Entities/TemplatePattern/NewTemplatePattern";
 import NewTemplateType from "../Entities/TemplateType/NewTemplateType";
+import BackButton from "@/components/common/BackButton";
 export default function UpdateTemplate() {
   const { templateId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -117,6 +118,7 @@ export default function UpdateTemplate() {
       <NewTemplateType
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Update Template</h1>
         <Separator />

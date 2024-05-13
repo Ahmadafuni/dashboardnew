@@ -1,4 +1,5 @@
 import UserForm from "@/components/DashboradComponents/Users/UserForm.tsx";
+import BackButton from "@/components/common/BackButton";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { userUpdateSchema } from "@/form_schemas/newUserSchema.ts";
@@ -80,6 +81,7 @@ export default function UpdateUser() {
   }, []);
   return (
     <div className="w-full space-y-2">
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Update User</h1>
         <Separator />

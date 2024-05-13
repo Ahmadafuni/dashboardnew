@@ -21,6 +21,7 @@ import UpdateProductCategoryTwo from "@/components/DashboradComponents/Entities/
 import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/ProductCategoryTwo/NewProductCategoryTwo.tsx";
 import { useTranslation } from "react-i18next";
 import { ProductCategoryOneType } from "@/types/Entities/ProductCategoryOne.types";
+import BackButton from "@/components/common/BackButton";
 
 export default function ProductCategoryTwo() {
   // Modal State
@@ -64,7 +65,12 @@ export default function ProductCategoryTwo() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteProductCategoryTwo(setProductCategoryTwos, row.original.Id)}
+              deleteRow={() =>
+                deleteProductCategoryTwo(
+                  setProductCategoryTwos,
+                  row.original.Id
+                )
+              }
             />
           </div>
         );
@@ -88,6 +94,7 @@ export default function ProductCategoryTwo() {
           getAllProductCategoryTwo(setProductCategoryTwos)
         }
       />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">
           {" "}

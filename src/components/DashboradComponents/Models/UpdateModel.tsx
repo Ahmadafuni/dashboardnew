@@ -33,6 +33,7 @@ import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.serv
 import NewProductCategoryOne from "../Entities/ProductCategoryOne/NewProductCategoryOne";
 import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCategoryTwo";
 import NewProductCatalogueDialog from "../ProductCatalogue/NewProductCatalogueDialog";
+import BackButton from "@/components/common/BackButton";
 
 export default function UpdateModel() {
   // Translation
@@ -153,6 +154,7 @@ export default function UpdateModel() {
         getCatalogues={() => getAllProductCataloguesList(setProductCatalogue)}
       />
       <NewColor getColors={() => getAllColorsList(setColor)} />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Update Model</h1>
         <Separator />

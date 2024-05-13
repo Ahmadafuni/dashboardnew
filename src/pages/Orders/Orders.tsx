@@ -31,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import BackButton from "@/components/common/BackButton";
 
 export default function Orders() {
   const setNewOrderModal = useSetRecoilState(newOrderModal);
@@ -167,6 +168,7 @@ export default function Orders() {
     <div className="w-full space-y-2">
       <NewOrder getAllOrders={() => getAllOrders(setOrders)} />
       <UpdateOrder getAllOrders={() => getAllOrders(setOrders)} />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Orders")}</h1>
         <Separator />

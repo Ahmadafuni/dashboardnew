@@ -21,6 +21,7 @@ import { ProductCategoryOneType } from "@/types/Entities/ProductCategoryOne.type
 import UpdateProductCategoryOne from "@/components/DashboradComponents/Entities/ProductCategoryOne/UpdateProductCategoryOne.tsx";
 import NewProductCategoryOne from "@/components/DashboradComponents/Entities/ProductCategoryOne/NewProductCategoryOne.tsx";
 import { useTranslation } from "react-i18next";
+import BackButton from "@/components/common/BackButton";
 
 export default function ProductCategoryOne() {
   const setNewProductCategoryOneModal = useSetRecoilState(
@@ -62,7 +63,12 @@ export default function ProductCategoryOne() {
               <Pen className="h-4 w-4" />
             </Button>
             <DeleteConfirmationDialog
-              deleteRow={() => deleteProductCategoryOne(setProductCategoryOnes, row.original.Id)}
+              deleteRow={() =>
+                deleteProductCategoryOne(
+                  setProductCategoryOnes,
+                  row.original.Id
+                )
+              }
             />
           </div>
         );
@@ -85,6 +91,7 @@ export default function ProductCategoryOne() {
           getAllProductCategoryOne(setProductCategoryOnes)
         }
       />
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("ProductCategoryOne")}</h1>
         <Separator />

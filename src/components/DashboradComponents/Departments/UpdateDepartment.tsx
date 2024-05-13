@@ -12,7 +12,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import BackButton from "@/components/common/BackButton";
 
 export default function UpdateDepartment() {
   const { departmentID } = useParams();
@@ -65,6 +66,7 @@ export default function UpdateDepartment() {
   }, []);
   return (
     <div className="w-full space-y-2">
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Update department</h1>
         <Separator />
@@ -79,8 +81,8 @@ export default function UpdateDepartment() {
                 Please wait
               </>
             ) : (
-               t("Update")
-              )}
+              t("Update")
+            )}
           </Button>
         </div>
       </div>

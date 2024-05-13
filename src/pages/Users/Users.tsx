@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 import DataTable from "@/components/common/DataTable";
 import { deleteUser, getAllUsers, toggleUser } from "@/services/Users.services";
+import BackButton from "@/components/common/BackButton";
 export default function Users() {
   // Users
   const [users, setUsers] = useState([]);
@@ -103,6 +104,7 @@ export default function Users() {
   }, []);
   return (
     <div className="w-full space-y-2">
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Users</h1>
         <Separator />

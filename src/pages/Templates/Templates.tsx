@@ -1,3 +1,4 @@
+import BackButton from "@/components/common/BackButton";
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 import { Button } from "@/components/ui/button";
@@ -120,6 +121,7 @@ export default function Templates() {
   }, []);
   return (
     <div className="w-full space-y-2">
+      <BackButton />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Templates</h1>
         <Separator />
