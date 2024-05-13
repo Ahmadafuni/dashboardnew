@@ -16,6 +16,7 @@ export type ModelTypes = {
   // Size: SizeType; // can select many sizes
   // Color: ColorType; // can select many colors
 
+  DemoModelNumber: string; // generated from Backend but the user can change it
   ModelNumber: string; // generated from Backend but the user can change it
   ModelName: string; // generated from Backend =ProductCatalogName + CategoryOneName   but the user can change it
   // TotalQuantity: number;

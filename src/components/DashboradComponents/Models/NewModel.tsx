@@ -94,6 +94,7 @@ export default function NewModel() {
         }
       }
 
+      formData.append("DemoModelNumber", data.DemoModelNumber);
       formData.append("ProductCatalog", data.ProductCatalog);
       formData.append("CategoryOne", data.CategoryOne);
       formData.append("CategoryTwo", data.CategoryTwo);

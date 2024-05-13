@@ -68,6 +68,10 @@ export default function Models() {
       header: "Model Number",
     },
     {
+      accessorKey: "DemoModelNumber",
+      header: "Demo Model Number",
+    },
+    {
       accessorKey: "ModelName",
       header: "Model Name",
     },
@@ -175,6 +179,8 @@ export default function Models() {
   useEffect(() => {
     getAllModels(setModels, id);
   }, []);
+  console.log(models);
+
   return (
     <div className="w-full space-y-2">
       <BackButton />
