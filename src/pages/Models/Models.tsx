@@ -154,7 +154,10 @@ export default function Models() {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() =>
-                      navigate(`/models/viewdetails/${row.original.Id}`)
+                      window.open(
+                        `/models/viewdetails/${row.original.Id}`,
+                        "_blank"
+                      )
                     }
                   >
                     <ScanEye className="mr-2 h-4 w-4" />

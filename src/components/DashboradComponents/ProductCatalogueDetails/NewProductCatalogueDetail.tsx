@@ -14,7 +14,7 @@ import { templateTypeList } from "@/store/TemplateType.ts";
 import { textileList } from "@/store/Textiles.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -27,7 +27,7 @@ import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/Pro
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getProductCatalogueById } from "@/services/ProductCatalogues.services";
 import BackButton from "@/components/common/BackButton";
 
@@ -36,8 +36,6 @@ export default function NewProductCatalogueDetail() {
   const { t } = useTranslation();
   // Param
   const { catalogueId } = useParams();
-  // Navigation state
-  const navigate = useNavigate();
   // Loding
   const [isLoading, setIsLoading] = useState(false);
 
