@@ -66,7 +66,7 @@ export default function ModelForm({ form, onSubmit, handleFileChange }: Props) {
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder="Enter model number"
-              label={t("DemoModelNumber")}
+              label={t("ModelNumber")}
               field={field}
             />
           )}
@@ -78,7 +78,7 @@ export default function ModelForm({ form, onSubmit, handleFileChange }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={t("ProductCategoryOne")}
+                label={t("ProductCatalogCategoryOne")}
                 placeholder="Search Category One..."
                 emptyBox="No category one found"
                 form={form}
@@ -104,7 +104,7 @@ export default function ModelForm({ form, onSubmit, handleFileChange }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={t("ProductCategoryTwo")}
+                label={t("ProductCatalogCategoryTwo")}
                 placeholder="Search Category Two..."
                 emptyBox="No category two found"
                 form={form}
@@ -130,7 +130,7 @@ export default function ModelForm({ form, onSubmit, handleFileChange }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={t("ProductCatalogue")}
+                label={t("ProductCatalogueName")}
                 placeholder="Search Product Catalogue..."
                 emptyBox="No product catalogue one found"
                 form={form}
@@ -263,7 +263,7 @@ export default function ModelForm({ form, onSubmit, handleFileChange }: Props) {
           )}
         />
         <FormItem>
-          <FormLabel>{"Images"}</FormLabel>
+          <FormLabel>{t("Images")}</FormLabel>
           <Input
             type="file"
             accept="image/*"

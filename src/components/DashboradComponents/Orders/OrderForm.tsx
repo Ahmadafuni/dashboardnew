@@ -31,7 +31,7 @@ const OrderForm = ({ form, onSubmit, handleFileChange }: Props) => {
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={t("Order Name")}
+              label={t("OrderName")}
               field={field}
             />
           )}
@@ -43,7 +43,7 @@ const OrderForm = ({ form, onSubmit, handleFileChange }: Props) => {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={t("Collection")}
+                label={t("Collections")}
                 placeholder="Search Collection..."
                 emptyBox="No Collection found"
                 form={form}
@@ -79,7 +79,7 @@ const OrderForm = ({ form, onSubmit, handleFileChange }: Props) => {
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={t("Deadline Date")}
+              label={t("DeadlineDate")}
               field={field}
               type="date"
             />
@@ -97,7 +97,7 @@ const OrderForm = ({ form, onSubmit, handleFileChange }: Props) => {
           )}
         />
         <FormItem>
-          <FormLabel>{"Order File"}</FormLabel>
+          <FormLabel>{t("OrderFile")}</FormLabel>
           <Input
             type="file"
             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

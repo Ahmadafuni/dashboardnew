@@ -120,7 +120,7 @@ export default function UpdateTemplate() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">{t("Update Template")}</h1>
+        <h1 className="text-3xl font-bold w-full">{t("UpdateTemplate")}</h1>
         <Separator />
       </div>
       <div className="space-y-1">

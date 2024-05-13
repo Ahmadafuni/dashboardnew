@@ -154,7 +154,7 @@ export default function UpdateModel() {
       />
       <NewColor getColors={() => getAllColorsList(setColor)} />
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">Update Model</h1>
+        <h1 className="text-3xl font-bold w-full">{t("UpdateModel")}</h1>
         <Separator />
       </div>
       <div className="space-y-1">

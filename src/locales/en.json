@@ -136,5 +136,40 @@
   "StageNumber": "Stage Number",
   "Done": "Done",
   "UpdateManufacturingStage": "Update Manufacturing Stage",
-  "Update Template": "Update Template"
+  "UpdateTemplate": "Update Template",
+
+  "OrderNumber": "Order Number",
+  "OrderName": "Order Name",
+  "Quantity": "Quantity",
+  "DeadlineDate": "DeadlineDate",
+  "Status": "Status",
+  "StartOrder": "Start Order",
+  "HoldOrder": "Hold Order",
+  "EditOrder": "Edit Order",
+  "ViewModels": "View Models",
+  "AddModel": "Add Model",
+
+  "NewOrder": "New Order",
+  "UpdateOrder": "Update Order",
+  "OrderFile": "Order File",
+
+  "ModelNumber": "Model Number",
+  "Characteristics": "Characteristics",
+  "Barcode": "CharacterisBarcodetics",
+  "LabelType": "LabelType",
+  "PrintName": "PrintName",
+  "PrintLocation": "PrintLocation",
+  "Images": "Images",
+
+  "NewModel": "New Model",
+  "NewModelDetails": "New Model Details",
+  "UpdateModel": "Update Model",
+  "UpdateModelDetails": "Update Model Details",
+  "ModelDetails": "Model Details",
+  "AddDetail": "Add Detail",
+  "QuantityDetails": "QuantityDetails",
+  "ModelName": "Model Name",
+  "ModelCreatedDate": "Model Created Date"
+
+
 }

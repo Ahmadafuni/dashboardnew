@@ -111,7 +111,7 @@
   "Cutting": "جدول التفصيل",
   "Dressup": "جدول التلبيس",
   "Stages": "مراحل العمل",
-  "TemplatePDF": "تحميل ملف",
+  "TemplatePDF": "رفع ملف",
   "DownloadPDF": "PDF تنزيل",
 
   "Next": "التالي",
@@ -133,7 +133,44 @@
   "StageNumber": "رقم المرحلة",
   "Done": "إنهاء",
   "UpdateManufacturingStage": "تحديث مرحلة العمل",
-  "Update Template": "تحديث القالب"
+  "UpdateTemplate": "تحديث القالب",
+
+  "OrderNumber": "رقم الطلبية",
+  "OrderName": "اسم الطلبية",
+  "Quantity": "الكمية",
+  "DeadlineDate": "تاريخ الموعد النهائي",
+  "Status": "الحالة",
+  "StartOrder": "بدء الطلبية",
+  "HoldOrder": "تعليق الطلبية",
+  "EditOrder": "تحديث الطلبية",
+  "ViewModels": "عرض الموديلات",
+  "AddModel": "إضافة موديل",
+
+  "NewOrder": "طلبية جديدة",
+  "UpdateOrder": "تحديث الطلبية",
+  "OrderFile": "ملف الطلبية",
+
+  "ModelNumber": "رقم الموديل",
+  "Characteristics": "الخصائص",
+  "Barcode": "الباركود",
+  "LabelType": "نوع الكرت",
+  "PrintName": "اسم الطبعة",
+  "PrintLocation": "مكان الطباعة",
+  "Images": "الصور",
+
+  "NewModel": "موديل جديد",
+  "NewModelDetails": "تفاصيل موديل جديد",
+  "UpdateModel": "تحديث الموديل",
+
+  "ModelDetails": "تفاصيل الموديل",
+  "AddDetail": "إضافة تفصيل",
+  "QuantityDetails": "تفاصيل الكمية",
+  "ModelName": "اسم الموديل",
+  "ModelCreatedDate": "تاريخ إنشاء الموديل"
+
+
+
+
 
 
 

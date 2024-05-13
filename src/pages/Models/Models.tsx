@@ -30,68 +30,68 @@ export default function Models() {
   const modelColumns: ColumnDef<ModelTypes>[] = [
     {
       accessorKey: "OrderNumber",
-      header: "Order Number",
+      header: t("OrderNumber"),
     },
     {
-      header: "Product Catalog",
+      header: t("ProductCatalogues"),
       cell: ({ row }) => {
         return <p>{row.original.ProductCatalog.ProductCatalogName}</p>;
       },
     },
     {
-      header: "Category One",
+      header: t("ProductCategoryOne"),
       cell: ({ row }) => {
         return <p>{row.original.CategoryOne.CategoryName}</p>;
       },
     },
     {
-      header: "Category Two",
+      header: t("ProductCategoryTwo"),
       cell: ({ row }) => {
         return <p>{row.original.categoryTwo.CategoryName}</p>;
       },
     },
     {
-      header: "Textile",
+      header: t("Textiles"),
       cell: ({ row }) => {
         return <p>{row.original.Textile.TextileName}</p>;
       },
     },
     {
-      header: "Template",
+      header: t("Template"),
       cell: ({ row }) => {
         return <p>{row.original.Template.TemplateName}</p>;
       },
     },
     {
       accessorKey: "ModelNumber",
-      header: "Model Number",
+      header: t("ModelNumber"),
     },
     {
       accessorKey: "ModelName",
-      header: "Model Name",
+      header: t("ModelName"),
     },
     {
       accessorKey: "Characteristics",
-      header: "Characteristics",
+      header: t("Characteristics"),
     },
     {
       accessorKey: "Barcode",
-      header: "Barcode",
+      header: t("Barcode"),
     },
     {
       accessorKey: "LabelType",
-      header: "Label Type",
+      header: t("LabelType"),
     },
     {
       accessorKey: "PrintName",
-      header: "Print Name",
+      header: t("PrintName"),
     },
     {
       accessorKey: "PrintLocation",
-      header: "Print Location",
+      header: t("PrintLocation"),
     },
     {
-      header: "Images",
+      header: t("Images"),
       cell: ({ row }) => {
         return (
           <Avatar>
@@ -109,11 +109,11 @@ export default function Models() {
     },
     {
       accessorKey: "Status",
-      header: "Status",
+      header: t("Status"),
     },
     {
       accessorKey: "Description",
-      header: "Description",
+      header:  t("Description"),
     },
     {
       header: t("Action"),

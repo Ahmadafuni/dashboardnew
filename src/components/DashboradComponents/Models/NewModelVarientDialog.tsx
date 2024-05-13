@@ -86,7 +86,7 @@ export default function NewModelVarientDialog({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t("NewOrder")}</DialogTitle>
+            <DialogTitle>{t("NewModelDetails")}</DialogTitle>
           </DialogHeader>
           <ModelVarientForm form={form} onSubmit={onSubmit} />
           <DialogFooter>
