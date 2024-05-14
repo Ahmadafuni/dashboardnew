@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import NewMeasurement from "../Measurements/NewMeasurement";
+import { useTranslation } from "react-i18next";
 
 export function NewTemplateBlock() {
   // @ts-expect-error
@@ -11,21 +12,22 @@ export function NewTemplateBlock() {
   const [currentTab, setCurrentTab] = useState(
     searchParams.get("tab") !== null ? searchParams.get("tab") : "template"
   );
-  return (
+    const { t } = useTranslation();
+    return (
     // @ts-expect-error
     <Tabs value={currentTab} className="mt-2">
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="template" className="cursor-default">
-          Template
+            {t("Template")}
         </TabsTrigger>
         <TabsTrigger value="cutting" className="cursor-default">
-          Cutting
+            {t("Cutting")}
         </TabsTrigger>
         <TabsTrigger value="dressup" className="cursor-default">
-          Dressup
+            {t("Dressup")}
         </TabsTrigger>
         <TabsTrigger value="stages" className="cursor-default">
-          Stages
+            {t("Stages")}
         </TabsTrigger>
       </TabsList>
       <TabsContent value="template">

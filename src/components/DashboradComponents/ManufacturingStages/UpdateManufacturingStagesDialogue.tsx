@@ -69,7 +69,7 @@ export default function UpdateManufacturingStagesDialogue({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Update Manufacturing Stage</DialogTitle>
+          <DialogTitle>{t("UpdateManufacturingStage")}</DialogTitle>
         </DialogHeader>
         <UpdateManufacturingStageForm form={form} onSubmit={onSubmit} />
         <DialogFooter>

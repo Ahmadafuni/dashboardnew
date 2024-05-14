@@ -5,6 +5,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { colorList } from "@/store/Color";
 import { sizeList } from "@/store/Sizes";
 import { useRecoilValue } from "recoil";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   form: any;
@@ -14,7 +15,9 @@ export default function ModelVarientForm({ form, onSubmit }: Props) {
   // Dropdown
   const colorsList = useRecoilValue(colorList);
   const sizesList = useRecoilValue(sizeList);
-  return (
+  const { t } = useTranslation();
+
+    return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -28,7 +31,7 @@ export default function ModelVarientForm({ form, onSubmit }: Props) {
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label="Color"
+                label={t("Colors")}
                 placeholder="Search Color..."
                 emptyBox="No color found"
                 form={form}
@@ -44,7 +47,7 @@ export default function ModelVarientForm({ form, onSubmit }: Props) {
           name="Sizes"
           render={({ field }) => (
             <MultiSelectFieldForForm
-              label="Sizes"
+              label={t("Sizes")}
               selectText="Select Sizes"
               form={form}
               name="Sizes"
@@ -59,7 +62,7 @@ export default function ModelVarientForm({ form, onSubmit }: Props) {
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder="Enter quantity"
-              label="Quantity"
+              label={t("Quantity")}
               field={field}
             />
           )}

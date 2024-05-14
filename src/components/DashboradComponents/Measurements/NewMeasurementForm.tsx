@@ -12,10 +12,13 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { z } from "zod";
+import {useTranslation} from "react-i18next";
 
 export default function NewMeasurementForm() {
   // Sizes State
   const [sizes, setSizes] = useState<any[]>([]);
+  const { t } = useTranslation();
+
   // Measurement Group
   // @ts-expect-error
   const [measurementsGroups, setMeasurementsGroups] =
@@ -68,7 +71,7 @@ export default function NewMeasurementForm() {
   return (
     <Card className="bg-[var(--card-background)]">
       <CardHeader>
-        <h2 className="text-lg font-semibold">Measurements</h2>
+        <h2 className="text-lg font-semibold">{t("Measurements")}</h2>
       </CardHeader>
       <CardContent className="space-y-1">
         <Form {...form}>
@@ -83,7 +86,7 @@ export default function NewMeasurementForm() {
               render={({ field }) => (
                 <ComboSelectFieldForForm
                   field={field}
-                  label="Size"
+                  label={t("Sizes")}
                   placeholder="Select Size..."
                   emptyBox="No size found"
                   form={form}
@@ -99,7 +102,7 @@ export default function NewMeasurementForm() {
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder={"Enter measurement name"}
-                  label={"Measurement Name"}
+                  label={t("MeasurementName")}
                   field={field}
                 />
               )}
@@ -110,7 +113,7 @@ export default function NewMeasurementForm() {
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder="Enter measurement value"
-                  label={"Measurement Value"}
+                  label={t("MeasurementValue")}
                   field={field}
                 />
               )}
@@ -121,7 +124,7 @@ export default function NewMeasurementForm() {
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder="Enter measurement unite"
-                  label={"Measurement Unit"}
+                  label={t("MeasurementUnit")}
                   field={field}
                 />
               )}
@@ -130,7 +133,7 @@ export default function NewMeasurementForm() {
         </Form>
         <div className="flex justify-end">
           <Button type="submit" form="template-size">
-            Add
+            {t("Add")}
           </Button>
         </div>
       </CardContent>

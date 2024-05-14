@@ -96,7 +96,7 @@ export default function UpdateModelVarientDialog({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t("UpdateVarient")}</DialogTitle>
+            <DialogTitle>{t("UpdateModelDetails")}</DialogTitle>
           </DialogHeader>
           <ModelVarientForm form={form} onSubmit={onSubmit} />
           <DialogFooter>

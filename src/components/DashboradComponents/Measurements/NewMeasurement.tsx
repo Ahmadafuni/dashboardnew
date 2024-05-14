@@ -17,6 +17,7 @@ import { UUID } from "crypto";
 import { useSearchParams } from "react-router-dom";
 import { createMultipleMeasurements } from "@/services/Measurements.services";
 import NewMeasurementForm from "../Measurements/NewMeasurementForm";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   sizeType: string;
@@ -25,6 +26,7 @@ interface Props {
 export default function NewMeasurement({ sizeType, setNext }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   // Measurement Group
   const [measurementsGroups, setMeasurementsGroups] =
@@ -85,10 +87,10 @@ export default function NewMeasurement({ sizeType, setNext }: Props) {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Measurement Name</TableHead>
-                    <TableHead>Measurement Value</TableHead>
-                    <TableHead>Measurement Unit</TableHead>
-                    <TableHead>Action</TableHead>
+                    <TableHead>{t("MeasurementName")}</TableHead>
+                    <TableHead>{t("MeasurementValue")}</TableHead>
+                    <TableHead>{t("MeasurementUnit")}</TableHead>
+                    <TableHead>{t("Action")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -127,7 +129,7 @@ export default function NewMeasurement({ sizeType, setNext }: Props) {
               Please wait
             </>
           ) : (
-            "Next"
+            t("Next")
           )}
         </Button>
       </div>

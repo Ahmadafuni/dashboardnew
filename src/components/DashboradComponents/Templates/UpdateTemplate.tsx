@@ -27,9 +27,11 @@ import NewProductCategoryOne from "../Entities/ProductCategoryOne/NewProductCate
 import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCategoryTwo";
 import NewTemplatePattern from "../Entities/TemplatePattern/NewTemplatePattern";
 import NewTemplateType from "../Entities/TemplateType/NewTemplateType";
+import {useTranslation} from "react-i18next";
 export default function UpdateTemplate() {
   const { templateId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
   // Current Template
   const [currentTemplate, setCurrentTemplate] = useState({});
   // Dropdown state
@@ -118,7 +120,7 @@ export default function UpdateTemplate() {
         getTemplateTypes={() => getAllTemplateTypesList(setTemplateTypeList)}
       />
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">Update Template</h1>
+        <h1 className="text-3xl font-bold w-full">{t("UpdateTemplate")}</h1>
         <Separator />
       </div>
       <div className="space-y-1">
@@ -135,8 +137,8 @@ export default function UpdateTemplate() {
                 Please wait
               </>
             ) : (
-              "Update"
-            )}
+              t("Update")
+              )}
           </Button>
         </div>
       </div>

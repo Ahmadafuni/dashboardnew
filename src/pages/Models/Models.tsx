@@ -18,6 +18,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import BackButton from "@/components/common/BackButton";
+
 
 export default function Models() {
   // Navigate
@@ -33,69 +35,65 @@ export default function Models() {
     //   header: "Order Number",
     // },
     {
-      header: "Product Catalog",
+      header: t("ProductCatalogues"),
       cell: ({ row }) => {
         return <p>{row.original.ProductCatalog.ProductCatalogName}</p>;
       },
     },
     {
-      header: "Category One",
+      header: t("ProductCategoryOne"),
       cell: ({ row }) => {
         return <p>{row.original.CategoryOne.CategoryName}</p>;
       },
     },
     {
-      header: "Category Two",
+      header: t("ProductCategoryTwo"),
       cell: ({ row }) => {
         return <p>{row.original.categoryTwo.CategoryName}</p>;
       },
     },
     {
-      header: "Textile",
+      header: t("Textiles"),
       cell: ({ row }) => {
         return <p>{row.original.Textile.TextileName}</p>;
       },
     },
     {
-      header: "Template",
+      header: t("Template"),
       cell: ({ row }) => {
         return <p>{row.original.Template.TemplateName}</p>;
       },
     },
     {
       accessorKey: "ModelNumber",
-      header: "Model Number",
-    },
-    {
-      accessorKey: "DemoModelNumber",
-      header: "Demo Model Number",
+      header: t("ModelNumber"),
     },
     {
       accessorKey: "ModelName",
-      header: "Model Name",
+      header: t("ModelName"),
     },
     {
       accessorKey: "Characteristics",
-      header: "Characteristics",
+      header: t("Characteristics"),
     },
     {
       accessorKey: "Barcode",
-      header: "Barcode",
+      header: t("Barcode"),
     },
     {
       accessorKey: "LabelType",
-      header: "Label Type",
+      header: t("LabelType"),
     },
     {
       accessorKey: "PrintName",
-      header: "Print Name",
+      header: t("PrintName"),
     },
     {
       accessorKey: "PrintLocation",
-      header: "Print Location",
+      header: t("PrintLocation"),
     },
     {
-      header: "Images",
+      header: t("Images"),
       cell: ({ row }) => {
         return (
           <Avatar>
@@ -113,11 +111,11 @@ export default function Models() {
     },
     {
       accessorKey: "Status",
-      header: "Status",
+      header: t("Status"),
     },
     {
       accessorKey: "Description",
-      header: "Description",
+      header:  t("Description"),
     },
     {
       header: t("Action"),
@@ -143,7 +141,7 @@ export default function Models() {
                     }}
                   >
                     <Pen className="mr-2 h-4 w-4" />
-                    <span>Edit Model</span>
+                    <span>{t("EditModel")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() =>
@@ -153,7 +151,7 @@ export default function Models() {
                     }
                   >
                     <Eye className="mr-2 h-4 w-4" />
-                    <span>View Varients</span>
+                    <span>{t("ViewDetails")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() =>
@@ -164,7 +162,7 @@ export default function Models() {
                     }
                   >
                     <ScanEye className="mr-2 h-4 w-4" />
-                    <span>View Summary</span>
+                    <span>{t("ViewSummary")}</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -180,14 +178,15 @@ export default function Models() {
   }, []);
   return (
     <div className="w-full space-y-2">
-      <div className="w-full space-y-1">
+      <div className="w-full space-y-1 flex items-center">
+        <BackButton />
         {models.length > 0 && (
           <h1 className="text-3xl font-bold w-full">
             {models[0].OrderNumber}-{t("Models")}
           </h1>
         )}
-        <Separator />
       </div>
+      <Separator />
       <div className="space-y-2">
         <div className="flex justify-end">
           <Button

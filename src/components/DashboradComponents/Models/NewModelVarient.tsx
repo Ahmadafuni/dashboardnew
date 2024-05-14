@@ -22,11 +22,13 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
+import {useTranslation} from "react-i18next";
 
 export default function NewModelVarient() {
   // Dropdown
   const colorsList = useRecoilValue(colorList);
   const sizesList = useRecoilValue(sizeList);
+  const { t } = useTranslation();
   // Color Modal
   const setNewColorModal = useSetRecoilState(newColorModal);
   // Varients
@@ -76,7 +78,7 @@ export default function NewModelVarient() {
   return (
     <div className="space-y-2">
       <div className="w-full space-y-1 flex items-center">
-        <h1 className="text-3xl font-bold">Model Varient</h1>
+        <h1 className="text-3xl font-bold">{t("ModelDetails")}</h1>
       </div>
       <Separator />
       <div className="space-y-2">
@@ -93,7 +95,7 @@ export default function NewModelVarient() {
                 <div className="flex gap-x-1">
                   <ComboSelectFieldForForm
                     field={field}
-                    label="Color"
+                    label={t("Colors")}
                     placeholder="Search Color..."
                     emptyBox="No color found"
                     form={form}
@@ -117,7 +119,7 @@ export default function NewModelVarient() {
               name="Sizes"
               render={({ field }) => (
                 <MultiSelectFieldForForm
-                  label="Sizes"
+                  label={t("Sizes")}
                   selectText="Select Color"
                   form={form}
                   name="Sizes"
@@ -132,7 +134,7 @@ export default function NewModelVarient() {
               render={({ field }) => (
                 <TextInputFieldForForm
                   placeholder="Enter quantity"
-                  label="Quantity"
+                  label={t("Quantity")}
                   field={field}
                 />
               )}
@@ -141,17 +143,17 @@ export default function NewModelVarient() {
         </Form>
         <div className="flex justify-end">
           <Button type="submit" form="model-varient">
-            Add Varient
+            {t("AddDetail")}
           </Button>
         </div>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Color</TableHead>
-              <TableHead>Sizes</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Quantity Details</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead>{t("Colors")}</TableHead>
+              <TableHead>{t("Sizes")}</TableHead>
+              <TableHead>{t("Quantity")}</TableHead>
+              <TableHead>{t("QuantityDetails")}</TableHead>
+              <TableHead>{t("Action")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

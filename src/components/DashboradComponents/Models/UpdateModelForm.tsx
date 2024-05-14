@@ -64,7 +64,7 @@ export default function UpdateModelForm({
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder="Enter model number"
-              label={t("DemoModelNumber")}
+              label={t("ModelNumber")}
               field={field}
             />
           )}
@@ -128,7 +128,7 @@ export default function UpdateModelForm({
             <div className="flex gap-x-1">
               <ComboSelectFieldForForm
                 field={field}
-                label={t("ProductCatalogue")}
+                label={t("ProductCatalogues")}
                 placeholder="Search Product Catalogue..."
                 emptyBox="No product catalogue one found"
                 form={form}

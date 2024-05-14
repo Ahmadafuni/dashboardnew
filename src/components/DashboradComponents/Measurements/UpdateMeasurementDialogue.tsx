@@ -68,7 +68,7 @@ export default function UpdateMeasurementDialogue({ getMeasurements }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Update Measurement</DialogTitle>
+          <DialogTitle>{t("UpdateMeasurement")}</DialogTitle>
         </DialogHeader>
         <UpdateMeasurementForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
