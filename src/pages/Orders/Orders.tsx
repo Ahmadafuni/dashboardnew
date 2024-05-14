@@ -6,6 +6,7 @@ import {
   deleteOrder,
   getAllOrders,
   getOrderById,
+  holdOrder,
   startOrder,
 } from "@/services/Order.services.ts";
 import { ColumnDef } from "@tanstack/react-table";
@@ -31,6 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog";
 
 export default function Orders() {
   const setNewOrderModal = useSetRecoilState(newOrderModal);
@@ -79,19 +81,17 @@ export default function Orders() {
         return (
           <div className="space-x-1">
             {row.original.Status === "PENDING" ? (
-              <Button
+              <BasicConfirmationDialog
+                btnText={"Start Order"}
+                takeAction={() => startOrder(setOrders, row.original.Id)}
                 className="bg-green-500 hover:bg-green-600"
-                onClick={() => startOrder(setOrders, row.original.Id)}
-              >
-                Start Order
-              </Button>
+              />
             ) : (
-              <Button
+              <BasicConfirmationDialog
+                btnText={"Hold Order"}
+                takeAction={() => holdOrder(setOrders, row.original.Id)}
                 className="bg-orange-500 hover:bg-orange-600"
-                onClick={() => startOrder(setOrders, row.original.Id)}
-              >
-                Hold Order
-              </Button>
+              />
             )}
           </div>
         );

@@ -65,8 +65,27 @@ export const startOrder = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    toast.success("Order Started successfully!");
     getAllOrders(setData);
+    toast.success("Order Started successfully!");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const holdOrder = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
+) => {
+  try {
+    await axios.get(`orders/hold/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    getAllOrders(setData);
+    toast.success("Order on hold successfully!");
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);

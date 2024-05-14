@@ -14,15 +14,27 @@ import { Button } from "../ui/button";
 interface Props {
   takeAction: any;
   btnText: string;
+  varient?:
+    | "secondary"
+    | "default"
+    | "ghost"
+    | "destructive"
+    | "link"
+    | "outline";
+  className: string;
 }
 export default function BasicConfirmationDialog({
   takeAction,
   btnText,
+  varient = "default",
+  className = "",
 }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button>{btnText}</Button>
+        <Button variant={varient} className={className}>
+          {btnText}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
