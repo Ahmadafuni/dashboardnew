@@ -101,15 +101,15 @@ export default function TemplateViewDetails() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>{t("MeasurementName")}</TableHead>
-                    {Object.entries(details?.dressup[0])
-                      .sort()
-                      // @ts-expect-error
-                      .map(([key, value]) =>
-                        key !== "MeasurementName" &&
-                        key !== "MeasurementUnit" ? (
-                          <TableHead key={key}>{key}</TableHead>
-                        ) : null
-                      )}
+                    {details?.dressup?.[0] &&
+                        Object.entries(details.dressup[0])
+                            .sort()
+                            // @ts-expect-error
+                            .map(([key, value]) =>
+                                key !== "MeasurementName" && key !== "MeasurementUnit" ? (
+                                    <TableHead key={key}>{key}</TableHead>
+                                ) : null
+                            )}
                     <TableHead>{t("MeasurementUnit")}</TableHead>
                   </TableRow>
                 </TableHeader>
