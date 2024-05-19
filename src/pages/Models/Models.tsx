@@ -114,10 +114,6 @@ export default function Models() {
       header: t("Status"),
     },
     {
-      accessorKey: "Description",
-      header:  t("Description"),
-    },
-    {
       header: t("Action"),
       cell: ({ row }) => {
         return (
