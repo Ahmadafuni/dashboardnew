@@ -17,6 +17,22 @@ export const getAllTasks = async (setData: Dispatch<SetStateAction<any>>) => {
     }
   }
 };
+export const getCurrentTasks = async (
+  setData: Dispatch<SetStateAction<any>>
+) => {
+  try {
+    const { data } = await axios.get("task/current/task", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
 
 export const startTask = async (
   setData: Dispatch<SetStateAction<any>>,

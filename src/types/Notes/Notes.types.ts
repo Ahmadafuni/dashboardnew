@@ -4,5 +4,6 @@ export type NoteType = {
   Id: number;
   NoteType: string; //enum General, Reminder, Attention
   AssignedToDepartment: DepartmentType;
+  CreatedDepartment: DepartmentType;
   Description: string;
 };

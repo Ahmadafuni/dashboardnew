@@ -3,16 +3,14 @@ import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import DataTable from "@/components/common/DataTable.tsx";
 import { ColumnDef } from "@tanstack/react-table";
-import { ClipboardCheck, Download, Pen, Plus, Send } from "lucide-react";
+import { ClipboardCheck, Download, Pen, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import {
   newTaskModal,
   updateTaskModal,
   taskId,
   taskData,
-  submitTaskModal,
-  feedbackId,
   feedbackData,
   checkSubmittedTaskModal,
 } from "@/store/Tasks.ts";
@@ -22,26 +20,12 @@ import {
   getAllTasks,
   getFeedbackById,
   getTaskById,
-  startTask,
 } from "@/services/Tasks.services.ts";
 import { TaskType } from "@/types/Tasks/Tasks.types.ts";
 import NewTask from "@/components/DashboradComponents/Tasks/NewTask.tsx";
 import UpdateTask from "@/components/DashboradComponents/Tasks/UpdateTask.tsx";
 import { downLoadFile } from "@/services/Commons.services";
 import { Badge } from "@/components/ui/badge";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import SubmitTask from "@/components/DashboradComponents/Tasks/SubmitTask";
-import { userInfo } from "@/store/authentication";
 import CheckSubmittedTask from "@/components/DashboradComponents/Tasks/CheckSubmittedTask";
 
 export default function Tasks() {
@@ -49,16 +33,12 @@ export default function Tasks() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const setNewTaskModal = useSetRecoilState(newTaskModal);
   const setUpdateTaskModal = useSetRecoilState(updateTaskModal);
-  const setSubmitTaskModal = useSetRecoilState(submitTaskModal);
   const setCheckSubmittedTaskModal = useSetRecoilState(checkSubmittedTaskModal);
   // Task
   const setTaskId = useSetRecoilState(taskId);
   const setCurrentTask = useSetRecoilState(taskData);
   // Feedback
-  const setFeedbackId = useSetRecoilState(feedbackId);
   const setCurrentFeedback = useSetRecoilState(feedbackData);
-  // User
-  const user = useRecoilValue(userInfo);
 
   const taskColumns: ColumnDef<TaskType>[] = [
     { accessorKey: "TaskName", header: t("TaskName") },
@@ -78,50 +58,17 @@ export default function Tasks() {
       header: t("Status"),
       cell: ({ row }) => {
         return (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                className={
-                  row.original.Status === "PENDING" &&
-                  row.original.AssignedToDepartment.Id ===
-                    user?.userDepartmentId
-                    ? "pointer-events-auto"
-                    : "pointer-events-none"
-                }
-              >
-                <Badge
-                  variant={
-                    row.original.Status === "PENDING"
-                      ? "destructive"
-                      : row.original.Status === "ONGOING"
-                      ? "secondary"
-                      : "default"
-                  }
-                >
-                  {row.original.Status}
-                </Badge>
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Action Confirmation!</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to take this action!
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => {
-                    startTask(setTasks, row.original.Id);
-                  }}
-                >
-                  Confirm
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <Badge
+            variant={
+              row.original.Status === "PENDING"
+                ? "destructive"
+                : row.original.Status === "ONGOING"
+                ? "secondary"
+                : "default"
+            }
+          >
+            {row.original.Status}
+          </Badge>
         );
       },
     },
@@ -150,41 +97,27 @@ export default function Tasks() {
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
-            {user?.userDepartmentId === row.original.AssignedToDepartment.Id ? (
-              <Button
-                onClick={() => {
-                  setFeedbackId(row.original.Id);
-                  getFeedbackById(setCurrentFeedback, row.original.Id);
-                  setSubmitTaskModal(true);
-                }}
-              >
-                <Send className="h-4 w-4" />
-              </Button>
-            ) : (
-              <>
-                <Button
-                  disabled={!row.original.Feedback}
-                  onClick={() => {
-                    getFeedbackById(setCurrentFeedback, row.original.Id);
-                    setCheckSubmittedTaskModal(true);
-                  }}
-                >
-                  <ClipboardCheck className="h-4 w-4" />
-                </Button>
-                <Button
-                  onClick={() => {
-                    setTaskId(row.original.Id);
-                    getTaskById(setCurrentTask, row.original.Id);
-                    setUpdateTaskModal(true);
-                  }}
-                >
-                  <Pen className="h-4 w-4" />
-                </Button>
-                <DeleteConfirmationDialog
-                  deleteRow={() => deleteTask(setTasks, row.original.Id)}
-                />
-              </>
-            )}
+            <Button
+              disabled={!row.original.Feedback}
+              onClick={() => {
+                getFeedbackById(setCurrentFeedback, row.original.Id);
+                setCheckSubmittedTaskModal(true);
+              }}
+            >
+              <ClipboardCheck className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={() => {
+                setTaskId(row.original.Id);
+                getTaskById(setCurrentTask, row.original.Id);
+                setUpdateTaskModal(true);
+              }}
+            >
+              <Pen className="h-4 w-4" />
+            </Button>
+            <DeleteConfirmationDialog
+              deleteRow={() => deleteTask(setTasks, row.original.Id)}
+            />
           </div>
         );
       },
@@ -199,7 +132,6 @@ export default function Tasks() {
     <div className="w-full space-y-2">
       <NewTask getTasks={() => getAllTasks(setTasks)} />
       <UpdateTask getTasks={() => getAllTasks(setTasks)} />
-      <SubmitTask getTasks={() => getAllTasks(setTasks)} />
       <CheckSubmittedTask />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Tasks")}</h1>

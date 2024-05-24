@@ -21,11 +21,12 @@ import { useTranslation } from "react-i18next";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
+import socket from "@/services/Socket";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 export default function Topbar() {
   const { i18n } = useTranslation();
@@ -33,6 +34,7 @@ export default function Topbar() {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const [user, setUser] = useRecoilState(userInfo);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === "en" ? "ar" : "en";
@@ -41,7 +43,13 @@ export default function Topbar() {
     localStorage.setItem("currentLanguage", newLanguage);
   };
 
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<
+    {
+      Id: number;
+      Title: string;
+      Description: string;
+    }[]
+  >([]);
 
   const checkUser = async () => {
     try {
@@ -60,14 +68,29 @@ export default function Topbar() {
     }
   };
 
-  const getAllNotes = async () => {
+  const getAllNotification = async () => {
     try {
-      const { data } = await axios.get("notes/current-notes", {
+      const { data } = await axios.get("notification/", {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
       });
       setNotes(data.data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    }
+  };
+
+  const getUnreadNotificationCount = async () => {
+    try {
+      const { data } = await axios.get("notification/unread-count", {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      setUnreadNotifications(data.data);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -81,11 +104,27 @@ export default function Topbar() {
     setUser(null);
     navigate("/");
   };
+
   useEffect(() => {
     if (user === null) {
       checkUser();
     }
   }, []);
+
+  useEffect(() => {
+    if (user !== null) {
+      getUnreadNotificationCount();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user !== null) {
+      socket.emit("register", user?.userDepartmentId);
+    }
+    socket.on("notification", (data) => {
+      setUnreadNotifications(unreadNotifications + data);
+    });
+  }, [user]);
 
   return (
     <div className="flex border-b-2 px-4 py-2 items-center justify-between">
@@ -115,37 +154,38 @@ export default function Topbar() {
           </DropdownMenuTrigger>
           <Sheet>
             <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-                onClick={() => getAllNotes()}
-              >
-                <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Bell className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              </Button>
+              <div className="relative inline-flex w-fit">
+                {unreadNotifications > 0 && (
+                  <div className="absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 whitespace-nowrap rounded-full bg-indigo-700 px-2.5 py-1 text-center align-baseline text-xs font-bold leading-none text-white">
+                    {unreadNotifications}
+                  </div>
+                )}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={() => getAllNotification()}
+                >
+                  <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <Bell className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                </Button>
+              </div>
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Notes</SheetTitle>
-                <SheetDescription>
-                  All notes about this department.
-                </SheetDescription>
+                <SheetTitle>Notifications</SheetTitle>
               </SheetHeader>
               <div className="grid gap-4 py-4">
                 {notes.map((n) => {
                   return (
-                    // @ts-expect-error
-                    <div key={n.Id} className="border-2 p-2 rounded-sm">
-                      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                        {/* @ts-expect-error */}
-                        {n.NoteType}
-                      </h4>
-                      <p className="leading-7 [&:not(:first-child)]:mt-6">
-                        {/* @ts-expect-error */}
-                        {n.Description}
-                      </p>
-                    </div>
+                    <Card key={n.Id}>
+                      <CardHeader>
+                        <CardTitle>{n.Title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p>{n.Description}</p>
+                      </CardContent>
+                    </Card>
                   );
                 })}
               </div>

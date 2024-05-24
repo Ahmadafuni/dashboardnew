@@ -6,6 +6,7 @@ export type TaskType = {
   DueAt: string;
   Status: string;
   AssignedToDepartment: DepartmentType;
+  CreatedByDepartment: DepartmentType;
   AssignedFile: string;
   Description: string;
   Feedback: string;

@@ -57,10 +57,11 @@ import NewModel from "./components/DashboradComponents/Models/NewModel.tsx";
 import ModelVarients from "./pages/Models/ModelVarients.tsx";
 import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
 import ViewModelSummary from "./components/DashboradComponents/Models/ViewModelSummary.tsx";
+import Dashboard from "./pages/Dashboard/Dashboard.tsx";
 
 // Axios config
-// axios.defaults.baseURL = "http://localhost:3002/";
-axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+axios.defaults.baseURL = "http://localhost:3002/";
+// axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
 };
@@ -91,7 +92,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <MainLayout />,
     children: [
-      // { path: "/dashboard/test", element: <Test /> },
+      { path: "/dashboard/dashboard", element: <Dashboard /> },
       { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/users/new", element: <NewUsers /> },
       { path: "/dashboard/users/:userID", element: <UpdateUser /> },

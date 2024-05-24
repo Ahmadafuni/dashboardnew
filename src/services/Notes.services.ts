@@ -18,6 +18,23 @@ export const getAllNotes = async (setData: Dispatch<SetStateAction<any>>) => {
   }
 };
 
+export const getCurrentNotes = async (
+  setData: Dispatch<SetStateAction<any>>
+) => {
+  try {
+    const { data } = await axios.get("notes/current-notes", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const getNoteById = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number

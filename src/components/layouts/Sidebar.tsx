@@ -37,6 +37,7 @@ export default function Sidebar() {
     {
       gName: "System",
       childs: [
+        { name: t("Dashboard"), link: "/dashboard/dashboard", icon: Home },
         { name: t("Home"), link: "/dashboard/home", icon: Home },
         {
           name: t("Reports"),
