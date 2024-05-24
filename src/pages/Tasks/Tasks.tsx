@@ -49,7 +49,7 @@ export default function Tasks() {
       },
     },
     {
-      header: t("AssignedToDepartment"),
+      header: t("Department"),
       cell: ({ row }) => {
         return <p>{row.original.AssignedToDepartment.Name}</p>;
       },
@@ -74,7 +74,7 @@ export default function Tasks() {
     },
     { accessorKey: "Description", header: t("Description") },
     {
-      header: "Task File",
+      header: t("TaskFile")  ,
       cell: ({ row }) => {
         return (
           <Button

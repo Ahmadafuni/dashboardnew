@@ -83,7 +83,7 @@ export default function UpdateTask({ getTasks }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("Update Task")}</DialogTitle>
+          <DialogTitle>{t("UpdateTask")}</DialogTitle>
         </DialogHeader>
         <TaskForm
           form={form}
@@ -92,7 +92,7 @@ export default function UpdateTask({ getTasks }: Props) {
         />
         <DialogFooter>
           <Button onClick={() => setOpen(false)} variant="outline">
-            {t("Cancel")}
+            {t("Close")}
           </Button>
           <Button type="submit" disabled={isLoading} form="task">
             {isLoading ? (

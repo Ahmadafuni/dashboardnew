@@ -95,5 +95,97 @@
 
   "AssignedToDepartment": "Assigned To Departmnet",
   "DueDate": "Due Date",
-  "TaskName": "Task Name"
+  "TaskName": "Task Name",
+
+  "Dashboard": "Dashboard",
+  "BusinessEntities": "Business Entities",
+  "Collections": "Collections",
+  "StaffRelatedData": "Staff-related Data",
+  "StoreManagement": "Store Management",
+  "Warehouses": "Warehouses",
+  "Suppliers": "Suppliers",
+  "Materials": "Materials",
+  "MaterialsCategory": "Materials Category",
+
+  "TemplateName": "Template Name",
+  "File": "File",
+  "Download": "Download",
+
+  "Template": "Template",
+  "Cutting": "Cutting",
+  "Dressup": "Dressup",
+  "Stages": "Stages",
+  "TemplatePDF": "Upload File",
+  "DownloadPDF": "Download PDF",
+  "Next": "Next",
+
+  "SUMMER": "Summer",
+  "SPRING": "Spring",
+  "FALL": "Fall",
+  "WINTER": "Winter",
+
+  "MeasurementName": "Measurement Name",
+  "MeasurementValue": "Measurement Value",
+  "MeasurementUnit": "Measurement Unit",
+  "Measurements": "Measurements",
+  "UpdateMeasurement": "Update Measurement",
+
+  "StageName": "Stage name",
+  "Duration": "Duration",
+  "WorkDescription": "Work Description",
+  "StageNumber": "Stage Number",
+  "Done": "Done",
+  "UpdateManufacturingStage": "Update Manufacturing Stage",
+  "UpdateTemplate": "Update Template",
+
+  "OrderNumber": "Order Number",
+  "OrderName": "Order Name",
+  "Quantity": "Quantity",
+  "DeadlineDate": "DeadlineDate",
+  "Status": "Status",
+  "StartOrder": "Start Order",
+  "HoldOrder": "Hold Order",
+  "EditOrder": "Edit Order",
+  "ViewModels": "View Models",
+  "AddModel": "Add Model",
+
+  "NewOrder": "New Order",
+  "UpdateOrder": "Update Order",
+  "OrderFile": "Order File",
+
+  "ModelNumber": "Model Number",
+  "Characteristics": "Characteristics",
+  "Barcode": "CharacterisBarcodetics",
+  "LabelType": "LabelType",
+  "PrintName": "PrintName",
+  "PrintLocation": "PrintLocation",
+  "Images": "Images",
+
+  "NewModel": "New Model",
+  "NewModelDetails": "New Model Details",
+  "UpdateModel": "Update Model",
+  "UpdateModelDetails": "Update Model Details",
+  "ModelDetails": "Model Details",
+  "AddDetail": "Add Detail",
+  "QuantityDetails": "QuantityDetails",
+  "ModelName": "Model Name",
+  "ModelCreatedDate": "Model Created Date",
+
+  "AddTask": "Add Task",
+  "NewTask": "New Task",
+  "UpdateTask": "Update Task",
+  "TaskFile": "Task File",
+
+  "GENERAL": "General",
+  "REMINDER": "Reminder",
+  "ATTENTION": "Attention",
+  "NewNote": "New Note",
+  "UpdateNote": "Update Note",
+  "AddNote": "Add Note",
+
+  "EditModel": "Edit Model",
+  "ViewDetails": "View Details",
+  "ViewSummary": "View Summary"
+
+
 }

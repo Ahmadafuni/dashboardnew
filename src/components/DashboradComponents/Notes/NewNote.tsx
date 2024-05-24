@@ -72,7 +72,7 @@ export default function NewNote({ getNotes }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("New Note")}</DialogTitle>
+          <DialogTitle>{t("NewNote")}</DialogTitle>
         </DialogHeader>
         <NoteForm form={form} onSubmit={handleSubmit} />
         <DialogFooter>

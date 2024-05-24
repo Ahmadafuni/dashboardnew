@@ -48,14 +48,14 @@ export default function Orders() {
   const orderColumns: ColumnDef<OrderType>[] = [
     {
       accessorKey: "OrderNumber",
-      header: t("Order Number"),
+      header:  t("OrderNumber"),
     },
     {
       accessorKey: "OrderName",
-      header: t("Order Name"),
+      header:  t("OrderName"),
     },
     {
-      header: "Collection",
+      header:  t("Collections"),
       cell: ({ row }) => {
         return <p>{row.original.Collection.CollectionName}</p>;
       },
@@ -65,7 +65,7 @@ export default function Orders() {
       header: t("Quantity"),
     },
     {
-      header: "DeadlineDate",
+      header:  t("DeadlineDate"),
       cell: ({ row }) => {
         // @ts-expect-error
         return <p>{row.original.DeadlineDate.split("T")[0]}</p>;
@@ -76,19 +76,19 @@ export default function Orders() {
       header: t("Description"),
     },
     {
-      header: "Status",
+      header: t("Status"),
       cell: ({ row }) => {
         return (
           <div className="space-x-1">
             {row.original.Status === "PENDING" ? (
               <BasicConfirmationDialog
-                btnText={"Start Order"}
+                btnText={t("StartOrder")}
                 takeAction={() => startOrder(setOrders, row.original.Id)}
                 className="bg-green-500 hover:bg-green-600"
               />
             ) : (
               <BasicConfirmationDialog
-                btnText={"Hold Order"}
+                btnText={t("HoldOrder")}
                 takeAction={() => holdOrder(setOrders, row.original.Id)}
                 className="bg-orange-500 hover:bg-orange-600"
               />
@@ -121,7 +121,7 @@ export default function Orders() {
                     }}
                   >
                     <Pen className="mr-2 h-4 w-4" />
-                    <span>Edit Order</span>
+                    <span>{t("EditOrder")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() =>
@@ -129,7 +129,7 @@ export default function Orders() {
                     }
                   >
                     <Eye className="mr-2 h-4 w-4" />
-                    <span>View Model</span>
+                    <span>{t("ViewModels")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() =>
@@ -137,7 +137,7 @@ export default function Orders() {
                     }
                   >
                     <Plus className="mr-2 h-4 w-4" />
-                    <span>Add Model</span>
+                    <span>{t("AddModel")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     disabled={row.original.FilePath.length <= 0 ? true : false}
@@ -149,7 +149,7 @@ export default function Orders() {
                     }
                   >
                     <Download className="mr-2 h-4 w-4" />
-                    <span>Download</span>
+                    <span>{t("Download")}</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>

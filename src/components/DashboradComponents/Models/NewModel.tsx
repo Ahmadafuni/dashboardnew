@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import axios, { AxiosError } from "axios";
@@ -45,7 +45,7 @@ export default function NewModel() {
   const navigate = useNavigate();
 
   // Varients
-  const varients = useRecoilValue(modelVarientNew);
+  const [varients, setVarients] = useRecoilState(modelVarientNew);
 
   // Recoil state
   const setTemplates = useSetRecoilState(templateList);
@@ -115,6 +115,7 @@ export default function NewModel() {
       });
       toast.success(newModel.data.message);
       setIsLoading(false);
+      setVarients([]);
       navigate(`/dashboard/orders/model/${id}`);
     } catch (error) {
       if (error instanceof AxiosError) {

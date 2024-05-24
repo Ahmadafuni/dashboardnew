@@ -36,7 +36,7 @@ export default function Notes() {
       header: t("NoteType"),
     },
     {
-      header: t("AssignedToDepartment"),
+      header: t("Department"),
       cell: ({ row }) => {
         return <p>{row.original.AssignedToDepartment.Name}</p>;
       },

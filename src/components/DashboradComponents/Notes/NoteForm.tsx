@@ -14,9 +14,9 @@ export default function NoteForm({ form, onSubmit }: Props) {
   const { t } = useTranslation();
   const departmentLists = useRecoilValue(departmentList);
   const noteTypes = [
-    { value: "GENERAL", label: "GENERAL" },
-    { value: "REMINDER", label: "REMINDER" },
-    { value: "ATTENTION", label: "ATTENTION" },
+    { value: "GENERAL", label:  t("GENERAL")},
+    { value: "REMINDER", label: t("REMINDER")},
+    { value: "ATTENTION", label:t("ATTENTION")},
   ];
   return (
     <Form {...form}>

@@ -2,15 +2,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UpdateTemplate from "./UpdateTemplate";
 import MeasurementView from "../Measurements/MeasurementView";
 import ViewManufacturingStages from "../ManufacturingStages/ViewManufacturingStages";
+import {useTranslation} from "react-i18next";
 
 export default function UpdateTemplateBlock() {
-  return (
+    const { t } = useTranslation();
+
+    return (
     <Tabs defaultValue="template" className="mt-2">
       <TabsList className="grid w-full grid-cols-4">
-        <TabsTrigger value="template">Template</TabsTrigger>
-        <TabsTrigger value="cutting">Cutting</TabsTrigger>
-        <TabsTrigger value="dressup">Dressup</TabsTrigger>
-        <TabsTrigger value="stages">Stages</TabsTrigger>
+        <TabsTrigger value="template">{t("Template")}</TabsTrigger>
+        <TabsTrigger value="cutting"> {t("Cutting")}</TabsTrigger>
+        <TabsTrigger value="dressup">{t("Dressup")}</TabsTrigger>
+        <TabsTrigger value="stages">{t("Stages")}</TabsTrigger>
       </TabsList>
       <TabsContent value="template">
         <UpdateTemplate />

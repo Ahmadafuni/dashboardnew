@@ -3,6 +3,7 @@ import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Form, FormField } from "@/components/ui/form";
 import { getAllDepartmentList } from "@/services/Departments.services";
 import { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   form: any;
@@ -14,7 +15,9 @@ export default function UpdateManufacturingStageForm({
 }: Props) {
   // Departments
   const [departments, setDepartments] = useState([]);
-  // Page on load
+  const { t } = useTranslation();
+
+    // Page on load
   useEffect(() => {
     getAllDepartmentList(setDepartments);
   }, []);
@@ -31,7 +34,7 @@ export default function UpdateManufacturingStageForm({
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder={"Stage name"}
-              label={"Stage Name"}
+              label={t("StageName")}
               field={field}
             />
           )}
@@ -42,7 +45,7 @@ export default function UpdateManufacturingStageForm({
           render={({ field }) => (
             <SelectFieldForForm
               field={field}
-              label={"Department"}
+              label={t("Department")}
               placeholder="Select department"
               items={departments}
             />
@@ -53,8 +56,8 @@ export default function UpdateManufacturingStageForm({
           name="duration"
           render={({ field }) => (
             <TextInputFieldForForm
-              placeholder={"Duration"}
-              label={"Duration"}
+              placeholder={"enter duration"}
+              label={t("Duration")}
               field={field}
             />
           )}
@@ -64,8 +67,8 @@ export default function UpdateManufacturingStageForm({
           name="workDescription"
           render={({ field }) => (
             <TextInputFieldForForm
-              placeholder={"Work description"}
-              label={"Work Description"}
+              placeholder={"enter work description"}
+              label={t("WorkDescription")}
               field={field}
             />
           )}

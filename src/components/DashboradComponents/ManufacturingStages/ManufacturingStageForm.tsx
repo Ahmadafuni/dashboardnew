@@ -4,6 +4,7 @@ import { Form, FormField } from "@/components/ui/form";
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { getAllDepartmentList } from "@/services/Departments.services";
 import SelectFieldForForm from "@/components/common/SelectFieldForForm";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   form: any;
@@ -13,13 +14,15 @@ interface Props {
 const ManufacturingStageForm = ({ form, onSubmit, SubmitButton }: Props) => {
   // Departments
   const [departments, setDepartments] = useState([]);
+  const { t } = useTranslation();
+
   // Page on load
   useEffect(() => {
     getAllDepartmentList(setDepartments);
   }, []);
   return (
     <Card style={{ backgroundColor: "var(--background)" }}>
-      <CardHeader>Manufacturing Stages</CardHeader>
+      <CardHeader>{t("Stages")}</CardHeader>
       <CardContent className="space-y-1">
         <Form {...form}>
           <form
@@ -32,8 +35,8 @@ const ManufacturingStageForm = ({ form, onSubmit, SubmitButton }: Props) => {
               name="stageName"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Stage name"}
-                  label={"Stage Name"}
+                  placeholder={"enter stage name"}
+                  label={t("StageName")}
                   field={field}
                 />
               )}
@@ -44,7 +47,7 @@ const ManufacturingStageForm = ({ form, onSubmit, SubmitButton }: Props) => {
               render={({ field }) => (
                 <SelectFieldForForm
                   field={field}
-                  label={"Department"}
+                  label={t("Department")}
                   placeholder="Select department"
                   items={departments}
                 />
@@ -55,8 +58,8 @@ const ManufacturingStageForm = ({ form, onSubmit, SubmitButton }: Props) => {
               name="duration"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Duration"}
-                  label={"Duration"}
+                  placeholder={"enter duration"}
+                  label={t("Duration")}
                   field={field}
                 />
               )}
@@ -66,8 +69,8 @@ const ManufacturingStageForm = ({ form, onSubmit, SubmitButton }: Props) => {
               name="workDescription"
               render={({ field }) => (
                 <TextInputFieldForForm
-                  placeholder={"Work description"}
-                  label={"Work Description"}
+                  placeholder={"enter work description"}
+                  label={t("WorkDescription")}
                   field={field}
                 />
               )}

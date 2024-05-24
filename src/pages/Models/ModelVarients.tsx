@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import BackButton from "@/components/common/BackButton.tsx";
 
 export default function ModelVarients() {
   const setNewModelVarientModal = useSetRecoilState(newModelVarientModal);
@@ -39,14 +40,14 @@ export default function ModelVarients() {
   const modelVarientsColumns: ColumnDef<ModelVarientsTypes>[] = [
     {
       accessorKey: "Model",
-      header: "Model",
+      header: t("ModelName"),
     },
     {
       accessorKey: "Color",
-      header: "Color",
+      header: t("Colors"),
     },
     {
-      header: "Sizes",
+      header: t("Sizes"),
       cell: ({ row }) => {
         return (
           <Button
@@ -63,20 +64,20 @@ export default function ModelVarients() {
     },
     {
       accessorKey: "Quantity",
-      header: "Quantity",
+      header:t("Quantity"),
     },
     {
-      header: "Quantity Details",
+      header: t("QuantityDetails"),
       cell: ({ row }) => {
         return <p>{+row.original.Quantity / row.original.Sizes.length}</p>;
       },
     },
     {
-      accessorKey: "Status",
+      accessorKey: t("Status"),
       header: "Status",
     },
     {
-      header: "Action",
+      header: t("Action"),
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
@@ -115,8 +116,11 @@ export default function ModelVarients() {
         modelId={id}
       />
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">Model Varients</h1>
-        <Separator />
+          <div className="w-full space-y-1 flex items-center">
+              <BackButton />
+              <h1 className="text-3xl font-bold w-full">{t("ModelDetails")}</h1>
+          </div>
+          <Separator />
       </div>
       <div className="space-y-2">
         <div className="flex justify-end">

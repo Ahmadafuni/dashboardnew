@@ -41,10 +41,10 @@ export default function TemplateForm({
   const templateTypesList = useRecoilValue(templateTypeList);
   const catalogueList = useRecoilValue(productCatalogueList);
   const seasons = [
-    { label: "SUMMER", value: "SUMMER" },
-    { label: "SPRING", value: "SPRING" },
-    { label: "FALL", value: "FALL" },
-    { label: "WINTER", value: "WINTER" },
+    { label: t("SUMMER"), value: "SUMMER" },
+    { label: t("SPRING"), value: "SPRING" },
+    { label: t("FALL"), value: "FALL" },
+    { label: t("WINTER"), value: "WINTER" },
   ];
   // Modals States
   const setNewProductCategoryOneModal = useSetRecoilState(
@@ -79,7 +79,7 @@ export default function TemplateForm({
           render={({ field }) => (
             <ComboSelectFieldForForm
               field={field}
-              label={"Product Catalogue"}
+              label={t("ProductCatalogues")}
               placeholder="Search Product Catalogue..."
               emptyBox="No product catalogue found"
               form={form}
@@ -217,7 +217,7 @@ export default function TemplateForm({
           )}
         />
         <FormItem>
-          <FormLabel>{"Template PDF"}</FormLabel>
+          <FormLabel>{t("TemplatePDF")}</FormLabel>
           <Input
             type="file"
             accept="application/pdf"

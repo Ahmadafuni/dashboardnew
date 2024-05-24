@@ -65,7 +65,7 @@ export default function TaskForm({ form, onSubmit, handleFileChange }: Props) {
           )}
         />
         <FormItem>
-          <FormLabel>Task File</FormLabel>
+          <FormLabel>{t("TaskFile")}</FormLabel>
           <Input
             type="file"
             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, application/pdf"

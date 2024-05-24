@@ -26,6 +26,7 @@ import {
   measurementId,
   updateMeasurementModal,
 } from "@/store/Measurement";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   type: string;
@@ -33,6 +34,7 @@ interface Props {
 export default function MeasurementView({ type }: Props) {
   const { templateId } = useParams();
   const [measurements, setMeasurements] = useState([]);
+  const { t } = useTranslation();
 
   const setUpdateMeasurementModal = useSetRecoilState(updateMeasurementModal);
   const setMeasurementId = useSetRecoilState(measurementId);
@@ -67,10 +69,10 @@ export default function MeasurementView({ type }: Props) {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Measurement Name</TableHead>
-                    <TableHead>Measurement Value</TableHead>
-                    <TableHead>Measurement Unit</TableHead>
-                    <TableHead>Action</TableHead>
+                    <TableHead>{t("MeasurementName")}</TableHead>
+                    <TableHead>{t("MeasurementValue")}</TableHead>
+                    <TableHead>{t("MeasurementUnit")}</TableHead>
+                    <TableHead>{t("Action")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

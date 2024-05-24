@@ -35,7 +35,7 @@ export default function Sidebar() {
 
   const menus = [
     {
-      gName: "System",
+      gName: t("Dashboard"),
       childs: [
         { name: t("Dashboard"), link: "/dashboard/dashboard", icon: Home },
         { name: t("Home"), link: "/dashboard/home", icon: Home },
@@ -64,7 +64,7 @@ export default function Sidebar() {
       ],
     },
     {
-      gName: "Business Entities",
+      gName: t("BusinessEntities"),
       childs: [
         {
           name: t("Collections"),
@@ -105,7 +105,7 @@ export default function Sidebar() {
       ],
     },
     {
-      gName: "Staff-related Data",
+      gName: t("StaffRelatedData"),
       childs: [
         {
           name: t("Departments"),
@@ -118,7 +118,7 @@ export default function Sidebar() {
       ],
     },
     {
-      gName: "Store Management",
+      gName: t("StoreManagement"),
       childs: [
         { name: t("Home"), link: "/dashboard/home", icon: Home },
         {
@@ -138,7 +138,7 @@ export default function Sidebar() {
           icon: LibraryBig,
         },
         {
-          name: t("Materials Category"),
+          name: t("MaterialsCategory"),
           link: "/dashboard/materialcategory",
           icon: Album,
         },

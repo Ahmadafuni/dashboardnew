@@ -23,40 +23,40 @@ export default function Templates() {
   const templateColumns: ColumnDef<TemplateType>[] = [
     {
       accessorKey: "TemplateName",
-      header: "Template Name",
+      header: t("TemplateName"),
     },
     {
-      header: "Product Catalogue",
+      header: t("ProductCatalogueName"),
       cell: ({ row }) => {
         return <p>{row.original.ProductCatalogue.ProductCatalogName}</p>;
       },
     },
     {
-      header: "Season",
+      header: t("Season"),
       cell: ({ row }) => {
         return <p>{row.original.Season}</p>;
       },
     },
     {
-      header: "Category One",
+      header: t("ProductCatalogCategoryOne"),
       cell: ({ row }) => {
         return <p>{row.original.CategoryOne.CategoryName}</p>;
       },
     },
     {
-      header: "Category Two",
+      header: t("ProductCatalogCategoryTwo"),
       cell: ({ row }) => {
         return <p>{row.original.CategoryTwo.CategoryName}</p>;
       },
     },
     {
-      header: "Template Type",
+      header:  t("TemplateType"),
       cell: ({ row }) => {
         return <p>{row.original.TemplateType.TemplateTypeName}</p>;
       },
     },
     {
-      header: "Template Pattern",
+      header: t("TemplatePattern"),
       cell: ({ row }) => {
         return <p>{row.original.TemplatePattern.TemplatePatternName}</p>;
       },
@@ -66,7 +66,7 @@ export default function Templates() {
       header: t("Description"),
     },
     {
-      header: "File",
+      header: t("File"),
       cell: ({ row }) => {
         return (
           <Button
@@ -79,7 +79,7 @@ export default function Templates() {
               )
             }
           >
-            <Download className="w-4 h-4 mr-2" /> Download
+            <Download className="w-4 h-4 mr-2" /> {t("Download")}
           </Button>
         );
       },
@@ -121,14 +121,14 @@ export default function Templates() {
   return (
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">Templates</h1>
+        <h1 className="text-3xl font-bold w-full">{t("Templates")}</h1>
         <Separator />
       </div>
       <div className="space-y-2">
         <div className="flex justify-end">
           <Button onClick={() => navigate("/dashboard/templates/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            Add Template
+            {t("Add")}
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">

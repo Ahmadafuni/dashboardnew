@@ -29,6 +29,7 @@ import NewProductCategoryOne from "../Entities/ProductCategoryOne/NewProductCate
 import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCategoryTwo";
 import NewTemplatePattern from "../Entities/TemplatePattern/NewTemplatePattern";
 import NewTemplateType from "../Entities/TemplateType/NewTemplateType";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   setNext: Dispatch<SetStateAction<any>>;
@@ -41,6 +42,8 @@ export default function NewTemplates({ setNext }: Props) {
   const handleFileChange = (e: any) => {
     setFile(e.target.files[0]);
   };
+  const { t } = useTranslation();
+
   // Dropdown state
   const setCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setCategoryTwoList = useSetRecoilState(productCategoryTwoList);
@@ -155,8 +158,8 @@ export default function NewTemplates({ setNext }: Props) {
                 Please wait
               </>
             ) : (
-              "Next"
-            )}
+                t("Next")
+              )}
           </Button>
         </div>
       </div>

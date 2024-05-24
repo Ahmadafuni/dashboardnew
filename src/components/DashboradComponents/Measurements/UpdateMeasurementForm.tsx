@@ -3,6 +3,7 @@ import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Form, FormField } from "@/components/ui/form";
 import { getAllSizesList } from "@/services/Sizes.service";
 import { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 interface Props {
   form: any;
@@ -11,7 +12,8 @@ interface Props {
 export default function UpdateMeasurementForm({ form, onSubmit }: Props) {
   // Sizes State
   const [sizes, setSizes] = useState<any[]>([]);
-  useEffect(() => {
+  const { t } = useTranslation();
+    useEffect(() => {
     getAllSizesList(setSizes);
   }, []);
   return (
@@ -27,7 +29,7 @@ export default function UpdateMeasurementForm({ form, onSubmit }: Props) {
           render={({ field }) => (
             <ComboSelectFieldForForm
               field={field}
-              label="Size"
+              label={t("Sizes")}
               placeholder="Select Size..."
               emptyBox="No size found"
               form={form}
@@ -43,7 +45,7 @@ export default function UpdateMeasurementForm({ form, onSubmit }: Props) {
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder={"Enter measurement name"}
-              label={"Measurement Name"}
+              label={t("MeasurementName")}
               field={field}
             />
           )}
@@ -54,7 +56,7 @@ export default function UpdateMeasurementForm({ form, onSubmit }: Props) {
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder="Enter measurement value"
-              label={"Measurement Value"}
+              label={t("MeasurementValue")}
               field={field}
             />
           )}
@@ -65,7 +67,7 @@ export default function UpdateMeasurementForm({ form, onSubmit }: Props) {
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder="Enter measurement unite"
-              label={"Measurement Unit"}
+              label={t("MeasurementUnit")}
               field={field}
             />
           )}
