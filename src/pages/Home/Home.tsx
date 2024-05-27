@@ -75,48 +75,48 @@ export default function Home() {
       header: t("Status"),
       cell: ({ row }) => {
         return (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                className={
-                  row.original.Status === "PENDING"
-                    ? "pointer-events-auto"
-                    : "pointer-events-none"
-                }
-              >
-                <Badge
-                  variant={
-                    row.original.Status === "PENDING"
-                      ? "destructive"
-                      : row.original.Status === "ONGOING"
-                      ? "secondary"
-                      : "default"
-                  }
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                    variant="ghost"
+                    className={
+                      row.original.Status === "PENDING"
+                          ? "pointer-events-auto"
+                          : "pointer-events-none"
+                    }
                 >
-                  {row.original.Status}
-                </Badge>
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Action Confirmation!</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to take this action!
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => {
-                    startTask(setTasks, row.original.Id);
-                  }}
-                >
-                  Confirm
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                  <Badge
+                      variant={
+                        row.original.Status === "PENDING"
+                            ? "destructive"
+                            : row.original.Status === "ONGOING"
+                                ? "secondary"
+                                : "default"
+                      }
+                  >
+                    {row.original.Status}
+                  </Badge>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Action Confirmation!</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to take this action!
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                      onClick={() => {
+                        startTask(setTasks, row.original.Id);
+                      }}
+                  >
+                    Confirm
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
         );
       },
     },
@@ -125,18 +125,18 @@ export default function Home() {
       header: "Task File",
       cell: ({ row }) => {
         return (
-          <Button
-            type="button"
-            disabled={row.original.AssignedFile.length <= 0 ? true : false}
-            onClick={() =>
-              downLoadFile(
-                "https://dashboardbackendnew.onrender.com" +
-                  row.original.AssignedFile
-              )
-            }
-          >
-            <Download className="w-4 h-4 mr-2" /> Download
-          </Button>
+            <Button
+                type="button"
+                disabled={row.original.AssignedFile.length <= 0}
+                onClick={() =>
+                    downLoadFile(
+                        "https://dashboardbackendnew.onrender.com" +
+                        row.original.AssignedFile
+                    )
+                }
+            >
+              <Download className="w-4 h-4 mr-2" /> Download
+            </Button>
         );
       },
     },
@@ -144,17 +144,17 @@ export default function Home() {
       header: t("Action"),
       cell: ({ row }) => {
         return (
-          <div className="flex gap-1">
-            <Button
-              onClick={() => {
-                setFeedbackId(row.original.Id);
-                getFeedbackById(setCurrentFeedback, row.original.Id);
-                setSubmitTaskModal(true);
-              }}
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
+            <div className="flex gap-1">
+              <Button
+                  onClick={() => {
+                    setFeedbackId(row.original.Id);
+                    getFeedbackById(setCurrentFeedback, row.original.Id);
+                    setSubmitTaskModal(true);
+                  }}
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
         );
       },
     },
@@ -164,25 +164,26 @@ export default function Home() {
     getCurrentNotes(setNotes);
     getCurrentTasks(setTasks);
   }, []);
+
   return (
-    <div className="w-full space-y-2">
-      <SubmitTask getTasks={() => getCurrentTasks(setTasks)} />
-      <div className="w-full space-y-1">
-        <h1 className="text-3xl font-bold w-full">{t("Home")}</h1>
-        <Separator />
-      </div>
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold">Notes</h2>
-        <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={noteColumns} data={notes} />
+      <div className="w-full p-4 space-y-6">
+        <SubmitTask getTasks={() => getCurrentTasks(setTasks)} />
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold">{t("Home")}</h1>
+          <Separator />
+        </div>
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold">Notes</h2>
+          <div className="overflow-x-auto rounded-md border">
+            <DataTable columns={noteColumns} data={notes} />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold">Tasks</h2>
+          <div className="overflow-x-auto rounded-md border">
+            <DataTable columns={taskColumns} data={tasks} />
+          </div>
         </div>
       </div>
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold">Tasks</h2>
-        <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={taskColumns} data={tasks} />
-        </div>
-      </div>
-    </div>
   );
 }
