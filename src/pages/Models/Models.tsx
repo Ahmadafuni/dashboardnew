@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
 // import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,41 +72,8 @@ export default function Models() {
       header: t("ModelName"),
     },
     {
-      accessorKey: "Characteristics",
-      header: t("Characteristics"),
-    },
-    {
       accessorKey: "Barcode",
       header: t("Barcode"),
-    },
-    {
-      accessorKey: "LabelType",
-      header: t("LabelType"),
-    },
-    {
-      accessorKey: "PrintName",
-      header: t("PrintName"),
-    },
-    {
-      accessorKey: "PrintLocation",
-      header: t("PrintLocation"),
-    },
-    {
-      header: t("Images"),
-      cell: ({ row }) => {
-        return (
-          <Avatar>
-            <AvatarImage
-              src={
-                "https://dashboardbackendnew.onrender.com" +
-                row.original.Images.split(",")[0]
-              }
-              alt="Profile Image"
-            />
-            <AvatarFallback>{row.original.ModelName[0]}</AvatarFallback>
-          </Avatar>
-        );
-      },
     },
     {
       accessorKey: "Status",
