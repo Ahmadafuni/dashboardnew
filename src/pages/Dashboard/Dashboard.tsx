@@ -15,7 +15,12 @@ import { useTranslation } from "react-i18next";
 export default function Dashboard() {
   const { t } = useTranslation();
 
-  const [works, setWorks] = useState({});
+  const [works, setWorks] = useState({
+    awaiting: [],
+    inProgress: [],
+    completed: [],
+    givingConfirmation: [],
+  });
 
   useEffect(() => {
     getAllWork(setWorks);
@@ -40,7 +45,6 @@ export default function Dashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* @ts-expect-error */}
             {works?.awaiting?.length <= 0 && (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center">
@@ -48,14 +52,15 @@ export default function Dashboard() {
                 </TableCell>
               </TableRow>
             )}
-            {/* @ts-expect-error */}
             {works?.awaiting?.length > 0 &&
-              // @ts-expect-error
               works?.awaiting.map((item) => (
+                // @ts-expect-error
                 <TableRow key={item.Id}>
                   <TableCell className="font-medium">
+                    {/* @ts-expect-error */}
                     {item.Model.ModelNumber}
                   </TableCell>
+                  {/* @ts-expect-error */}
                   <TableCell>{item.Color.ColorName}</TableCell>
                   <TableCell className="text-right">
                     <Button>Start</Button>
@@ -77,7 +82,6 @@ export default function Dashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* @ts-expect-error */}
             {works?.awaiting?.length <= 0 && (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center">
@@ -85,14 +89,15 @@ export default function Dashboard() {
                 </TableCell>
               </TableRow>
             )}
-            {/* @ts-expect-error */}
             {works?.inProgress?.length > 0 &&
-              // @ts-expect-error
               works?.inProgress.map((item) => (
+                // @ts-expect-error
                 <TableRow key={item.Id}>
                   <TableCell className="font-medium">
+                    {/* @ts-expect-error */}
                     {item.Model.ModelNumber}
                   </TableCell>
+                  {/* @ts-expect-error */}
                   <TableCell>{item.Color.ColorName}</TableCell>
                   <TableCell className="text-right">
                     <Button>Send to Confirmation</Button>
