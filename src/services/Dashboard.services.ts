@@ -17,3 +17,101 @@ export const getAllWork = async (setData: Dispatch<SetStateAction<any>>) => {
     }
   }
 };
+
+export const startVariant = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
+) => {
+  try {
+    const { data } = await axios.get(`trackingmodels/start/variant/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    getAllWork(setData);
+    toast.success(data.message);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const completeVariant = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
+) => {
+  try {
+    const { data } = await axios.get(`trackingmodels/complete/variant/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    getAllWork(setData);
+    toast.success(data.message);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const sentForCheckingVariant = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
+) => {
+  try {
+    const { data } = await axios.get(
+      `trackingmodels/sent/checking/variant/${id}`,
+      {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      }
+    );
+    getAllWork(setData);
+    toast.success(data.message);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const confirmVariant = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
+) => {
+  try {
+    const { data } = await axios.get(`trackingmodels/confirm/variant/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    getAllWork(setData);
+    toast.success(data.message);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const rejectVariant = async (
+  setData: Dispatch<SetStateAction<any>>,
+  id: number
+) => {
+  try {
+    const { data } = await axios.get(`trackingmodels/reject/variant/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    getAllWork(setData);
+    toast.success(data.message);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};

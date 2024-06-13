@@ -1,21 +1,24 @@
-import { Button } from "@/components/ui/button";
+import AwaitingCuttingTable from "@/components/DashboradComponents/Dashboard/AwaitingCuttingTable";
+import CompletedTable from "@/components/DashboradComponents/Dashboard/CompletedTable";
+import CuttingSendForConfirmationModal from "@/components/DashboradComponents/Dashboard/CuttingSendForConfirmationModal";
+import OnConfirmationTable from "@/components/DashboradComponents/Dashboard/OnConfirmationTable";
+import OngoingCuttingTable from "@/components/DashboradComponents/Dashboard/OngoingCuttingTable";
+import OthersSendForConfirmation from "@/components/DashboradComponents/Dashboard/OthersSendForConfirmation";
+import PausingUnpausingReasoneModal from "@/components/DashboradComponents/Dashboard/PausingUnpausingReasoneModal";
+import RejectVariantDialog from "@/components/DashboradComponents/Dashboard/RejectVariantDialog";
 import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { getAllWork } from "@/services/Dashboard.services";
+import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const { t } = useTranslation();
 
-  const [works, setWorks] = useState({
+  // Navigate
+  // const navigate = useNavigate();
+
+  const [works, setWorks] = useState<WorkType>({
     awaiting: [],
     inProgress: [],
     completed: [],
@@ -25,158 +28,23 @@ export default function Dashboard() {
   useEffect(() => {
     getAllWork(setWorks);
   }, []);
-  console.log(works);
 
   return (
     <div className="w-full p-4 space-y-6">
+      <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
+      <CuttingSendForConfirmationModal
+        getAllWorks={() => getAllWork(setWorks)}
+      />
+      <OthersSendForConfirmation getAllWorks={() => getAllWork(setWorks)} />
+      <RejectVariantDialog getWorks={() => getAllWork(setWorks)} />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
         <Separator />
       </div>
-      <div>
-        <h2 className="text-2xl font-bold">Awaiting</h2>
-        <div className="overflow-x-auto">
-          <Table className="min-w-full">
-            {/* <TableCaption>Varients awaiting to start</TableCaption> */}
-            <TableHeader>
-              <TableRow>
-                <TableHead>Model Number</TableHead>
-                <TableHead>Color</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {works?.awaiting?.length <= 0 && (
-                <TableRow>
-                  <TableCell colSpan={3} className="h-24 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-              {works?.awaiting?.length > 0 &&
-                works?.awaiting.map((item) => (
-                  // @ts-expect-error
-                  <TableRow key={item.Id}>
-                    <TableCell className="font-medium">
-                      {/* @ts-expect-error */}
-                      {item.Model.ModelNumber}
-                    </TableCell>
-                    {/* @ts-expect-error */}
-                    <TableCell>{item.Color.ColorName}</TableCell>
-                    <TableCell className="text-right">
-                      <Button>Start</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-2xl font-bold">Ongoing</h2>
-        <div className="overflow-x-auto">
-          <Table className="min-w-full">
-            {/* <TableCaption>Varients under production</TableCaption> */}
-            <TableHeader>
-              <TableRow>
-                <TableHead>Model Number</TableHead>
-                <TableHead>Color</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {works?.awaiting?.length <= 0 && (
-                <TableRow>
-                  <TableCell colSpan={3} className="h-24 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-              {works?.inProgress?.length > 0 &&
-                works?.inProgress.map((item) => (
-                  // @ts-expect-error
-                  <TableRow key={item.Id}>
-                    <TableCell className="font-medium">
-                      {/* @ts-expect-error */}
-                      {item.Model.ModelNumber}
-                    </TableCell>
-                    {/* @ts-expect-error */}
-                    <TableCell>{item.Color.ColorName}</TableCell>
-                    <TableCell className="text-right">
-                      <Button>Send to Confirmation</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-2xl font-bold">On Confirmation</h2>
-        <div className="overflow-x-auto">
-          <Table className="min-w-full">
-            {/* <TableCaption>Varients awaiting for confirmation</TableCaption> */}
-            <TableHeader>
-              <TableRow>
-                <TableHead>Model Number</TableHead>
-                <TableHead>Color</TableHead>
-                <TableHead>Sizes</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-              {/* {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell>{invoice.paymentMethod}</TableCell>
-                  <TableCell className="text-right">
-                    {invoice.totalAmount}
-                  </TableCell>
-                </TableRow>
-              ))} */}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-2xl font-bold">Completed</h2>
-        <div className="overflow-x-auto">
-          <Table className="min-w-full">
-            {/* <TableCaption>Varients completed</TableCaption> */}
-            <TableHeader>
-              <TableRow>
-                <TableHead>Model Number</TableHead>
-                <TableHead>Color</TableHead>
-                <TableHead>Sizes</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-              {/* {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell>{invoice.paymentMethod}</TableCell>
-                  <TableCell className="text-right">
-                    {invoice.totalAmount}
-                  </TableCell>
-                </TableRow>
-              ))} */}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+      <AwaitingCuttingTable setWorks={setWorks} works={works} />
+      <OngoingCuttingTable works={works} setWorks={setWorks} />
+      <OnConfirmationTable works={works} />
+      <CompletedTable works={works} />
     </div>
   );
 }

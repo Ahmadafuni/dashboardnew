@@ -8,6 +8,7 @@ export interface UserInfo {
   userImage?: string;
   userDepartment: string;
   userDepartmentId: number;
+  category: string;
 }
 
 export const userInfo = atom<UserInfo | null>({

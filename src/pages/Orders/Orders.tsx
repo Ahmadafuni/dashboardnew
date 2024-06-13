@@ -7,6 +7,7 @@ import {
   getAllOrders,
   getOrderById,
   holdOrder,
+  restartOrder,
   startOrder,
 } from "@/services/Order.services.ts";
 import { ColumnDef } from "@tanstack/react-table";
@@ -48,14 +49,14 @@ export default function Orders() {
   const orderColumns: ColumnDef<OrderType>[] = [
     {
       accessorKey: "OrderNumber",
-      header:  t("OrderNumber"),
+      header: t("OrderNumber"),
     },
     {
       accessorKey: "OrderName",
-      header:  t("OrderName"),
+      header: t("OrderName"),
     },
     {
-      header:  t("Collections"),
+      header: t("Collections"),
       cell: ({ row }) => {
         return <p>{row.original.Collection.CollectionName}</p>;
       },
@@ -65,7 +66,7 @@ export default function Orders() {
       header: t("Quantity"),
     },
     {
-      header:  t("DeadlineDate"),
+      header: t("DeadlineDate"),
       cell: ({ row }) => {
         // @ts-expect-error
         return <p>{row.original.DeadlineDate.split("T")[0]}</p>;
@@ -84,6 +85,12 @@ export default function Orders() {
               <BasicConfirmationDialog
                 btnText={t("StartOrder")}
                 takeAction={() => startOrder(setOrders, row.original.Id)}
+                className="bg-green-500 hover:bg-green-600"
+              />
+            ) : row.original.Status === "ONHOLD" ? (
+              <BasicConfirmationDialog
+                btnText={t("RestartOrder")}
+                takeAction={() => restartOrder(setOrders, row.original.Id)}
                 className="bg-green-500 hover:bg-green-600"
               />
             ) : (

@@ -48,7 +48,7 @@ export default function Login() {
       await Cookies.set("access_token", result.data.data.access_token);
       toast.success(result.data.message);
       setIsLoading(false);
-      navigate("/dashboard/users");
+      navigate("/dashboard/dashboard");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -58,54 +58,54 @@ export default function Login() {
   };
 
   return (
-      <div className="bg-background text-foreground h-screen flex items-center justify-center p-4">
-        <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
-          <CardHeader>
-            <CardTitle>Beshara Factory Management</CardTitle>
-            <CardDescription>Login to Beshara dashboard.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                        <TextInputFieldForForm
-                            placeholder={"Username"}
-                            label={"Username"}
-                            field={field}
-                        />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                        <TextInputFieldForForm
-                            placeholder={"Password"}
-                            label={"Password"}
-                            field={field}
-                            type="password"
-                        />
-                    )}
-                />
-                <div className="flex justify-end">
-                  <Button type="submit" disabled={isLoading}>
-                    {isLoading ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Please wait
-                        </>
-                    ) : (
-                        "Login"
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
+    <div className="bg-background text-foreground h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+        <CardHeader>
+          <CardTitle>Beshara Factory Management</CardTitle>
+          <CardDescription>Login to Beshara dashboard.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <TextInputFieldForForm
+                    placeholder={"Username"}
+                    label={"Username"}
+                    field={field}
+                  />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <TextInputFieldForForm
+                    placeholder={"Password"}
+                    label={"Password"}
+                    field={field}
+                    type="password"
+                  />
+                )}
+              />
+              <div className="flex justify-end">
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait
+                    </>
+                  ) : (
+                    "Login"
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

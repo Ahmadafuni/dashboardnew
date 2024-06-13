@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import ColorForm from "@/components/DashboradComponents/Entities/Colors/ColorForm";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 type Props = {
   getColors: any;
@@ -40,7 +41,11 @@ export default function NewColor({ getColors }: Props) {
   const onSubmit = async (data: z.infer<typeof colorSchema>) => {
     setIsLoading(true);
     try {
-      const newColor = await axios.post("color", data); // Assuming the endpoint for creating a color is "/colors"
+      const newColor = await axios.post("color", data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      }); // Assuming the endpoint for creating a color is "/colors"
       toast.success(newColor.data.message);
       getColors(); // Function to fetch colors after successful creation
       form.reset();
