@@ -59,17 +59,17 @@ export default function OrderBarChart() {
       },
     ],
   };
-  const config = {
-    type: "bar",
-    data: data,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  };
+  // const config = {
+  //   type: "bar",
+  //   data: data,
+  //   options: {
+  //     scales: {
+  //       y: {
+  //         beginAtZero: true,
+  //       },
+  //     },
+  //   },
+  // };
   return (
     <div>
       <div className="flex justify-end">
