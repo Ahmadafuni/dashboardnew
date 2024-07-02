@@ -58,10 +58,13 @@ import ModelVarients from "./pages/Models/ModelVarients.tsx";
 import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
 import ViewModelSummary from "./components/DashboradComponents/Models/ViewModelSummary.tsx";
 import Dashboard from "./pages/Dashboard/Dashboard.tsx";
+import NewChildMaterial from "./components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial.tsx";
+import ChildMaterials from "./pages/Stores/ChildMaterials.tsx";
+import UpdateChildMaterial from "./components/DashboradComponents/Stores/ChildMaterials/UpdateChildMaterial.tsx";
 
 // Axios config
-// axios.defaults.baseURL = "http://localhost:3002/";
-axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+axios.defaults.baseURL = "http://localhost:3002/";
+// axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
 };
@@ -149,6 +152,18 @@ const router = createBrowserRouter([
       { path: "/dashboard/materials/new", element: <NewMaterial /> },
       { path: "/dashboard/materials/:materialID", element: <UpdateMaterial /> },
       {
+        path: "/dashboard/materials/child/new/:materialID",
+        element: <NewChildMaterial />,
+      },
+      {
+        path: "/dashboard/materials/child/update/:childID",
+        element: <UpdateChildMaterial />,
+      },
+      {
+        path: "/dashboard/materials/child/:materialID",
+        element: <ChildMaterials />,
+      },
+      {
         path: "/dashboard/materialmovements/:materialId",
         element: <MaterialMovement />,
       },
@@ -157,6 +172,7 @@ const router = createBrowserRouter([
       { path: "/dashboard/entities/sizes", element: <Sizes /> },
       { path: "/dashboard/entities/textiles", element: <Textiles /> },
       { path: "/dashboard/entities/templatetype", element: <TemplateType /> },
+
       {
         path: "/dashboard/entities/templatepattern",
         element: <TemplatePattern />,

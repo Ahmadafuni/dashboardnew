@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { materialSchema } from "@/form_schemas/newMaterialSchema.ts";
+import { parentMaterialSchema } from "@/form_schemas/newMaterialSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import MaterialForm from "@/components/DashboradComponents/Stores/Materials/MaterialForm.tsx";
 import Cookies from "js-cookie";
 import NewMaterialCategory from "@/components/DashboradComponents/Stores/MaterialCategory/NewMaterialCategory.tsx";
-import { getAllMaterialCategories } from "@/services/MaterialCategory.services.ts";
+import { getAllMaterialCategoriesList } from "@/services/MaterialCategory.services.ts";
 import { useSetRecoilState } from "recoil";
 import { materialCategoryList } from "@/store/MaterialCategory.ts";
 import BackButton from "@/components/common/BackButton";
@@ -25,25 +25,25 @@ export default function NewMaterial() {
   const setMaterialCategoryList = useSetRecoilState(materialCategoryList);
 
   // Form fields
-  const form = useForm<z.infer<typeof materialSchema>>({
-    resolver: zodResolver(materialSchema),
+  const form = useForm<z.infer<typeof parentMaterialSchema>>({
+    resolver: zodResolver(parentMaterialSchema),
     defaultValues: {
-      Name: "",
-      Type: "",
-      CategoryId: 0,
-      Color: "",
-      MinimumStockLevel: 0,
-      MaximumStockLevel: 0,
-      UnitOfMeasure: "",
-      Location: "",
-      Description: "",
+      name: "",
+      unitOfMeasure: "",
+      category: "",
+      description: "",
+      usageLocation: "",
+      alternativeMaterials: "",
+      minimumLimit: "",
+      isRelevantToProduction: false,
+      hasChildren: false,
     },
   });
   // Form submit function
-  const onSubmit = async (data: z.infer<typeof materialSchema>) => {
+  const onSubmit = async (data: z.infer<typeof parentMaterialSchema>) => {
     setIsLoading(true);
     try {
-      const newMaterial = await axios.post("material/", data, {
+      const newMaterial = await axios.post("material/parent", data, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
@@ -61,14 +61,14 @@ export default function NewMaterial() {
   };
 
   useEffect(() => {
-    getAllMaterialCategories(setMaterialCategoryList);
+    getAllMaterialCategoriesList(setMaterialCategoryList);
   }, []);
   return (
     <div className="w-full space-y-2">
       <NewMaterialCategory
-        getMaterialCategories={getAllMaterialCategories(
-          setMaterialCategoryList
-        )}
+        getMaterialCategories={() =>
+          getAllMaterialCategoriesList(setMaterialCategoryList)
+        }
       />
       <div className="w-full space-y-1 flex items-center">
         <BackButton />

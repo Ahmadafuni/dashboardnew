@@ -1,77 +1,89 @@
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm.tsx";
-import { Form, FormField } from "@/components/ui/form.tsx";
+import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
+import { Form, FormField } from "@/components/ui/form";
 import { useTranslation } from "react-i18next";
 
 interface Props {
   form: any;
   onSubmit: any;
 }
-
-export default function WarehouseForm({ form, onSubmit }: Props) {
+export default function ChildMaterialForm({ form, onSubmit }: Props) {
   const { t } = useTranslation();
-
-  const categories = [
-    { value: "MANAGEMENT", label: "MANAGEMENT" },
-    { value: "PRODUCTION", label: "PRODUCTION" },
-    { value: "SERVICES", label: "SERVICES" },
-  ];
-
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-2"
-        id="warehouse"
+        className="grid grid-cols-2 gap-2"
+        id="material-child"
       >
         <FormField
           control={form.control}
-          name="name"
+          name="Name"
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={t("Warehouse Name")}
+              label={t("Name")}
               field={field}
             />
           )}
         />
         <FormField
           control={form.control}
-          name="category"
-          render={({ field }) => (
-            <SelectFieldForForm
-              items={categories}
-              placeholder="Select Category..."
-              label="Category"
-              field={field}
-            />
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="location"
+          name="DyeNumber"
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={t("Location")}
+              label={t("DyeNumber")}
               field={field}
             />
           )}
         />
         <FormField
           control={form.control}
-          name="capacity"
+          name="Kashan"
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={t("Capacity")}
+              label={t("Kashan")}
               field={field}
             />
           )}
         />
         <FormField
           control={form.control}
-          name="description"
+          name="Halil"
+          render={({ field }) => (
+            <TextInputFieldForForm
+              placeholder=""
+              label={t("Halil")}
+              field={field}
+            />
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="Phthalate"
+          render={({ field }) => (
+            <TextInputFieldForForm
+              placeholder=""
+              label={t("Phthalate")}
+              field={field}
+            />
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="GramWeight"
+          render={({ field }) => (
+            <TextInputFieldForForm
+              placeholder=""
+              label={t("GramWeight")}
+              field={field}
+            />
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="Description"
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""

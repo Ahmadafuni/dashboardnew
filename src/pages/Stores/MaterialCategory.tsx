@@ -10,6 +10,7 @@ import {
   newMaterialCategoryModal,
   updateMaterialCategoryModal,
   materialCategoryId,
+  materialCategory,
 } from "@/store/MaterialCategory.ts";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { MaterialCategoryType } from "@/types/Warehouses/MaterialCategory.types.ts";
@@ -26,6 +27,7 @@ export default function MaterialCategories() {
   const [materialCategories, setMaterialCategories] = useState<
     MaterialCategoryType[]
   >([]);
+  const setCurrentMaterialCategory = useSetRecoilState(materialCategory);
   const setNewMaterialCategoryModal = useSetRecoilState(
     newMaterialCategoryModal
   );
@@ -51,7 +53,10 @@ export default function MaterialCategories() {
             <Button
               onClick={() => {
                 setMaterialCategoryId(row.original.Id);
-                getMaterialCategoryById(setMaterialCategories, row.original.Id);
+                getMaterialCategoryById(
+                  setCurrentMaterialCategory,
+                  row.original.Id
+                );
                 setUpdateMaterialCategoryModal(true);
               }}
             >
@@ -74,9 +79,15 @@ export default function MaterialCategories() {
 
   return (
     <div className="w-full space-y-2">
-      <NewMaterialCategory getMaterialCategories={getAllMaterialCategories} />
+      <NewMaterialCategory
+        getMaterialCategories={() =>
+          getAllMaterialCategories(setMaterialCategories)
+        }
+      />
       <UpdateMaterialCategory
-        getMaterialCategories={getAllMaterialCategories}
+        getMaterialCategories={() =>
+          getAllMaterialCategories(setMaterialCategories)
+        }
       />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("MaterialCategories")}</h1>

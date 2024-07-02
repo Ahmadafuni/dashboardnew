@@ -11,10 +11,11 @@ import Cookies from "js-cookie";
 import WarehouseForm from "@/components/DashboradComponents/Stores/Warehouses/WarehouseForm.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  updateWarehouseModal,
+  warehouse,
   // warehouse,
   warehouseId,
 } from "@/store/Warehouse.ts";
-import { updateColorModal } from "@/store/Color.ts";
 import {
   Dialog,
   DialogContent,
@@ -30,9 +31,9 @@ type Props = {
 
 export default function UpdateWarehouse({ getWarehouse }: Props) {
   const warehouseID = useRecoilValue(warehouseId);
-  const [open, setOpen] = useRecoilState(updateColorModal);
+  const [open, setOpen] = useRecoilState(updateWarehouseModal);
   const [isLoading, setIsLoading] = useState(false);
-  //   const currentWarehouse = useRecoilValue(warehouse);
+  const currentWarehouse = useRecoilValue(warehouse);
   const { t } = useTranslation();
 
   const form = useForm<z.infer<typeof warehouseSchema>>({
@@ -41,10 +42,10 @@ export default function UpdateWarehouse({ getWarehouse }: Props) {
       capacity: "",
       category: "",
       location: "",
-      manager: "",
       name: "",
+      description: "",
     },
-    // values: currentWarehouse,
+    values: currentWarehouse,
   });
 
   const onSubmit = async (data: z.infer<typeof warehouseSchema>) => {
@@ -80,7 +81,7 @@ export default function UpdateWarehouse({ getWarehouse }: Props) {
         <WarehouseForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
           <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-          <Button type="submit" disabled={isLoading} form="warehouse-form">
+          <Button type="submit" disabled={isLoading} form="warehouse">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

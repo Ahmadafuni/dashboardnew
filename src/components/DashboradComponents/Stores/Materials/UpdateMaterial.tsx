@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { materialSchema } from "@/form_schemas/newMaterialSchema.ts";
+import { parentMaterialSchema } from "@/form_schemas/newMaterialSchema.ts";
 import { getMaterialById } from "@/services/Materials.services.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
@@ -14,6 +14,9 @@ import MaterialForm from "@/components/DashboradComponents/Stores/Materials/Mate
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 import BackButton from "@/components/common/BackButton";
+import { getAllMaterialCategoriesList } from "@/services/MaterialCategory.services";
+import { useSetRecoilState } from "recoil";
+import { materialCategoryList } from "@/store/MaterialCategory";
 
 export default function UpdateMaterial() {
   const { materialID } = useParams();
@@ -21,31 +24,36 @@ export default function UpdateMaterial() {
   const navigate = useNavigate();
   const [material, setMaterial] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
+  const setMaterialCategoryList = useSetRecoilState(materialCategoryList);
   // Form fields
-  const form = useForm<z.infer<typeof materialSchema>>({
-    resolver: zodResolver(materialSchema),
+  const form = useForm<z.infer<typeof parentMaterialSchema>>({
+    resolver: zodResolver(parentMaterialSchema),
     defaultValues: {
-      Name: "",
-      Type: "",
-      CategoryId: 0,
-      Color: "",
-      MinimumStockLevel: 0,
-      MaximumStockLevel: 0,
-      UnitOfMeasure: "",
-      Location: "",
-      Description: "",
+      name: "",
+      unitOfMeasure: "",
+      category: "",
+      description: "",
+      usageLocation: "",
+      alternativeMaterials: "",
+      minimumLimit: "",
+      isRelevantToProduction: false,
+      hasChildren: false,
     },
     values: material,
   });
   // Form submit function
-  const onSubmit = async (data: z.infer<typeof materialSchema>) => {
+  const onSubmit = async (data: z.infer<typeof parentMaterialSchema>) => {
     setIsLoading(true);
     try {
-      const updateMaterial = await axios.put(`material/${materialID}`, data, {
-        headers: {
-          Authorization: `bearer ${Cookies.get("access_token")}`,
-        },
-      });
+      const updateMaterial = await axios.put(
+        `material/parent/${materialID}`,
+        data,
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
+      );
       toast.success(updateMaterial.data.message);
       setIsLoading(false);
       navigate("/dashboard/materials");
@@ -58,6 +66,7 @@ export default function UpdateMaterial() {
   };
   // Load material data on component mount
   useEffect(() => {
+    getAllMaterialCategoriesList(setMaterialCategoryList);
     getMaterialById(setMaterial, materialID);
   }, []);
 

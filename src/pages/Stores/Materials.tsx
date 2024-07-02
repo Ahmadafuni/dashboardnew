@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  CircleChevronDown,
-  DeleteIcon,
+  ArrowDown,
+  ArrowUp,
+  EllipsisVertical,
+  Eye,
   Pen,
   Plus,
-  SquareMinus,
-  SquarePlus,
   View,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import {
   deleteMaterial,
   getAllMaterials,
+  getMaterialById,
 } from "@/services/Materials.services.ts";
 import { MaterialType } from "@/types/Warehouses/Materials.types.ts";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
@@ -26,27 +27,47 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
-import NewMaterialMovement from "@/components/DashboradComponents/Stores/MaterialMovement/NewMaterialMovement.tsx";
-import { useRecoilState } from "recoil";
-import { newMaterialMovementModal } from "@/store/MaterialMovement.ts";
+import { useSetRecoilState } from "recoil";
+import {
+  newExternalMovementModal,
+  newInternalMovementModal,
+} from "@/store/MaterialMovement.ts";
+import { Checkbox } from "@/components/ui/checkbox";
+import NewInternalMovement from "@/components/DashboradComponents/Stores/MaterialMovement/NewInternalMovement";
+import { material } from "@/store/Material";
+import NewExternalMovement from "@/components/DashboradComponents/Stores/MaterialMovement/NewExternalMovement";
 
 export default function Materials() {
-  // @ts-expect-error
-  const [open, setOpen] = useRecoilState(newMaterialMovementModal);
+  const setInternalModal = useSetRecoilState(newInternalMovementModal);
+  const setExternalModal = useSetRecoilState(newExternalMovementModal);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [materials, setMaterials] = useState<MaterialType[]>([]);
+  const setCurrentMaterial = useSetRecoilState(material);
   const materialColumns: ColumnDef<MaterialType>[] = [
     { accessorKey: "Name", header: t("Name") },
-    { accessorKey: "Type", header: t("Type") },
-    { accessorKey: "Category", header: t("Category") },
-    { accessorKey: "Color", header: t("Color") },
-    { accessorKey: "MinimumStockLevel", header: t("MinimumStockLevel") },
-    { accessorKey: "MaximumStockLevel", header: t("MaximumStockLevel") },
+    {
+      header: t("Category"),
+      cell: ({ row }) => <p>{row.original.Category.CategoryName}</p>,
+    },
     { accessorKey: "UnitOfMeasure", header: t("UnitOfMeasure") },
-    { accessorKey: "Location", header: t("Location") },
+    { accessorKey: "MinimumLimit", header: t("MinimumLimit") },
+    { accessorKey: "UsageLocation", header: t("UsageLocation") },
+    { accessorKey: "AlternativeMaterials", header: t("AlternativeMaterials") },
+    {
+      header: t("IsRelevantToProduction"),
+      cell: ({ row }) => (
+        <Checkbox checked={row.original.IsRelevantToProduction} disabled />
+      ),
+    },
+    {
+      header: t("HasChildren"),
+      cell: ({ row }) => (
+        <Checkbox checked={row.original.HasChildren} disabled />
+      ),
+    },
     { accessorKey: "Description", header: t("Description") },
     {
       header: t("Action"),
@@ -62,13 +83,16 @@ export default function Materials() {
                 <View className="h-4 w-4" />
               </Button>
             </ButtonTooltipStructure>
+            <DeleteConfirmationDialog
+              deleteRow={() => deleteMaterial(setMaterials, row.original.Id)}
+            />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">
-                  <CircleChevronDown>Open</CircleChevronDown>
+                  <EllipsisVertical className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+              <DropdownMenuContent className="w-52">
                 <DropdownMenuGroup>
                   <DropdownMenuItem
                     onClick={() =>
@@ -76,26 +100,55 @@ export default function Materials() {
                     }
                   >
                     <Pen className="mr-2 h-4 w-4" />
-                    <span>Edit Material</span>
+                    <span>{t("EditParentMaterial")}</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <DeleteConfirmationDialog
-                      deleteRow={() =>
-                        deleteMaterial(setMaterials, row.original.Id)
-                      }
-                    />
-                    <DeleteIcon className="mr-2 h-4 w-4" />
-                    <span>Delete Material</span>
+                  {row.original.HasChildren && (
+                    <>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          navigate(
+                            `/dashboard/materials/child/new/${row.original.Id}`
+                          )
+                        }
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        <span>New Child</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          navigate(
+                            `/dashboard/materials/child/${row.original.Id}`
+                          )
+                        }
+                      >
+                        <Eye className="mr-2 h-4 w-4" />
+                        <span>View Child</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuItem
+                    onClick={() => {
+                      getMaterialById(
+                        setCurrentMaterial,
+                        row.original.Id.toString()
+                      );
+                      setInternalModal(true);
+                    }}
+                  >
+                    <ArrowDown className="mr-2 h-4 w-4" />
+                    <span>Internal</span>
                   </DropdownMenuItem>
-                  <NewMaterialMovement movementType={"Incoming"} />
-                  <DropdownMenuItem onClick={() => setOpen(true)}>
-                    <SquarePlus className="mr-2 h-4 w-4" />
-                    <span>Incoming</span>
-                  </DropdownMenuItem>
-                  <NewMaterialMovement movementType={"Outgoing"} />
-                  <DropdownMenuItem onClick={() => setOpen(true)}>
-                    <SquareMinus className="mr-2 h-4 w-4" />
-                    <span>Outgoing</span>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      getMaterialById(
+                        setCurrentMaterial,
+                        row.original.Id.toString()
+                      );
+                      setExternalModal(true);
+                    }}
+                  >
+                    <ArrowUp className="mr-2 h-4 w-4" />
+                    <span>External</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -111,6 +164,8 @@ export default function Materials() {
   }, []);
   return (
     <div className="w-full space-y-2">
+      <NewInternalMovement />
+      <NewExternalMovement />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">Materials</h1>
         <Separator />

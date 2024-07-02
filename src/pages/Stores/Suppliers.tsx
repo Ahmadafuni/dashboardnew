@@ -15,6 +15,7 @@ import {
   newSupplierModal,
   updateSupplierModal,
   supplierId,
+  supplier,
 } from "@/store/Supplier.ts";
 import { SupplierType } from "@/types/Warehouses/Suppliers.type.ts";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
@@ -24,6 +25,7 @@ import UpdateSupplier from "@/components/DashboradComponents/Stores/Suppliers/Up
 export default function Suppliers() {
   const { t } = useTranslation();
   const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
+  const setCurrentSupplier = useSetRecoilState(supplier);
   const setNewSupplierModal = useSetRecoilState(newSupplierModal);
   const setUpdateSupplierModal = useSetRecoilState(updateSupplierModal);
   const setSupplierId = useSetRecoilState(supplierId);
@@ -42,10 +44,6 @@ export default function Suppliers() {
       header: t("PhoneNumber"),
     },
     {
-      accessorKey: "email",
-      header: t("Email"),
-    },
-    {
       accessorKey: "Description",
       header: t("Description"),
     },
@@ -57,7 +55,7 @@ export default function Suppliers() {
             <Button
               onClick={() => {
                 setSupplierId(row.original.Id);
-                getSupplierById(setSuppliers, row.original.Id);
+                getSupplierById(setCurrentSupplier, row.original.Id);
                 setUpdateSupplierModal(true);
               }}
             >
@@ -79,8 +77,8 @@ export default function Suppliers() {
 
   return (
     <div className="w-full space-y-2">
-      <NewSupplier getSuppliers={getAllSuppliers} />
-      <UpdateSupplier getSuppliers={getAllSuppliers} />
+      <NewSupplier getSuppliers={() => getAllSuppliers(setSuppliers)} />
+      <UpdateSupplier getSuppliers={() => getAllSuppliers(setSuppliers)} />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Suppliers")}</h1>
         <Separator />

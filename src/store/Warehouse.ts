@@ -1,33 +1,32 @@
 import { atom } from "recoil";
 
 export const newWarehouseModal = atom({
-    key: "newWarehouseModal",
-    default: false,
+  key: "newWarehouseModal",
+  default: false,
 });
 
 export const updateWarehouseModal = atom({
-    key: "updateWarehouseModal",
-    default: false,
+  key: "updateWarehouseModal",
+  default: false,
 });
 
 export const warehouseId = atom({
-    key: "warehouseId",
-    default: 0,
+  key: "warehouseId",
+  default: 0,
 });
 
-
-
 export const warehouse = atom({
-    key: "warehouse",
-    default: {
-        WarehouseName: "",
-        CategoryName: "",
-        Location: "",
-        Capacity: 0,
-    },
+  key: "warehouse",
+  default: {
+    capacity: "",
+    category: "",
+    location: "",
+    name: "",
+    description: "",
+  },
 });
 
 export const warehouseList = atom({
-    key: "warehouseList",
-    default: [],
+  key: "warehouseList",
+  default: [],
 });

@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import WarehouseForm from "@/components/DashboradComponents/Stores/Warehouses/WarehouseForm.tsx";
 import { useRecoilState } from "recoil";
 import { newWarehouseModal } from "@/store/Warehouse.ts";
+import Cookies from "js-cookie";
 
 type Props = {
   getWarehouse: any;
@@ -35,14 +36,18 @@ export default function NewWarehouse({ getWarehouse }: Props) {
       category: "",
       location: "",
       capacity: "",
-      manager: "",
+      description: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof warehouseSchema>) => {
     setIsLoading(true);
     try {
-      const newWarehouse = await axios.post("warehouse", data);
+      const newWarehouse = await axios.post("warehouse", data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
       toast.success(newWarehouse.data.message);
       getWarehouse();
       form.reset();
