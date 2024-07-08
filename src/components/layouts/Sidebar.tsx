@@ -60,94 +60,40 @@ export default function Sidebar() {
       gName: t("Dashboard"),
       childs: [
         { name: t("Home"), link: "/dashboard/home", icon: Home },
-        {
-          name: t("Dashboard"),
-          link: "/dashboard/dashboard",
-          icon: LayoutDashboard,
-        },
+        { name: t("Dashboard"), link: "/dashboard/dashboard", icon: LayoutDashboard},
         { name: t("Reports"), link: "/dashboard/reports", icon: FileBarChart2 },
       ],
     },
     {
       gName: t("BusinessEntities"),
       childs: [
-        {
-          name: t("ProductCatalogues"),
-          link: "/dashboard/productcatalogues",
-          icon: FolderOpen,
-        },
-        {
-          name: t("Templates"),
-          link: "/dashboard/templates",
-          icon: SquareScissors,
-        },
+        { name: t("ProductCatalogues"), link: "/dashboard/productcatalogues", icon: FolderOpen},
+        { name: t("Templates"), link: "/dashboard/templates", icon: SquareScissors},
         { name: t("Orders"), link: "/dashboard/orders", icon: ListOrdered },
-        {
-          name: t("Collections"),
-          link: "/dashboard/entities/collections",
-          icon: Boxes,
-        },
-        {
-          name: t("Colors"),
-          link: "/dashboard/entities/colors",
-          icon: Palette,
-        },
+        { name: t("Collections"), link: "/dashboard/entities/collections", icon: Boxes},
+        { name: t("Colors"), link: "/dashboard/entities/colors", icon: Palette},
         { name: t("Sizes"), link: "/dashboard/entities/sizes", icon: Ruler },
-        {
-          name: t("Textiles"),
-          link: "/dashboard/entities/textiles",
-          icon: SwatchBook,
-        },
-        {
-          name: t("TemplateType"),
-          link: "/dashboard/entities/templatetype",
-          icon: Asterisk,
-        },
-        {
-          name: t("TemplatePattern"),
-          link: "/dashboard/entities/templatepattern",
-          icon: SquareAsterisk,
-        },
-        {
-          name: t("ProductCategoryOne"),
-          link: "/dashboard/entities/productcategoryone",
-          icon: ArrowUpDown,
-        },
-        {
-          name: t("ProductCategoryTwo"),
-          link: "/dashboard/entities/productcategorytwo",
-          icon: ArrowLeftRight,
-        },
-        {
-          name: t("Warehouse"),
-          link: "/dashboard/warehouses",
-          icon: Warehouse,
-        },
-        {
-          name: t("Suppliers"),
-          link: "/dashboard/suppliers",
-          icon: Container,
-        },
-        {
-          name: t("MaterialCategory"),
-          link: "/dashboard/materialcategory",
-          icon: SquareStack,
-        },
-        {
-          name: t("Materials"),
-          link: "/dashboard/materials",
-          icon: Shell,
-        },
+        { name: t("Textiles"), link: "/dashboard/entities/textiles", icon: SwatchBook},
+        { name: t("TemplateType"), link: "/dashboard/entities/templatetype", icon: Asterisk},
+        { name: t("TemplatePattern"), link: "/dashboard/entities/templatepattern", icon: SquareAsterisk},
+        { name: t("ProductCategoryOne"), link: "/dashboard/entities/productcategoryone", icon: ArrowUpDown},
+        { name: t("ProductCategoryTwo"), link: "/dashboard/entities/productcategorytwo", icon: ArrowLeftRight},
       ],
+    },
+    {
+      gName: t("Warehouses"),
+      childs:
+          [
+            { name: t("Warehouse"), link: "/dashboard/warehouses", icon: Warehouse},
+            { name: t("Suppliers"), link: "/dashboard/suppliers", icon: Container},
+            { name: t("MaterialCategory"), link: "/dashboard/materialcategory", icon: SquareStack},
+            { name: t("Materials"), link: "/dashboard/materials", icon: Shell},
+          ],
     },
     {
       gName: t("StaffRelatedData"),
       childs: [
-        {
-          name: t("Departments"),
-          link: "/dashboard/departments",
-          icon: LayoutPanelTop,
-        },
+        { name: t("Departments"), link: "/dashboard/departments", icon: LayoutPanelTop},
         { name: t("Users"), link: "/dashboard/users", icon: UsersRound },
         { name: t("Tasks"), link: "/dashboard/tasks", icon: ListChecks },
         { name: t("Notes"), link: "/dashboard/notes", icon: NotebookPen },
