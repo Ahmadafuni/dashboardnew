@@ -1,9 +1,9 @@
 import DatePickerForForm from "@/components/common/DatePickerForForm";
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
+import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Form, FormField } from "@/components/ui/form";
 import { getAllDepartmentList } from "@/services/Departments.services";
-import { getAllChildMaterialNames } from "@/services/Materials.services";
+import {getAllChildMaterialNames, getAllMaterials} from "@/services/Materials.services";
 import { getAllWarehouseNames } from "@/services/Warehouse.services";
 import { getAllSupplierNames } from "@/services/Suppliers.services";
 import { material } from "@/store/Material";
@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
+import SelectFieldForForm from "@/components/common/SelectFieldForForm.tsx";
+import {ChildMaterialType, MaterialType} from "@/types/Warehouses/Materials.types.ts";
 
 interface Props {
     form: any;
@@ -21,7 +23,6 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
     const { t } = useTranslation();
 
     // Main Information Group
-    //const movementType = "INCOMING";
     const movementFromOptions = [
         { label: t("Department"), value: "Department" },
         { label: t("Warehouse"), value: "Warehouse" },
@@ -38,22 +39,33 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
     const [selectedMovementTo, setSelectedMovementTo] = useState("");
 
     // Materials Part
-
     const currentMaterial = useRecoilValue(material);
-    const [cMaterials, setCMaterials] = useState([]);
-
+    const [Materials, setMaterials] = useState<MaterialType[]>([]);
+    const [cMaterials, setCMaterials] = useState<ChildMaterialType[]>([]);
 
     // Page on load
     useEffect(() => {
         getAllDepartmentList(setDepartments);
         getAllWarehouseNames(setWarehouses);
         getAllSupplierNames(setSuppliers);
+        getAllMaterials(setMaterials);
     }, []);
 
+    const materialsOptions = Materials.map((material: any) => ({
+        value: material.Id.toString(),
+        label: material.Name.toString(),
+    }));
+
     useEffect(() => {
-        if (currentMaterial.hasChildren)
-            getAllChildMaterialNames(setCMaterials, currentMaterial.id);
+        if (currentMaterial.HasChildren) {
+            getAllChildMaterialNames(setCMaterials, currentMaterial.Id);
+        }
     }, [currentMaterial]);
+
+    const materialsChildOptions = cMaterials.map((childMaterial: any) => ({
+        value: childMaterial.Id.toString(),
+        label: childMaterial.Name.toString(),
+    }));
 
     return (
         <Form {...form}>
@@ -174,16 +186,36 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                         <h2 className="text-lg font-semibold">{t("MaterialInformations")}</h2>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        {currentMaterial.hasChildren && (
+                        <FormField
+                            control={form.control}
+                            name="Material"
+                            render={({ field }) => (
+                                <ComboSelectFieldForForm
+                                    field={field}
+                                    label={t("Material")}
+                                    placeholder="search a material"
+                                    items={materialsOptions}
+                                    form={form}
+                                    emptyBox={t("No material found")}
+                                    name="Materials"
+                                    selectText={t("Select material")}
+                                />
+                            )}
+                        />
+                        {currentMaterial.HasChildren && (
                             <FormField
                                 control={form.control}
                                 name="ChildMaterial"
                                 render={({ field }) => (
-                                    <SelectFieldForForm
+                                    <ComboSelectFieldForForm
                                         field={field}
                                         label={t("ChildMaterial")}
                                         placeholder="Select a child material"
-                                        items={cMaterials}
+                                        items={materialsChildOptions}
+                                        form={form}
+                                        emptyBox={t("No options")}
+                                        name="ChildMaterial"
+                                        selectText={t("Select an option")}
                                     />
                                 )}
                             />
