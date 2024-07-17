@@ -3,16 +3,19 @@ import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Form, FormField } from "@/components/ui/form";
 import { getAllDepartmentList } from "@/services/Departments.services";
-import {getAllChildMaterialNames, getAllMaterials} from "@/services/Materials.services";
+import { getAllChildMaterialNames, getAllMaterials } from "@/services/Materials.services";
 import { getAllWarehouseNames } from "@/services/Warehouse.services";
 import { getAllSupplierNames } from "@/services/Suppliers.services";
-import { material } from "@/store/Material";
+import { material, materialList } from "@/store/Material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import SelectFieldForForm from "@/components/common/SelectFieldForForm.tsx";
-import {ChildMaterialType, MaterialType} from "@/types/Warehouses/Materials.types.ts";
+import { departmentList } from "@/store/Department";
+import {warehouseList} from "@/store/Warehouse.ts";
+import {supplierList} from "@/store/Supplier.ts";
+import {childMaterialList} from "@/store/ChildMaterial.ts";
 
 interface Props {
     form: any;
@@ -30,31 +33,35 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
     ];
     const movementToOptions = [{ label: t("Warehouse"), value: "Warehouse" }];
 
-    // First and second sides in Incoming Movement
-    const [departments, setDepartments] = useState([]);
-    const [warehouses, setWarehouses] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
+    // Use Recoil state
+    const departments = useRecoilValue(departmentList);
+    const warehouses = useRecoilValue(warehouseList);
+    const suppliers = useRecoilValue(supplierList);
+    const parentMaterialList = useRecoilValue(materialList);
+    const currentMaterial = useRecoilValue(material);
+    const cMaterials = useRecoilValue(childMaterialList);
 
+    const setDepartments = useSetRecoilState(departmentList);
+    const setWarehouses = useSetRecoilState(warehouseList);
+    const setSuppliers = useSetRecoilState(supplierList);
+    const setMaterials = useSetRecoilState(materialList);
+    const setCMaterials = useSetRecoilState(childMaterialList);
     const [selectedMovementFrom, setSelectedMovementFrom] = useState("");
     const [selectedMovementTo, setSelectedMovementTo] = useState("");
 
-    // Materials Part
-    const currentMaterial = useRecoilValue(material);
-    const [Materials, setMaterials] = useState<MaterialType[]>([]);
-    const [cMaterials, setCMaterials] = useState<ChildMaterialType[]>([]);
-
+    const materialsOptions = parentMaterialList.map((material: any) => ({
+        value: material.Id.toString(),
+        label: material.Name.toString(),
+    }));
     // Page on load
     useEffect(() => {
         getAllDepartmentList(setDepartments);
         getAllWarehouseNames(setWarehouses);
         getAllSupplierNames(setSuppliers);
+        // @ts-ignore
         getAllMaterials(setMaterials);
     }, []);
 
-    const materialsOptions = Materials.map((material: any) => ({
-        value: material.Id.toString(),
-        label: material.Name.toString(),
-    }));
 
     useEffect(() => {
         if (currentMaterial.HasChildren) {
@@ -194,11 +201,12 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                                     field={field}
                                     label={t("Material")}
                                     placeholder="search a material"
-                                    items={materialsOptions}
-                                    form={form}
                                     emptyBox={t("No material found")}
+                                    form={form}
                                     name="Materials"
                                     selectText={t("Select material")}
+                                    items={materialsOptions}
+
                                 />
                             )}
                         />
