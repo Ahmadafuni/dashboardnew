@@ -1,24 +1,35 @@
-import BackButton from "@/components/common/BackButton";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { childMaterialSchema } from "@/form_schemas/newMaterialSchema";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 import ChildMaterialForm from "./ChildMaterialForm";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { newChildMaterialModal } from "@/store/ChildMaterial";
+import { childMaterialSchema } from "@/form_schemas/newMaterialSchema";
+import { materialId } from "@/store/Material";
 
-export default function NewChildMaterial() {
-  const { materialID } = useParams();
+type Props = {
+  getChildMaterials: any;
+};
+
+export default function NewChildMaterial({ getChildMaterials }: Props) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useRecoilState(newChildMaterialModal);
+  const currentMaterialId = useRecoilValue(materialId);
 
   // Form fields
   const form = useForm<z.infer<typeof childMaterialSchema>>({
@@ -33,23 +44,24 @@ export default function NewChildMaterial() {
       Description: "",
     },
   });
-  // Form submit function
+
   const onSubmit = async (data: z.infer<typeof childMaterialSchema>) => {
     setIsLoading(true);
     try {
       const newMaterial = await axios.post(
-        `material/child/${materialID}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
+          `material/child/${currentMaterialId}`,
+          data,
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
       );
       toast.success(newMaterial.data.message);
+      getChildMaterials();
       form.reset();
       setIsLoading(false);
-      navigate(-1);
+      setOpen(false); // Close dialog after successful submission
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -57,28 +69,28 @@ export default function NewChildMaterial() {
       setIsLoading(false);
     }
   };
+
   return (
-    <div className="w-full space-y-2">
-      <div className="w-full space-y-1 flex items-center">
-        <BackButton />
-        <h1 className="text-3xl font-bold w-full">{t("New Material")}</h1>
-      </div>
-      <Separator />
-      <div className="space-y-1">
-        <ChildMaterialForm form={form} onSubmit={onSubmit} />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="material-child">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Add")
-            )}
-          </Button>
-        </div>
-      </div>
-    </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("New Child Material")}</DialogTitle>
+          </DialogHeader>
+          <ChildMaterialForm form={form} onSubmit={onSubmit} />
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
+            <Button type="submit" disabled={isLoading} form="material-child">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("Please wait")}
+                  </>
+              ) : (
+                  t("Add")
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

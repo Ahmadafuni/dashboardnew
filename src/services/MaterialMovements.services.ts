@@ -22,6 +22,41 @@ export const getAllMaterialMovements = async (
     }
 };
 
+export const getIncomingMaterialMovements = async (
+    setData: Dispatch<SetStateAction<any>>,
+) => {
+
+    try {
+        const { data } = await axios.get("materialmovement/incoming", {
+            headers: {
+                Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+        });
+        setData(data);
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            toast.error(error.response?.data.message);
+        }
+    }
+};
+
+export const getOutgoingMaterialMovements = async (
+    setData: Dispatch<SetStateAction<any>>,
+) => {
+
+    try {
+        const { data } = await axios.get("materialmovement/outgoing", {
+            headers: {
+                Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+        });
+        setData(data);
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            toast.error(error.response?.data.message);
+        }
+    }
+};
 export const getMaterialMovementById = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number

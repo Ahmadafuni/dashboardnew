@@ -22,9 +22,10 @@ import {
   Container,
   SquareStack,
   Shell,
+  PackagePlusIcon,
+  PackageMinusIcon,
 } from "lucide-react";
-// import { cloth } from "@lucide/lab";
-import { NavLink } from "react-router-dom";
+ import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
 import { useState, useEffect } from "react";
@@ -88,6 +89,8 @@ export default function Sidebar() {
             { name: t("Suppliers"), link: "/dashboard/suppliers", icon: Container},
             { name: t("MaterialCategory"), link: "/dashboard/materialcategory", icon: SquareStack},
             { name: t("Materials"), link: "/dashboard/materials", icon: Shell},
+            { name: t("Incoming"), link: "/dashboard/incoming", icon: PackagePlusIcon},
+            { name: t("Outgoing"), link: "/dashboard/outgoing", icon: PackageMinusIcon}
           ],
     },
     {

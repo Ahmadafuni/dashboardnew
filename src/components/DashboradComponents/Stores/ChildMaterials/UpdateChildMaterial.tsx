@@ -1,10 +1,7 @@
-import BackButton from "@/components/common/BackButton";
-import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import ChildMaterialForm from "./ChildMaterialForm";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { childMaterialSchema } from "@/form_schemas/newMaterialSchema";
@@ -14,12 +11,26 @@ import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { getChildMaterialById } from "@/services/Materials.services";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { updateChildMaterialModal, childMaterialId } from "@/store/ChildMaterial";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-export default function UpdateChildMaterial() {
-  const { childID } = useParams();
+type Props = {
+  getChildMaterials: any;
+};
+
+export default function UpdateChildMaterial({ getChildMaterials }: Props) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useRecoilState(updateChildMaterialModal);
+  const childID = useRecoilValue(childMaterialId);
+
   const [material, setMaterial] = useState<any>({});
 
   // Form fields
@@ -36,6 +47,7 @@ export default function UpdateChildMaterial() {
     },
     values: material,
   });
+
   // Form submit function
   const onSubmit = async (data: z.infer<typeof childMaterialSchema>) => {
     setIsLoading(true);
@@ -46,9 +58,9 @@ export default function UpdateChildMaterial() {
         },
       });
       toast.success(newMaterial.data.message);
-      form.reset();
+      getChildMaterials();
       setIsLoading(false);
-      navigate(-1);
+      setOpen(false); // Close dialog after successful submission
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -56,33 +68,32 @@ export default function UpdateChildMaterial() {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     getChildMaterialById(setMaterial, childID);
-  }, []);
+  }, [childID]);
+
   return (
-    <div className="w-full space-y-2">
-      <div className="w-full space-y-1 flex items-center">
-        <BackButton />
-        <h1 className="text-3xl font-bold w-full">
-          {t("UpdateChildMaterial")}
-        </h1>
-      </div>
-      <Separator />
-      <div className="space-y-1">
-        <ChildMaterialForm form={form} onSubmit={onSubmit} />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="material-child">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Update")
-            )}
-          </Button>
-        </div>
-      </div>
-    </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("Update Child Material")}</DialogTitle>
+          </DialogHeader>
+          <ChildMaterialForm form={form} onSubmit={onSubmit} />
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
+            <Button type="submit" disabled={isLoading} form="material-child">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("Please wait")}
+                  </>
+              ) : (
+                  t("Update")
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

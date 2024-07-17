@@ -76,7 +76,7 @@ export const getMaterialById = async (
 
 export const getChildMaterialById = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: string | undefined
+  id: string | undefined | number
 ) => {
   try {
     const { data } = await axios.get(`material/child/${id}`, {

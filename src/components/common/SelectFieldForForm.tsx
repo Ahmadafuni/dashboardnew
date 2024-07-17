@@ -17,35 +17,43 @@ type SelectFieldForFormProp = {
   placeholder: string;
   field: any;
   items: SelectFieldForFormItemType[];
+  onChange?: (value: string) => void;
 };
+
 export default function SelectFieldForForm({
-  label,
-  placeholder,
-  field,
-  items,
-}: SelectFieldForFormProp) {
+                                             label,
+                                             placeholder,
+                                             field,
+                                             items,
+                                             onChange,
+                                           }: SelectFieldForFormProp) {
   return (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      <Select
-        onValueChange={field.onChange}
-        defaultValue={field.value}
-        value={field.value}
-      >
-        <FormControl>
-          <SelectTrigger>
-            <SelectValue placeholder={placeholder} />
-          </SelectTrigger>
-        </FormControl>
-        <SelectContent>
-          {items.map((item, idx) => (
-            <SelectItem key={idx} value={item.value}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <FormMessage />
-    </FormItem>
+      <FormItem>
+        <FormLabel>{label}</FormLabel>
+        <Select
+            onValueChange={(value) => {
+              field.onChange(value);
+              if (onChange) {
+                onChange(value);
+              }
+            }}
+            defaultValue={field.value}
+            value={field.value}
+        >
+          <FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent>
+            {items.map((item, idx) => (
+                <SelectItem key={idx} value={item.value}>
+                  {item.label}
+                </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <FormMessage />
+      </FormItem>
   );
 }
