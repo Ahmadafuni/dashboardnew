@@ -3,12 +3,29 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export const getAllModels = async (
+export const getModelsByOrderId = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: string | undefined
+  id?: string | undefined
 ) => {
   try {
     const response = await axios.get(`model/all/${id}`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(response.data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const getAllModel = async (
+    setData: Dispatch<SetStateAction<any>>,
+) => {
+  try {
+    const response = await axios.get("/model/allmodels", {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
@@ -51,7 +68,7 @@ export const deleteModel = async (
       },
     });
     toast.success("Model deleted successfully");
-    getAllModels(setData, orderId);
+    getModelsByOrderId(setData, orderId);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);

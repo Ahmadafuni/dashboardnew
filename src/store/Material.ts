@@ -18,15 +18,15 @@ export const materialId = atom({
 export const material = atom({
   key: "material",
   default: {
-    Name: "",
-    Description: "",
-    UnitOfMeasure: "",
-    UsageLocation: "",
-    AlternativeMaterials: "",
-    MinimumLimit: "",
-    IsRelevantToProduction: "",
-    HasChildren: "",
-    Category: "", Id: ""
+    name: "",
+    description: "",
+    unitOfMeasure: "",
+    usageLocation: "",
+    alternativeMaterials: "",
+    minimumLimit: "",
+    isRelevantToProduction: false,
+    hasChildren: false,
+    category: "",
 
   },
 });

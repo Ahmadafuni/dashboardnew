@@ -38,6 +38,24 @@ export const getAllChildMaterials = async (
   }
 };
 
+export const getChildMaterialByParentId = async (
+    setData: Dispatch<SetStateAction<any[]>>,
+    id: any
+) => {
+  try {
+    const { data } = await axios.get(`material/childbyparent/${id}`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const getAllChildMaterialNames = async (
   setData: Dispatch<SetStateAction<any>>,
   id: any

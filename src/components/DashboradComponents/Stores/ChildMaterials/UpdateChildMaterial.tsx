@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import ChildMaterialForm from "./ChildMaterialForm";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -10,9 +10,8 @@ import { z } from "zod";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
-import { getChildMaterialById } from "@/services/Materials.services";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { updateChildMaterialModal, childMaterialId } from "@/store/ChildMaterial";
+import {updateChildMaterialModal, childMaterialId} from "@/store/ChildMaterial";
 import {
   Dialog,
   DialogContent,
@@ -31,9 +30,7 @@ export default function UpdateChildMaterial({ getChildMaterials }: Props) {
   const [open, setOpen] = useRecoilState(updateChildMaterialModal);
   const childID = useRecoilValue(childMaterialId);
 
-  const [material, setMaterial] = useState<any>({});
 
-  // Form fields
   const form = useForm<z.infer<typeof childMaterialSchema>>({
     resolver: zodResolver(childMaterialSchema),
     defaultValues: {
@@ -45,19 +42,18 @@ export default function UpdateChildMaterial({ getChildMaterials }: Props) {
       GramWeight: "",
       Description: "",
     },
-    values: material,
   });
 
   // Form submit function
   const onSubmit = async (data: z.infer<typeof childMaterialSchema>) => {
     setIsLoading(true);
     try {
-      const newMaterial = await axios.put(`material/child/${childID}`, data, {
+      const updatedMaterial = await axios.put(`material/child/${childID}`, data, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
       });
-      toast.success(newMaterial.data.message);
+      toast.success(updatedMaterial.data.message);
       getChildMaterials();
       setIsLoading(false);
       setOpen(false); // Close dialog after successful submission
@@ -68,10 +64,6 @@ export default function UpdateChildMaterial({ getChildMaterials }: Props) {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    getChildMaterialById(setMaterial, childID);
-  }, [childID]);
 
   return (
       <Dialog open={open} onOpenChange={setOpen}>

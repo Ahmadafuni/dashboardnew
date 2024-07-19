@@ -12,8 +12,8 @@ import { MaterialType } from "@/types/Warehouses/Materials.types.ts";
 import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
 import { useSetRecoilState } from "recoil";
 import { Checkbox } from "@/components/ui/checkbox";
-import { material, materialId } from "@/store/Material";
-import { newChildMaterialModal } from "@/store/ChildMaterial.ts";
+import { materialId } from "@/store/Material";
+import {childMaterialId, newChildMaterialModal} from "@/store/ChildMaterial.ts";
 import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial.tsx";
 import {
   DropdownMenu,
@@ -27,9 +27,9 @@ export default function Materials() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [materials, setMaterials] = useState<MaterialType[]>([]);
-  const setCurrentMaterial = useSetRecoilState(material);
   const setMaterialId = useSetRecoilState(materialId);
   const setNewChildMaterialModal = useSetRecoilState(newChildMaterialModal);
+  const setChildMaterialId = useSetRecoilState(childMaterialId);
 
   const materialColumns: ColumnDef<MaterialType>[] = [
     { accessorKey: "Name", header: t("Name") },
@@ -41,12 +41,21 @@ export default function Materials() {
     { accessorKey: "MinimumLimit", header: t("MinimumLimit") },
     { accessorKey: "UsageLocation", header: t("UsageLocation") },
     { accessorKey: "AlternativeMaterials", header: t("AlternativeMaterials") },
-    { header: t("IsRelevantToProduction"), cell: ({ row }) => (
-          <Checkbox checked={row.original.IsRelevantToProduction} disabled />),},
-    { header: t("HasChildren"), cell: ({ row }) => (
-        <Checkbox checked={row.original.HasChildren} disabled />),},
+    {
+      header: t("IsRelevantToProduction"),
+      cell: ({ row }) => (
+          <Checkbox checked={row.original.IsRelevantToProduction} disabled />
+      ),
+    },
+    {
+      header: t("HasChildren"),
+      cell: ({ row }) => (
+          <Checkbox checked={row.original.HasChildren} disabled />
+      ),
+    },
     { accessorKey: "Description", header: t("Description") },
-    { header: t("Action"),
+    {
+      header: t("Action"),
       cell: ({ row }) => {
         return (
             <div className="flex gap-1">
@@ -82,21 +91,20 @@ export default function Materials() {
                         <>
                           <DropdownMenuItem
                               onClick={() => {
-                                setCurrentMaterial(row.original);
                                 setMaterialId(row.original.Id);
+                                setChildMaterialId(0); // Ensure this is set to 0 or a default value
                                 setNewChildMaterialModal(true);
-                                navigate(`/dashboard/materials/child/${row.original.Id}`);
                               }}
                           >
                             <Plus className="mr-2 h-4 w-4" />
                             <span>{t("New Child")}</span>
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                              onClick={() =>
-                                  navigate(
-                                      `/dashboard/materials/child/${row.original.Id}`
-                                  )
-                              }
+                              onClick={() => {
+                                setMaterialId(row.original.Id);
+                                setChildMaterialId(0); // Ensure this is set to 0 or a default value
+                                navigate(`/dashboard/materials/child/${row.original.Id}`)
+                              }}
                           >
                             <Eye className="mr-2 h-4 w-4" />
                             <span>{t("View Child")}</span>

@@ -2,7 +2,7 @@ import DataTable from "@/components/common/DataTable.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { deleteModel, getAllModels } from "@/services/Model.services.ts";
+import { deleteModel, getModelsByOrderId } from "@/services/Model.services.ts";
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVertical, Eye, Pen, Plus, ScanEye } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -136,7 +136,7 @@ export default function Models() {
   ];
 
   useEffect(() => {
-    getAllModels(setModels, id);
+    getModelsByOrderId(setModels, id);
   }, []);
   return (
     <div className="w-full space-y-2">

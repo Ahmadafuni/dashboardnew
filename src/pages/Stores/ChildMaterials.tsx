@@ -3,8 +3,8 @@ import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDial
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
-  deleteChildMaterial,
-  getAllChildMaterials,
+    deleteChildMaterial,
+    getAllChildMaterials, getChildMaterialByParentId,
 } from "@/services/Materials.services";
 import { ChildMaterialType } from "@/types/Warehouses/Materials.types";
 import { ColumnDef } from "@tanstack/react-table";
@@ -28,7 +28,7 @@ export default function ChildMaterials() {
   const [materials, setMaterials] = useState<ChildMaterialType[]>([]);
   const materialColumns: ColumnDef<ChildMaterialType>[] = [
     { accessorKey: "Name", header: t("Name") },
-    { header: t("Parent"), cell: ({ row }) => <p>{row.original.ParentMaterial.Name}</p> },
+    //{ header: t("Parent"), cell: ({ row }) => <p>{row.original.ParentMaterial.Name}</p> },
     { accessorKey: "DyeNumber", header: t("DyeNumber") },
     { accessorKey: "Halil", header: t("Halil") },
     { accessorKey: "Kashan", header: t("Kashan") },
@@ -56,8 +56,8 @@ export default function ChildMaterials() {
   ];
 
   useEffect(() => {
-    getAllChildMaterials(setMaterials, materialID);
-  }, [materialID]);
+      getChildMaterialByParentId(setMaterials, materialID);
+  }, []);
 
   return (
       <div className="w-full space-y-2">

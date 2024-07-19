@@ -31,6 +31,7 @@ export default function NewChildMaterial({ getChildMaterials }: Props) {
   const [open, setOpen] = useRecoilState(newChildMaterialModal);
   const currentMaterialId = useRecoilValue(materialId);
 
+
   // Form fields
   const form = useForm<z.infer<typeof childMaterialSchema>>({
     resolver: zodResolver(childMaterialSchema),
@@ -48,6 +49,7 @@ export default function NewChildMaterial({ getChildMaterials }: Props) {
   const onSubmit = async (data: z.infer<typeof childMaterialSchema>) => {
     setIsLoading(true);
     try {
+      console.log("ParentMaterialId",currentMaterialId)
       const newMaterial = await axios.post(
           `material/child/${currentMaterialId}`,
           data,
