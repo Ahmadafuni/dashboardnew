@@ -55,11 +55,12 @@ export default function ChildMaterials() {
     },
   ];
 
-  useEffect(() => {
-      getChildMaterialByParentId(setMaterials, materialID);
-  }, []);
+    useEffect(() => {
+        getChildMaterialByParentId(setMaterials, materialID); // Fetch child materials for the specific parent
+    }, [materialID]);
 
-  return (
+
+    return (
       <div className="w-full space-y-2">
         <UpdateChildMaterial getChildMaterials={() => getAllChildMaterials(setMaterials, materialID)} />
         <NewChildMaterial getChildMaterials={() => getAllChildMaterials(setMaterials, materialID)} />

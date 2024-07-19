@@ -92,7 +92,6 @@ export default function Materials() {
                           <DropdownMenuItem
                               onClick={() => {
                                 setMaterialId(row.original.Id);
-                                setChildMaterialId(0); // Ensure this is set to 0 or a default value
                                 setNewChildMaterialModal(true);
                               }}
                           >
