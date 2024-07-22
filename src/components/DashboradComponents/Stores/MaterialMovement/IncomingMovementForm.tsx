@@ -104,6 +104,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" id="incoming-movement">
+                {/* @ts-ignore */}
                 <NewChildMaterial getChildMaterialByParentId={() => getChildMaterialByParentId(setChildMaterials, selectedMaterial)} />
                 {/* Main Information Card */}
                 <Card className="bg-[var(--card-background)]">
