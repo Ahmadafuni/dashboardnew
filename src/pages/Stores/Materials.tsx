@@ -7,13 +7,12 @@ import { EllipsisVertical, Eye, Pen, Plus, View } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { deleteMaterial, getAllMaterials } from "@/services/Materials.services.ts";
+import {deleteMaterial, getAllMaterials, getChildMaterialByParentId} from "@/services/Materials.services.ts";
 import { MaterialType } from "@/types/Warehouses/Materials.types.ts";
 import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState} from "recoil";
 import { Checkbox } from "@/components/ui/checkbox";
 import { materialId } from "@/store/Material";
-import {newChildMaterialModal} from "@/store/ChildMaterial.ts";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +20,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial.tsx";
+import { childMaterialList, newChildMaterialModal} from "@/store/ChildMaterial.ts";
 
 export default function Materials() {
   const { t } = useTranslation();
@@ -28,6 +29,9 @@ export default function Materials() {
   const [materials, setMaterials] = useState<MaterialType[]>([]);
   const setMaterialId = useSetRecoilState(materialId);
   const setNewChildMaterialModal = useSetRecoilState(newChildMaterialModal);
+
+
+  const setChildMaterialList = useSetRecoilState(childMaterialList);
 
   const materialColumns: ColumnDef<MaterialType>[] = [
     { accessorKey: "Name", header: t("Name") },
@@ -97,10 +101,11 @@ export default function Materials() {
                             <span>{t("New Child")}</span>
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                              onClick={() => {
-                                console.log("ROW",row.original)
+                              onClick={async () => {
                                 setMaterialId(row.original.Id);
-                                navigate(`/dashboard/materials/child/${row.original.Id}`)
+                                // @ts-ignore
+                                await getChildMaterialByParentId(setChildMaterialList, row.original.Id);
+                                navigate(`/dashboard/materials/child/${row.original.Id}`);
                               }}
                           >
                             <Eye className="mr-2 h-4 w-4" />
@@ -123,6 +128,7 @@ export default function Materials() {
 
   return (
       <div className="w-full space-y-2">
+        <NewChildMaterial getChildMaterialByParentId={() => getAllMaterials(setMaterials)} />
         <div className="w-full space-y-1">
           <h1 className="text-3xl font-bold w-full">Materials</h1>
           <Separator />
