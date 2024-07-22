@@ -22,10 +22,10 @@ import { childMaterialSchema } from "@/form_schemas/newMaterialSchema";
 import { materialId } from "@/store/Material";
 
 type Props = {
-  getChildMaterials: any;
+  getChildMaterialByParentId: any;
 };
 
-export default function NewChildMaterial({ getChildMaterials }: Props) {
+export default function NewChildMaterial({ getChildMaterialByParentId }: Props) {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useRecoilState(newChildMaterialModal);
@@ -60,7 +60,7 @@ export default function NewChildMaterial({ getChildMaterials }: Props) {
           }
       );
       toast.success(newMaterial.data.message);
-      getChildMaterials();
+      getChildMaterialByParentId();
       form.reset();
       setIsLoading(false);
       setOpen(false); // Close dialog after successful submission

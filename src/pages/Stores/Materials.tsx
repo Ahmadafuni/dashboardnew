@@ -14,7 +14,6 @@ import { useSetRecoilState } from "recoil";
 import { Checkbox } from "@/components/ui/checkbox";
 import { materialId } from "@/store/Material";
 import {newChildMaterialModal} from "@/store/ChildMaterial.ts";
-import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -124,7 +123,6 @@ export default function Materials() {
 
   return (
       <div className="w-full space-y-2">
-        <NewChildMaterial getChildMaterials={() => getAllMaterials(setMaterials)} />
         <div className="w-full space-y-1">
           <h1 className="text-3xl font-bold w-full">Materials</h1>
           <Separator />

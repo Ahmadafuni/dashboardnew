@@ -9,7 +9,7 @@ import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 import {
     deleteChildMaterial,
-    getAllChildMaterials, getChildMaterialById,
+    getChildMaterialById,
     getChildMaterialByParentId,
 } from "@/services/Materials.services";
 import { ChildMaterialType } from "@/types/Warehouses/Materials.types";
@@ -64,7 +64,7 @@ console.log("materialID",materialID);
     return (
         <div className="w-full space-y-2">
             <UpdateChildMaterial getChildMaterialByParentId={() => getChildMaterialByParentId(setChildmaterials, materialID)} />
-            <NewChildMaterial getChildMaterials={() => getAllChildMaterials(setChildmaterials, materialID)} />
+            <NewChildMaterial getChildMaterialByParentId={() => getChildMaterialByParentId(setChildmaterials, materialID)} />
             <div className="w-full space-y-1">
                 <div className="w-full space-y-1 flex items-center">
                     <BackButton />
