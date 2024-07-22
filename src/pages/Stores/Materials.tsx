@@ -13,7 +13,7 @@ import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.t
 import { useSetRecoilState } from "recoil";
 import { Checkbox } from "@/components/ui/checkbox";
 import { materialId } from "@/store/Material";
-import {childMaterialId, newChildMaterialModal} from "@/store/ChildMaterial.ts";
+import {newChildMaterialModal} from "@/store/ChildMaterial.ts";
 import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial.tsx";
 import {
   DropdownMenu,
@@ -29,7 +29,6 @@ export default function Materials() {
   const [materials, setMaterials] = useState<MaterialType[]>([]);
   const setMaterialId = useSetRecoilState(materialId);
   const setNewChildMaterialModal = useSetRecoilState(newChildMaterialModal);
-  const setChildMaterialId = useSetRecoilState(childMaterialId);
 
   const materialColumns: ColumnDef<MaterialType>[] = [
     { accessorKey: "Name", header: t("Name") },
@@ -100,8 +99,8 @@ export default function Materials() {
                           </DropdownMenuItem>
                           <DropdownMenuItem
                               onClick={() => {
+                                console.log("ROW",row.original)
                                 setMaterialId(row.original.Id);
-                                setChildMaterialId(0); // Ensure this is set to 0 or a default value
                                 navigate(`/dashboard/materials/child/${row.original.Id}`)
                               }}
                           >

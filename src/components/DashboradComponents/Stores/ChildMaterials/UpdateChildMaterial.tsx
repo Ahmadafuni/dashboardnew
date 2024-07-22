@@ -11,7 +11,7 @@ import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {updateChildMaterialModal, childMaterialId} from "@/store/ChildMaterial";
+import {updateChildMaterialModal, childMaterialId, childMaterial} from "@/store/ChildMaterial";
 import {
   Dialog,
   DialogContent,
@@ -21,15 +21,16 @@ import {
 } from "@/components/ui/dialog";
 
 type Props = {
-  getChildMaterials: any;
+  getChildMaterialByParentId: any;
 };
 
-export default function UpdateChildMaterial({ getChildMaterials }: Props) {
+export default function UpdateChildMaterial({ getChildMaterialByParentId }: Props) {
+  const childID = useRecoilValue(childMaterialId);
+  const currentChild = useRecoilValue(childMaterial);
+
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useRecoilState(updateChildMaterialModal);
-  const childID = useRecoilValue(childMaterialId);
-
 
   const form = useForm<z.infer<typeof childMaterialSchema>>({
     resolver: zodResolver(childMaterialSchema),
@@ -42,9 +43,9 @@ export default function UpdateChildMaterial({ getChildMaterials }: Props) {
       GramWeight: "",
       Description: "",
     },
+    values: currentChild,
   });
 
-  // Form submit function
   const onSubmit = async (data: z.infer<typeof childMaterialSchema>) => {
     setIsLoading(true);
     try {
@@ -54,7 +55,7 @@ export default function UpdateChildMaterial({ getChildMaterials }: Props) {
         },
       });
       toast.success(updatedMaterial.data.message);
-      getChildMaterials();
+      getChildMaterialByParentId();
       setIsLoading(false);
       setOpen(false); // Close dialog after successful submission
     } catch (error) {
