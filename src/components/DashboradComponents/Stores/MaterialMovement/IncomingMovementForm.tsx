@@ -1,29 +1,26 @@
-import DatePickerForForm from "@/components/common/DatePickerForForm";
-import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
-import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
-import { Form, FormField } from "@/components/ui/form";
-import { getAllDepartmentList } from "@/services/Departments.services";
-import {
-    getAllChildMaterials,
-    getAllMaterials,
-    getMaterialById
-} from "@/services/Materials.services";
-import { getAllWarehouseNames } from "@/services/Warehouse.services";
-import { getAllSupplierNames } from "@/services/Suppliers.services";
-import { material, materialList } from "@/store/Material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
-import SelectFieldForForm from "@/components/common/SelectFieldForForm.tsx";
-import { departmentList } from "@/store/Department";
-import { warehouseList } from "@/store/Warehouse.ts";
-import { supplierList } from "@/store/Supplier.ts";
-import { childMaterialList } from "@/store/ChildMaterial.ts";
-import { Button } from "@/components/ui/button.tsx";
+import { Form, FormField } from "@/components/ui/form";
+import DatePickerForForm from "@/components/common/DatePickerForForm";
+import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
+import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
+import SelectFieldForForm from "@/components/common/SelectFieldForForm";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { modelList } from "@/store/Models.ts";
-import {getAllModel} from "@/services/Model.services.ts";
+import { getAllDepartmentList } from "@/services/Departments.services";
+import { getAllMaterials, getChildMaterialByParentId, getMaterialById } from "@/services/Materials.services";
+import { getAllWarehouseNames } from "@/services/Warehouse.services";
+import { getAllSupplierNames } from "@/services/Suppliers.services";
+import { getAllModel } from "@/services/Model.services";
+import { material, materialId, materialList } from "@/store/Material";
+import { departmentList } from "@/store/Department";
+import { warehouseList } from "@/store/Warehouse";
+import { supplierList } from "@/store/Supplier";
+import { childMaterialList, newChildMaterialModal } from "@/store/ChildMaterial";
+import { modelList } from "@/store/Models";
+import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial";
 
 interface Props {
     form: any;
@@ -57,12 +54,12 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
     const setChildMaterials = useSetRecoilState(childMaterialList);
     const setCurrentMaterial = useSetRecoilState(material);
     const setModels = useSetRecoilState(modelList);
+    const setMaterialId = useSetRecoilState(materialId);
+    const setNewChildMaterialModal = useSetRecoilState(newChildMaterialModal);
 
     const [selectedMovementFrom, setSelectedMovementFrom] = useState("");
     const [selectedMovementTo, setSelectedMovementTo] = useState("");
     const [selectedMaterial, setSelectedMaterial] = useState("");
-
-
 
     // Page on load
     useEffect(() => {
@@ -71,19 +68,23 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
         getAllSupplierNames(setSuppliers);
         // @ts-ignore
         getAllMaterials(setMaterials);
-    }, []);
+    }, [setDepartments, setWarehouses, setSuppliers, setMaterials]);
 
     useEffect(() => {
         if (selectedMaterial) {
             getMaterialById(setCurrentMaterial, selectedMaterial);
-            if (currentMaterial.isRelevantToProduction) {
-                getAllModel(setModels);
-            }
-            if (currentMaterial.hasChildren) {
-                getAllChildMaterials(setChildMaterials, selectedMaterial);
-            }
         }
-    }, [selectedMaterial]);
+    }, [selectedMaterial, setCurrentMaterial]);
+
+    useEffect(() => {
+        if (selectedMaterial && currentMaterial.hasChildren) {
+            // @ts-ignore
+            getChildMaterialByParentId(setChildMaterials, selectedMaterial);
+        }
+        if (selectedMaterial && currentMaterial.isRelevantToProduction) {
+            getAllModel(setModels);
+        }
+    }, [selectedMaterial, currentMaterial, setChildMaterials, setModels]);
 
     const materialsOptions = parentMaterialList.map((material: any) => ({
         value: material.Id.toString(),
@@ -100,10 +101,10 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
         label: model?.ModelName?.toString() || "",
     }));
 
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" id="incoming-movement">
+                <NewChildMaterial getChildMaterialByParentId={() => getChildMaterialByParentId(setChildMaterials, selectedMaterial)} />
                 {/* Main Information Card */}
                 <Card className="bg-[var(--card-background)]">
                     <CardHeader>
@@ -122,7 +123,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                                 control={form.control}
                                 name="MovementDate"
                                 render={({ field }) => (
-                                    <DatePickerForForm label={t("MovementDate")} field={field}  />
+                                    <DatePickerForForm label={t("MovementDate")} field={field} />
                                 )}
                             />
                         </div>
@@ -265,7 +266,16 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                                             name="ChildMaterial"
                                             selectText={t("Select an option")}
                                         />
-                                        <Button variant="outline" className="mt-8" type="button">
+                                        <Button
+                                            variant="outline"
+                                            className="mt-8"
+                                            type="button"
+                                            onClick={() => {
+                                                const materialId = parseInt(selectedMaterial, 10);
+                                                setMaterialId(materialId);
+                                                setNewChildMaterialModal(true);
+                                            }}
+                                        >
                                             <Plus className="h-4 w-4" />
                                         </Button>
                                     </div>
