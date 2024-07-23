@@ -23,6 +23,7 @@ export const materialMovement = atom({
   key: "materialMovement",
   default: {
     movementType: "",
+    invoiceNumber: "",
     parentMaterialId: 0,
     childMaterialId: 0,
     quantity: 0,

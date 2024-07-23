@@ -11,10 +11,10 @@ import {
   getAllWarehouses,
   getWarehouseById,
 } from "@/services/Warehouse.services.ts";
-import NewWarehouse from "@/components/DashboradComponents/Stores/Warehouses/NewWarehouse.tsx";
+import NewWarehouse from "@/components/DashboradComponents/Warehouse/Warehouses/NewWarehouse.tsx";
 import { useSetRecoilState } from "recoil";
 import { newWarehouseModal, warehouse } from "@/store/Warehouse.ts";
-import UpdateWarehouse from "@/components/DashboradComponents/Stores/Warehouses/UpdateWarehouse.tsx";
+import UpdateWarehouse from "@/components/DashboradComponents/Warehouse/Warehouses/UpdateWarehouse.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { updateWarehouseModal, warehouseId } from "@/store/Warehouse.ts";
 

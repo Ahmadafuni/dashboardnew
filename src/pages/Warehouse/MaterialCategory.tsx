@@ -14,8 +14,8 @@ import {
 } from "@/store/MaterialCategory.ts";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { MaterialCategoryType } from "@/types/Warehouses/MaterialCategory.types.ts";
-import NewMaterialCategory from "@/components/DashboradComponents/Stores/MaterialCategory/NewMaterialCategory.tsx";
-import UpdateMaterialCategory from "@/components/DashboradComponents/Stores/MaterialCategory/UpdateMaterialCategory.tsx";
+import NewMaterialCategory from "@/components/DashboradComponents/Warehouse/MaterialCategory/NewMaterialCategory.tsx";
+import UpdateMaterialCategory from "@/components/DashboradComponents/Warehouse/MaterialCategory/UpdateMaterialCategory.tsx";
 import {
   deleteMaterialCategory,
   getAllMaterialCategories,

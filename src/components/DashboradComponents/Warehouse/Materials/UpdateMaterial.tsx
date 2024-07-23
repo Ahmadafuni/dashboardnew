@@ -1,29 +1,30 @@
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { parentMaterialSchema } from "@/form_schemas/newMaterialSchema.ts";
+import { getMaterialById } from "@/services/Materials.services.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useTranslation } from "react-i18next";
-import MaterialForm from "@/components/DashboradComponents/Stores/Materials/MaterialForm.tsx";
+import MaterialForm from "@/components/DashboradComponents/Warehouse/Materials/MaterialForm.tsx";
 import Cookies from "js-cookie";
-import NewMaterialCategory from "@/components/DashboradComponents/Stores/MaterialCategory/NewMaterialCategory.tsx";
-import { getAllMaterialCategoriesList } from "@/services/MaterialCategory.services.ts";
-import { useSetRecoilState } from "recoil";
-import { materialCategoryList } from "@/store/MaterialCategory.ts";
+import { useTranslation } from "react-i18next";
 import BackButton from "@/components/common/BackButton";
+import { getAllMaterialCategoriesList } from "@/services/MaterialCategory.services";
+import { useSetRecoilState } from "recoil";
+import { materialCategoryList } from "@/store/MaterialCategory";
 
-export default function NewMaterial() {
+export default function UpdateMaterial() {
+  const { materialID } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [material, setMaterial] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
   const setMaterialCategoryList = useSetRecoilState(materialCategoryList);
-
   // Form fields
   const form = useForm<z.infer<typeof parentMaterialSchema>>({
     resolver: zodResolver(parentMaterialSchema),
@@ -38,18 +39,22 @@ export default function NewMaterial() {
       isRelevantToProduction: false,
       hasChildren: false,
     },
+    values: material,
   });
   // Form submit function
   const onSubmit = async (data: z.infer<typeof parentMaterialSchema>) => {
     setIsLoading(true);
     try {
-      const newMaterial = await axios.post("material/parent", data, {
-        headers: {
-          Authorization: `bearer ${Cookies.get("access_token")}`,
-        },
-      });
-      toast.success(newMaterial.data.message);
-      form.reset();
+      const updateMaterial = await axios.put(
+        `material/parent/${materialID}`,
+        data,
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
+      );
+      toast.success(updateMaterial.data.message);
       setIsLoading(false);
       navigate("/dashboard/materials");
     } catch (error) {
@@ -59,20 +64,17 @@ export default function NewMaterial() {
       setIsLoading(false);
     }
   };
-
+  // Load material data on component mount
   useEffect(() => {
     getAllMaterialCategoriesList(setMaterialCategoryList);
+    getMaterialById(setMaterial, materialID);
   }, []);
+
   return (
     <div className="w-full space-y-2">
-      <NewMaterialCategory
-        getMaterialCategories={() =>
-          getAllMaterialCategoriesList(setMaterialCategoryList)
-        }
-      />
       <div className="w-full space-y-1 flex items-center">
         <BackButton />
-        <h1 className="text-3xl font-bold w-full">{t("New Material")}</h1>
+        <h1 className="text-3xl font-bold w-full">Update Material</h1>
       </div>
       <Separator />
       <div className="space-y-1">
@@ -82,10 +84,10 @@ export default function NewMaterial() {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
+                Please wait
               </>
             ) : (
-              t("Add")
+              t("Update")
             )}
           </Button>
         </div>

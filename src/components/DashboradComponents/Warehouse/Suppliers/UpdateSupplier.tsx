@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button.tsx";
-import { warehouseSchema } from "@/form_schemas/newWarehouseSchema.ts";
+import { supplierSchema } from "@/form_schemas/newSupplierSchema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -8,14 +8,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import Cookies from "js-cookie";
-import WarehouseForm from "@/components/DashboradComponents/Stores/Warehouses/WarehouseForm.tsx";
+import SupplierForm from "@/components/DashboradComponents/Warehouse/Suppliers/SupplierForm.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  updateWarehouseModal,
-  warehouse,
-  // warehouse,
-  warehouseId,
-} from "@/store/Warehouse.ts";
+import { supplier, supplierId } from "@/store/Supplier.ts";
+import { updateSupplierModal } from "@/store/Supplier.ts";
 import {
   Dialog,
   DialogContent,
@@ -26,42 +22,37 @@ import {
 import { useTranslation } from "react-i18next";
 
 type Props = {
-  getWarehouse: any;
+  getSuppliers: any;
 };
 
-export default function UpdateWarehouse({ getWarehouse }: Props) {
-  const warehouseID = useRecoilValue(warehouseId);
-  const [open, setOpen] = useRecoilState(updateWarehouseModal);
+export default function UpdateSupplier({ getSuppliers }: Props) {
+  const supplierID = useRecoilValue(supplierId);
+  const [open, setOpen] = useRecoilState(updateSupplierModal);
   const [isLoading, setIsLoading] = useState(false);
-  const currentWarehouse = useRecoilValue(warehouse);
+  const currentSupplier = useRecoilValue(supplier);
   const { t } = useTranslation();
 
-  const form = useForm<z.infer<typeof warehouseSchema>>({
-    resolver: zodResolver(warehouseSchema),
+  const form = useForm<z.infer<typeof supplierSchema>>({
+    resolver: zodResolver(supplierSchema),
     defaultValues: {
-      capacity: "",
-      category: "",
-      location: "",
       name: "",
+      address: "",
+      phone: "",
       description: "",
     },
-    values: currentWarehouse,
+    values: currentSupplier,
   });
 
-  const onSubmit = async (data: z.infer<typeof warehouseSchema>) => {
+  const onSubmit = async (data: z.infer<typeof supplierSchema>) => {
     setIsLoading(true);
     try {
-      const updateWarehouse = await axios.put(
-        `warehouse/${warehouseID}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
-      toast.success(updateWarehouse.data.message);
-      getWarehouse();
+      const updateSupplier = await axios.put(`supplier/${supplierID}`, data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      toast.success(updateSupplier.data.message);
+      getSuppliers();
       setIsLoading(false);
       setOpen(false);
     } catch (error) {
@@ -76,12 +67,12 @@ export default function UpdateWarehouse({ getWarehouse }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("New Warehouse")}</DialogTitle>
+          <DialogTitle>{t("Update Supplier")}</DialogTitle>
         </DialogHeader>
-        <WarehouseForm form={form} onSubmit={onSubmit} />
+        <SupplierForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
           <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-          <Button type="submit" disabled={isLoading} form="warehouse">
+          <Button type="submit" disabled={isLoading} form="supplier">
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

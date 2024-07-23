@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import WarehouseForm from "@/components/DashboradComponents/Stores/Warehouses/WarehouseForm.tsx";
+import WarehouseForm from "@/components/DashboradComponents/Warehouse/Warehouses/WarehouseForm.tsx";
 import { useRecoilState } from "recoil";
 import { newWarehouseModal } from "@/store/Warehouse.ts";
 import Cookies from "js-cookie";

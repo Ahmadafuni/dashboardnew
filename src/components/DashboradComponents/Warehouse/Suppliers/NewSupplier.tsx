@@ -1,17 +1,4 @@
 import { Button } from "@/components/ui/button.tsx";
-import { supplierSchema } from "@/form_schemas/newSupplierSchema.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-import Cookies from "js-cookie";
-import SupplierForm from "@/components/DashboradComponents/Stores/Suppliers/SupplierForm.tsx";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { supplier, supplierId } from "@/store/Supplier.ts";
-import { updateSupplierModal } from "@/store/Supplier.ts";
 import {
   Dialog,
   DialogContent,
@@ -19,19 +6,30 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog.tsx";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios, { AxiosError } from "axios";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
+import SupplierForm from "@/components/DashboradComponents/Warehouse/Suppliers/SupplierForm.tsx";
+import { useRecoilState } from "recoil";
+import { newSupplierModal } from "@/store/Supplier.ts";
+import { supplierSchema } from "@/form_schemas/newSupplierSchema.ts";
 
 type Props = {
   getSuppliers: any;
 };
 
-export default function UpdateSupplier({ getSuppliers }: Props) {
-  const supplierID = useRecoilValue(supplierId);
-  const [open, setOpen] = useRecoilState(updateSupplierModal);
-  const [isLoading, setIsLoading] = useState(false);
-  const currentSupplier = useRecoilValue(supplier);
+export default function NewSupplier({ getSuppliers }: Props) {
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useRecoilState(newSupplierModal);
 
+  // Form fields
   const form = useForm<z.infer<typeof supplierSchema>>({
     resolver: zodResolver(supplierSchema),
     defaultValues: {
@@ -40,21 +38,21 @@ export default function UpdateSupplier({ getSuppliers }: Props) {
       phone: "",
       description: "",
     },
-    values: currentSupplier,
   });
 
   const onSubmit = async (data: z.infer<typeof supplierSchema>) => {
     setIsLoading(true);
     try {
-      const updateSupplier = await axios.put(`supplier/${supplierID}`, data, {
+      const newSupplier = await axios.post("supplier/", data, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
       });
-      toast.success(updateSupplier.data.message);
+      toast.success(newSupplier.data.message);
       getSuppliers();
+      form.reset();
       setIsLoading(false);
-      setOpen(false);
+      setOpen(false); // Close dialog after successful submission
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -67,7 +65,7 @@ export default function UpdateSupplier({ getSuppliers }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("Update Supplier")}</DialogTitle>
+          <DialogTitle>{t("New Supplier")}</DialogTitle>
         </DialogHeader>
         <SupplierForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
@@ -79,7 +77,7 @@ export default function UpdateSupplier({ getSuppliers }: Props) {
                 {t("Please wait")}
               </>
             ) : (
-              t("Update")
+              t("Add")
             )}
           </Button>
         </DialogFooter>

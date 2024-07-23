@@ -1,11 +1,4 @@
 import { Button } from "@/components/ui/button.tsx";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
@@ -13,44 +6,62 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
-import { useRecoilState } from "recoil";
-import { newMaterialCategoryModal } from "@/store/MaterialCategory.ts";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  materialCategory,
+  materialCategoryId,
+} from "@/store/MaterialCategory.ts";
+import { updateMaterialCategoryModal } from "@/store/MaterialCategory.ts";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog.tsx";
+import { useTranslation } from "react-i18next";
+import MaterialCategoryForm from "@/components/DashboradComponents/Warehouse/MaterialCategory/MaterialCategoryForm.tsx";
 import { materialCategorySchema } from "@/form_schemas/newMaterialCategorySchema.ts";
-import MaterialCategoryForm from "@/components/DashboradComponents/Stores/MaterialCategory/MaterialCategoryForm.tsx";
 
 type Props = {
   getMaterialCategories: any;
 };
 
-export default function NewMaterialCategory({ getMaterialCategories }: Props) {
-  const { t } = useTranslation();
+export default function UpdateMaterialCategory({
+  getMaterialCategories,
+}: Props) {
+  const categoryId = useRecoilValue(materialCategoryId);
+  const [open, setOpen] = useRecoilState(updateMaterialCategoryModal);
   const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useRecoilState(newMaterialCategoryModal);
+  const currentMaterialCategory = useRecoilValue(materialCategory);
+  const { t } = useTranslation();
 
-  // Form fields
   const form = useForm<z.infer<typeof materialCategorySchema>>({
     resolver: zodResolver(materialCategorySchema),
     defaultValues: {
       name: "",
       description: "",
     },
+    values: currentMaterialCategory,
   });
 
   const onSubmit = async (data: z.infer<typeof materialCategorySchema>) => {
     setIsLoading(true);
     try {
-      const newMaterialCategory = await axios.post("materialcategory/", data, {
-        headers: {
-          Authorization: `bearer ${Cookies.get("access_token")}`,
-        },
-      });
-      toast.success(newMaterialCategory.data.message);
+      const updateMaterialCategory = await axios.put(
+        `materialcategory/${categoryId}`,
+        data,
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
+      );
+      toast.success(updateMaterialCategory.data.message);
       getMaterialCategories();
-      form.reset();
       setIsLoading(false);
-      setOpen(false); // Close dialog after successful submission
+      setOpen(false);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -63,7 +74,7 @@ export default function NewMaterialCategory({ getMaterialCategories }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("New Material Category")}</DialogTitle>
+          <DialogTitle>{t("Update Material Category")}</DialogTitle>
         </DialogHeader>
         <MaterialCategoryForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
@@ -75,7 +86,7 @@ export default function NewMaterialCategory({ getMaterialCategories }: Props) {
                 {t("Please wait")}
               </>
             ) : (
-              t("Add")
+              t("Update")
             )}
           </Button>
         </DialogFooter>

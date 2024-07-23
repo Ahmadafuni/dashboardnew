@@ -20,14 +20,14 @@ import { warehouseList } from "@/store/Warehouse";
 import { supplierList } from "@/store/Supplier";
 import { childMaterialList, newChildMaterialModal } from "@/store/ChildMaterial";
 import { modelList } from "@/store/Models";
-import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial";
+import NewChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/NewChildMaterial";
 
 interface Props {
     form: any;
     onSubmit: any;
 }
 
-export default function IncomingMovementForm({ form, onSubmit }: Props) {
+export default function MovementForm({ form, onSubmit }: Props) {
     const { t } = useTranslation();
 
     // Main Information Group
@@ -115,14 +115,14 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                         <div className="grid grid-cols-1 gap-2">
                             <FormField
                                 control={form.control}
-                                name="InvoiceNumber"
+                                name="invoiceNumber"
                                 render={({ field }) => (
                                     <TextInputFieldForForm placeholder="" label={t("InvoiceNumber")} field={field} />
                                 )}
                             />
                             <FormField
                                 control={form.control}
-                                name="MovementDate"
+                                name="movementDate"
                                 render={({ field }) => (
                                     <DatePickerForForm label={t("MovementDate")} field={field} />
                                 )}
@@ -166,7 +166,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                             {selectedMovementFrom === "Department" && (
                                 <FormField
                                     control={form.control}
-                                    name="DepartmentFrom"
+                                    name="departmentFromId"
                                     render={({ field }) => (
                                         <SelectFieldForForm
                                             field={field}
@@ -180,7 +180,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                             {selectedMovementFrom === "Warehouse" && (
                                 <FormField
                                     control={form.control}
-                                    name="WarehouseFrom"
+                                    name="warehouseFromId"
                                     render={({ field }) => (
                                         <SelectFieldForForm
                                             field={field}
@@ -194,7 +194,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                             {selectedMovementFrom === "Supplier" && (
                                 <FormField
                                     control={form.control}
-                                    name="SupplierFrom"
+                                    name="supplierId"
                                     render={({ field }) => (
                                         <SelectFieldForForm
                                             field={field}
@@ -208,7 +208,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                             {selectedMovementTo === "Warehouse" && (
                                 <FormField
                                     control={form.control}
-                                    name="WarehouseTo"
+                                    name="warehouseToId"
                                     render={({ field }) => (
                                         <SelectFieldForForm
                                             field={field}
@@ -231,7 +231,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                     <CardContent className="grid grid-cols-2 gap-2">
                         <FormField
                             control={form.control}
-                            name="Material"
+                            name="parentMaterialId"
                             render={({ field }) => (
                                 <div className="flex gap-x-1">
                                     <ComboSelectFieldForForm
@@ -240,7 +240,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                                         placeholder="search a material"
                                         emptyBox={t("No material found")}
                                         form={form}
-                                        name="Material"
+                                        name="parentMaterialId"
                                         selectText={t("Select material")}
                                         items={materialsOptions}
                                         onChange={(value) => {
@@ -254,7 +254,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                         {currentMaterial.hasChildren && (
                             <FormField
                                 control={form.control}
-                                name="ChildMaterial"
+                                name="childMaterialId"
                                 render={({ field }) => (
                                     <div className="flex gap-x-1">
                                         <ComboSelectFieldForForm
@@ -264,7 +264,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                                             items={materialsChildOptions}
                                             form={form}
                                             emptyBox={t("No options")}
-                                            name="ChildMaterial"
+                                            name="childMaterialId"
                                             selectText={t("Select an option")}
                                         />
                                         <Button
@@ -285,14 +285,14 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                         )}
                         <FormField
                             control={form.control}
-                            name="Quantity"
+                            name="quantity"
                             render={({ field }) => (
-                                <TextInputFieldForForm placeholder="" label={t("Quantity")} field={field} />
+                                <TextInputFieldForForm placeholder="" label={t("Quantity")} field={field}/>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="UnitOfQuantity"
+                            name="unitOfQuantity"
                             render={({ field }) => (
                                 <TextInputFieldForForm placeholder="" label={t("UnitOfQuantity")} field={field} />
                             )}
@@ -300,7 +300,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                         {currentMaterial.isRelevantToProduction && (
                             <FormField
                                 control={form.control}
-                                name="Model"
+                                name="modelId"
                                 render={({ field }) => (
                                     <div className="flex gap-x-1">
                                         <ComboSelectFieldForForm
@@ -310,7 +310,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                                             items={modelsOptions}
                                             form={form}
                                             emptyBox={t("No options")}
-                                            name="Model"
+                                            name="modelId"
                                             selectText={t("Select an option")}
                                         />
                                     </div>
@@ -319,7 +319,7 @@ export default function IncomingMovementForm({ form, onSubmit }: Props) {
                         )}
                         <FormField
                             control={form.control}
-                            name="Description"
+                            name="description"
                             render={({ field }) => (
                                 <TextInputFieldForForm placeholder="" label={t("Description")} field={field} />
                             )}

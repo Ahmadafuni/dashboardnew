@@ -11,7 +11,7 @@ export const getAllMaterialMovements = async (
     try {
         const { data } = await axios.get(`materialmovement/all/${id}`, {
             headers: {
-                Authorization: `bearer ${Cookies.get("access_token")}`,
+                Authorization: `Bearer ${Cookies.get("access_token")}`,
             },
         });
         setData(data);
@@ -22,17 +22,17 @@ export const getAllMaterialMovements = async (
     }
 };
 
-export const getIncomingMaterialMovements = async (
+export const getMaterialMovementsByMovementType = async (
     setData: Dispatch<SetStateAction<any>>,
+    movementtype: string
 ) => {
-
     try {
-        const { data } = await axios.get("materialmovement/incoming", {
+        const { data } = await axios.get(`materialmovement/movementtype/${movementtype}`, {
             headers: {
-                Authorization: `bearer ${Cookies.get("access_token")}`,
+                Authorization: `Bearer ${Cookies.get("access_token")}`,
             },
         });
-        setData(data);
+        setData(data.data);
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message);
@@ -40,23 +40,7 @@ export const getIncomingMaterialMovements = async (
     }
 };
 
-export const getOutgoingMaterialMovements = async (
-    setData: Dispatch<SetStateAction<any>>,
-) => {
 
-    try {
-        const { data } = await axios.get("materialmovement/outgoing", {
-            headers: {
-                Authorization: `bearer ${Cookies.get("access_token")}`,
-            },
-        });
-        setData(data);
-    } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message);
-        }
-    }
-};
 export const getMaterialMovementById = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number
@@ -64,7 +48,7 @@ export const getMaterialMovementById = async (
     try {
         const { data } = await axios.get(`materialmovement/${id}`, {
             headers: {
-                Authorization: `bearer ${Cookies.get("access_token")}`,
+                Authorization: `Bearer ${Cookies.get("access_token")}`,
             },
         });
         setData(data);
@@ -78,16 +62,15 @@ export const getMaterialMovementById = async (
 export const deleteMaterialMovement = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number,
-    materialId: string | undefined
-
+    movementType: string
 ) => {
     try {
         const { data } = await axios.delete(`materialmovement/${id}`, {
             headers: {
-                Authorization: `bearer ${Cookies.get("access_token")}`,
+                Authorization: `Bearer ${Cookies.get("access_token")}`,
             },
         });
-        getAllMaterialMovements(setData, materialId);
+        getMaterialMovementsByMovementType(setData, movementType);
         toast.success(data.message);
     } catch (error) {
         if (error instanceof AxiosError) {

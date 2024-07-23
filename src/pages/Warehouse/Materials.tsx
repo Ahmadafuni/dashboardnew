@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial.tsx";
+import NewChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/NewChildMaterial.tsx";
 import { childMaterialList, newChildMaterialModal} from "@/store/ChildMaterial.ts";
 
 export default function Materials() {

@@ -1,18 +1,4 @@
 import { Button } from "@/components/ui/button.tsx";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-import Cookies from "js-cookie";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  materialCategory,
-  materialCategoryId,
-} from "@/store/MaterialCategory.ts";
-import { updateMaterialCategoryModal } from "@/store/MaterialCategory.ts";
 import {
   Dialog,
   DialogContent,
@@ -20,48 +6,51 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog.tsx";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios, { AxiosError } from "axios";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import MaterialCategoryForm from "@/components/DashboradComponents/Stores/MaterialCategory/MaterialCategoryForm.tsx";
+import Cookies from "js-cookie";
+import { useRecoilState } from "recoil";
+import { newMaterialCategoryModal } from "@/store/MaterialCategory.ts";
 import { materialCategorySchema } from "@/form_schemas/newMaterialCategorySchema.ts";
+import MaterialCategoryForm from "@/components/DashboradComponents/Warehouse/MaterialCategory/MaterialCategoryForm.tsx";
 
 type Props = {
   getMaterialCategories: any;
 };
 
-export default function UpdateMaterialCategory({
-  getMaterialCategories,
-}: Props) {
-  const categoryId = useRecoilValue(materialCategoryId);
-  const [open, setOpen] = useRecoilState(updateMaterialCategoryModal);
-  const [isLoading, setIsLoading] = useState(false);
-  const currentMaterialCategory = useRecoilValue(materialCategory);
+export default function NewMaterialCategory({ getMaterialCategories }: Props) {
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useRecoilState(newMaterialCategoryModal);
 
+  // Form fields
   const form = useForm<z.infer<typeof materialCategorySchema>>({
     resolver: zodResolver(materialCategorySchema),
     defaultValues: {
       name: "",
       description: "",
     },
-    values: currentMaterialCategory,
   });
 
   const onSubmit = async (data: z.infer<typeof materialCategorySchema>) => {
     setIsLoading(true);
     try {
-      const updateMaterialCategory = await axios.put(
-        `materialcategory/${categoryId}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
-      toast.success(updateMaterialCategory.data.message);
+      const newMaterialCategory = await axios.post("materialcategory/", data, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      toast.success(newMaterialCategory.data.message);
       getMaterialCategories();
+      form.reset();
       setIsLoading(false);
-      setOpen(false);
+      setOpen(false); // Close dialog after successful submission
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -74,7 +63,7 @@ export default function UpdateMaterialCategory({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("Update Material Category")}</DialogTitle>
+          <DialogTitle>{t("New Material Category")}</DialogTitle>
         </DialogHeader>
         <MaterialCategoryForm form={form} onSubmit={onSubmit} />
         <DialogFooter>
@@ -86,7 +75,7 @@ export default function UpdateMaterialCategory({
                 {t("Please wait")}
               </>
             ) : (
-              t("Update")
+              t("Add")
             )}
           </Button>
         </DialogFooter>

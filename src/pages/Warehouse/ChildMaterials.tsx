@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import UpdateChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/UpdateChildMaterial";
-import NewChildMaterial from "@/components/DashboradComponents/Stores/ChildMaterials/NewChildMaterial";
+import UpdateChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/UpdateChildMaterial";
+import NewChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/NewChildMaterial";
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 import {

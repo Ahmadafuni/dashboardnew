@@ -27,7 +27,7 @@ import Models from "@/pages/Models/Models.tsx";
 import Tasks from "@/pages/Tasks/Tasks.tsx";
 import Notes from "@/pages/Notes/Notes.tsx";
 import Home from "@/pages/Home/Home.tsx";
-import Warehouses from "@/pages/Stores/Warehouses.tsx";
+import Warehouses from "@/pages/Warehouse/Warehouses.tsx";
 import NewUsers from "@/components/DashboradComponents/Users/NewUsers.tsx";
 import UpdateUser from "@/components/DashboradComponents/Users/UpdateUser.tsx";
 import NewDepartment from "./components/DashboradComponents/Departments/NewDepartment.tsx";
@@ -46,19 +46,19 @@ import ProductCatalogueDetails from "./pages/ProductCatalogueDetails/ProductCata
 import { NewTemplateBlock } from "./components/DashboradComponents/Templates/NewTemplateBlock.tsx";
 import UpdateTemplateBlock from "./components/DashboradComponents/Templates/UpdateTemplateBlock.tsx";
 import Collections from "@/pages/Entities/Collections.tsx";
-import Suppliers from "@/pages/Stores/Suppliers.tsx";
-import MaterialCategories from "@/pages/Stores/MaterialCategory.tsx";
-import Materials from "@/pages/Stores/Materials.tsx";
-import NewMaterial from "@/components/DashboradComponents/Stores/Materials/NewMaterial.tsx";
-import UpdateMaterial from "@/components/DashboradComponents/Stores/Materials/UpdateMaterial.tsx";
+import Suppliers from "@/pages/Warehouse/Suppliers.tsx";
+import MaterialCategories from "@/pages/Warehouse/MaterialCategory.tsx";
+import Materials from "@/pages/Warehouse/Materials.tsx";
+import NewMaterial from "@/components/DashboradComponents/Warehouse/Materials/NewMaterial.tsx";
+import UpdateMaterial from "@/components/DashboradComponents/Warehouse/Materials/UpdateMaterial.tsx";
 import TemplateViewDetails from "@/components/DashboradComponents/Templates/TemplateViewDetails.tsx";
 import NewModel from "./components/DashboradComponents/Models/NewModel.tsx";
 import ModelVarients from "./pages/Models/ModelVarients.tsx";
 import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
 import ViewModelSummary from "./components/DashboradComponents/Models/ViewModelSummary.tsx";
 import Dashboard from "./pages/Dashboard/Dashboard.tsx";
-import ChildMaterials from "./pages/Stores/ChildMaterials.tsx";
-import IncomingMovement from "./pages/Stores/IncomingMovement.tsx";
+import ChildMaterials from "@/pages/Warehouse/ChildMaterials.tsx";
+import IncomingMovement from "@/pages/Warehouse/IncomingMovement.tsx";
 
 // Axios config
 //axios.defaults.baseURL = "http://localhost:3002/";
