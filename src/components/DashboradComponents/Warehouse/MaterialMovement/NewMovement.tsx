@@ -6,15 +6,23 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
 import MovementForm from "./MovementForm";
 import { newMaterialMovementSchema } from "@/form_schemas/newMaterialMovementSchema";
 import { z } from "zod";
+import {getMaterialMovementsByMovementType} from "@/services/MaterialMovements.services.ts";
+import {useSetRecoilState} from "recoil";
+import {materialMovementList} from "@/store/MaterialMovement.ts";
 
-export default function NewMovement() {
+interface Props {
+    movementFromOptions: any[];
+    movementToOptions: any[];
+    movementType: string;
+}
+export default function NewMovement( { movementFromOptions, movementToOptions, movementType }: Props) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
+    const setMaterialMMovememnt = useSetRecoilState(materialMovementList);
 
     // Form fields
     const form = useForm<z.infer<typeof newMaterialMovementSchema>>({
@@ -38,7 +46,7 @@ export default function NewMovement() {
     });
 
     const onSubmit = async (data: z.infer<typeof newMaterialMovementSchema>) => {
-        data.movementType ="INCOMING";
+        data.movementType =movementType;
         setIsLoading(true);
         try {
             const newMovement = await axios.post("materialmovement/", data, {
@@ -47,6 +55,7 @@ export default function NewMovement() {
                 },
             });
             toast.success(newMovement.data.message);
+            getMaterialMovementsByMovementType(setMaterialMMovememnt, movementType);
             setIsLoading(false);
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -58,12 +67,8 @@ export default function NewMovement() {
 
     return (
         <div className="w-full space-y-2">
-            <div className="w-full space-y-1 flex items-center">
-                <h1 className="text-3xl font-bold w-full">{t("New Movement")}</h1>
-            </div>
-            <Separator />
             <div className="space-y-1">
-                <MovementForm form={form} onSubmit={onSubmit} />
+                <MovementForm form={form} onSubmit={onSubmit} movementFromOptions={movementFromOptions} movementToOptions={movementToOptions} />
                 <div className="flex justify-end space-x-4">
                     <Button type="button" variant="secondary" onClick={() => form.reset()} >
                         {t("Clear")}

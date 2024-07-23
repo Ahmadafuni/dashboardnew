@@ -12,18 +12,18 @@ import {
 import { materialMovementList } from "@/store/MaterialMovement";
 import NewMovement from "@/components/DashboradComponents/Warehouse/MaterialMovement/NewMovement.tsx";
 
-
-export default function IncomingMovement() {
+export default function OutgoingMovement() {
     const { t } = useTranslation();
-
     const [materialMovements, setMaterialMovements] = useRecoilState(materialMovementList);
 
     const movementFromOptions = [
-        { label: t("Department"), value: "Department" },
         { label: t("Warehouse"), value: "Warehouse" },
         { label: t("Supplier"), value: "Supplier" },
     ];
-    const movementToOptions = [{ label: t("Warehouse"), value: "Warehouse" }];
+    const movementToOptions = [
+        { label: t("Warehouse"), value: "Warehouse" },
+        { label: t("Supplier"), value: "Supplier" }
+    ];
 
     const materialMovementsColumns: ColumnDef<any>[] = [
         { accessorKey: "invoiceNumber", header: t("Invoice Number") },
@@ -46,7 +46,6 @@ export default function IncomingMovement() {
         {
             header: t("Action"),
             cell: ({ row }) => {
-
                 return (
                     <div className="flex gap-1">
                         <DeleteConfirmationDialog
@@ -54,7 +53,7 @@ export default function IncomingMovement() {
                                 deleteMaterialMovement(
                                     setMaterialMovements,
                                     row.original.id,
-                                    "INCOMING"
+                                    "OUTGOING"
                                 )
                             }
                         />
@@ -67,7 +66,7 @@ export default function IncomingMovement() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await getMaterialMovementsByMovementType(setMaterialMovements, "INCOMING");
+                await getMaterialMovementsByMovementType(setMaterialMovements, "OUTGOING");
             } catch (error) {
                 console.error("Failed to fetch data:", error);
             }
@@ -79,10 +78,10 @@ export default function IncomingMovement() {
     return (
         <div className="w-full space-y-2">
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">{t("Incoming Material Movements")}</h1>
+                <h1 className="text-3xl font-bold w-full">{t("Outgoing Material Movements")}</h1>
                 <Separator />
             </div>
-            <NewMovement movementFromOptions={movementFromOptions} movementToOptions={movementToOptions} movementType="INCOMING" />
+            <NewMovement movementFromOptions={movementFromOptions} movementToOptions={movementToOptions} movementType="OUTGOING" />
             <div className="space-y-2">
                 <div className="rounded-md border overflow-x-scroll">
                     <DataTable

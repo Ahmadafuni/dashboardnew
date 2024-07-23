@@ -24,10 +24,10 @@ export const getAllMaterialMovements = async (
 
 export const getMaterialMovementsByMovementType = async (
     setData: Dispatch<SetStateAction<any>>,
-    movementtype: string
+    type: string
 ) => {
     try {
-        const { data } = await axios.get(`materialmovement/movementtype/${movementtype}`, {
+        const { data } = await axios.get(`materialmovement/movementtype/${type}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get("access_token")}`,
             },

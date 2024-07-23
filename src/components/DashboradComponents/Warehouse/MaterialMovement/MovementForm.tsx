@@ -25,18 +25,12 @@ import NewChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMa
 interface Props {
     form: any;
     onSubmit: any;
+    movementFromOptions: any[];
+    movementToOptions: any[];
 }
 
-export default function MovementForm({ form, onSubmit }: Props) {
+export default function MovementForm({ form, onSubmit, movementFromOptions, movementToOptions }: Props) {
     const { t } = useTranslation();
-
-    // Main Information Group
-    const movementFromOptions = [
-        { label: t("Department"), value: "Department" },
-        { label: t("Warehouse"), value: "Warehouse" },
-        { label: t("Supplier"), value: "Supplier" },
-    ];
-    const movementToOptions = [{ label: t("Warehouse"), value: "Warehouse" }];
 
     // Use Recoil state
     const departments = useRecoilValue(departmentList);
@@ -191,7 +185,7 @@ export default function MovementForm({ form, onSubmit }: Props) {
                                     )}
                                 />
                             )}
-                            {selectedMovementFrom === "Supplier" && (
+                            {(selectedMovementFrom === "Supplier" || selectedMovementTo === "Supplier") && (
                                 <FormField
                                     control={form.control}
                                     name="supplierId"
