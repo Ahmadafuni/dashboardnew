@@ -11,11 +11,12 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { materialList, material } from "@/store/Material";
-import { childMaterialList } from "@/store/ChildMaterial.ts";
-import { getMaterialMovementsByReport } from "@/services/MaterialMovements.services";
+import { childMaterialList } from "@/store/ChildMaterial";
+import { getMaterialReportMovements } from "@/services/MaterialMovements.services";
 import DataTable from "@/components/common/DataTable";
-import {materialMovementList} from "@/store/MaterialMovement.ts";
-import {getAllMaterials, getMaterialById} from "@/services/Materials.services.ts";
+import { materialMovementList } from "@/store/MaterialMovement";
+import { getAllMaterials, getMaterialById } from "@/services/Materials.services";
+
 
 export default function MaterialReport() {
     const { t } = useTranslation();
@@ -57,12 +58,27 @@ export default function MaterialReport() {
 
     const onSubmit = async (data: any) => {
         try {
-            const response = await getMaterialMovementsByReport(data);
+            const response = await getMaterialReportMovements(data);
             setMaterialMovements(response.data);
         } catch (error) {
             console.error("Failed to fetch data:", error);
         }
     };
+
+    const handleReset = () => {
+        form.reset();
+        setMaterialMovements([]);
+    };
+
+    const handleCheckboxChange = (setter: any, name: string, resetValue: any) => {
+        setter((prev: boolean) => {
+            if (prev) {
+                form.setValue(name, resetValue);
+            }
+            return !prev;
+        });
+    };
+
 
     const materialMovementsColumns = [
         { accessorKey: "invoiceNumber", header: t("Invoice Number") },
@@ -99,7 +115,7 @@ export default function MaterialReport() {
                                     <Checkbox
                                         className="mt-8"
                                         checked={isStartDateEnabled}
-                                        onCheckedChange={() => setIsStartDateEnabled(!isStartDateEnabled)}
+                                        onCheckedChange={() => handleCheckboxChange(setIsStartDateEnabled, "startDate", null)}
                                     />
                                     <FormField
                                         name="startDate"
@@ -118,7 +134,7 @@ export default function MaterialReport() {
                                     <Checkbox
                                         className="mt-8"
                                         checked={isEndDateEnabled}
-                                        onCheckedChange={() => setIsEndDateEnabled(!isEndDateEnabled)}
+                                        onCheckedChange={() => handleCheckboxChange(setIsEndDateEnabled, "endDate", null)}
                                     />
                                     <FormField
                                         name="endDate"
@@ -137,7 +153,7 @@ export default function MaterialReport() {
                                     <Checkbox
                                         className="mt-8"
                                         checked={isParentMaterialEnabled}
-                                        onCheckedChange={() => setParentMaterialEnabled(!isParentMaterialEnabled)}
+                                        onCheckedChange={() => handleCheckboxChange(setParentMaterialEnabled, "parentMaterialId", "")}
                                     />
                                     <FormField
                                         name="parentMaterialId"
@@ -165,7 +181,7 @@ export default function MaterialReport() {
                                     <Checkbox
                                         className="mt-8"
                                         checked={isChildMaterialEnabled}
-                                        onCheckedChange={() => setChildMaterialEnabled(!isChildMaterialEnabled)}
+                                        onCheckedChange={() => handleCheckboxChange(setChildMaterialEnabled, "childMaterialId", "")}
                                     />
                                     <FormField
                                         name="childMaterialId"
@@ -189,7 +205,7 @@ export default function MaterialReport() {
                                     <Checkbox
                                         className="mt-8"
                                         checked={isMovementTypeEnabled}
-                                        onCheckedChange={() => setMovementTypeEnabled(!isMovementTypeEnabled)}
+                                        onCheckedChange={() => handleCheckboxChange(setMovementTypeEnabled, "movementType", "")}
                                     />
                                     <FormField
                                         name="movementType"
@@ -212,7 +228,7 @@ export default function MaterialReport() {
                                 </div>
                                 <div className="flex justify-end space-x-2 mt-4">
                                     <Button type="submit">{t("Search")}</Button>
-                                    <Button type="button" onClick={() => form.reset()}>{t("Reset")}</Button>
+                                    <Button type="button" onClick={handleReset}>{t("Reset")}</Button>
                                 </div>
                             </CardContent>
                         )}
@@ -222,7 +238,9 @@ export default function MaterialReport() {
                     </div>
                 </form>
             </Form>
-            <DataTable columns={materialMovementsColumns} data={materialMovements} />
+            <div id="datatable">
+                <DataTable columns={materialMovementsColumns} data={materialMovements} />
+            </div>
         </div>
     );
 }

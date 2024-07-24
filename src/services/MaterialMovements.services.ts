@@ -78,19 +78,20 @@ export const deleteMaterialMovement = async (
         }
     }
 };
-export const getMaterialMovementsByReport = async (filters: any) => {
-    const { startDate, endDate, parentMaterialId, childMaterialId, movementType } = filters;
+export const getMaterialReportMovements = async (filters: any) => {
+    const { searchTerm, startDate, endDate, parentMaterialId, childMaterialId, movementType } = filters;
+
     const queryString = new URLSearchParams({
-        startDate,
-        endDate,
-        parentMaterialId,
-        childMaterialId,
-        movementType,
+        startDate: startDate || '',
+        endDate: endDate || '',
+        parentMaterialId: parentMaterialId || '',
+        childMaterialId: childMaterialId || '',
+        movementType: movementType || ''
     }).toString();
 
-    const { data } = await axios.get(`materialmovement/report?${queryString}`, {
+    const { data } = await axios.get(`materialmovement/materialreport/${searchTerm}?${queryString}`, {
         headers: {
-            Authorization: `Bearer ${Cookies.get("access_token")}`,
+            Authorization: `Bearer ${Cookies.get('access_token')}`,
         },
     });
     return data;
