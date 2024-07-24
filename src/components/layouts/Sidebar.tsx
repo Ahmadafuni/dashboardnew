@@ -24,6 +24,7 @@ import {
   Shell,
   PackagePlusIcon,
   PackageMinusIcon,
+  Clipboard
 } from "lucide-react";
  import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -90,7 +91,8 @@ export default function Sidebar() {
             { name: t("MaterialCategory"), link: "/dashboard/materialcategory", icon: SquareStack},
             { name: t("Materials"), link: "/dashboard/materials", icon: Shell},
             { name: t("Incoming"), link: "/dashboard/incoming", icon: PackagePlusIcon},
-            { name: t("Outgoing"), link: "/dashboard/outgoing", icon: PackageMinusIcon}
+            { name: t("Outgoing"), link: "/dashboard/outgoing", icon: PackageMinusIcon},
+            { name: t("MaterialReport"), link: "/dashboard/materialreport", icon: Clipboard}
           ],
     },
     {

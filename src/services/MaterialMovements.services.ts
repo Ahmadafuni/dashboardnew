@@ -78,3 +78,20 @@ export const deleteMaterialMovement = async (
         }
     }
 };
+export const getMaterialMovementsByReport = async (filters: any) => {
+    const { startDate, endDate, parentMaterialId, childMaterialId, movementType } = filters;
+    const queryString = new URLSearchParams({
+        startDate,
+        endDate,
+        parentMaterialId,
+        childMaterialId,
+        movementType,
+    }).toString();
+
+    const { data } = await axios.get(`materialmovement/report?${queryString}`, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+    });
+    return data;
+};

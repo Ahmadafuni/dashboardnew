@@ -60,6 +60,7 @@ import Dashboard from "./pages/Dashboard/Dashboard.tsx";
 import ChildMaterials from "@/pages/Warehouse/ChildMaterials.tsx";
 import IncomingMovement from "@/pages/Warehouse/IncomingMovement.tsx";
 import OutgoingMovement from "@/pages/Warehouse/OutgoingMovement.tsx";
+import MaterialReport from "@/pages/Warehouse/MaterialReport.tsx";
 
 // Axios config
 //axios.defaults.baseURL = "http://localhost:3002/";
@@ -131,6 +132,8 @@ const router = createBrowserRouter([
       { path: "/dashboard/materials/child/:materialID", element: <ChildMaterials />,},
       { path: "/dashboard/incoming", element: <IncomingMovement />,},
       { path: "/dashboard/outgoing", element: <OutgoingMovement />,},
+      { path: "/dashboard/materialreport", element: <MaterialReport />,},
+
 
       { path: "/dashboard/entities/collections", element: <Collections /> },
       { path: "/dashboard/entities/colors", element: <Colors /> },

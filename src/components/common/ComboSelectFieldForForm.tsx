@@ -27,6 +27,7 @@ type SelectFieldForFormProp = {
     getRelatedOptions?: any;
     willRelated?: boolean;
     setRelatedOptions?: any;
+    disabled?: boolean; // Add the disabled prop
 };
 
 export default function ComboSelectFieldForForm({
@@ -42,6 +43,7 @@ export default function ComboSelectFieldForForm({
                                                     getRelatedOptions,
                                                     willRelated = false,
                                                     setRelatedOptions,
+                                                    disabled = false, // Add the disabled prop
                                                 }: SelectFieldForFormProp) {
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState("");
@@ -68,6 +70,7 @@ export default function ComboSelectFieldForForm({
                             variant="outline"
                             aria-expanded={open}
                             className={cn("justify-between h-10", !field.value && "text-muted-foreground")}
+                            disabled={disabled} // Add the disabled prop here
                         >
                             {field.value ? items.find((item) => item.value === field.value)?.label : selectText}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -82,6 +85,7 @@ export default function ComboSelectFieldForForm({
                                     className="h-11 w-full rounded-md bg-transparent px-1 text-sm border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground"
                                     onChange={handleSearch}
                                     value={query}
+                                    disabled={disabled} // Add the disabled prop here
                                 />
                             </div>
                             <Separator />
@@ -91,6 +95,7 @@ export default function ComboSelectFieldForForm({
                                         <li
                                             key={item.value} // Add a unique key here
                                             onClick={() => {
+                                                if (disabled) return; // Prevent action if disabled
                                                 form.setValue(name, item.value);
                                                 field.onChange(item.value); // Ensure field.onChange is called
                                                 if (onChange) onChange(item.value);
@@ -99,7 +104,10 @@ export default function ComboSelectFieldForForm({
                                                 }
                                                 setOpen(false);
                                             }}
-                                            className="flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
+                                            className={cn(
+                                                "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
+                                                disabled && "cursor-not-allowed opacity-50" // Add styles for disabled state
+                                            )}
                                         >
                                             <Check
                                                 className={cn("mr-2 h-4 w-4 opacity-100", field.value !== item.value && "opacity-0")}
