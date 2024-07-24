@@ -15,9 +15,6 @@ import { useTranslation } from "react-i18next";
 export default function Dashboard() {
   const { t } = useTranslation();
 
-  // Navigate
-  // const navigate = useNavigate();
-
   const [works, setWorks] = useState<WorkType>({
     awaiting: [],
     inProgress: [],
@@ -25,16 +22,25 @@ export default function Dashboard() {
     givingConfirmation: [],
   });
 
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+
+
   useEffect(() => {
     getAllWork(setWorks);
   }, []);
 
+    useEffect(() => {
+        if (works.inProgress.length > 0) {
+            const sizes = JSON.parse(works.inProgress[0].ModelVariant.Sizes).map((e: any) => e.label);
+            setSelectedSizes(sizes);
+        }
+    }, [works]);
+
+
   return (
     <div className="w-full p-4 space-y-6">
       <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
-      <CuttingSendForConfirmationModal
-        getAllWorks={() => getAllWork(setWorks)}
-      />
+      <CuttingSendForConfirmationModal getAllWorks={() => getAllWork(setWorks)} selectedSizes={selectedSizes}/>
       <OthersSendForConfirmation getAllWorks={() => getAllWork(setWorks)} />
       <RejectVariantDialog getWorks={() => getAllWork(setWorks)} />
       <div className="space-y-2">
