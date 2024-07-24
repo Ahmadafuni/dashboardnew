@@ -31,7 +31,7 @@ export default function SelectFieldForForm({
                                                disabled = false, // Default value for the new prop
                                            }: SelectFieldForFormProp) {
     return (
-        <FormItem>
+        <FormItem className="w-full">
             <FormLabel>{label}</FormLabel>
             <Select
                 onValueChange={(value) => {
@@ -44,12 +44,12 @@ export default function SelectFieldForForm({
                 value={field.value}
                 disabled={disabled} // Use the new prop to disable the Select
             >
-                <FormControl>
-                    <SelectTrigger className={cn(disabled && "opacity-50 cursor-not-allowed")}>
+                <FormControl className="w-full">
+                    <SelectTrigger className={cn("w-full", disabled && "opacity-50 cursor-not-allowed")}>
                         <SelectValue placeholder={placeholder} />
                     </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="w-full">
                     {items.map((item, idx) => (
                         <SelectItem key={idx} value={item.value}>
                             {item.label}

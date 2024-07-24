@@ -3,13 +3,12 @@ import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDial
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisVertical, Eye, Pen, Plus, View } from "lucide-react";
+import { EllipsisVertical, Eye, Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {deleteMaterial, getAllMaterials, getChildMaterialByParentId} from "@/services/Materials.services.ts";
 import { MaterialType } from "@/types/Warehouses/Materials.types.ts";
-import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
 import { useSetRecoilState} from "recoil";
 import { Checkbox } from "@/components/ui/checkbox";
 import { materialId } from "@/store/Material";
@@ -61,15 +60,6 @@ export default function Materials() {
       cell: ({ row }) => {
         return (
             <div className="flex gap-1">
-              <ButtonTooltipStructure description="View Movements">
-                <Button
-                    onClick={() =>
-                        navigate(`/dashboard/materialmovements/${row.original.Id}`)
-                    }
-                >
-                  <View className="h-4 w-4" />
-                </Button>
-              </ButtonTooltipStructure>
               <DeleteConfirmationDialog
                   deleteRow={() => deleteMaterial(setMaterials, row.original.Id)}
               />

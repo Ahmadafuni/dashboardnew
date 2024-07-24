@@ -218,8 +218,6 @@ export default function MaterialReport() {
                                                 items={[
                                                     { label: t("INCOMING"), value: "INCOMING" },
                                                     { label: t("OUTGOING"), value: "OUTGOING" },
-                                                    { label: t("TRANSFER"), value: "TRANSFER" },
-                                                    { label: t("RETURN"), value: "RETURN" },
                                                 ]}
                                                 disabled={!isMovementTypeEnabled}
                                             />
