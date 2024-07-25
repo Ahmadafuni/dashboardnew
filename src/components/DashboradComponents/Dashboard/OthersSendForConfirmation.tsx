@@ -1,5 +1,6 @@
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -9,15 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormField } from "@/components/ui/form";
 import { othersSendConfirmationSchema } from "@/form_schemas/dashboardSchema";
-import {
-  currentVariantId,
-  othersSendConfirmationModal,
-} from "@/store/dashboard";
+import { currentVariantId, othersSendConfirmationModal} from "@/store/dashboard";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -26,39 +24,65 @@ import { z } from "zod";
 
 type Props = {
   getAllWorks: any;
+  selectedSizes: string[];
 };
-export default function OthersSendForConfirmation({ getAllWorks }: Props) {
+
+export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }: Props) {
   const [open, setOpen] = useRecoilState(othersSendConfirmationModal);
   const [isLoading, setIsLoading] = useState(false);
   const variantId = useRecoilValue(currentVariantId);
   const { t } = useTranslation();
 
+  const [damagedItemPairs, setDamagedItemPairs] = useState<{ size: string; value: string }[]>([]);
+  const [quantityReceivedPairs, setQuantityReceivedPairs] = useState<{ size: string; value: string }[]>([]);
+  const [quantityDeliveredPairs, setQuantityDeliveredPairs] = useState<{ size: string; value: string }[]>([]);
+
   const form = useForm<z.infer<typeof othersSendConfirmationSchema>>({
     resolver: zodResolver(othersSendConfirmationSchema),
     defaultValues: {
-      QuantityDelivered: "",
-      QuantityReceived: "",
-      DamagedItem: "0",
+      QuantityReceived: [],
+      QuantityDelivered: [],
+      DamagedItem: [],
       Notes: "",
     },
   });
+
+  useEffect(() => {
+    if (selectedSizes && selectedSizes.length > 0) {
+      setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
+      setQuantityReceivedPairs(selectedSizes.map(size => ({ size, value: "" })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size, value: "" })));
+    }
+  }, [selectedSizes]);
 
   const handleSubmit = async (
     data: z.infer<typeof othersSendConfirmationSchema>
   ) => {
     setIsLoading(true);
     try {
+      const payload = {
+        ...data,
+        QuantityReceived: JSON.stringify(quantityReceivedPairs),
+        DamagedItem: JSON.stringify(damagedItemPairs),
+        QuantityDelivered: JSON.stringify(quantityDeliveredPairs)
+      };
+
+      console.log("Payload:", payload); // Log payload
+
       const newNote = await axios.post(
-        `trackingmodels/sent/others/checking/variant/${variantId}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
+          `trackingmodels/sent/others/checking/variant/${variantId}`,
+          payload,
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
       );
       toast.success(newNote.data.message);
       form.reset();
+      setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size, value: "" })));
+      setQuantityReceivedPairs(selectedSizes.map(size => ({ size, value: "" })));
       getAllWorks();
       setIsLoading(false);
       setOpen(false);
@@ -69,11 +93,51 @@ export default function OthersSendForConfirmation({ getAllWorks }: Props) {
       setIsLoading(false);
     }
   };
+
+  const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{
+    size: string;
+    value: string
+  }[]>>) => {
+    setPairs((prev) => {
+      const updatedPairs = [...prev];
+      updatedPairs[index].value = value;
+      return updatedPairs;
+    });
+  };
+
+  const renderTable = (pairs: { size: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{
+    size: string;
+    value: string
+  }[]>>, label: string) => (
+      <div className="space-y-2">
+        <label className="block font-medium text-sm">{label}</label>
+        {pairs.map((pair, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <Input
+                  type="text"
+                  value={pair.size}
+                  readOnly
+                  className="w-full border p-1"
+                  placeholder="Size"
+              />
+              <Input
+                  type="text"
+                  value={pair.value}
+                  onChange={(e) => updatePair(index, e.target.value, setPairs)}
+                  className="w-full border p-1"
+                  placeholder="Value"
+              />
+            </div>
+        ))}
+      </div>
+  );
+
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle> {t("Stop/Continue")}</DialogTitle>
+          <DialogTitle> {t("Confirmation")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -81,40 +145,9 @@ export default function OthersSendForConfirmation({ getAllWorks }: Props) {
             className="grid grid-cols-1 gap-2"
             id="sent-confirmation-others"
           >
-            <FormField
-              control={form.control}
-              name="QuantityReceived"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("Quantity Received")}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="QuantityDelivered"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("Quantity Delivered")}
-                  field={field}
-                />
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="DamagedItem"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("Damaged Item")}
-                  field={field}
-                />
-              )}
-            />
+            {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("quantityReceived"))}
+            {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("quantityDelivered"))}
+            {renderTable(damagedItemPairs, setDamagedItemPairs, t("damageItems"))}
             <FormField
               control={form.control}
               name="Notes"

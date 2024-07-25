@@ -40,8 +40,8 @@ export default function Dashboard() {
   return (
     <div className="w-full p-4 space-y-6">
       <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
-      <CuttingSendForConfirmationModal getAllWorks={() => getAllWork(setWorks)} selectedSizes={selectedSizes}/>
-      <OthersSendForConfirmation getAllWorks={() => getAllWork(setWorks)} />
+      <CuttingSendForConfirmationModal getAllWorks={() => getAllWork(setWorks)} selectedSizes={selectedSizes} />
+      <OthersSendForConfirmation getAllWorks={() => getAllWork(setWorks)} selectedSizes={selectedSizes} />
       <RejectVariantDialog getWorks={() => getAllWork(setWorks)} />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
