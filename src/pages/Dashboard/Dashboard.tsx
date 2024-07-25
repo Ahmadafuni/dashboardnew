@@ -2,7 +2,7 @@ import AwaitingCuttingTable from "@/components/DashboradComponents/Dashboard/Awa
 import CompletedTable from "@/components/DashboradComponents/Dashboard/CompletedTable";
 import CuttingSendForConfirmationModal from "@/components/DashboradComponents/Dashboard/CuttingSendForConfirmationModal";
 import OnConfirmationTable from "@/components/DashboradComponents/Dashboard/OnConfirmationTable";
-import OngoingCuttingTable from "@/components/DashboradComponents/Dashboard/OngoingCuttingTable";
+import OngoingTable from "@/components/DashboradComponents/Dashboard/OngoingTable.tsx";
 import OthersSendForConfirmation from "@/components/DashboradComponents/Dashboard/OthersSendForConfirmation";
 import PausingUnpausingReasoneModal from "@/components/DashboradComponents/Dashboard/PausingUnpausingReasoneModal";
 import RejectVariantDialog from "@/components/DashboradComponents/Dashboard/RejectVariantDialog";
@@ -48,7 +48,7 @@ export default function Dashboard() {
         <Separator />
       </div>
       <AwaitingCuttingTable setWorks={setWorks} works={works} />
-      <OngoingCuttingTable works={works} setWorks={setWorks} />
+      <OngoingTable works={works} setWorks={setWorks} />
       <OnConfirmationTable works={works} />
       <CompletedTable works={works} />
     </div>

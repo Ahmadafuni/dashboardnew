@@ -25,7 +25,7 @@ interface Props {
   setWorks: any;
 }
 
-export default function OngoingCuttingTable({ works, setWorks }: Props) {
+export default function OngoingTable({ works, setWorks }: Props) {
   const setCurrentVariant = useSetRecoilState(currentVariantId);
   const setPauseUnpause = useSetRecoilState(pauseUnpauseModal);
   const setConfirmation = useSetRecoilState(cuttingSendConfirmationModal);
@@ -70,7 +70,7 @@ export default function OngoingCuttingTable({ works, setWorks }: Props) {
                   </TableCell>
                   <TableCell>{item.ModelVariant.Quantity}</TableCell>
                   <TableCell>
-                    {item.StartTime && format(item.StartTime, "MM/dd/yyyy")}
+                    {item.StartTime && format(new Date(item.StartTime), "dd/mm/yyyy HH:mm")}
                   </TableCell>
                   <TableCell className="space-x-1 space-y-1">
                     {item.RunningStatus === "RUNNING" ? (
