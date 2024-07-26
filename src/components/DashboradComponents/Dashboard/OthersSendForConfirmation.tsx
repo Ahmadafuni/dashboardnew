@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormField } from "@/components/ui/form";
 import { othersSendConfirmationSchema } from "@/form_schemas/dashboardSchema";
-import { currentVariantId, othersSendConfirmationModal} from "@/store/dashboard";
+import { currentVariantId, othersSendConfirmationModal } from "@/store/dashboard";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
@@ -55,9 +55,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }
     }
   }, [selectedSizes]);
 
-  const handleSubmit = async (
-    data: z.infer<typeof othersSendConfirmationSchema>
-  ) => {
+  const handleSubmit = async (data: z.infer<typeof othersSendConfirmationSchema>) => {
     setIsLoading(true);
     try {
       const payload = {
@@ -66,8 +64,6 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }
         DamagedItem: JSON.stringify(damagedItemPairs),
         QuantityDelivered: JSON.stringify(quantityDeliveredPairs)
       };
-
-      console.log("Payload:", payload); // Log payload
 
       const newNote = await axios.post(
           `trackingmodels/sent/others/checking/variant/${variantId}`,
@@ -94,10 +90,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }
     }
   };
 
-  const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{
-    size: string;
-    value: string
-  }[]>>) => {
+  const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>) => {
     setPairs((prev) => {
       const updatedPairs = [...prev];
       updatedPairs[index].value = value;
@@ -105,10 +98,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }
     });
   };
 
-  const renderTable = (pairs: { size: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{
-    size: string;
-    value: string
-  }[]>>, label: string) => (
+  const renderTable = (pairs: { size: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>, label: string) => (
       <div className="space-y-2">
         <label className="block font-medium text-sm">{label}</label>
         {pairs.map((pair, index) => (
@@ -132,55 +122,54 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }
       </div>
   );
 
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle> {t("Confirmation")}</DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="grid grid-cols-1 gap-2"
-            id="sent-confirmation-others"
-          >
-            {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("quantityReceived"))}
-            {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("quantityDelivered"))}
-            {renderTable(damagedItemPairs, setDamagedItemPairs, t("damageItems"))}
-            <FormField
-              control={form.control}
-              name="Notes"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("Notes")}
-                  field={field}
-                />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("Confirmation")}</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="grid grid-cols-1 gap-2"
+                id="sent-confirmation-others"
+            >
+              {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("Quantity Received"))}
+              {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("Quantity Delivered"))}
+              {renderTable(damagedItemPairs, setDamagedItemPairs, t("Damaged Items"))}
+              <FormField
+                  control={form.control}
+                  name="Notes"
+                  render={({ field }) => (
+                      <TextInputFieldForForm
+                          placeholder=""
+                          label={t("Notes")}
+                          field={field}
+                      />
+                  )}
+              />
+            </form>
+          </Form>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              {t("Close")}
+            </Button>
+            <Button
+                type="submit"
+                disabled={isLoading}
+                form="sent-confirmation-others"
+            >
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("Please wait")}
+                  </>
+              ) : (
+                  t("Send")
               )}
-            />
-          </form>
-        </Form>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            {t("Close")}
-          </Button>
-          <Button
-            type="submit"
-            disabled={isLoading}
-            form="sent-confirmation-others"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </>
-            ) : (
-              t("Send")
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

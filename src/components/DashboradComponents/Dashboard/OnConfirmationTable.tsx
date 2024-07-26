@@ -8,11 +8,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { WorkType } from "@/types/Dashboard/Dashboard.types";
+import {useTranslation} from "react-i18next";
+import {useRecoilValue} from "recoil";
+import {userInfo} from "@/store/authentication.ts";
 
 interface Props {
   works: WorkType;
 }
+
+
 export default function OnConfirmationTable({ works }: Props) {
+  console.log("OnConfirmationTable", works);
+  const user = useRecoilValue(userInfo);
+  const renderQuantity = (quantity: any) => {
+    if (Array.isArray(quantity)) {
+      return quantity.map((q, index) => (
+          <div key={index}>
+            {q.size}: {q.value}
+          </div>
+      ));
+    }
+    return quantity;
+  };
+  const {t} = useTranslation();
+  // @ts-ignore
   return (
     <div>
       <h2 className="text-2xl font-bold">On Confirmation</h2>
@@ -24,8 +43,10 @@ export default function OnConfirmationTable({ works }: Props) {
               <TableHead>Model Number</TableHead>
               <TableHead>Color</TableHead>
               <TableHead>Size</TableHead>
-              <TableHead>Quantity</TableHead>
+              <TableHead>Target Quantity</TableHead>
+              <TableHead>Received Quantity</TableHead>
               <TableHead>Delivered Quantity</TableHead>
+              <TableHead>Damage Quantity</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -40,7 +61,8 @@ export default function OnConfirmationTable({ works }: Props) {
             {works.givingConfirmation.map((item) => (
               <TableRow key={item.Id}>
                 <TableCell className="font-medium">
-                  {item.ModelVariant.Model.ModelNumber}
+                  {/* item.ModelVariant.Model.ModelNumber */}
+                  {item.ModelVariant.Model.DemoModelNumber}
                 </TableCell>
                 <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                 <TableCell>
@@ -50,9 +72,28 @@ export default function OnConfirmationTable({ works }: Props) {
                     .join(", ")}
                 </TableCell>
                 <TableCell>{item.ModelVariant.Quantity}</TableCell>
-                <TableCell>{item.QuantityInNum}</TableCell>
+
+                {user?.category === "CUTTING" ? (
+                    <>
+                      <TableCell>{renderQuantity(item.QuantityInKg)} Kg</TableCell>
+                      <TableCell>{renderQuantity(item.QuantityInNum)}</TableCell>
+                    </>
+                ) : (
+                    <>
+                      <TableCell>{renderQuantity(item.QuantityDelivered)}</TableCell>
+                      <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
+                    </>
+                )}
+                <TableCell>{renderQuantity(item.DamagedItem)}</TableCell>
                 <TableCell>
-                  <Button>Details</Button>
+                  <Button
+                      variant="secondary"
+                      onClick={() =>
+                      window.open(`/models/viewdetails/${item.ModelVariant.Model.Id}`, "_blank")
+                      }
+                  >
+                    {t("Details")}
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

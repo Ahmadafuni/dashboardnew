@@ -13,6 +13,12 @@ interface Props {
 }
 
 export default function CompletedTable({ works }: Props) {
+  const renderQuantity = (quantity: any) => {
+    if (Array.isArray(quantity)) {
+      return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
+    }
+    return quantity;
+  };
   return (
     <div>
       <h2 className="text-2xl font-bold">Completed</h2>
@@ -24,7 +30,8 @@ export default function CompletedTable({ works }: Props) {
               <TableHead>Model Number</TableHead>
               <TableHead>Color</TableHead>
               <TableHead>Sizes</TableHead>
-              <TableHead>Quantity</TableHead>
+              <TableHead>Target Quantity</TableHead>
+              <TableHead>Delivered Quantity</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -38,7 +45,8 @@ export default function CompletedTable({ works }: Props) {
             {works.completed.map((item) => (
               <TableRow key={item.Id}>
                 <TableCell className="font-medium">
-                  {item.ModelVariant.Model.ModelNumber}
+                  {/* item.ModelVariant.Model.ModelNumber */}
+                  {item.ModelVariant.Model.DemoModelNumber}
                 </TableCell>
                 <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                 <TableCell>
@@ -48,6 +56,13 @@ export default function CompletedTable({ works }: Props) {
                     .join(", ")}
                 </TableCell>
                 <TableCell>{item.ModelVariant.Quantity}</TableCell>
+                <TableCell>
+                  {renderQuantity(
+                      item.QuantityDelivered !== null
+                          ? item.QuantityDelivered
+                          : item.QuantityDelivered
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -26,6 +26,13 @@ interface Props {
 }
 
 export default function OngoingTable({ works, setWorks }: Props) {
+  console.log("OngoingTable",works);
+  const renderQuantity = (quantity: any) => {
+    if (Array.isArray(quantity)) {
+      return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
+    }
+    return quantity;
+  };
   const setCurrentVariant = useSetRecoilState(currentVariantId);
   const setPauseUnpause = useSetRecoilState(pauseUnpauseModal);
   const setConfirmation = useSetRecoilState(cuttingSendConfirmationModal);
@@ -42,7 +49,8 @@ export default function OngoingTable({ works, setWorks }: Props) {
               <TableHead>Model Number</TableHead>
               <TableHead>Color</TableHead>
               <TableHead>Size</TableHead>
-              <TableHead>Quantity</TableHead>
+              <TableHead>Target Quantity</TableHead>
+              <TableHead>Received Quantity</TableHead>
               <TableHead>Start Time</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
@@ -59,7 +67,8 @@ export default function OngoingTable({ works, setWorks }: Props) {
               works?.inProgress.map((item) => (
                 <TableRow key={item.Id}>
                   <TableCell className="font-medium">
-                    {item.ModelVariant.Model.ModelNumber}
+                    {/* item.ModelVariant.Model.ModelNumber */}
+                    {item.ModelVariant.Model.DemoModelNumber}
                   </TableCell>
                   <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                   <TableCell>
@@ -69,6 +78,7 @@ export default function OngoingTable({ works, setWorks }: Props) {
                       .join(", ")}
                   </TableCell>
                   <TableCell>{item.ModelVariant.Quantity}</TableCell>
+                  <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
                   <TableCell>
                     {item.StartTime && format(new Date(item.StartTime), "dd/mm/yyyy HH:mm")}
                   </TableCell>

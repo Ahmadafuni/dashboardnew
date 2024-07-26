@@ -2,6 +2,7 @@ type Model = {
   Id: number;
   ModelName: string;
   ModelNumber: string;
+  DemoModelNumber: string;
 };
 
 type Color = {
@@ -19,13 +20,15 @@ type ModelVariant = {
 type Tracking = {
   Id: number;
   Notes: string | null;
-  DamagedItem: number | null;
   ModelVariant: ModelVariant;
   StartTime: Date | null;
   RunningStatus: string;
   QuantityInNum: number | null;
   MainStatus: "AWAITING" | "TODO" | "INPROGRESS" | "DONE" | "CHECKING";
-  QuantityDelivered: number | null;
+  DamagedItem: string;
+  QuantityDelivered: string;
+  QuantityReceived: string;
+  QuantityInKg: string;
 };
 
 export type WorkType = {
