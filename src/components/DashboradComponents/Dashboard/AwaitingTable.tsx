@@ -82,7 +82,7 @@ export default function AwaitingTable({works, setWorks}: Props) {
                                         <>
                                             {/* The Process: if we have QuantityDelivered from dep,
                                              this QuantityDelivered should be the QuantityReceived for current Dep. */}
-                                            <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
+                                            <TableCell>{renderQuantity(item.MainStatus == "CHECKING"? item.QuantityDelivered : item.QuantityReceived )}</TableCell>
                                         </>
                                     )}
                                     <TableCell className="space-x-1 space-y-1">
