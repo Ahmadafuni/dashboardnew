@@ -7,6 +7,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { WorkType } from "@/types/Dashboard/Dashboard.types";
+import {useRecoilValue} from "recoil";
+import {userInfo} from "@/store/authentication.ts";
 
 interface Props {
   works: WorkType;
@@ -19,6 +21,8 @@ export default function CompletedTable({ works }: Props) {
     }
     return quantity;
   };
+  const user = useRecoilValue(userInfo);
+
   return (
     <div>
       <h2 className="text-2xl font-bold">Completed</h2>
@@ -31,7 +35,10 @@ export default function CompletedTable({ works }: Props) {
               <TableHead>Color</TableHead>
               <TableHead>Sizes</TableHead>
               <TableHead>Target Quantity</TableHead>
+              <TableHead>Received Quantity</TableHead>
               <TableHead>Delivered Quantity</TableHead>
+              <TableHead>Damage Quantity</TableHead>
+
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -56,6 +63,17 @@ export default function CompletedTable({ works }: Props) {
                     .join(", ")}
                 </TableCell>
                 <TableCell>{item.ModelVariant.Quantity}</TableCell>
+
+                {user?.category === "CUTTING" ? (
+                    <>
+                      <TableCell>{renderQuantity(item.QuantityInKg)} Kg</TableCell>
+                    </>
+                ) : (
+                    <>
+                      <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
+                    </>
+                )}
+
                 <TableCell>
                   {item?.QuantityInKg != null ? (
                       <>
@@ -69,6 +87,8 @@ export default function CompletedTable({ works }: Props) {
                       </>
                   )}
                 </TableCell>
+                <TableCell>{renderQuantity(item.DamagedItem)}</TableCell>
+
               </TableRow>
             ))}
           </TableBody>
