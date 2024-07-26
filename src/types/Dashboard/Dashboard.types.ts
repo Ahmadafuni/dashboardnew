@@ -29,6 +29,7 @@ type Tracking = {
   QuantityDelivered: string;
   QuantityReceived: string;
   QuantityInKg: string;
+  PrevStage: string;
 };
 
 export type WorkType = {
