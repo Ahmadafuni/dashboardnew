@@ -48,12 +48,18 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }
   });
 
   useEffect(() => {
-    if (selectedSizes && selectedSizes.length > 0) {
+    if (open) {
       setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
       setQuantityReceivedPairs(selectedSizes.map(size => ({ size, value: "" })));
       setQuantityDeliveredPairs(selectedSizes.map(size => ({ size, value: "" })));
+      form.reset({
+        QuantityReceived: [],
+        QuantityDelivered: [],
+        DamagedItem: [],
+        Notes: "",
+      });
     }
-  }, [selectedSizes]);
+  }, [open, selectedSizes, form]);
 
   const handleSubmit = async (data: z.infer<typeof othersSendConfirmationSchema>) => {
     setIsLoading(true);

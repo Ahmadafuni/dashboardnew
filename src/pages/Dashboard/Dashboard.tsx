@@ -28,15 +28,6 @@ export default function Dashboard() {
         getAllWork(setWorks);
     }, []);
 
-    useEffect(() => {
-        if (works.inProgress.length > 0) {
-            const sizes = works.inProgress[0].ModelVariant.Sizes
-                ? JSON.parse(works.inProgress[0].ModelVariant.Sizes).map((e: any) => e.label)
-                : [];
-            setSelectedSizes(sizes);
-        }
-    }, [works]);
-
     return (
         <div className="w-full p-4 space-y-6">
             <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
@@ -48,7 +39,7 @@ export default function Dashboard() {
                 <Separator />
             </div>
             <AwaitingTable setWorks={setWorks} works={works} />
-            <OngoingTable works={works} setWorks={setWorks} />
+            <OngoingTable works={works} setWorks={setWorks} setSelectedSizes={setSelectedSizes} />
             <OnConfirmationTable works={works} />
             <CompletedTable works={works} />
         </div>
