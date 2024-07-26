@@ -57,10 +57,16 @@ export default function CompletedTable({ works }: Props) {
                 </TableCell>
                 <TableCell>{item.ModelVariant.Quantity}</TableCell>
                 <TableCell>
-                  {renderQuantity(
-                      item.QuantityDelivered !== null
-                          ? item.QuantityDelivered
-                          : item.QuantityDelivered
+                  {item?.QuantityInKg != null ? (
+                      <>
+                        <TableCell>{renderQuantity(item.QuantityInNum)}</TableCell>
+                      </>
+                  ) : (
+                      <>
+                        {/* The Process: if we have QuantityDelivered from dep,
+                           this QuantityDelivered should be the QuantityReceived for current Dep. */}
+                        <TableCell>{renderQuantity(item.QuantityDelivered )}</TableCell>
+                      </>
                   )}
                 </TableCell>
               </TableRow>
@@ -71,3 +77,4 @@ export default function CompletedTable({ works }: Props) {
     </div>
   );
 }
+

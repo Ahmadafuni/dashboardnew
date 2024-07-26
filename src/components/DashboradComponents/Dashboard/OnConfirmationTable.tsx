@@ -80,8 +80,8 @@ export default function OnConfirmationTable({ works }: Props) {
                     </>
                 ) : (
                     <>
-                      <TableCell>{renderQuantity(item.QuantityDelivered)}</TableCell>
                       <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
+                      <TableCell>{renderQuantity(item.QuantityDelivered)}</TableCell>
                     </>
                 )}
                 <TableCell>{renderQuantity(item.DamagedItem)}</TableCell>

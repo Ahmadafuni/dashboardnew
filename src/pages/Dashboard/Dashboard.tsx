@@ -23,6 +23,7 @@ export default function Dashboard() {
     });
 
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+    const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
 
     useEffect(() => {
         getAllWork(setWorks);
@@ -31,15 +32,27 @@ export default function Dashboard() {
     return (
         <div className="w-full p-4 space-y-6">
             <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
-            <CuttingSendForConfirmationModal getAllWorks={() => getAllWork(setWorks)} selectedSizes={selectedSizes} />
-            <OthersSendForConfirmation getAllWorks={() => getAllWork(setWorks)} selectedSizes={selectedSizes} />
+            <CuttingSendForConfirmationModal
+                getAllWorks={() => getAllWork(setWorks)}
+                selectedSizes={selectedSizes}
+            />
+            <OthersSendForConfirmation
+                getAllWorks={() => getAllWork(setWorks)}
+                selectedSizes={selectedSizes}
+                quantityReceived={quantityReceived}
+            />
             <RejectVariantDialog getWorks={() => getAllWork(setWorks)} />
             <div className="space-y-2">
                 <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
                 <Separator />
             </div>
             <AwaitingTable setWorks={setWorks} works={works} />
-            <OngoingTable works={works} setWorks={setWorks} setSelectedSizes={setSelectedSizes} />
+            <OngoingTable
+                works={works}
+                setWorks={setWorks}
+                setSelectedSizes={setSelectedSizes}
+                setQuantityReceived={setQuantityReceived} // Pass the setter for quantity received
+            />
             <OnConfirmationTable works={works} />
             <CompletedTable works={works} />
         </div>

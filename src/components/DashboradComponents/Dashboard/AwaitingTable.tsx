@@ -24,6 +24,7 @@ interface Props {
 }
 
 export default function AwaitingTable({works, setWorks}: Props) {
+    console.log("Works",works)
     const user = useRecoilValue(userInfo);
     console.log("AwaitingTable", works.awaiting);
     const renderQuantity = (quantity: any) => {
@@ -81,7 +82,7 @@ export default function AwaitingTable({works, setWorks}: Props) {
                                         <>
                                             {/* The Process: if we have QuantityDelivered from dep,
                                              this QuantityDelivered should be the QuantityReceived for current Dep. */}
-                                            <TableCell>{renderQuantity(item.QuantityReceived? item.QuantityReceived : item.QuantityDelivered )}</TableCell>
+                                            <TableCell>{renderQuantity(item.QuantityDelivered)}</TableCell>
                                         </>
                                     )}
                                     <TableCell className="space-x-1 space-y-1">

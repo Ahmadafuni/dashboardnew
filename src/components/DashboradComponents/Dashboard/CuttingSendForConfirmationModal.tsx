@@ -28,6 +28,7 @@ import {z} from "zod";
 type Props = {
     getAllWorks: any;
     selectedSizes: string[];
+
 };
 
 export default function CuttingSendForConfirmationModal({getAllWorks, selectedSizes}: Props) {

@@ -23,10 +23,11 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 interface Props {
   works: WorkType;
   setWorks: any;
-  setSelectedSizes: (sizes: string[]) => void; // Add the new prop
+  setSelectedSizes: (sizes: string[]) => void;
+  setQuantityReceived: (quantity: any[]) => void; // Add the new prop
 }
 
-export default function OngoingTable({ works, setWorks, setSelectedSizes }: Props) {
+export default function OngoingTable({ works, setWorks, setSelectedSizes, setQuantityReceived }: Props) {
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
       return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
@@ -35,15 +36,24 @@ export default function OngoingTable({ works, setWorks, setSelectedSizes }: Prop
   };
   const setCurrentVariant = useSetRecoilState(currentVariantId);
   const setPauseUnpause = useSetRecoilState(pauseUnpauseModal);
-  const setConfirmation = useSetRecoilState(cuttingSendConfirmationModal);
+  const setCuttingConfirmation = useSetRecoilState(cuttingSendConfirmationModal);
   const setConfirmationOthers = useSetRecoilState(othersSendConfirmationModal);
   const user = useRecoilValue(userInfo);
 
   const handleSendConfirmation = (item: any) => {
     const sizes = item.ModelVariant.Sizes ? JSON.parse(item.ModelVariant.Sizes).map((e: any) => e.label) : [];
+    const quantityReceived = item.QuantityReceived || [];
     setSelectedSizes(sizes);
+    setQuantityReceived(quantityReceived);
     setCurrentVariant(item.ModelVariant.Id);
     setConfirmationOthers(true);
+  };
+
+  const handleSendCuttingConfirmation = (item: any) => {
+    const sizes = item.ModelVariant.Sizes ? JSON.parse(item.ModelVariant.Sizes).map((e: any) => e.label) : [];
+    setSelectedSizes(sizes);
+    setCurrentVariant(item.ModelVariant.Id);
+    setCuttingConfirmation(true);
   };
 
   return (
@@ -112,8 +122,7 @@ export default function OngoingTable({ works, setWorks, setSelectedSizes }: Prop
                           {user?.category === "CUTTING" ? (
                               <Button
                                   onClick={() => {
-                                    setCurrentVariant(item.ModelVariant.Id);
-                                    setConfirmation(true);
+                                    handleSendCuttingConfirmation(item)
                                   }}
                               >
                                 Send for Confirmation

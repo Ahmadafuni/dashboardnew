@@ -25,9 +25,10 @@ import { z } from "zod";
 type Props = {
   getAllWorks: any;
   selectedSizes: string[];
+  quantityReceived: any[]; // Add the new prop
 };
 
-export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }: Props) {
+export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, quantityReceived }: Props) {
   const [open, setOpen] = useRecoilState(othersSendConfirmationModal);
   const [isLoading, setIsLoading] = useState(false);
   const variantId = useRecoilValue(currentVariantId);
@@ -50,16 +51,16 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes }
   useEffect(() => {
     if (open) {
       setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
-      setQuantityReceivedPairs(selectedSizes.map(size => ({ size, value: "" })));
       setQuantityDeliveredPairs(selectedSizes.map(size => ({ size, value: "" })));
+      setQuantityReceivedPairs(quantityReceived.map(item => ({ size: item.size, value: item.value })));
       form.reset({
-        QuantityReceived: [],
+        QuantityReceived: quantityReceived.map(item => ({ size: item.size, value: item.value })),
         QuantityDelivered: [],
         DamagedItem: [],
         Notes: "",
       });
     }
-  }, [open, selectedSizes, form]);
+  }, [open, selectedSizes, quantityReceived, form]);
 
   const handleSubmit = async (data: z.infer<typeof othersSendConfirmationSchema>) => {
     setIsLoading(true);
