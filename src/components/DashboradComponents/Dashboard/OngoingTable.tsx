@@ -18,6 +18,7 @@ import {
 import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { format } from "date-fns";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   works: WorkType;
@@ -27,6 +28,8 @@ interface Props {
 }
 
 export default function OngoingTable({ works, setSelectedSizes, setQuantityReceived }: Props) {
+  const { t } = useTranslation();
+
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
       return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
@@ -66,10 +69,10 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
 
   const renderAdminRow = (item: any) => (
       <>
-        <TableCell>{item.PrevStage?.Department?.Name || "N/A"}</TableCell>
-        <TableCell>{item.CurrentStage?.Department?.Name || "N/A"}</TableCell>
-        <TableCell>{item.NextStage?.Department?.Name || "N/A"}</TableCell>
-        <TableCell>{item.StartTime ? format(new Date(item.StartTime), "yyyy-MM-dd HH:mm:ss") : "N/A"}</TableCell>
+        <TableCell>{item.PrevStage?.Department?.Name || t('N/A')}</TableCell>
+        <TableCell>{item.CurrentStage?.Department?.Name || t('N/A')}</TableCell>
+        <TableCell>{item.NextStage?.Department?.Name || t('N/A')}</TableCell>
+        <TableCell>{item.StartTime ? format(new Date(item.StartTime), "yyyy-MM-dd HH:mm:ss") : t('N/A')}</TableCell>
         <TableCell>
           <Button
               variant="secondary"
@@ -80,7 +83,7 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
                   )
               }
           >
-            Details
+            {t('Details')}
           </Button>
         </TableCell>
       </>
@@ -98,7 +101,7 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
                     setPauseUnpause(true);
                   }}
               >
-                Stop
+                {t('Stop')}
               </Button>
           ) : (
               <Button
@@ -108,7 +111,7 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
                     setPauseUnpause(true);
                   }}
               >
-                Continue
+                {t('Continue')}
               </Button>
           )}
           {user?.category === "CUTTING" ? (
@@ -117,15 +120,15 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
                     handleSendCuttingConfirmation(item)
                   }}
               >
-                Send for Confirmation
+                {t('SendForConfirmation')}
               </Button>
           ) : user?.category !== "QUALITYASSURANCE" ? (
               <Button onClick={() => handleSendConfirmation(item, "CONFIRMATION")}>
-                Send for Confirmation
+                {t('SendForConfirmation')}
               </Button>
           ) : (
               <Button onClick={() => handleSendConfirmation(item, "COMPLETE")}>
-                Complete
+                {t('Complete')}
               </Button>
           )}
         </TableCell>
@@ -134,28 +137,28 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
 
   return (
       <div>
-        <h2 className="text-2xl font-bold">Ongoing</h2>
+        <h2 className="text-2xl font-bold">{t('Ongoing')}</h2>
         <div className="overflow-x-auto">
           <Table className="min-w-full">
             <TableHeader>
               <TableRow>
-                <TableHead>Model Number</TableHead>
-                <TableHead>Color</TableHead>
-                <TableHead>Size</TableHead>
-                <TableHead>Target Quantity</TableHead>
-                <TableHead>Received Quantity</TableHead>
+                <TableHead>{t('ModelNumber')}</TableHead>
+                <TableHead>{t('Color')}</TableHead>
+                <TableHead>{t('Size')}</TableHead>
+                <TableHead>{t('TargetQuantity')}</TableHead>
+                <TableHead>{t('ReceivedQuantity')}</TableHead>
                 {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
                     <>
-                      <TableHead>Prev Stage</TableHead>
-                      <TableHead>Current Stage</TableHead>
-                      <TableHead>Next Stage</TableHead>
-                      <TableHead>Start Time</TableHead>
-                      <TableHead>Action</TableHead>
+                      <TableHead>{t('PrevStage')}</TableHead>
+                      <TableHead>{t('CurrentStage')}</TableHead>
+                      <TableHead>{t('NextStage')}</TableHead>
+                      <TableHead>{t('StartTime')}</TableHead>
+                      <TableHead>{t('Action')}</TableHead>
                     </>
                 ) : (
                     <>
-                      <TableHead>Start Time</TableHead>
-                      <TableHead>Action</TableHead>
+                      <TableHead>{t('StartTime')}</TableHead>
+                      <TableHead>{t('Action')}</TableHead>
                     </>
                 )}
               </TableRow>
@@ -164,7 +167,7 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
               {works.inProgress.length <= 0 && (
                   <TableRow>
                     <TableCell colSpan={userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? 10 : 8} className="h-24 text-center">
-                      No results.
+                      {t('NoResults')}
                     </TableCell>
                   </TableRow>
               )}

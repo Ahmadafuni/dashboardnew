@@ -6,6 +6,7 @@ interface Props {
     form: any;
     onSubmit: any;
 }
+
 export default function ChildMaterialForm({ form, onSubmit }: Props) {
     const { t } = useTranslation();
     return (

@@ -18,6 +18,7 @@ import ConfirmRejectAlertDialog from "./ConfirmRejectAlertDialog";
 import { useRecoilValue } from "recoil";
 import { userInfo } from "@/store/authentication";
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     works: WorkType;
@@ -27,6 +28,7 @@ interface Props {
 export default function AwaitingTable({ works, setWorks }: Props) {
     const user = useRecoilValue(userInfo);
     const userRole = user?.userRole;
+    const { t } = useTranslation();
 
     const renderQuantity = (quantity: any) => {
         if (Array.isArray(quantity)) {
@@ -37,10 +39,10 @@ export default function AwaitingTable({ works, setWorks }: Props) {
 
     const renderAdminRow = (item: any) => (
         <>
-            <TableCell>{item.PrevStage?.Department?.Name || "N/A"}</TableCell>
-            <TableCell>{item.CurrentStage?.Department?.Name || "N/A"}</TableCell>
-            <TableCell>{item.NextStage?.Department?.Name || "N/A"}</TableCell>
-            <TableCell>{item.StartTime ? format(new Date(item.StartTime), "yyyy-MM-dd HH:mm:ss") : "N/A"}</TableCell>
+            <TableCell>{item.PrevStage?.Department?.Name || t('N/A')}</TableCell>
+            <TableCell>{item.CurrentStage?.Department?.Name || t('N/A')}</TableCell>
+            <TableCell>{item.NextStage?.Department?.Name || t('N/A')}</TableCell>
+            <TableCell>{item.StartTime ? format(new Date(item.StartTime), "yyyy-MM-dd HH:mm:ss") : t('N/A')}</TableCell>
             <TableCell>
                 <Button
                     variant="secondary"
@@ -51,7 +53,7 @@ export default function AwaitingTable({ works, setWorks }: Props) {
                         )
                     }
                 >
-                    Details
+                    {t('Details')}
                 </Button>
             </TableCell>
         </>
@@ -61,7 +63,7 @@ export default function AwaitingTable({ works, setWorks }: Props) {
         <TableCell className="space-x-1 space-y-1">
             {item.MainStatus === "TODO" ? (
                 <BasicConfirmationDialog
-                    btnText="Start"
+                    btnText={t('Start')}
                     takeAction={() => startVariant(setWorks, item.ModelVariant.Id)}
                     className=""
                 />
@@ -85,33 +87,33 @@ export default function AwaitingTable({ works, setWorks }: Props) {
                     )
                 }
             >
-                Details
+                {t('Details')}
             </Button>
         </TableCell>
     );
 
     return (
         <div>
-            <h2 className="text-2xl font-bold">Awaiting</h2>
+            <h2 className="text-2xl font-bold">{t('Awaiting')}</h2>
             <div className="overflow-x-auto">
                 <Table className="min-w-full">
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Model Number</TableHead>
-                            <TableHead>Color</TableHead>
-                            <TableHead>Size</TableHead>
-                            <TableHead>Target Quantity</TableHead>
-                            <TableHead>Received Quantity</TableHead>
+                            <TableHead>{t('ModelNumber')}</TableHead>
+                            <TableHead>{t('Color')}</TableHead>
+                            <TableHead>{t('Size')}</TableHead>
+                            <TableHead>{t('TargetQuantity')}</TableHead>
+                            <TableHead>{t('ReceivedQuantity')}</TableHead>
                             {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
                                 <>
-                                    <TableHead>Prev Stage</TableHead>
-                                    <TableHead>Current Stage</TableHead>
-                                    <TableHead>Next Stage</TableHead>
-                                    <TableHead>Start Time</TableHead>
-                                    <TableHead>Action</TableHead>
+                                    <TableHead>{t('PrevStage')}</TableHead>
+                                    <TableHead>{t('CurrentStage')}</TableHead>
+                                    <TableHead>{t('NextStage')}</TableHead>
+                                    <TableHead>{t('StartTime')}</TableHead>
+                                    <TableHead>{t('Action')}</TableHead>
                                 </>
                             ) : (
-                                <TableHead>Action</TableHead>
+                                <TableHead>{t('Action')}</TableHead>
                             )}
                         </TableRow>
                     </TableHeader>
@@ -122,7 +124,7 @@ export default function AwaitingTable({ works, setWorks }: Props) {
                                     colSpan={user?.category !== "CUTTING" ? 6 : 5}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    {t('NoResults')}
                                 </TableCell>
                             </TableRow>
                         )}

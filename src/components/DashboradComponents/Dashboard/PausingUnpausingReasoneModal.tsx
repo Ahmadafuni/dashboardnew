@@ -24,6 +24,7 @@ import { z } from "zod";
 type Props = {
   getAllWorks: any;
 };
+
 export default function PausingUnpausingReasoneModal({ getAllWorks }: Props) {
   const [open, setOpen] = useRecoilState(pauseUnpauseModal);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,19 +38,17 @@ export default function PausingUnpausingReasoneModal({ getAllWorks }: Props) {
     },
   });
 
-  const handleSubmit = async (
-    data: z.infer<typeof pauseUnpuaseReasoneSchema>
-  ) => {
+  const handleSubmit = async (data: z.infer<typeof pauseUnpuaseReasoneSchema>) => {
     setIsLoading(true);
     try {
       const newNote = await axios.post(
-        `trackingmodels/pauseunpause/variant/${variantId}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
+          `trackingmodels/pauseunpause/variant/${variantId}`,
+          data,
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
       );
       toast.success(newNote.data.message);
       form.reset();
@@ -65,46 +64,46 @@ export default function PausingUnpausingReasoneModal({ getAllWorks }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle> {t("Stop/Continue")}</DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="grid grid-cols-1 gap-2"
-            id="pause-unpause"
-          >
-            <FormField
-              control={form.control}
-              name="Reasone"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("Reasone")}
-                  field={field}
-                />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("StopContinue")}</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="grid grid-cols-1 gap-2"
+                id="pause-unpause"
+            >
+              <FormField
+                  control={form.control}
+                  name="Reasone"
+                  render={({ field }) => (
+                      <TextInputFieldForForm
+                          placeholder=""
+                          label={t("Reasone")}
+                          field={field}
+                      />
+                  )}
+              />
+            </form>
+          </Form>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              {t("Close")}
+            </Button>
+            <Button type="submit" disabled={isLoading} form="pause-unpause">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Confirm")
               )}
-            />
-          </form>
-        </Form>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            {t("Close")}
-          </Button>
-          <Button type="submit" disabled={isLoading} form="pause-unpause">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </>
-            ) : (
-              t("Confirm")
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

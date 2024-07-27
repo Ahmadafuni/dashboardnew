@@ -24,6 +24,7 @@ import { z } from "zod";
 interface Props {
   getWorks: any;
 }
+
 export default function RejectVariantDialog({ getWorks }: Props) {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,13 +43,13 @@ export default function RejectVariantDialog({ getWorks }: Props) {
     setIsLoading(true);
     try {
       const newNote = await axios.post(
-        `trackingmodels/reject/variant/${variantId}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
+          `trackingmodels/reject/variant/${variantId}`,
+          data,
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
       );
       toast.success(newNote.data.message);
       form.reset();
@@ -64,60 +65,60 @@ export default function RejectVariantDialog({ getWorks }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{t("RejectVariant")}</DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="grid grid-cols-1 gap-2"
-            id="reject"
-          >
-            <FormField
-              control={form.control}
-              name="DamagedItem"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("DamagedItem")}
-                  field={field}
-                />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("RejectVariant")}</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="grid grid-cols-1 gap-2"
+                id="reject"
+            >
+              <FormField
+                  control={form.control}
+                  name="DamagedItem"
+                  render={({ field }) => (
+                      <TextInputFieldForForm
+                          placeholder=""
+                          label={t("DamagedItem")}
+                          field={field}
+                      />
+                  )}
+              />
+              <FormField
+                  control={form.control}
+                  name="Notes"
+                  render={({ field }) => (
+                      <TextInputFieldForForm
+                          placeholder={t("Note")}
+                          label={t("Note")}
+                          field={field}
+                      />
+                  )}
+              />
+            </form>
+          </Form>
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
+            <Button
+                variant="destructive"
+                type="submit"
+                disabled={isLoading}
+                form="reject"
+            >
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Reject")
               )}
-            />
-            <FormField
-              control={form.control}
-              name="Notes"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder="Note"
-                  label={t("Note")}
-                  field={field}
-                />
-              )}
-            />
-          </form>
-        </Form>
-        <DialogFooter>
-          <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-          <Button
-            variant="destructive"
-            type="submit"
-            disabled={isLoading}
-            form="reject"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Reject")
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

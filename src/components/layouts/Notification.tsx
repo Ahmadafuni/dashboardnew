@@ -12,12 +12,14 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { Bell } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     user: any;
 }
 
 export default function Notification({ user }: Props) {
+    const { t } = useTranslation();
     const [notes, setNotes] = useState<
         {
             Id: number;
@@ -29,7 +31,10 @@ export default function Notification({ user }: Props) {
 
     const getAllNotification = async () => {
         try {
-            const url = (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") ? "notification/all" : "notification/";
+            const url =
+                user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING"
+                    ? "notification/all"
+                    : "notification/";
             const { data } = await axios.get(url, {
                 headers: {
                     Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -42,10 +47,13 @@ export default function Notification({ user }: Props) {
             }
         }
     };
+
     const getUnreadNotificationCount = async () => {
         try {
-            const url = (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") ? "notification/unread-count/all" : "notification/unread-count";
-
+            const url =
+                user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING"
+                    ? "notification/unread-count/all"
+                    : "notification/unread-count";
             const { data } = await axios.get(url, {
                 headers: {
                     Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -115,17 +123,17 @@ export default function Notification({ user }: Props) {
             </SheetTrigger>
             <SheetContent className="flex flex-col h-full">
                 <SheetHeader>
-                        <SheetTitle className="mr-0">Notifications</SheetTitle>
+                        <SheetTitle className="mr-0">{t("Notifications")}</SheetTitle>
                 </SheetHeader>
                 <Button className="flex justify-end mt-2" onClick={clearAllNotifications} variant="link" size="sm">
-                    Clear All
+                    {t("ClearAll")}
                 </Button>
                 <ScrollArea className="flex-grow"> {/* Take up remaining space */}
                     <div className="flex flex-col gap-2 py-2"> {/* Reduced gap and padding */}
                         {notes.map((n) => (
                             <div key={n.Id} className="flex flex-col p-2 border rounded-md text-sm">
                                 <div className="flex justify-between items-center mb-1">
-                                    <div className="font-bold">{n.Title}</div> {/* Title in bold */}
+                                    <div className="font-bold">{n.Title}</div>
                                 </div>
                                 <div className="flex-grow">{n.Description}</div>
                                 <div className="flex justify-end mt-2">
@@ -134,7 +142,7 @@ export default function Notification({ user }: Props) {
                                         variant="link"
                                         size="sm"
                                     >
-                                        Mark as Read
+                                        {t("MarkAsRead")}
                                     </Button>
                                 </div>
                             </div>

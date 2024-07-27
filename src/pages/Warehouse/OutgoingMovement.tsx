@@ -26,13 +26,13 @@ export default function OutgoingMovement() {
     ];
 
     const materialMovementsColumns: ColumnDef<any>[] = [
-        { accessorKey: "invoiceNumber", header: t("Invoice Number") },
-        { accessorKey: "parentMaterialName", header: t("Parent Material Name") },
-        { accessorKey: "childMaterialName", header: t("Child Material Name") },
-        { accessorKey: "movedFrom", header: t("Moved From") },
-        { accessorKey: "movedTo", header: t("Moved To") },
+        { accessorKey: "invoiceNumber", header: t("InvoiceNumber") },
+        { accessorKey: "parentMaterialName", header: t("ParentMaterialName") },
+        { accessorKey: "childMaterialName", header: t("Child MaterialName") },
+        { accessorKey: "movedFrom", header: t("MovedFrom") },
+        { accessorKey: "movedTo", header: t("MovedTo") },
         { accessorKey: "quantity", header: t("Quantity") },
-        { accessorKey: "unitOfQuantity", header: t("Unit Of Quantity") },
+        { accessorKey: "unitOfQuantity", header: t("UnitOfQuantity") },
         {
             accessorKey: "movementDate",
             header: t("Date"),
@@ -41,7 +41,7 @@ export default function OutgoingMovement() {
                 return isNaN(date.getTime()) ? "Invalid Date" : date.toLocaleDateString();
             },
         },
-        { accessorKey: "modelName", header: t("Model Name") },
+        { accessorKey: "modelName", header: t("ModelName") },
         { accessorKey: "description", header: t("Description") },
         {
             header: t("Action"),
@@ -78,7 +78,7 @@ export default function OutgoingMovement() {
     return (
         <div className="w-full space-y-2">
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">{t("Outgoing Material Movements")}</h1>
+                <h1 className="text-3xl font-bold w-full">{t("OutgoingMaterialMovements")}</h1>
                 <Separator />
             </div>
             <NewMovement movementFromOptions={movementFromOptions} movementToOptions={movementToOptions} movementType="OUTGOING" />

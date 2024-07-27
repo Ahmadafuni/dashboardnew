@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
-import {completeModal, currentTrackingId} from "@/store/dashboard";
+import { completeModal, currentTrackingId } from "@/store/dashboard";
 import { othersSendConfirmationSchema } from "@/form_schemas/dashboardSchema";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
@@ -35,7 +35,7 @@ export default function CompleteDialog({
                                        }: Props) {
     const [open, setOpen] = useRecoilState(completeModal);
     const [isLoading, setIsLoading] = useState(false);
-    const trakingId = useRecoilValue(currentTrackingId);
+    const trackingId = useRecoilValue(currentTrackingId);
     const { t } = useTranslation();
 
     const [damagedItemPairs, setDamagedItemPairs] = useState<{ size: string; value: string }[]>([]);
@@ -66,7 +66,6 @@ export default function CompleteDialog({
         }
     }, [open, selectedSizes, quantityReceived, form]);
 
-
     const handleSubmit = async (data: z.infer<typeof othersSendConfirmationSchema>) => {
         setIsLoading(true);
         try {
@@ -74,11 +73,11 @@ export default function CompleteDialog({
                 ...data,
                 QuantityReceived: JSON.stringify(quantityReceivedPairs),
                 DamagedItem: JSON.stringify(damagedItemPairs),
-                QuantityDelivered: JSON.stringify(quantityDeliveredPairs)
+                QuantityDelivered: JSON.stringify(quantityDeliveredPairs),
             };
 
             const newNote = await axios.put(
-                `trackingmodels/complete/variant/${trakingId}`,
+                `trackingmodels/complete/variant/${trackingId}`,
                 payload,
                 {
                     headers: {
@@ -138,7 +137,7 @@ export default function CompleteDialog({
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t("Complete Variant")}</DialogTitle>
+                    <DialogTitle>{t("CompleteVariant")}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form
@@ -146,9 +145,9 @@ export default function CompleteDialog({
                         className="grid grid-cols-1 gap-2"
                         id="complete-variant-form"
                     >
-                        {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("Quantity Received"))}
-                        {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("Quantity Delivered"))}
-                        {renderTable(damagedItemPairs, setDamagedItemPairs, t("Damaged Items"))}
+                        {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("QuantityReceived"))}
+                        {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("QuantityDelivered"))}
+                        {renderTable(damagedItemPairs, setDamagedItemPairs, t("DamagedItems"))}
                         <FormField
                             control={form.control}
                             name="Notes"
@@ -174,7 +173,7 @@ export default function CompleteDialog({
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t("Please wait")}
+                                {t("PleaseWait")}
                             </>
                         ) : (
                             t("Complete")

@@ -1,6 +1,6 @@
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
     Dialog,
     DialogContent,
@@ -8,34 +8,33 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import {Form, FormField} from "@/components/ui/form";
-import {cuttingSendConfirmationSchema} from "@/form_schemas/dashboardSchema";
+import { Form, FormField } from "@/components/ui/form";
+import { cuttingSendConfirmationSchema } from "@/form_schemas/dashboardSchema";
 import {
     currentVariantId,
     cuttingSendConfirmationModal,
 } from "@/store/dashboard";
-import {zodResolver} from "@hookform/resolvers/zod";
-import axios, {AxiosError} from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-import {Loader2} from "lucide-react";
-import {useState, useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {useTranslation} from "react-i18next";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {toast} from "sonner";
-import {z} from "zod";
+import { Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { toast } from "sonner";
+import { z } from "zod";
 
 type Props = {
     getAllWorks: any;
     selectedSizes: string[];
-
 };
 
-export default function CuttingSendForConfirmationModal({getAllWorks, selectedSizes}: Props) {
+export default function CuttingSendForConfirmationModal({ getAllWorks, selectedSizes }: Props) {
     const [open, setOpen] = useRecoilState(cuttingSendConfirmationModal);
     const [isLoading, setIsLoading] = useState(false);
     const variantId = useRecoilValue(currentVariantId);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const [damagedItemPairs, setDamagedItemPairs] = useState<{ size: string; value: string }[]>([]);
     const [quantityInNumPairs, setQuantityInNumPairs] = useState<{ size: string; value: string }[]>([]);
@@ -50,7 +49,6 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
             Notes: "",
             QuantityInKg: "",
             ReplacedItemInKG: "",
-            // Initializing with empty arrays
             DamagedItem: [],
             QuantityInNum: [],
         },
@@ -58,14 +56,12 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
 
     useEffect(() => {
         if (selectedSizes && selectedSizes.length > 0) {
-            setDamagedItemPairs(selectedSizes.map(size => ({size, value: ""})));
-            setQuantityInNumPairs(selectedSizes.map(size => ({size, value: ""})));
+            setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ size, value: "" })));
         }
     }, [selectedSizes]);
 
-    const handleSubmit = async (
-        data: z.infer<typeof cuttingSendConfirmationSchema>
-    ) => {
+    const handleSubmit = async (data: z.infer<typeof cuttingSendConfirmationSchema>) => {
         setIsLoading(true);
         try {
             const payload = {
@@ -74,7 +70,7 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
                 QuantityInNum: JSON.stringify(quantityInNumPairs),
             };
 
-            console.log("Payload:", payload); // Log payload
+            console.log("Payload:", payload);
 
             const newNote = await axios.post(
                 `trackingmodels/sent/cutting/checking/variant/${variantId}`,
@@ -87,8 +83,8 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
             );
             toast.success(newNote.data.message);
             form.reset();
-            setDamagedItemPairs(selectedSizes.map(size => ({size, value: ""})));
-            setQuantityInNumPairs(selectedSizes.map(size => ({size, value: ""})));
+            setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ size, value: "" })));
             getAllWorks();
             setIsLoading(false);
             setOpen(false);
@@ -100,10 +96,7 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
         }
     };
 
-    const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{
-        size: string;
-        value: string
-    }[]>>) => {
+    const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>) => {
         setPairs((prev) => {
             const updatedPairs = [...prev];
             updatedPairs[index].value = value;
@@ -111,10 +104,7 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
         });
     };
 
-    const renderTable = (pairs: { size: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{
-        size: string;
-        value: string
-    }[]>>, label: string) => (
+    const renderTable = (pairs: { size: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>, label: string) => (
         <div className="space-y-2">
             <label className="block font-medium text-sm">{label}</label>
             {pairs.map((pair, index) => (
@@ -142,7 +132,7 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t("Cutting Confirmation")}</DialogTitle>
+                    <DialogTitle>{t("CuttingConfirmation")}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form
@@ -153,23 +143,23 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
                         <FormField
                             control={form.control}
                             name="QuantityInKg"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <TextInputFieldForForm
                                     placeholder=""
-                                    label={t("Quantity In Kg")}
+                                    label={t("QuantityInKg")}
                                     field={field}
                                 />
                             )}
                         />
-                        {renderTable(quantityInNumPairs, setQuantityInNumPairs, t("Quantity In Number"))}
+                        {renderTable(quantityInNumPairs, setQuantityInNumPairs, t("QuantityInNumber"))}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             <FormField
                                 control={form.control}
                                 name="ClothCount"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <TextInputFieldForForm
                                         placeholder=""
-                                        label={t("Cloth Count")}
+                                        label={t("ClothCount")}
                                         field={field}
                                     />
                                 )}
@@ -177,10 +167,10 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
                             <FormField
                                 control={form.control}
                                 name="ClothLength"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <TextInputFieldForForm
                                         placeholder=""
-                                        label={t("Cloth Length")}
+                                        label={t("ClothLength")}
                                         field={field}
                                     />
                                 )}
@@ -188,10 +178,10 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
                             <FormField
                                 control={form.control}
                                 name="ClothWidth"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <TextInputFieldForForm
                                         placeholder=""
-                                        label={t("Cloth Width")}
+                                        label={t("ClothWidth")}
                                         field={field}
                                     />
                                 )}
@@ -199,23 +189,23 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
                             <FormField
                                 control={form.control}
                                 name="ClothWeight"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <TextInputFieldForForm
                                         placeholder=""
-                                        label={t("Cloth Weight")}
+                                        label={t("ClothWeight")}
                                         field={field}
                                     />
                                 )}
                             />
                         </div>
-                        {renderTable(damagedItemPairs, setDamagedItemPairs, t("Damaged Item"))}
+                        {renderTable(damagedItemPairs, setDamagedItemPairs, t("DamagedItem"))}
                         <FormField
                             control={form.control}
                             name="ReplacedItemInKG"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <TextInputFieldForForm
                                     placeholder=""
-                                    label={t("Replaced Item In Kg")}
+                                    label={t("ReplacedItemInKg")}
                                     field={field}
                                 />
                             )}
@@ -223,7 +213,7 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
                         <FormField
                             control={form.control}
                             name="Notes"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <TextInputFieldForForm
                                     placeholder=""
                                     label={t("Notes")}
@@ -240,8 +230,8 @@ export default function CuttingSendForConfirmationModal({getAllWorks, selectedSi
                     <Button type="submit" disabled={isLoading} form="sent-confirmation">
                         {isLoading ? (
                             <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
-                                Please wait
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                {t("PleaseWait")}
                             </>
                         ) : (
                             t("Send")

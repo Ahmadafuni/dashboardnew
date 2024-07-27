@@ -187,7 +187,179 @@
 
   "EditModel": "تعديل الموديل",
   "ViewDetails": "عرض التفاصيل",
-  "ViewSummary": "عرض الملخص"
+  "ViewSummary": "عرض الملخص",
+
+  "Awaiting": "جاهز للعمل",
+  "Color": "اللون",
+  "Size": "القياس",
+  "TargetQuantity": "الكمية المستهدفة",
+  "ReceivedQuantity": "الكمية المستلمة",
+  "PrevStage": "المرحلة السابقة",
+  "CurrentStage": "المرحلة الحالية",
+  "NextStage": "المرحلة التالية",
+  "StartTime": "وقت البدء",
+  "NoResults": "لا توجد نتائج",
+  "Details": "التفاصيل",
+  "Start": "ابدأ",
+  "N/A": "غير متاح",
+
+  "Ongoing": "جار العمل",
+  "Stop": "توقف",
+  "Continue": "استمر",
+  "SendForConfirmation": "إرسال للتأكيد",
+  "Complete": "اكتمل",
+
+  "OnConfirmation": "في انتظار التأكيد",
+  "DeliveredQuantity": "الكمية المسلمة",
+  "DamageQuantity": "الكمية التالفة",
+
+  "Completed": "الموديلات الجاهزة",
+
+  "CompleteVariant": "اكتمال الموديل",
+  "QuantityReceived": "الكمية المستلمة",
+  "QuantityDelivered": "الكمية المسلمة",
+  "DamagedItems": "الموديل السقط",
+
+  "Confirm": "تأكيد",
+  "ConfirmVariant": "تأكيد الموديل؟",
+  "WillYouConfirmQuantities": "هل ستؤكد الكميات التالية؟",
+  "Cancel": "إلغاء",
+  "No": "لا",
+  "Yes": "نعم",
+
+  "Confirmation": "تأكيد",
+  "PleaseWait": "يرجى الانتظار",
+  "Send": "إرسال",
+
+  "StopContinue": "إيقاف / استئناف",
+  "Reasone": "السبب",
+
+  "RejectVariant": "رفض النوع",
+  "DamagedItem": "الموديل السقط",
+  "Reject": "رفض",
+
+  "CuttingConfirmation": "تأكيد القص",
+  "QuantityInKg": "الكمية بالكيلوغرام",
+  "QuantityInNumber": "الكمية بالعدد",
+  "ClothCount": "عدد المدة",
+  "ClothLength": "طول المدة",
+  "ClothWidth": "عرض المدة",
+  "ClothWeight": "وزن المدة",
+  "ReplacedItemInKg": "التعويض بالكيلوغرام" ,
+
+  "DyeNumber": "رقم الصبغة",
+  "Kashan": "كاشاشان",
+  "Halil": "حليل",
+  "Phthalate": "فتلان",
+  "GramWeight": "وزن الجرام",
+
+  "NewChildMaterial": "مادة فرعية جديدة",
+  "UpdateChildMaterial": "تحديث المادة الفرعية",
+  "CategoryName": "اسم الفئة",
+
+  "NewMaterialCategory": "فئة مادة جديدة",
+
+  "UpdateMaterialCategory": "تحديث فئة المادة",
+
+  "MainInformations": "المعلومات الرئيسية",
+  "InvoiceNumber": "رقم الفاتورة",
+  "MovementDate": "تاريخ الحركة",
+  "MovementFrom": "الحركة من",
+  "MovementTo": "الحركة إلى",
+  "DepartmentFrom": "القسم من",
+  "WarehouseFrom": "المستودع من",
+  "WarehouseTo": "المستودع إلى",
+  "SupplierFrom": "المورد من",
+  "SelectFirstMovementSide": "اختر الجانب الأول للحركة",
+  "SelectSecondMovementSide": "اختر الجانب الثاني للحركة",
+  "SelectDepartment": "اختر قسما",
+  "SelectWarehouse": "اختر مستودعًا",
+  "SelectSupplier": "اختر موردا",
+  "MaterialInformations": "معلومات المادة",
+  "Material": "المادة",
+  "ChildMaterial": "المادة الفرعية",
+  "UnitOfQuantity": "وحدة الكمية",
+  "Model": "النموذج",
+  "SearchMaterial": "البحث عن مادة",
+  "NoMaterialFound": "لم يتم العثور على مادة",
+  "SelectMaterial": "اختر مادة",
+  "SelectChildMaterial": "اختر مادة فرعية",
+  "NoOptions": "لا توجد خيارات",
+  "SelectOption": "اختر خيارًا",
+  "SelectModel": "اختر موديل",
+
+  "MaterialCategory": "فئة المادة",
+  "SearchMaterialCategory": "البحث عن فئة المادة...",
+  "NoCategoryFound": "لم يتم العثور على فئة",
+  "SelectCategory": "اختر فئة",
+  "UnitOfMeasure": "وحدة القياس",
+  "MinimumLimit": "الحد الأدنى",
+  "UsageLocation": "مكان الاستخدام",
+  "AlternativeMaterials": "المواد البديلة",
+  "HasChildren": "له مواد فرعية",
+  "IsRelevantToProduction": "مرتبط بالإنتاج",
+
+  "UpdateMaterial": "تحديث المادة",
+
+  "NewSupplier": "مورد جديد",
+
+  "Address": "العنوان",
+
+  "UpdateSupplier": "تحديث المورد",
+
+  "NewWarehouse": "مستودع جديد",
+  "UpdateWarehouse": "تحديث المستودع",
+
+  "WarehouseName": "اسم المستودع",
+  "Capacity": "السعة",
+  "MANAGEMENT": "الإدارة",
+  "PRODUCTION": "الإنتاج",
+  "SERVICES": "الخدمات",
+
+  "Notifications": "الإشعارات",
+  "ClearAll": "مسح الكل",
+  "MarkAsRead": "تحديد كمقروء",
+
+  "Warehouse": "مستودع",
+  "Incoming": "استلام مواد",
+  "Outgoing": "تسليم مواد",
+  "MaterialReport": "تقرير المواد",
+
+  "ChildMaterials": "مواد فرعية",
+  "AddChildMaterial": "إضافة مادة فرعية",
+
+
+  "Supplier": "مورد",
+  "ParentMaterialName": "اسم المادة الاب",
+  "ChildMaterialName": "اسم المادة الفرعية",
+  "MovedFrom": "نقل من",
+  "MovedTo": "نقل إلى",
+  "Date": "تاريخ",
+  "IncomingMaterialMovements": "حركات المواد الواردة",
+
+  "MaterialCategories": "فئات المواد",
+  "AddMaterialCategory": "إضافة فئة المواد",
+
+  "MovementType": "نوع الحركة",
+  "StartDate": "تاريخ البدء",
+  "EndDate": "تاريخ الانتهاء",
+  "ParentMaterialId": "المادة الاب",
+  "ChildMaterialId": "المادة الفرعية",
+  "Search": "بحث",
+  "Reset": "مسح",
+  "INCOMING": "الوارد",
+  "OUTGOING": "الصادر",
+
+
+  "EditParentMaterial": "تعديل المادة الاب",
+  "NewChild": "مادة فرعية جديدة",
+  "ViewChild": "عرض المواد الفرعية",
+  "AddMaterial": "إضافة مادة",
+
+  "OutgoingMaterialMovements": "حركات المواد الصادرة",
+  "AddSupplier": "إضافة مورد",
+  "AddWarehouse": "إضافة مستودع",
+  "Clear": "مسح"
 
 
 }

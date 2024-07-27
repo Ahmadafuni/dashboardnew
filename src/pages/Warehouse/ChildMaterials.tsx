@@ -16,7 +16,12 @@ import { ChildMaterialType } from "@/types/Warehouses/Materials.types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen, Plus } from "lucide-react";
 import { useSetRecoilState } from "recoil";
-import {childMaterial, childMaterialId, newChildMaterialModal, updateChildMaterialModal} from "@/store/ChildMaterial";
+import {
+    childMaterial,
+    childMaterialId,
+    newChildMaterialModal,
+    updateChildMaterialModal
+} from "@/store/ChildMaterial";
 import BackButton from "@/components/common/BackButton.tsx";
 
 export default function ChildMaterials() {
@@ -56,7 +61,7 @@ export default function ChildMaterials() {
             ),
         },
     ];
-console.log("materialID",materialID);
+
     useEffect(() => {
         getChildMaterialByParentId(setChildmaterials, materialID);
     }, []);
@@ -68,7 +73,7 @@ console.log("materialID",materialID);
             <div className="w-full space-y-1">
                 <div className="w-full space-y-1 flex items-center">
                     <BackButton />
-                    <h1 className="text-3xl font-bold w-full">Child Materials</h1>
+                    <h1 className="text-3xl font-bold w-full">{t("ChildMaterials")}</h1>
                 </div>
                 <Separator />
             </div>

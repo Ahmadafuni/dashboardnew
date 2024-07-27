@@ -25,7 +25,7 @@ import { z } from "zod";
 type Props = {
   getAllWorks: any;
   selectedSizes: string[];
-  quantityReceived: any[]; // Add the new prop
+  quantityReceived: any[];
 };
 
 export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, quantityReceived }: Props) {
@@ -141,9 +141,9 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
                 className="grid grid-cols-1 gap-2"
                 id="sent-confirmation-others"
             >
-              {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("Quantity Received"))}
-              {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("Quantity Delivered"))}
-              {renderTable(damagedItemPairs, setDamagedItemPairs, t("Damaged Items"))}
+              {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("QuantityReceived"))}
+              {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("QuantityDelivered"))}
+              {renderTable(damagedItemPairs, setDamagedItemPairs, t("DamagedItems"))}
               <FormField
                   control={form.control}
                   name="Notes"
@@ -169,7 +169,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
               {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t("Please wait")}
+                    {t("PleaseWait")}
                   </>
               ) : (
                   t("Send")
