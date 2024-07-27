@@ -88,7 +88,7 @@ export default function Materials() {
                               }}
                           >
                             <Plus className="mr-2 h-4 w-4" />
-                            <span>{t("New Child")}</span>
+                            <span>{t("NewChild")}</span>
                           </DropdownMenuItem>
                           <DropdownMenuItem
                               onClick={async () => {
@@ -99,7 +99,7 @@ export default function Materials() {
                               }}
                           >
                             <Eye className="mr-2 h-4 w-4" />
-                            <span>{t("View Child")}</span>
+                            <span>{t("ViewChild")}</span>
                           </DropdownMenuItem>
                         </>
                     )}

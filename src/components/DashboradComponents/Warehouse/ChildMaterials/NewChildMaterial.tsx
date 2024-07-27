@@ -31,8 +31,6 @@ export default function NewChildMaterial({ getChildMaterialByParentId }: Props) 
   const [open, setOpen] = useRecoilState(newChildMaterialModal);
   const currentMaterialId = useRecoilValue(materialId);
 
-
-  // Form fields
   const form = useForm<z.infer<typeof childMaterialSchema>>({
     resolver: zodResolver(childMaterialSchema),
     defaultValues: {
@@ -49,7 +47,6 @@ export default function NewChildMaterial({ getChildMaterialByParentId }: Props) 
   const onSubmit = async (data: z.infer<typeof childMaterialSchema>) => {
     setIsLoading(true);
     try {
-      console.log("ParentMaterialId",currentMaterialId)
       const newMaterial = await axios.post(
           `material/child/${currentMaterialId}`,
           data,
@@ -63,7 +60,7 @@ export default function NewChildMaterial({ getChildMaterialByParentId }: Props) 
       getChildMaterialByParentId();
       form.reset();
       setIsLoading(false);
-      setOpen(false); // Close dialog after successful submission
+      setOpen(false);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -76,7 +73,7 @@ export default function NewChildMaterial({ getChildMaterialByParentId }: Props) 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t("New Child Material")}</DialogTitle>
+            <DialogTitle>{t("NewChildMaterial")}</DialogTitle>
           </DialogHeader>
           <ChildMaterialForm form={form} onSubmit={onSubmit} />
           <DialogFooter>
@@ -85,7 +82,7 @@ export default function NewChildMaterial({ getChildMaterialByParentId }: Props) 
               {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t("Please wait")}
+                    {t("PleaseWait")}
                   </>
               ) : (
                   t("Add")

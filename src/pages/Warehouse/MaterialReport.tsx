@@ -17,7 +17,6 @@ import DataTable from "@/components/common/DataTable";
 import { materialMovementList } from "@/store/MaterialMovement";
 import { getAllMaterials, getMaterialById } from "@/services/Materials.services";
 
-
 export default function MaterialReport() {
     const { t } = useTranslation();
     const form = useForm();
@@ -79,18 +78,17 @@ export default function MaterialReport() {
         });
     };
 
-
     const materialMovementsColumns = [
-        { accessorKey: "invoiceNumber", header: t("Invoice Number") },
-        { accessorKey: "movementType", header: t("Movement Type") },
-        { accessorKey: "parentMaterialName", header: t("Parent Material Name") },
-        { accessorKey: "childMaterialName", header: t("Child Material Name") },
-        { accessorKey: "movedFrom", header: t("Moved From") },
-        { accessorKey: "movedTo", header: t("Moved To") },
+        { accessorKey: "invoiceNumber", header: t("InvoiceNumber") },
+        { accessorKey: "movementType", header: t("MovementType") },
+        { accessorKey: "parentMaterialName", header: t("ParentMaterialName") },
+        { accessorKey: "childMaterialName", header: t("ChildMaterialName") },
+        { accessorKey: "movedFrom", header: t("MovedFrom") },
+        { accessorKey: "movedTo", header: t("MovedTo") },
         { accessorKey: "quantity", header: t("Quantity") },
-        { accessorKey: "unitOfQuantity", header: t("Unit Of Quantity") },
+        { accessorKey: "unitOfQuantity", header: t("UnitOfQuantity") },
         { accessorKey: "movementDate", header: t("Date") },
-        { accessorKey: "modelName", header: t("Model Name") },
+        { accessorKey: "modelName", header: t("ModelName") },
         { accessorKey: "description", header: t("Description") },
     ];
 
@@ -122,7 +120,7 @@ export default function MaterialReport() {
                                         control={form.control}
                                         render={({ field }) => (
                                             <DatePickerForForm
-                                                label={t("Start Date")}
+                                                label={t("StartDate")}
                                                 field={field}
                                                 isDisabled={!isStartDateEnabled}
                                                 allowPastDates={true}
@@ -141,7 +139,7 @@ export default function MaterialReport() {
                                         control={form.control}
                                         render={({ field }) => (
                                             <DatePickerForForm
-                                                label={t("End Date")}
+                                                label={t("EndDate")}
                                                 field={field}
                                                 isDisabled={!isEndDateEnabled}
                                                 allowPastDates={true}
@@ -161,12 +159,12 @@ export default function MaterialReport() {
                                         render={({ field }) => (
                                             <ComboSelectFieldForForm
                                                 field={field}
-                                                label={t("Parent Material ID")}
-                                                placeholder="search a material"
-                                                emptyBox={t("No material found")}
+                                                label={t("ParentMaterialId")}
+                                                placeholder={t("SearchMaterial")}
+                                                emptyBox={t("NoMaterialFound")}
                                                 form={form}
                                                 name="parentMaterialId"
-                                                selectText={t("Select material")}
+                                                selectText={t("SelectMaterial")}
                                                 items={materialsOptions}
                                                 onChange={(value) => {
                                                     field.onChange(value);
@@ -189,12 +187,12 @@ export default function MaterialReport() {
                                         render={({ field }) => (
                                             <ComboSelectFieldForForm
                                                 field={field}
-                                                label={t("Child Material ID")}
-                                                placeholder="search a material"
-                                                emptyBox={t("No material found")}
+                                                label={t("ChildMaterialId")}
+                                                placeholder={t("SearchMaterial")}
+                                                emptyBox={t("NoMaterialFound")}
                                                 form={form}
                                                 name="childMaterialId"
-                                                selectText={t("Select material")}
+                                                selectText={t("SelectMaterial")}
                                                 items={materialsChildOptions}
                                                 disabled={!isChildMaterialEnabled}
                                             />
@@ -214,7 +212,7 @@ export default function MaterialReport() {
                                             <SelectFieldForForm
                                                 field={field}
                                                 placeholder=""
-                                                label={t("Movement Type")}
+                                                label={t("MovementType")}
                                                 items={[
                                                     { label: t("INCOMING"), value: "INCOMING" },
                                                     { label: t("OUTGOING"), value: "OUTGOING" },

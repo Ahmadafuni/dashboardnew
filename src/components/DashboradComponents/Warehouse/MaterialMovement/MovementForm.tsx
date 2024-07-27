@@ -29,10 +29,14 @@ interface Props {
     movementToOptions: any[];
 }
 
-export default function MovementForm({ form, onSubmit, movementFromOptions, movementToOptions }: Props) {
+export default function MovementForm({
+                                         form,
+                                         onSubmit,
+                                         movementFromOptions,
+                                         movementToOptions,
+                                     }: Props) {
     const { t } = useTranslation();
 
-    // Use Recoil state
     const departments = useRecoilValue(departmentList);
     const warehouses = useRecoilValue(warehouseList);
     const suppliers = useRecoilValue(supplierList);
@@ -55,7 +59,6 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
     const [selectedMovementTo, setSelectedMovementTo] = useState("");
     const [selectedMaterial, setSelectedMaterial] = useState("");
 
-    // Page on load
     useEffect(() => {
         getAllDepartmentList(setDepartments);
         getAllWarehouseNames(setWarehouses);
@@ -130,7 +133,7 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                     <SelectFieldForForm
                                         field={field}
                                         label={t("MovementFrom")}
-                                        placeholder="Select first movement side"
+                                        placeholder={t("SelectFirstMovementSide")}
                                         items={movementFromOptions}
                                         onChange={(value) => {
                                             field.onChange(value);
@@ -146,7 +149,7 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                     <SelectFieldForForm
                                         field={field}
                                         label={t("MovementTo")}
-                                        placeholder="Select second movement side"
+                                        placeholder={t("SelectSecondMovementSide")}
                                         items={movementToOptions}
                                         onChange={(value) => {
                                             field.onChange(value);
@@ -165,7 +168,7 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                         <SelectFieldForForm
                                             field={field}
                                             label={t("DepartmentFrom")}
-                                            placeholder="Select a department"
+                                            placeholder={t("SelectDepartment")}
                                             items={departments}
                                         />
                                     )}
@@ -179,7 +182,7 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                         <SelectFieldForForm
                                             field={field}
                                             label={t("WarehouseFrom")}
-                                            placeholder="Select a warehouse"
+                                            placeholder={t("SelectWarehouse")}
                                             items={warehouses}
                                         />
                                     )}
@@ -193,7 +196,7 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                         <SelectFieldForForm
                                             field={field}
                                             label={t("SupplierFrom")}
-                                            placeholder="Select a supplier"
+                                            placeholder={t("SelectSupplier")}
                                             items={suppliers}
                                         />
                                     )}
@@ -207,7 +210,7 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                         <SelectFieldForForm
                                             field={field}
                                             label={t("WarehouseTo")}
-                                            placeholder="Select a warehouse"
+                                            placeholder={t("SelectWarehouse")}
                                             items={warehouses}
                                         />
                                     )}
@@ -216,8 +219,6 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                         </div>
                     </CardContent>
                 </Card>
-
-                {/* Material Information Card */}
                 <Card className="bg-[var(--card-background)]">
                     <CardHeader>
                         <h2 className="text-lg font-semibold">{t("MaterialInformations")}</h2>
@@ -231,11 +232,11 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                     <ComboSelectFieldForForm
                                         field={field}
                                         label={t("Material")}
-                                        placeholder="search a material"
-                                        emptyBox={t("No material found")}
+                                        placeholder={t("SearchMaterial")}
+                                        emptyBox={t("NoMaterialFound")}
                                         form={form}
                                         name="parentMaterialId"
-                                        selectText={t("Select material")}
+                                        selectText={t("SelectMaterial")}
                                         items={materialsOptions}
                                         onChange={(value) => {
                                             field.onChange(value);
@@ -254,12 +255,12 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                         <ComboSelectFieldForForm
                                             field={field}
                                             label={t("ChildMaterial")}
-                                            placeholder="Select a child material"
+                                            placeholder={t("SelectChildMaterial")}
                                             items={materialsChildOptions}
                                             form={form}
-                                            emptyBox={t("No options")}
+                                            emptyBox={t("NoOptions")}
                                             name="childMaterialId"
-                                            selectText={t("Select an option")}
+                                            selectText={t("SelectOption")}
                                         />
                                         <Button
                                             variant="outline"
@@ -281,7 +282,7 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                             control={form.control}
                             name="quantity"
                             render={({ field }) => (
-                                <TextInputFieldForForm placeholder="" label={t("Quantity")} field={field}/>
+                                <TextInputFieldForForm placeholder="" label={t("Quantity")} field={field} />
                             )}
                         />
                         <FormField
@@ -300,12 +301,12 @@ export default function MovementForm({ form, onSubmit, movementFromOptions, move
                                         <ComboSelectFieldForForm
                                             field={field}
                                             label={t("Model")}
-                                            placeholder="Select a Model"
+                                            placeholder={t("SelectModel")}
                                             items={modelsOptions}
                                             form={form}
-                                            emptyBox={t("No options")}
+                                            emptyBox={t("NoOptions")}
                                             name="modelId"
-                                            selectText={t("Select an option")}
+                                            selectText={t("SelectOption")}
                                         />
                                     </div>
                                 )}

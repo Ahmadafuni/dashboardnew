@@ -11,8 +11,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   materialCategory,
   materialCategoryId,
+  updateMaterialCategoryModal
 } from "@/store/MaterialCategory.ts";
-import { updateMaterialCategoryModal } from "@/store/MaterialCategory.ts";
 import {
   Dialog,
   DialogContent,
@@ -29,8 +29,8 @@ type Props = {
 };
 
 export default function UpdateMaterialCategory({
-  getMaterialCategories,
-}: Props) {
+                                                 getMaterialCategories,
+                                               }: Props) {
   const categoryId = useRecoilValue(materialCategoryId);
   const [open, setOpen] = useRecoilState(updateMaterialCategoryModal);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,13 +50,13 @@ export default function UpdateMaterialCategory({
     setIsLoading(true);
     try {
       const updateMaterialCategory = await axios.put(
-        `materialcategory/${categoryId}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
+          `materialcategory/${categoryId}`,
+          data,
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
       );
       toast.success(updateMaterialCategory.data.message);
       getMaterialCategories();
@@ -71,26 +71,26 @@ export default function UpdateMaterialCategory({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{t("Update Material Category")}</DialogTitle>
-        </DialogHeader>
-        <MaterialCategoryForm form={form} onSubmit={onSubmit} />
-        <DialogFooter>
-          <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-          <Button type="submit" disabled={isLoading} form="materialCategory">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Update")
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("UpdateMaterialCategory")}</DialogTitle>
+          </DialogHeader>
+          <MaterialCategoryForm form={form} onSubmit={onSubmit} />
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
+            <Button type="submit" disabled={isLoading} form="materialCategory">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Update")
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

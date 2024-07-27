@@ -24,7 +24,6 @@ export default function NewMaterial() {
   const [isLoading, setIsLoading] = useState(false);
   const setMaterialCategoryList = useSetRecoilState(materialCategoryList);
 
-  // Form fields
   const form = useForm<z.infer<typeof parentMaterialSchema>>({
     resolver: zodResolver(parentMaterialSchema),
     defaultValues: {
@@ -39,7 +38,7 @@ export default function NewMaterial() {
       hasChildren: false,
     },
   });
-  // Form submit function
+
   const onSubmit = async (data: z.infer<typeof parentMaterialSchema>) => {
     setIsLoading(true);
     try {
@@ -62,34 +61,33 @@ export default function NewMaterial() {
 
   useEffect(() => {
     getAllMaterialCategoriesList(setMaterialCategoryList);
-  }, []);
+  }, [setMaterialCategoryList]);
+
   return (
-    <div className="w-full space-y-2">
-      <NewMaterialCategory
-        getMaterialCategories={() =>
-          getAllMaterialCategoriesList(setMaterialCategoryList)
-        }
-      />
-      <div className="w-full space-y-1 flex items-center">
-        <BackButton />
-        <h1 className="text-3xl font-bold w-full">{t("New Material")}</h1>
-      </div>
-      <Separator />
-      <div className="space-y-1">
-        <MaterialForm form={form} onSubmit={onSubmit} />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="material">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Add")
-            )}
-          </Button>
+      <div className="w-full space-y-2">
+        <NewMaterialCategory
+            getMaterialCategories={() => getAllMaterialCategoriesList(setMaterialCategoryList)}
+        />
+        <div className="w-full space-y-1 flex items-center">
+          <BackButton />
+          <h1 className="text-3xl font-bold w-full">{t("NewMaterial")}</h1>
+        </div>
+        <Separator />
+        <div className="space-y-1">
+          <MaterialForm form={form} onSubmit={onSubmit} />
+          <div className="flex justify-end">
+            <Button type="submit" disabled={isLoading} form="material">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Add")
+              )}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
   );
 }

@@ -64,26 +64,26 @@ export default function UpdateSupplier({ getSuppliers }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{t("Update Supplier")}</DialogTitle>
-        </DialogHeader>
-        <SupplierForm form={form} onSubmit={onSubmit} />
-        <DialogFooter>
-          <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-          <Button type="submit" disabled={isLoading} form="supplier">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Update")
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("UpdateSupplier")}</DialogTitle>
+          </DialogHeader>
+          <SupplierForm form={form} onSubmit={onSubmit} />
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
+            <Button type="submit" disabled={isLoading} form="supplier">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Update")
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

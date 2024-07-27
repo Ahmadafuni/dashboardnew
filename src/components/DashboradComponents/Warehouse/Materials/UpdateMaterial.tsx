@@ -25,7 +25,7 @@ export default function UpdateMaterial() {
   const [material, setMaterial] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
   const setMaterialCategoryList = useSetRecoilState(materialCategoryList);
-  // Form fields
+
   const form = useForm<z.infer<typeof parentMaterialSchema>>({
     resolver: zodResolver(parentMaterialSchema),
     defaultValues: {
@@ -41,18 +41,18 @@ export default function UpdateMaterial() {
     },
     values: material,
   });
-  // Form submit function
+
   const onSubmit = async (data: z.infer<typeof parentMaterialSchema>) => {
     setIsLoading(true);
     try {
       const updateMaterial = await axios.put(
-        `material/parent/${materialID}`,
-        data,
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
+          `material/parent/${materialID}`,
+          data,
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
       );
       toast.success(updateMaterial.data.message);
       setIsLoading(false);
@@ -64,34 +64,34 @@ export default function UpdateMaterial() {
       setIsLoading(false);
     }
   };
-  // Load material data on component mount
+
   useEffect(() => {
     getAllMaterialCategoriesList(setMaterialCategoryList);
     getMaterialById(setMaterial, materialID);
-  }, []);
+  }, [setMaterialCategoryList, materialID]);
 
   return (
-    <div className="w-full space-y-2">
-      <div className="w-full space-y-1 flex items-center">
-        <BackButton />
-        <h1 className="text-3xl font-bold w-full">Update Material</h1>
-      </div>
-      <Separator />
-      <div className="space-y-1">
-        <MaterialForm form={form} onSubmit={onSubmit} />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isLoading} form="material">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </>
-            ) : (
-              t("Update")
-            )}
-          </Button>
+      <div className="w-full space-y-2">
+        <div className="w-full space-y-1 flex items-center">
+          <BackButton />
+          <h1 className="text-3xl font-bold w-full">{t("UpdateMaterial")}</h1>
+        </div>
+        <Separator />
+        <div className="space-y-1">
+          <MaterialForm form={form} onSubmit={onSubmit} />
+          <div className="flex justify-end">
+            <Button type="submit" disabled={isLoading} form="material">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Update")
+              )}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
   );
 }

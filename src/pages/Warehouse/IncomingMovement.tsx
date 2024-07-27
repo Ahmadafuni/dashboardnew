@@ -12,7 +12,6 @@ import {
 import { materialMovementList } from "@/store/MaterialMovement";
 import NewMovement from "@/components/DashboradComponents/Warehouse/MaterialMovement/NewMovement.tsx";
 
-
 export default function IncomingMovement() {
     const { t } = useTranslation();
 
@@ -26,13 +25,13 @@ export default function IncomingMovement() {
     const movementToOptions = [{ label: t("Warehouse"), value: "Warehouse" }];
 
     const materialMovementsColumns: ColumnDef<any>[] = [
-        { accessorKey: "invoiceNumber", header: t("Invoice Number") },
-        { accessorKey: "parentMaterialName", header: t("Parent Material Name") },
-        { accessorKey: "childMaterialName", header: t("Child Material Name") },
-        { accessorKey: "movedFrom", header: t("Moved From") },
-        { accessorKey: "movedTo", header: t("Moved To") },
+        { accessorKey: "invoiceNumber", header: t("InvoiceNumber") },
+        { accessorKey: "parentMaterialName", header: t("ParentMaterialName") },
+        { accessorKey: "childMaterialName", header: t("ChildMaterialName") },
+        { accessorKey: "movedFrom", header: t("MovedFrom") },
+        { accessorKey: "movedTo", header: t("MovedTo") },
         { accessorKey: "quantity", header: t("Quantity") },
-        { accessorKey: "unitOfQuantity", header: t("Unit Of Quantity") },
+        { accessorKey: "unitOfQuantity", header: t("UnitOfQuantity") },
         {
             accessorKey: "movementDate",
             header: t("Date"),
@@ -41,12 +40,11 @@ export default function IncomingMovement() {
                 return isNaN(date.getTime()) ? "Invalid Date" : date.toLocaleDateString();
             },
         },
-        { accessorKey: "modelName", header: t("Model Name") },
+        { accessorKey: "modelName", header: t("ModelName") },
         { accessorKey: "description", header: t("Description") },
         {
             header: t("Action"),
             cell: ({ row }) => {
-
                 return (
                     <div className="flex gap-1">
                         <DeleteConfirmationDialog
@@ -79,7 +77,7 @@ export default function IncomingMovement() {
     return (
         <div className="w-full space-y-2">
             <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold w-full">{t("Incoming Material Movements")}</h1>
+                <h1 className="text-3xl font-bold w-full">{t("IncomingMaterialMovements")}</h1>
                 <Separator />
             </div>
             <NewMovement movementFromOptions={movementFromOptions} movementToOptions={movementToOptions} movementType="INCOMING" />

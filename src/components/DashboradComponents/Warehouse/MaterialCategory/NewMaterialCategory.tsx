@@ -29,7 +29,6 @@ export default function NewMaterialCategory({ getMaterialCategories }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useRecoilState(newMaterialCategoryModal);
 
-  // Form fields
   const form = useForm<z.infer<typeof materialCategorySchema>>({
     resolver: zodResolver(materialCategorySchema),
     defaultValues: {
@@ -60,26 +59,26 @@ export default function NewMaterialCategory({ getMaterialCategories }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{t("New Material Category")}</DialogTitle>
-        </DialogHeader>
-        <MaterialCategoryForm form={form} onSubmit={onSubmit} />
-        <DialogFooter>
-          <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-          <Button type="submit" disabled={isLoading} form="materialCategory">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Add")
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("NewMaterialCategory")}</DialogTitle>
+          </DialogHeader>
+          <MaterialCategoryForm form={form} onSubmit={onSubmit} />
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
+            <Button type="submit" disabled={isLoading} form="materialCategory">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Add")
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

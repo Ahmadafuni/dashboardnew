@@ -28,7 +28,6 @@ export default function NewWarehouse({ getWarehouse }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useRecoilState(newWarehouseModal);
 
-  // Form fields
   const form = useForm<z.infer<typeof warehouseSchema>>({
     resolver: zodResolver(warehouseSchema),
     defaultValues: {
@@ -52,7 +51,7 @@ export default function NewWarehouse({ getWarehouse }: Props) {
       getWarehouse();
       form.reset();
       setIsLoading(false);
-      setOpen(false); // Close dialog after successful submission
+      setOpen(false);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -62,26 +61,26 @@ export default function NewWarehouse({ getWarehouse }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{t("New Warehouse")}</DialogTitle>
-        </DialogHeader>
-        <WarehouseForm form={form} onSubmit={onSubmit} />
-        <DialogFooter>
-          <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
-          <Button type="submit" disabled={isLoading} form="warehouse">
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("Please wait")}
-              </>
-            ) : (
-              t("Add")
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{t("NewWarehouse")}</DialogTitle>
+          </DialogHeader>
+          <WarehouseForm form={form} onSubmit={onSubmit} />
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)}>{t("Cancel")}</Button>
+            <Button type="submit" disabled={isLoading} form="warehouse">
+              {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("PleaseWait")}
+                  </>
+              ) : (
+                  t("Add")
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }

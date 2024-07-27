@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import ChildMaterialForm from "./ChildMaterialForm";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -11,7 +11,11 @@ import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {updateChildMaterialModal, childMaterialId, childMaterial} from "@/store/ChildMaterial";
+import {
+  updateChildMaterialModal,
+  childMaterialId,
+  childMaterial,
+} from "@/store/ChildMaterial";
 import {
   Dialog,
   DialogContent,
@@ -70,7 +74,7 @@ export default function UpdateChildMaterial({ getChildMaterialByParentId }: Prop
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t("Update Child Material")}</DialogTitle>
+            <DialogTitle>{t("UpdateChildMaterial")}</DialogTitle>
           </DialogHeader>
           <ChildMaterialForm form={form} onSubmit={onSubmit} />
           <DialogFooter>
@@ -79,7 +83,7 @@ export default function UpdateChildMaterial({ getChildMaterialByParentId }: Prop
               {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t("Please wait")}
+                    {t("PleaseWait")}
                   </>
               ) : (
                   t("Update")
