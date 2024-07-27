@@ -125,7 +125,7 @@ export default function Sidebar() {
                     marginLeft: "0px",
                   }}
                 >
-                  <span style={{ marginRight: "10px" }}>Department Name</span>
+                  <span style={{ marginRight: "10px" }}>Department</span>
                   <AlignJustify onClick={() => setIsCollapsed(!isCollapsed)} />
                 </div>
               )}

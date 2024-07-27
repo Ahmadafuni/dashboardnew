@@ -24,6 +24,7 @@ export default function Topbar() {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
   const [user, setUser] = useRecoilState(userInfo);
+  const { t } = useTranslation();
 
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === "en" ? "ar" : "en";
@@ -127,7 +128,7 @@ export default function Topbar() {
                   <DropdownMenuItem>
                     <div className="flex items-center" onClick={logout}>
                       <LogOut className="mr-2 h-4 w-4" />
-                      <span>Logout</span>
+                      <span> {t("Logout")}</span>
                     </div>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

@@ -353,6 +353,7 @@
 
   "AddSupplier": "Add Supplier",
   "AddWarehouse": "Add Warehouse",
-  "Clear": "Clear"
+  "Clear": "Clear",
+  "Logout": "Logout"
 
 }

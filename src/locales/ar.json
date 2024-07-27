@@ -359,7 +359,9 @@
   "OutgoingMaterialMovements": "حركات المواد الصادرة",
   "AddSupplier": "إضافة مورد",
   "AddWarehouse": "إضافة مستودع",
-  "Clear": "مسح"
+  "Clear": "مسح",
+  "Logout": "تسجيل الخروج"
+
 
 
 }
