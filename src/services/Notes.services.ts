@@ -19,14 +19,18 @@ export const getAllNotes = async (setData: Dispatch<SetStateAction<any>>) => {
 };
 
 export const getCurrentNotes = async (
-  setData: Dispatch<SetStateAction<any>>
+  setData: Dispatch<SetStateAction<any>>,
+  userDepartmentId: number
 ) => {
   try {
-    const { data } = await axios.get("notes/current-notes", {
-      headers: {
-        Authorization: `bearer ${Cookies.get("access_token")}`,
-      },
-    });
+    const { data } = await axios.get(
+      `notes/current-notes/${userDepartmentId}`,
+      {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      }
+    );
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {

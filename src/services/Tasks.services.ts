@@ -10,6 +10,7 @@ export const getAllTasks = async (setData: Dispatch<SetStateAction<any>>) => {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    console.log(data);
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -17,15 +18,18 @@ export const getAllTasks = async (setData: Dispatch<SetStateAction<any>>) => {
     }
   }
 };
+
 export const getCurrentTasks = async (
-  setData: Dispatch<SetStateAction<any>>
+  setData: Dispatch<SetStateAction<any>>,
+  userDepartmentId: number
 ) => {
   try {
-    const { data } = await axios.get("task/current/task", {
+    const { data } = await axios.get(`task/current/task/${userDepartmentId}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    console.log(data);
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
