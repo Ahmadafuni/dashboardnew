@@ -19,12 +19,11 @@ import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { format } from "date-fns";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-
 interface Props {
   works: WorkType;
   setWorks: any;
   setSelectedSizes: (sizes: string[]) => void;
-  setQuantityReceived: (quantity: any[]) => void; // Add the new prop
+  setQuantityReceived: (quantity: any[]) => void;
 }
 
 export default function OngoingTable({ works, setSelectedSizes, setQuantityReceived }: Props) {
@@ -34,6 +33,7 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
     }
     return quantity;
   };
+
   const setCurrentVariant = useSetRecoilState(currentVariantId);
   const setCurrentTrackingId = useSetRecoilState(currentTrackingId);
   const setPauseUnpause = useSetRecoilState(pauseUnpauseModal);
@@ -41,6 +41,7 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
   const setConfirmationOthers = useSetRecoilState(othersSendConfirmationModal);
   const setComplete = useSetRecoilState(completeModal);
   const user = useRecoilValue(userInfo);
+  const userRole = user?.userRole;
 
   const handleSendConfirmation = (item: any, type: string) => {
     const sizes = item.ModelVariant.Sizes ? JSON.parse(item.ModelVariant.Sizes).map((e: any) => e.label) : [];
@@ -48,12 +49,12 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
     setSelectedSizes(sizes);
     setQuantityReceived(quantityReceived);
     setCurrentVariant(item.ModelVariant.Id);
-     if(type ==="CONFIRMATION")
-       setConfirmationOthers(true);
-     else if (type ==="COMPLETE"){
-       setCurrentTrackingId(item.Id);
-       setComplete(true);
-     }
+    if (type === "CONFIRMATION")
+      setConfirmationOthers(true);
+    else if (type === "COMPLETE") {
+      setCurrentTrackingId(item.Id);
+      setComplete(true);
+    }
   };
 
   const handleSendCuttingConfirmation = (item: any) => {
@@ -62,6 +63,74 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
     setCurrentVariant(item.ModelVariant.Id);
     setCuttingConfirmation(true);
   };
+
+  const renderAdminRow = (item: any) => (
+      <>
+        <TableCell>{item.PrevStage?.Department?.Name || "N/A"}</TableCell>
+        <TableCell>{item.CurrentStage?.Department?.Name || "N/A"}</TableCell>
+        <TableCell>{item.NextStage?.Department?.Name || "N/A"}</TableCell>
+        <TableCell>{item.StartTime ? format(new Date(item.StartTime), "yyyy-MM-dd HH:mm:ss") : "N/A"}</TableCell>
+        <TableCell>
+          <Button
+              variant="secondary"
+              onClick={() =>
+                  window.open(
+                      `/models/viewdetails/${item.ModelVariant.Model.Id}`,
+                      "_blank"
+                  )
+              }
+          >
+            Details
+          </Button>
+        </TableCell>
+      </>
+  );
+
+  const renderUserRow = (item: any) => (
+      <>
+        <TableCell>{item.StartTime && format(new Date(item.StartTime), "dd/MM/yyyy HH:mm")}</TableCell>
+        <TableCell className="space-x-1 space-y-1">
+          {item.RunningStatus === "RUNNING" ? (
+              <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setCurrentVariant(item.ModelVariant.Id);
+                    setPauseUnpause(true);
+                  }}
+              >
+                Stop
+              </Button>
+          ) : (
+              <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setCurrentVariant(item.ModelVariant.Id);
+                    setPauseUnpause(true);
+                  }}
+              >
+                Continue
+              </Button>
+          )}
+          {user?.category === "CUTTING" ? (
+              <Button
+                  onClick={() => {
+                    handleSendCuttingConfirmation(item)
+                  }}
+              >
+                Send for Confirmation
+              </Button>
+          ) : user?.category !== "QUALITYASSURANCE" ? (
+              <Button onClick={() => handleSendConfirmation(item, "CONFIRMATION")}>
+                Send for Confirmation
+              </Button>
+          ) : (
+              <Button onClick={() => handleSendConfirmation(item, "COMPLETE")}>
+                Complete
+              </Button>
+          )}
+        </TableCell>
+      </>
+  );
 
   return (
       <div>
@@ -75,14 +144,26 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
                 <TableHead>Size</TableHead>
                 <TableHead>Target Quantity</TableHead>
                 <TableHead>Received Quantity</TableHead>
-                <TableHead>Start Time</TableHead>
-                <TableHead>Action</TableHead>
+                {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
+                    <>
+                      <TableHead>Prev Stage</TableHead>
+                      <TableHead>Current Stage</TableHead>
+                      <TableHead>Next Stage</TableHead>
+                      <TableHead>Start Time</TableHead>
+                      <TableHead>Action</TableHead>
+                    </>
+                ) : (
+                    <>
+                      <TableHead>Start Time</TableHead>
+                      <TableHead>Action</TableHead>
+                    </>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
               {works.inProgress.length <= 0 && (
                   <TableRow>
-                    <TableCell colSpan={8} className="h-24 text-center">
+                    <TableCell colSpan={userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? 10 : 8} className="h-24 text-center">
                       No results.
                     </TableCell>
                   </TableRow>
@@ -96,54 +177,16 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
                         <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                         <TableCell>
                           {JSON.parse(item.ModelVariant.Sizes)
-                              .map((e:any) => e.label)
+                              .map((e: any) => e.label)
                               .join(", ")}
                         </TableCell>
                         <TableCell>{item.ModelVariant.Quantity}</TableCell>
                         <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
-                        <TableCell>
-                          {item.StartTime && format(new Date(item.StartTime), "dd/mm/yyyy HH:mm")}
-                        </TableCell>
-                        <TableCell className="space-x-1 space-y-1">
-                          {item.RunningStatus === "RUNNING" ? (
-                              <Button
-                                  variant="destructive"
-                                  onClick={() => {
-                                    setCurrentVariant(item.ModelVariant.Id);
-                                    setPauseUnpause(true);
-                                  }}
-                              >
-                                Stop
-                              </Button>
-                          ) : (
-                              <Button
-                                  variant="secondary"
-                                  onClick={() => {
-                                    setCurrentVariant(item.ModelVariant.Id);
-                                    setPauseUnpause(true);
-                                  }}
-                              >
-                                Continue
-                              </Button>
-                          )}
-                          {user?.category === "CUTTING" ? (
-                              <Button
-                                  onClick={() => {
-                                    handleSendCuttingConfirmation(item)
-                                  }}
-                              >
-                                Send for Confirmation
-                              </Button>
-                          ) : user?.category !== "QUALITYASSURANCE" ? (
-                              <Button onClick={() => handleSendConfirmation(item,"CONFIRMATION")}>
-                                Send for Confirmation
-                              </Button>
-                          ) : (
-                              <Button onClick={() => handleSendConfirmation(item,"COMPLETE")}>
-                                Complete
-                              </Button>
-                          )}
-                        </TableCell>
+                        {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
+                            renderAdminRow(item)
+                        ) : (
+                            renderUserRow(item)
+                        )}
                       </TableRow>
                   ))}
             </TableBody>

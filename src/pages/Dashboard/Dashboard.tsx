@@ -6,15 +6,19 @@ import OthersSendForConfirmation from "@/components/DashboradComponents/Dashboar
 import PausingUnpausingReasoneModal from "@/components/DashboradComponents/Dashboard/PausingUnpausingReasoneModal";
 import RejectVariantDialog from "@/components/DashboradComponents/Dashboard/RejectVariantDialog";
 import { Separator } from "@/components/ui/separator";
-import { getAllWork } from "@/services/Dashboard.services";
+import {getAllTracking, getAllWork} from "@/services/Dashboard.services";
 import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AwaitingTable from "@/components/DashboradComponents/Dashboard/AwaitingTable.tsx";
 import CompleteDialog from "@/components/DashboradComponents/Dashboard/CompleteDialog.tsx";
+import {useRecoilValue} from "recoil";
+import {userInfo} from "@/store/authentication.ts";
 
 export default function Dashboard() {
     const { t } = useTranslation();
+
+    const user = useRecoilValue(userInfo);
 
     const [works, setWorks] = useState<WorkType>({
         awaiting: [],
@@ -27,18 +31,25 @@ export default function Dashboard() {
         return workList.some((item: { NextStage: null; }) => item.NextStage === null);
     };
 
-    const hideConfirmationTable = hasNullNextStage(works.awaiting) ||
-        hasNullNextStage(works.inProgress) ||
-        hasNullNextStage(works.completed) ||
-        hasNullNextStage(works.givingConfirmation);
+    const hideConfirmationTable = !(
+        user?.userRole === "FACTORYMANAGER" ||
+        !hasNullNextStage(works.awaiting) &&
+        !hasNullNextStage(works.inProgress) &&
+        !hasNullNextStage(works.completed) &&
+        !hasNullNextStage(works.givingConfirmation)
+    );
 
 
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
     const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
 
     useEffect(() => {
-        getAllWork(setWorks);
-    }, []);
+        if (user?.userRole === "FACTORYMANAGER") {
+            getAllTracking(setWorks);
+        } else {
+            getAllWork(setWorks);
+        }
+    }, [user]);
 
     return (
         <div className="w-full p-4 space-y-6">

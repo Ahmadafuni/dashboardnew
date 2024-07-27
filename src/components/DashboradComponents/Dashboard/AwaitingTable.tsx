@@ -1,5 +1,5 @@
 import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
     Table,
     TableBody,
@@ -13,26 +13,82 @@ import {
     rejectVariant,
     startVariant,
 } from "@/services/Dashboard.services";
-import {WorkType} from "@/types/Dashboard/Dashboard.types";
+import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import ConfirmRejectAlertDialog from "./ConfirmRejectAlertDialog";
-import {useRecoilValue} from "recoil";
-import {userInfo} from "@/store/authentication";
+import { useRecoilValue } from "recoil";
+import { userInfo } from "@/store/authentication";
+import { format } from "date-fns";
 
 interface Props {
     works: WorkType;
     setWorks: any;
 }
 
-export default function AwaitingTable({works, setWorks}: Props) {
-    console.log("Works",works)
+export default function AwaitingTable({ works, setWorks }: Props) {
     const user = useRecoilValue(userInfo);
-    console.log("AwaitingTable", works.awaiting);
+    const userRole = user?.userRole;
+
     const renderQuantity = (quantity: any) => {
         if (Array.isArray(quantity)) {
             return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
         }
         return quantity;
     };
+
+    const renderAdminRow = (item: any) => (
+        <>
+            <TableCell>{item.PrevStage?.Department?.Name || "N/A"}</TableCell>
+            <TableCell>{item.CurrentStage?.Department?.Name || "N/A"}</TableCell>
+            <TableCell>{item.NextStage?.Department?.Name || "N/A"}</TableCell>
+            <TableCell>{item.StartTime ? format(new Date(item.StartTime), "yyyy-MM-dd HH:mm:ss") : "N/A"}</TableCell>
+            <TableCell>
+                <Button
+                    variant="secondary"
+                    onClick={() =>
+                        window.open(
+                            `/models/viewdetails/${item.ModelVariant.Model.Id}`,
+                            "_blank"
+                        )
+                    }
+                >
+                    Details
+                </Button>
+            </TableCell>
+        </>
+    );
+
+    const renderUserRow = (item: any) => (
+        <TableCell className="space-x-1 space-y-1">
+            {item.MainStatus === "TODO" ? (
+                <BasicConfirmationDialog
+                    btnText="Start"
+                    takeAction={() => startVariant(setWorks, item.ModelVariant.Id)}
+                    className=""
+                />
+            ) : (
+                <ConfirmRejectAlertDialog
+                    acceptVariant={() => confirmVariant(setWorks, item.Id)}
+                    rejectVariant={() => rejectVariant(setWorks, item.Id)}
+                    quantityReceivedFromPreviousDep={renderQuantity(
+                        item.QuantityInKg !== null
+                            ? item.QuantityInNum
+                            : item.QuantityDelivered
+                    )}
+                />
+            )}
+            <Button
+                variant="secondary"
+                onClick={() =>
+                    window.open(
+                        `/models/viewdetails/${item.ModelVariant.Model.Id}`,
+                        "_blank"
+                    )
+                }
+            >
+                Details
+            </Button>
+        </TableCell>
+    );
 
     return (
         <div>
@@ -46,7 +102,17 @@ export default function AwaitingTable({works, setWorks}: Props) {
                             <TableHead>Size</TableHead>
                             <TableHead>Target Quantity</TableHead>
                             <TableHead>Received Quantity</TableHead>
-                            <TableHead>Action</TableHead>
+                            {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
+                                <>
+                                    <TableHead>Prev Stage</TableHead>
+                                    <TableHead>Current Stage</TableHead>
+                                    <TableHead>Next Stage</TableHead>
+                                    <TableHead>Start Time</TableHead>
+                                    <TableHead>Action</TableHead>
+                                </>
+                            ) : (
+                                <TableHead>Action</TableHead>
+                            )}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -73,50 +139,16 @@ export default function AwaitingTable({works, setWorks}: Props) {
                                             .join(", ")}
                                     </TableCell>
                                     <TableCell>{item.ModelVariant.Quantity}</TableCell>
-                                    {/* I check the QuantityInKg to Know that TrackingId belongs to Cutting*/}
                                     {item?.QuantityInKg != null ? (
-                                        <>
-                                            <TableCell>{renderQuantity(item.QuantityInNum)}</TableCell>
-                                        </>
+                                        <TableCell>{renderQuantity(item.QuantityInNum)}</TableCell>
                                     ) : (
-                                        <>
-                                            {/* The Process: if we have QuantityDelivered from dep,
-                                             this QuantityDelivered should be the QuantityReceived for current Dep. */}
-                                            <TableCell>{renderQuantity(item.MainStatus == "CHECKING"? item.QuantityDelivered : item.QuantityReceived )}</TableCell>
-                                        </>
+                                        <TableCell>{renderQuantity(item.MainStatus === "CHECKING" ? item.QuantityDelivered : item.QuantityReceived)}</TableCell>
                                     )}
-                                    <TableCell className="space-x-1 space-y-1">
-                                        {item.MainStatus === "TODO" ? (
-                                            <BasicConfirmationDialog
-                                                btnText="Start"
-                                                takeAction={() =>
-                                                    startVariant(setWorks, item.ModelVariant.Id)
-                                                }
-                                                className=""
-                                            />
-                                        ) : (
-                                            <ConfirmRejectAlertDialog
-                                                acceptVariant={() => confirmVariant(setWorks, item.Id)}
-                                                rejectVariant={() => rejectVariant(setWorks, item.Id)}
-                                                quantityReceivedFromPreviousDep={renderQuantity(
-                                                    item.QuantityInKg !== null
-                                                        ? item.QuantityInNum
-                                                        : item.QuantityDelivered
-                                                )}
-                                            />
-                                        )}
-                                        <Button
-                                            variant="secondary"
-                                            onClick={() =>
-                                                window.open(
-                                                    `/models/viewdetails/${item.ModelVariant.Model.Id}`,
-                                                    "_blank"
-                                                )
-                                            }
-                                        >
-                                            Details
-                                        </Button>
-                                    </TableCell>
+                                    {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
+                                        renderAdminRow(item)
+                                    ) : (
+                                        renderUserRow(item)
+                                    )}
                                 </TableRow>
                             ))}
                     </TableBody>

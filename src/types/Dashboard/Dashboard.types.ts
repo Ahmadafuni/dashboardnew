@@ -22,6 +22,7 @@ type Tracking = {
   Notes: string | null;
   ModelVariant: ModelVariant;
   StartTime: Date | null;
+  EndTime: Date | null;
   RunningStatus: string;
   QuantityInNum: number | null;
   MainStatus: "AWAITING" | "TODO" | "INPROGRESS" | "DONE" | "CHECKING";
