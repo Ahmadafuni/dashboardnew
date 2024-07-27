@@ -29,7 +29,8 @@ export default function Notification({ user }: Props) {
 
     const getAllNotification = async () => {
         try {
-            const { data } = await axios.get("notification/", {
+            const url = (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") ? "notification/all" : "notification/";
+            const { data } = await axios.get(url, {
                 headers: {
                     Authorization: `bearer ${Cookies.get("access_token")}`,
                 },
@@ -41,10 +42,11 @@ export default function Notification({ user }: Props) {
             }
         }
     };
-
     const getUnreadNotificationCount = async () => {
         try {
-            const { data } = await axios.get("notification/unread-count", {
+            const url = (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") ? "notification/unread-count/all" : "notification/unread-count";
+
+            const { data } = await axios.get(url, {
                 headers: {
                     Authorization: `bearer ${Cookies.get("access_token")}`,
                 },
