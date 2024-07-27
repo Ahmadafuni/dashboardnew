@@ -1,4 +1,3 @@
-import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -8,9 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { completeVariant } from "@/services/Dashboard.services";
 import { userInfo } from "@/store/authentication";
 import {
+  completeModal, currentTrackingId,
   currentVariantId,
   cuttingSendConfirmationModal,
   othersSendConfirmationModal,
@@ -20,6 +19,7 @@ import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { format } from "date-fns";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
+
 interface Props {
   works: WorkType;
   setWorks: any;
@@ -27,7 +27,7 @@ interface Props {
   setQuantityReceived: (quantity: any[]) => void; // Add the new prop
 }
 
-export default function OngoingTable({ works, setWorks, setSelectedSizes, setQuantityReceived }: Props) {
+export default function OngoingTable({ works, setSelectedSizes, setQuantityReceived }: Props) {
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
       return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
@@ -35,18 +35,25 @@ export default function OngoingTable({ works, setWorks, setSelectedSizes, setQua
     return quantity;
   };
   const setCurrentVariant = useSetRecoilState(currentVariantId);
+  const setCurrentTrackingId = useSetRecoilState(currentTrackingId);
   const setPauseUnpause = useSetRecoilState(pauseUnpauseModal);
   const setCuttingConfirmation = useSetRecoilState(cuttingSendConfirmationModal);
   const setConfirmationOthers = useSetRecoilState(othersSendConfirmationModal);
+  const setComplete = useSetRecoilState(completeModal);
   const user = useRecoilValue(userInfo);
 
-  const handleSendConfirmation = (item: any) => {
+  const handleSendConfirmation = (item: any, type: string) => {
     const sizes = item.ModelVariant.Sizes ? JSON.parse(item.ModelVariant.Sizes).map((e: any) => e.label) : [];
     const quantityReceived = item.QuantityReceived || [];
     setSelectedSizes(sizes);
     setQuantityReceived(quantityReceived);
     setCurrentVariant(item.ModelVariant.Id);
-    setConfirmationOthers(true);
+     if(type ==="CONFIRMATION")
+       setConfirmationOthers(true);
+     else if (type ==="COMPLETE"){
+       setCurrentTrackingId(item.Id);
+       setComplete(true);
+     }
   };
 
   const handleSendCuttingConfirmation = (item: any) => {
@@ -128,17 +135,13 @@ export default function OngoingTable({ works, setWorks, setSelectedSizes, setQua
                                 Send for Confirmation
                               </Button>
                           ) : user?.category !== "QUALITYASSURANCE" ? (
-                              <Button onClick={() => handleSendConfirmation(item)}>
+                              <Button onClick={() => handleSendConfirmation(item,"CONFIRMATION")}>
                                 Send for Confirmation
                               </Button>
                           ) : (
-                              <BasicConfirmationDialog
-                                  btnText="Complete"
-                                  takeAction={() => {
-                                    completeVariant(setWorks, item.Id);
-                                  }}
-                                  className=""
-                              />
+                              <Button onClick={() => handleSendConfirmation(item,"COMPLETE")}>
+                                Complete
+                              </Button>
                           )}
                         </TableCell>
                       </TableRow>

@@ -10,6 +10,11 @@ export const currentVariantId = atom({
   default: 0,
 });
 
+export const currentTrackingId = atom({
+  key: "currentTrackingId",
+  default: 0,
+});
+
 export const pauseUnpauseModal = atom({
   key: "pauseUnpauseModal",
   default: false,
@@ -22,5 +27,10 @@ export const cuttingSendConfirmationModal = atom({
 
 export const othersSendConfirmationModal = atom({
   key: "othersSendConfirmationModal",
+  default: false,
+});
+
+export const completeModal = atom({
+  key: "completeModal",
   default: false,
 });

@@ -11,6 +11,7 @@ import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AwaitingTable from "@/components/DashboradComponents/Dashboard/AwaitingTable.tsx";
+import CompleteDialog from "@/components/DashboradComponents/Dashboard/CompleteDialog.tsx";
 
 export default function Dashboard() {
     const { t } = useTranslation();
@@ -37,6 +38,11 @@ export default function Dashboard() {
                 selectedSizes={selectedSizes}
             />
             <OthersSendForConfirmation
+                getAllWorks={() => getAllWork(setWorks)}
+                selectedSizes={selectedSizes}
+                quantityReceived={quantityReceived}
+            />
+            <CompleteDialog
                 getAllWorks={() => getAllWork(setWorks)}
                 selectedSizes={selectedSizes}
                 quantityReceived={quantityReceived}
