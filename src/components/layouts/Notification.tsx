@@ -75,7 +75,7 @@ export default function Notification({ user }: Props) {
 
     const clearAllNotifications = async () => {
         try {
-            await axios.put(`notification/mark-all-read`, null, {
+            await axios.put(`notification/clear-all`, null, {
                 headers: {
                     Authorization: `bearer ${Cookies.get("access_token")}`,
                 },
