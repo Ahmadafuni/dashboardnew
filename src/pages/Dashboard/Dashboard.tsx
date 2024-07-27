@@ -23,6 +23,16 @@ export default function Dashboard() {
         givingConfirmation: [],
     });
 
+    const hasNullNextStage = (workList: any) => {
+        return workList.some((item: { NextStage: null; }) => item.NextStage === null);
+    };
+
+    const hideConfirmationTable = hasNullNextStage(works.awaiting) ||
+        hasNullNextStage(works.inProgress) ||
+        hasNullNextStage(works.completed) ||
+        hasNullNextStage(works.givingConfirmation);
+
+
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
     const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
 
@@ -59,7 +69,7 @@ export default function Dashboard() {
                 setSelectedSizes={setSelectedSizes}
                 setQuantityReceived={setQuantityReceived} // Pass the setter for quantity received
             />
-            <OnConfirmationTable works={works} />
+            {!hideConfirmationTable && <OnConfirmationTable works={works} />}
             <CompletedTable works={works} />
         </div>
     );
