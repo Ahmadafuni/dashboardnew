@@ -43,6 +43,8 @@ export default function Login() {
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
     try {
+      console.log("data is : " + data.username);
+
       const result = await axios.post("auth/login", data);
       setUser(result.data.data.user);
       await Cookies.set("access_token", result.data.data.access_token);

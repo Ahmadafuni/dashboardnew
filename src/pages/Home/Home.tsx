@@ -33,12 +33,9 @@ import { Download, Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
-import { useRecoilValue } from "recoil";
-import { userInfo } from "../../store/authentication.ts";
 
 export default function Home() {
   const { t } = useTranslation();
-  const user = useRecoilValue(userInfo);
   //Notes
   const [notes, setNotes] = useState<NoteType[]>([]);
   //Tasks
@@ -168,17 +165,14 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    console.log("user info :"+user?.userDepartment + " " + user?.userRole);
-    
-    if (user?.userDepartmentId !== undefined) {
-      getCurrentNotes(setNotes, user.userDepartmentId);
-      getCurrentTasks(setTasks, user.userDepartmentId);
-    }
-  }, [user?.userDepartmentId]);
+    getCurrentNotes(setNotes);
+    getCurrentTasks(setTasks);
+  }, []);
 
+  console.log("the fetched tasks are :", tasks);
   return (
     <div className="w-full p-4 space-y-6">
-      <SubmitTask getTasks={() => getCurrentTasks(setTasks,user!.userDepartmentId)} />
+      <SubmitTask getTasks={() => getCurrentTasks(setTasks)} />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t("Home")}</h1>
         <Separator />

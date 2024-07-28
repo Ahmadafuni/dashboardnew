@@ -20,16 +20,15 @@ export const getAllTasks = async (setData: Dispatch<SetStateAction<any>>) => {
 };
 
 export const getCurrentTasks = async (
-  setData: Dispatch<SetStateAction<any>>,
-  userDepartmentId: number
+  setData: Dispatch<SetStateAction<any>>
 ) => {
   try {
-    const { data } = await axios.get(`task/current/task/${userDepartmentId}`, {
+    const { data } = await axios.get(`task/current/task`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log(data);
+    console.log("Tasks data are : ", data);
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
