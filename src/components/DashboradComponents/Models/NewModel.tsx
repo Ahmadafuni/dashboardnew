@@ -165,7 +165,6 @@ export default function NewModel() {
           handleFileChange={handleFileChange}
         />
       </div>
-      <h2>23442</h2>
       <NewModelVarient />
       <div className="flex justify-end">
         <Button type="submit" disabled={isLoading} form="model">
