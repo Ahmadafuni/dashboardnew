@@ -54,6 +54,7 @@ export default function NewModel() {
   const setCategoryOne = useSetRecoilState(productCategoryOneList);
   const setCategoryTwo = useSetRecoilState(productCategoryTwoList);
   const setProductCatalogue = useSetRecoilState(productCatalogueList);
+
   // Files
   const [files, setFiles] = useState({});
   const handleFileChange = (e: any) => {
@@ -127,6 +128,7 @@ export default function NewModel() {
 
   // Page on load
   useEffect(() => {
+    setVarients([]);
     getAllProductCataloguesList(setProductCatalogue);
     getAllProductCategoryOneList(setCategoryOne);
     getAllProductCategoryTwoList(setCategoryTwo);
@@ -163,6 +165,7 @@ export default function NewModel() {
           handleFileChange={handleFileChange}
         />
       </div>
+      <h2>23442</h2>
       <NewModelVarient />
       <div className="flex justify-end">
         <Button type="submit" disabled={isLoading} form="model">
