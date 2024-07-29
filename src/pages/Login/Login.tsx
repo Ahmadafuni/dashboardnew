@@ -11,7 +11,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { loginSchema } from "@/form_schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import { userInfo } from "../../store/authentication.ts";
+import { userInfo } from "@/store/authentication.ts";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { toast } from "sonner";
@@ -22,16 +22,11 @@ import { Loader2 } from "lucide-react";
 import Cookies from "js-cookie";
 
 export default function Login() {
-  // Loding
+
   const [isLoading, setIsLoading] = useState(false);
-
-  // User State
   const setUser = useSetRecoilState(userInfo);
-
-  // Navigation state
   const navigate = useNavigate();
 
-  // Form fields
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
