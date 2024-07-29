@@ -96,9 +96,11 @@ export default function Orders() {
             ) : (
               <BasicConfirmationDialog
                 btnText={t("HoldOrder")}
-                takeAction={() => holdOrder(setOrders, row.original.Id)}
+                takeAction={(reason: string) => holdOrder(setOrders, row.original.Id, reason)}
                 className="bg-orange-500 hover:bg-orange-600"
+                showInput={true}
               />
+
             )}
           </div>
         );

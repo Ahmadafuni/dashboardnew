@@ -63,7 +63,6 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const user = useRecoilValue(userInfo); // Get user info from global state
 
-  console.log("log",user);
   useEffect(() => {
     const handleResize = () => {
       setIsCollapsed(window.innerWidth <= 768);

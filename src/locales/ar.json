@@ -370,5 +370,10 @@
   "BesharaFactoryManagement": "إدارة مصنع بشارة",
   "LoginToBesharaDashboard": "تسجيل الدخول إلى لوحة تحكم بشارة",
   "Password": "كلمة المرور",
-  "Login": "تسجيل الدخول"
+  "Login": "تسجيل الدخول",
+  "CollectionName": "اسم المجموعة",
+  "NewCollection": "مجموعة جديدة",
+  "UpdateCollection": "تحديث المجموعة",
+  "NewProductCatalogueDetailsfor": "تفاصيل كتالوج المنتج الجديد",
+  "Reason": "السبب"
 }

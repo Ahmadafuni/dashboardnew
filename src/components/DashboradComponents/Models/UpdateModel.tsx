@@ -80,6 +80,7 @@ export default function UpdateModel() {
       PrintLocation: "",
       Description: "",
       DemoModelNumber: "",
+      ReasonText: ""
     },
     values: currentModel,
   });
@@ -109,6 +110,7 @@ export default function UpdateModel() {
       formData.append("PrintLocation", data.PrintLocation);
       formData.append("Description", data.Description);
       formData.append("ModelName", data.ModelName);
+      formData.append("ReasonText", data.ReasonText);
 
       const updateModel = await axios.put(`model/${modelId}`, formData, {
         headers: {

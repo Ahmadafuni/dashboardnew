@@ -42,15 +42,15 @@ export default function NewUsers() {
   // Form submit function
   const onSubmit = async (data: z.infer<typeof userSchema>) => {
     setIsLoading(true);
-    if (!file) {
-      toast.error("Profile photo is required!");
-      setIsLoading(false);
-      return;
-    }
+
     const formData = new FormData();
-    formData.append("profiles", file);
+    if (file) {
+      formData.append("profiles", file);
+    }
+
     const userInfo = JSON.stringify(data);
     formData.append("userInfo", userInfo);
+
     try {
       const newUser = await axios.post("auth/", formData, {
         headers: {

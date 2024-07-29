@@ -129,7 +129,7 @@ export default function NewProductCatalogueDetail() {
         <BackButton />
         <h1 className="text-3xl font-bold">
           {/* @ts-expect-error */}
-          New Product Catalouge Details for {pCatalogue?.name}
+            {t("NewProductCatalogueDetailsfor")} {pCatalogue?.name}
         </h1>
       </div>
       <Separator />

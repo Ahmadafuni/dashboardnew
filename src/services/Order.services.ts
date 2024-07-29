@@ -75,15 +75,20 @@ export const startOrder = async (
 };
 
 export const holdOrder = async (
-  setData: Dispatch<SetStateAction<any>>,
-  id: number
+    setData: Dispatch<SetStateAction<any>>,
+    id: number,
+    reasonText: string
 ) => {
   try {
-    await axios.get(`orders/hold/${id}`, {
-      headers: {
-        Authorization: `bearer ${Cookies.get("access_token")}`,
-      },
-    });
+    await axios.put(
+        `orders/hold/${id}`,
+        { reasonText },
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
+    );
     getAllOrders(setData);
     toast.success("Order on hold successfully!");
   } catch (error) {
@@ -93,12 +98,13 @@ export const holdOrder = async (
   }
 };
 
+
 export const restartOrder = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number
 ) => {
   try {
-    await axios.get(`orders/hold/${id}`, {
+    await axios.get(`orders/restart/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },

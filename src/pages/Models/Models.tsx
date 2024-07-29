@@ -8,7 +8,6 @@ import { EllipsisVertical, Eye, Pen, Plus, ScanEye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
-// import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   DropdownMenu,
@@ -29,10 +28,10 @@ export default function Models() {
   const { t } = useTranslation();
 
   const modelColumns: ColumnDef<ModelTypes>[] = [
-    // {
-    //   accessorKey: "OrderNumber",
-    //   header: "Order Number",
-    // },
+     {
+       accessorKey: "DemoModelNumber",
+       header: t("ModelNumber"),
+    },
     {
       header: t("ProductCatalogues"),
       cell: ({ row }) => {
@@ -62,10 +61,6 @@ export default function Models() {
       cell: ({ row }) => {
         return <p>{row.original.Template.TemplateName}</p>;
       },
-    },
-    {
-      accessorKey: "ModelNumber",
-      header: t("ModelNumber"),
     },
     {
       accessorKey: "ModelName",
@@ -144,7 +139,7 @@ export default function Models() {
         <BackButton />
         {models.length > 0 && (
           <h1 className="text-3xl font-bold w-full">
-            {models[0].OrderNumber}-{t("Models")}
+            {models[0].OrderNumber}
           </h1>
         )}
       </div>

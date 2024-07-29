@@ -38,6 +38,7 @@ export const userSchema = z.object({
       message: "Please enter valid phone number.",
     })
     .max(50),
+
   department: z
     .string({ required_error: "Please select department." })
     .min(1, { message: "Please select department." }),

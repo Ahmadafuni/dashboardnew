@@ -31,6 +31,7 @@ export const model = atom({
     PrintLocation: "",
     Description: "",
     DemoModelNumber: "",
+    ReasonText: "",
   },
 });
 

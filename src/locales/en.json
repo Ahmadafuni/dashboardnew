@@ -364,6 +364,10 @@
   "BesharaFactoryManagement": "Beshara Factory Management",
   "LoginToBesharaDashboard": "Login to Beshara dashboard.",
   "Password": "Password",
-  "Login": "Login"
-
+  "Login": "Login",
+  "CollectionName": "Collection Name",
+  "NewCollection": "New Collection",
+  "UpdateCollection": "Update Collection",
+  "NewProductCatalogueDetailsfor": "New Product Catalogue Details for",
+  "Reason": "Reason"
 }

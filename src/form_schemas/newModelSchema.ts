@@ -14,6 +14,7 @@ export const ModelSchema = z.object({
   LabelType: z.string(),
   PrintName: z.string(),
   PrintLocation: z.string(),
+  ReasonText: z.string(),
   Description: z.string(),
 });
 
@@ -32,6 +33,7 @@ export const UpdateModelSchema = z.object({
   LabelType: z.string(),
   PrintName: z.string(),
   PrintLocation: z.string(),
+  ReasonText: z.string(),
   Description: z.string(),
 });
 

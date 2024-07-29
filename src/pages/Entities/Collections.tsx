@@ -33,7 +33,7 @@ export default function Collections() {
   const collectionColumns: ColumnDef<CollectionType>[] = [
     {
       accessorKey: "CollectionName",
-      header: t("Collection Name"),
+      header: t("CollectionName"),
     },
     {
       accessorKey: "Description",

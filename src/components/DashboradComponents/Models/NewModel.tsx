@@ -76,6 +76,7 @@ export default function NewModel() {
       PrintName: "",
       PrintLocation: "",
       Description: "",
+      ReasonText: "",
       DemoModelNumber: "",
     },
   });
@@ -174,7 +175,7 @@ export default function NewModel() {
               {t("Please wait")}
             </>
           ) : (
-            t("Add")
+            t("AddModel")
           )}
         </Button>
       </div>
