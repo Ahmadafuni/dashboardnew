@@ -20,9 +20,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
-
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const setUser = useSetRecoilState(userInfo);
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function Login() {
       await Cookies.set("access_token", result.data.data.access_token);
       toast.success(result.data.message);
       setIsLoading(false);
-      navigate("/dashboard/dashboard");
+      navigate("/dashboard/home");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -53,54 +54,54 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-background text-foreground h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
-        <CardHeader>
-          <CardTitle>Beshara Factory Management</CardTitle>
-          <CardDescription>Login to Beshara dashboard.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <TextInputFieldForForm
-                    placeholder={"Username"}
-                    label={"Username"}
-                    field={field}
-                  />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <TextInputFieldForForm
-                    placeholder={"Password"}
-                    label={"Password"}
-                    field={field}
-                    type="password"
-                  />
-                )}
-              />
-              <div className="flex justify-end">
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Please wait
-                    </>
-                  ) : (
-                    "Login"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+      <div className="bg-background text-foreground h-screen flex items-center justify-center p-4">
+        <Card className="w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+          <CardHeader>
+            <CardTitle>{t("BesharaFactoryManagement")}</CardTitle>
+            <CardDescription>{t("LoginToBesharaDashboard")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                        <TextInputFieldForForm
+                            placeholder={t("Username")}
+                            label={t("Username")}
+                            field={field}
+                        />
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <TextInputFieldForForm
+                            placeholder={t("Password")}
+                            label={t("Password")}
+                            field={field}
+                            type="password"
+                        />
+                    )}
+                />
+                <div className="flex justify-end">
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          {t("PleaseWait")}
+                        </>
+                    ) : (
+                        t("Login")
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
   );
 }

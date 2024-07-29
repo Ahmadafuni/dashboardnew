@@ -360,8 +360,15 @@
   "AddSupplier": "إضافة مورد",
   "AddWarehouse": "إضافة مستودع",
   "Clear": "مسح",
-  "Logout": "تسجيل الخروج"
+  "Logout": "تسجيل الخروج",
 
+  "AssignedBy": "تم التعيين بواسطة",
+  "CreatedByDepartment": "تم الإنشاء بواسطة القسم",
+  "ActionConfirmation": "تأكيد الإجراء!",
+  "AreYouSure": "هل أنت متأكد أنك تريد اتخاذ هذا الإجراء!",
 
-
+  "BesharaFactoryManagement": "إدارة مصنع بشارة",
+  "LoginToBesharaDashboard": "تسجيل الدخول إلى لوحة تحكم بشارة",
+  "Password": "كلمة المرور",
+  "Login": "تسجيل الدخول"
 }

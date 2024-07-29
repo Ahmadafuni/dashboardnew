@@ -354,6 +354,16 @@
   "AddSupplier": "Add Supplier",
   "AddWarehouse": "Add Warehouse",
   "Clear": "Clear",
-  "Logout": "Logout"
+  "Logout": "Logout",
+
+  "AssignedBy": "Assigned By",
+  "CreatedByDepartment": "Created By Department",
+  "ActionConfirmation": "Action Confirmation!",
+  "AreYouSure": "Are you sure you want to take this action!",
+
+  "BesharaFactoryManagement": "Beshara Factory Management",
+  "LoginToBesharaDashboard": "Login to Beshara dashboard.",
+  "Password": "Password",
+  "Login": "Login"
 
 }

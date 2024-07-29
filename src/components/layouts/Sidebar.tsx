@@ -83,7 +83,7 @@ export default function Sidebar() {
     {
       gName: t("Dashboard"),
       childs: [
-        { name: t("Home"), link: "/dashboard/home", icon: Home, userRole: ["FACTORYMANAGER","ENGINEERING","CUTTING","TAILORING","QUALITYASSURANCE","PRINTING"] },
+        { name: t("Home"), link: "/dashboard/home", icon: Home, userRole: ["FACTORYMANAGER","ENGINEERING","CUTTING","TAILORING","QUALITYASSURANCE","PRINTING","WAREHOUSEMANAGER"] },
         { name: t("Dashboard"), link: "/dashboard/dashboard", icon: LayoutDashboard, userRole: ["FACTORYMANAGER","ENGINEERING","CUTTING","TAILORING","QUALITYASSURANCE","PRINTING"] },
         { name: t("Reports"), link: "/dashboard/reports", icon: FileBarChart2, userRole: ["FACTORYMANAGER"] },
       ],
@@ -158,7 +158,7 @@ export default function Sidebar() {
                           marginLeft: "0px",
                         }}
                     >
-                      <span style={{ marginRight: "10px" }}>Department</span>
+                      <span style={{ marginRight: "10px" }}> {t("Department")}</span>
                       <AlignJustify onClick={() => setIsCollapsed(!isCollapsed)} />
                     </div>
                 )}
