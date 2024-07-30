@@ -106,3 +106,35 @@ export const getAllDropdownOptions = async () => {
     throw error;
   }
 };
+
+export const filterModels = async (
+  setData: Dispatch<SetStateAction<any>>,
+  searchParams: any
+) => {
+  console.log("search parameters are : ", searchParams);
+  try {
+    const response = await axios.post("model/search", searchParams, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    console.log("new filter data are : ", response.data);
+
+    const reports = response.data.map((item: any) => ({
+      modelName: item.ModelName,
+      modelNumber: item.ModelNumber,
+      productCatalogues: item.Catalogue,
+      productCategoryOne: item.CategoryOne,
+      productCategoryTwo: item.CategoryOne,
+      textiles: item.TextileName,
+      detailColor: item.ColorName,
+      detailSize: item.Size,
+      detailQuantity: item.Quantity,
+    }));
+
+    setData(reports);
+  } catch (error) {
+    console.error("Failed to fetch dropdown options:", error);
+    throw error;
+  }
+};

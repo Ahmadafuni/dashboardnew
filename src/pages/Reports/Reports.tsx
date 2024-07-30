@@ -8,7 +8,6 @@ import SelectFieldForForm from "@/components/common/SelectFieldForForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { getMaterialReportMovements } from "@/services/MaterialMovements.services";
 import DataTable from "@/components/common/DataTable";
 import { productCatalogueList } from "@/store/ProductCatalogue";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
@@ -16,9 +15,8 @@ import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { templatePatternList } from "@/store/TemplatePattern";
 import { templateTypeList } from "@/store/TemplateType";
 import { textileList } from "@/store/Textiles";
-import { getAllDropdownOptions } from "@/services/Model.services";
+import { filterModels, getAllDropdownOptions } from "@/services/Model.services";
 import FieldWithCheckbox from "@/components/common/CheckboxWIthField";
-import { log } from "console";
 
 export default function Reports() {
   const { t } = useTranslation();
@@ -116,12 +114,14 @@ export default function Reports() {
     label: textile.TextileName,
   }));
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  // Log the reports whenever they change
+  useEffect(() => {
+    console.log("reports are : ", reports);
+  }, [reports]);
 
+  const onSubmit = async (data: any) => {
     try {
-      const response = await data;
-      setReports(response.data);
+      await filterModels(setReports, data);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
@@ -182,10 +182,10 @@ export default function Reports() {
                     fieldProps={{
                       placeholder: "Status",
                       items: [
-                        { label: t("AWAITING"), value: "1" },
-                        { label: t("ON GOING"), value: "2" },
-                        { label: t("ON CONFIRM"), value: "3" },
-                        { label: t("COMPLETED"), value: "4" },
+                        { label: t("AWAITING"), value: "AWAITING" },
+                        { label: t("ON GOING"), value: "ONGOING" },
+                        { label: t("ON CONFIRM"), value: "ONCONFIRM" },
+                        { label: t("COMPLETED"), value: "COMPLETED" },
                       ],
                     }}
                     isEnabled={isStatusEnabled}
