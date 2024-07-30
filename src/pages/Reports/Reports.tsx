@@ -120,7 +120,7 @@ export default function Reports() {
     console.log(data);
 
     try {
-      const response = await (data);
+      const response = await data;
       setReports(response.data);
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -144,9 +144,9 @@ export default function Reports() {
   const reportsColumns = [
     { accessorKey: "modelName", header: t("Model Name") },
     { accessorKey: "modelNumber", header: t("Model Number") },
-    { accessorKey: "productCatalogues", header: t("product Catalogues") },
-    { accessorKey: "productCategoryOne", header: t("product Category One") },
-    { accessorKey: "productCategoryTwo", header: t("product Category Two") },
+    { accessorKey: "productCatalogues", header: t("Product Catalogues") },
+    { accessorKey: "productCategoryOne", header: t("Product Category One") },
+    { accessorKey: "productCategoryTwo", header: t("Product Category Two") },
     { accessorKey: "textiles", header: t("Textiles") },
     { accessorKey: "detailColor", header: t("Detail Color") },
     { accessorKey: "detailSize", header: t("Detail Size") },
