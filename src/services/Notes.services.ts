@@ -22,7 +22,7 @@ export const getCurrentNotes = async (
   setData: Dispatch<SetStateAction<any>>
 ) => {
   try {
-    const { data } = await axios.get("notes/current-notes", {
+    const { data } = await axios.get(`notes/current-notes`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
