@@ -6,4 +6,5 @@ export type ModelVarientsTypes = {
   Quantity: string;
   Status: string;
   TemplateId: string;
+  RunningStatus: string;
 };

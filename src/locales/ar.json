@@ -375,5 +375,7 @@
   "NewCollection": "مجموعة جديدة",
   "UpdateCollection": "تحديث المجموعة",
   "NewProductCatalogueDetailsfor": "تفاصيل كتالوج المنتج الجديد",
-  "Reason": "السبب"
+  "Reason": "السبب",
+  "Pause": "إيقاف",
+  "Restart": "إعادة تشغيل"
 }

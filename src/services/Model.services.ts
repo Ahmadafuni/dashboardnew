@@ -93,3 +93,52 @@ export const getModelSummary = async (
     }
   }
 };
+
+export const holdModel = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number,
+    reasonText: string
+) => {
+  try {
+    await axios.put(
+        `model/hold/${id}`,
+        { reasonText },
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
+    );
+    // Replace getAllModels with your function to fetch updated models data
+    getAllModel(setData);
+    toast.success("Model on hold successfully!");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const restartModel = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number
+) => {
+  try {
+    await axios.put(
+        `model/restart/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
+    );
+    // Replace getAllModels with your function to fetch updated models data
+    getAllModel(setData);
+    toast.success("Model restarted successfully!");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};

@@ -2,7 +2,7 @@ import DataTable from "@/components/common/DataTable.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
-import { deleteModel, getModelsByOrderId } from "@/services/Model.services.ts";
+import {deleteModel, getModelsByOrderId, holdModel, restartModel} from "@/services/Model.services.ts";
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVertical, Eye, Pen, Plus, ScanEye } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -17,10 +17,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import BackButton from "@/components/common/BackButton";
-
+import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog.tsx";
 
 export default function Models() {
-  // Navigate
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -72,7 +71,28 @@ export default function Models() {
     },
     {
       accessorKey: "Status",
-      header: t("Status"),
+      cell: ({ row }) => {
+        return (
+            <div className="space-x-1">
+
+              {row.original.RunningStatus === "RUNNING" ? (
+                  <BasicConfirmationDialog
+                      btnText={t("Pause")}
+                      takeAction={(reason: string) => holdModel(setModels, row.original.Id, reason)}
+                      className="bg-orange-500 hover:bg-orange-600"
+                      showInput={true}
+                  />
+              ) : (
+                  <BasicConfirmationDialog
+                      btnText={t("Restart")}
+                      takeAction={() => restartModel(setModels, row.original.Id)}
+                      className="bg-green-500 hover:bg-green-600"
+                  />
+              )
+              }
+            </div>
+        )
+      },
     },
     {
       header: t("Action"),

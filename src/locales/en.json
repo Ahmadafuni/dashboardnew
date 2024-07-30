@@ -369,5 +369,7 @@
   "NewCollection": "New Collection",
   "UpdateCollection": "Update Collection",
   "NewProductCatalogueDetailsfor": "New Product Catalogue Details for",
-  "Reason": "Reason"
+  "Reason": "Reason",
+  "Pause": "Pause",
+  "Restart": "Restart"
 }

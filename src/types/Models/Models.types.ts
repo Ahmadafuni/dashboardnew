@@ -30,9 +30,5 @@ export type ModelTypes = {
   Images: string; // I want to store many images
   Status: string; // From backend
   Description: string;
+  RunningStatus: string;
 };
-
-/* To Discuss with Nafis
-ModelColorQuantity?: number; // given by the user
-ModeSizeQuantity?: number; // generated from backend = ModelColorQuantity * sizes
-*/
