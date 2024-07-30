@@ -15,6 +15,7 @@ type ModelVariant = {
   Quantity: number;
   Model: Model;
   Color: Color;
+  RunningStatus?: string
 };
 
 type Tracking = {

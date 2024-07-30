@@ -13,7 +13,6 @@ import {
   currentVariantId,
   cuttingSendConfirmationModal,
   othersSendConfirmationModal,
-  pauseUnpauseModal,
 } from "@/store/dashboard";
 import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { format } from "date-fns";
@@ -39,7 +38,6 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
 
   const setCurrentVariant = useSetRecoilState(currentVariantId);
   const setCurrentTrackingId = useSetRecoilState(currentTrackingId);
-  const setPauseUnpause = useSetRecoilState(pauseUnpauseModal);
   const setCuttingConfirmation = useSetRecoilState(cuttingSendConfirmationModal);
   const setConfirmationOthers = useSetRecoilState(othersSendConfirmationModal);
   const setComplete = useSetRecoilState(completeModal);
@@ -93,27 +91,7 @@ export default function OngoingTable({ works, setSelectedSizes, setQuantityRecei
       <>
         <TableCell>{item.StartTime && format(new Date(item.StartTime), "dd/MM/yyyy HH:mm")}</TableCell>
         <TableCell className="space-x-1 space-y-1">
-          {item.RunningStatus === "RUNNING" ? (
-              <Button
-                  variant="destructive"
-                  onClick={() => {
-                    setCurrentVariant(item.ModelVariant.Id);
-                    setPauseUnpause(true);
-                  }}
-              >
-                {t('Stop')}
-              </Button>
-          ) : (
-              <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setCurrentVariant(item.ModelVariant.Id);
-                    setPauseUnpause(true);
-                  }}
-              >
-                {t('Continue')}
-              </Button>
-          )}
+
           {user?.category === "CUTTING" ? (
               <Button
                   onClick={() => {
