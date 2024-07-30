@@ -21,9 +21,7 @@ export const getModelsByOrderId = async (
   }
 };
 
-export const getAllModel = async (
-    setData: Dispatch<SetStateAction<any>>,
-) => {
+export const getAllModel = async (setData: Dispatch<SetStateAction<any>>) => {
   try {
     const response = await axios.get("/model/allmodels", {
       headers: {
@@ -91,5 +89,20 @@ export const getModelSummary = async (
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  }
+};
+
+export const getAllDropdownOptions = async () => {
+  try {
+    const response = await axios.get("reports/getAlldata", {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch dropdown options:", error);
+    throw error;
   }
 };

@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import BackButton from "@/components/common/BackButton";
 
-
 export default function Models() {
   // Navigate
   const navigate = useNavigate();
