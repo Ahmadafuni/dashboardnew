@@ -111,26 +111,30 @@ export const filterModels = async (
   setData: Dispatch<SetStateAction<any>>,
   searchParams: any
 ) => {
-  console.log("search parameters are : ", searchParams);
+  console.log("search parameters are: ", searchParams);
   try {
     const response = await axios.post("model/search", searchParams, {
       headers: {
         Authorization: `Bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log("new filter data are : ", response.data);
+    console.log("new filter data are: ", response.data);
 
-    const reports = response.data.map((item: any) => ({
-      modelName: item.ModelName,
-      modelNumber: item.ModelNumber,
-      productCatalogues: item.Catalogue,
-      productCategoryOne: item.CategoryOne,
-      productCategoryTwo: item.CategoryOne,
-      textiles: item.TextileName,
-      detailColor: item.ColorName,
-      detailSize: item.Size,
-      detailQuantity: item.Quantity,
-    }));
+    const reports = response.data.data.flatMap((item: any) =>
+      item.Details.map((detail: any, index: number) => ({
+        modelName: index === 0 ? item.ModelName : "",
+        modelNumber: index === 0 ? item.ModelNumber : "",
+        productCatalogues: index === 0 ? item.ProductCatalog : "",
+        productCategoryOne: index === 0 ? item.CategoryOne : "",
+        productCategoryTwo: index === 0 ? item.CategoryTwo : "",
+        textiles: index === 0 ? item.Textiles : "",
+        detailColor: detail.Color,
+        detailSize: detail.Sizes,
+        detailQuantity: detail.Quantity,
+        totalDurationInDays: index === 0 ? item.TotalDurationInDays : "",
+        action: index === 0 ? item.Action : "",
+      }))
+    );
 
     setData(reports);
   } catch (error) {
