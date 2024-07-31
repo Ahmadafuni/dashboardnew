@@ -279,6 +279,8 @@ export default function Sidebar() {
   };
 
   const filteredMenus = filterMenusByRole(menus, user?.userRole || "");
+  const userDepartment = user?.userDepartment ? t(user.userDepartment) : "";
+
   return (
     <TooltipProvider>
       <div className="p-2 border-r-2">
@@ -300,7 +302,7 @@ export default function Sidebar() {
                 >
                   <span style={{ marginRight: "10px" }}>
                     {" "}
-                    {t(user!.userDepartment)}
+                    {t(userDepartment)}
                   </span>
                   <AlignJustify onClick={() => setIsCollapsed(!isCollapsed)} />
                 </div>
