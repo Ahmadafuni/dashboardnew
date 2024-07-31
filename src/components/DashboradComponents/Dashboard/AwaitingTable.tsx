@@ -129,8 +129,10 @@ export default function AwaitingTable({ works, setWorks }: Props) {
                             </TableRow>
                         )}
                         {works?.awaiting?.length > 0 &&
-                            works?.awaiting.map((item) => (
-                                <TableRow key={item.Id}>
+                            works?.awaiting.map((item) => {
+                            const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
+                            return (
+                                <TableRow key={item.Id} style={isPaused ? { backgroundColor: "orange" } : {}}>
                                     <TableCell className="font-medium">
                                         {item.ModelVariant.Model.DemoModelNumber}
                                     </TableCell>
@@ -152,7 +154,8 @@ export default function AwaitingTable({ works, setWorks }: Props) {
                                         renderUserRow(item)
                                     )}
                                 </TableRow>
-                            ))}
+                            );
+                            })}
                     </TableBody>
                 </Table>
             </div>

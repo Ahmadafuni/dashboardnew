@@ -85,8 +85,10 @@ export default function OnConfirmationTable({ works }: Props) {
                                 </TableCell>
                             </TableRow>
                         )}
-                        {works.givingConfirmation.map((item) => (
-                            <TableRow key={item.Id}>
+                        {works.givingConfirmation.map((item) =>  {
+                            const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
+                            return (
+                             <TableRow key={item.Id} style={isPaused ? { backgroundColor: "orange" } : {}}>
                                 <TableCell className="font-medium">
                                     {item.ModelVariant.Model.DemoModelNumber}
                                 </TableCell>
@@ -124,7 +126,8 @@ export default function OnConfirmationTable({ works }: Props) {
                                     </TableCell>
                                 )}
                             </TableRow>
-                        ))}
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </div>

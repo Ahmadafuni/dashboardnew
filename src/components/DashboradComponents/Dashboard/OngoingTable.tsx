@@ -201,26 +201,29 @@ export default function OngoingTable({ works, setWorks, setSelectedSizes, setQua
                             </TableRow>
                         )}
                         {works?.inProgress?.length > 0 &&
-                            works?.inProgress.map((item) => (
-                                <TableRow key={item.Id}>
-                                    <TableCell className="font-medium">
-                                        {item.ModelVariant.Model.DemoModelNumber}
-                                    </TableCell>
-                                    <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
-                                    <TableCell>
-                                        {JSON.parse(item.ModelVariant.Sizes)
-                                            .map((e: any) => e.label)
-                                            .join(", ")}
-                                    </TableCell>
-                                    <TableCell>{item.ModelVariant.Quantity}</TableCell>
-                                    <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
-                                    {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
-                                        renderAdminRow(item)
-                                    ) : (
-                                        renderUserRow(item)
-                                    )}
-                                </TableRow>
-                            ))}
+                            works?.inProgress.map((item) => {
+                                const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
+                                return (
+                                    <TableRow key={item.Id} style={isPaused ? { backgroundColor: "orange" } : {}}>
+                                        <TableCell className="font-medium">
+                                            {item.ModelVariant.Model.DemoModelNumber}
+                                        </TableCell>
+                                        <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
+                                        <TableCell>
+                                            {JSON.parse(item.ModelVariant.Sizes)
+                                                .map((e: any) => e.label)
+                                                .join(", ")}
+                                        </TableCell>
+                                        <TableCell>{item.ModelVariant.Quantity}</TableCell>
+                                        <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
+                                        {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
+                                            renderAdminRow(item)
+                                        ) : (
+                                            renderUserRow(item)
+                                        )}
+                                    </TableRow>
+                                );
+                            })}
                     </TableBody>
                 </Table>
             </div>
