@@ -17,16 +17,25 @@ import { templateTypeList } from "@/store/TemplateType";
 import { textileList } from "@/store/Textiles";
 import { filterModels, getAllDropdownOptions } from "@/services/Model.services";
 import FieldWithCheckbox from "@/components/common/CheckboxWIthField";
+import { departmentList } from "@/store/Department";
+import CheckboxWithTextField from "@/components/common/CheckboxWithTextField";
+import { orderList } from "@/store/Orders";
+import { modelList } from "@/store/Models";
+import { ColumnDef } from "@tanstack/react-table";
+import { ModelTypes } from "@/types/Models/Models.types.ts";
+import { ScanEye } from "lucide-react";
 
 export default function Reports() {
   const { t } = useTranslation();
   const form = useForm();
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
   const [isStartDateEnabled, setIsStartDateEnabled] = useState(false);
   const [isEndDateEnabled, setIsEndDateEnabled] = useState(false);
   const [isStatusEnabled, setStatusEnabled] = useState(false);
   const [isDepartmentsEnabled, setDepartmentsEnabled] = useState(false);
+  const [isDepartmentsNamesEnabled, setDepartmentsNamesEnabled] =
+    useState(false);
   const [isProductCatalogueEnabled, setProductCatalogueEnabled] =
     useState(false);
   const [isProductCategoryOneEnabled, setProductCategoryOneEnabled] =
@@ -36,13 +45,19 @@ export default function Reports() {
   const [isTextileEnabled, setTextileEnabled] = useState(false);
   const [isTemplateTypeEnabled, setTemplateTypeEnabled] = useState(false);
   const [isTemplatePatternEnabled, setTemplatePatternEnabled] = useState(false);
+  const [isOrderEnabled, setOrderEnabled] = useState(false);
+  const [isModelEnabled, setModelEnabled] = useState(false);
+  const [isBarcodeEnabled, setBarcodeEnabled] = useState(false);
 
+  const setDepartmentList = useSetRecoilState(departmentList);
   const setProductCatalogueList = useSetRecoilState(productCatalogueList);
   const setProductCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setProductCategoryTwoList = useSetRecoilState(productCategoryTwoList);
   const setTemplatePatternList = useSetRecoilState(templatePatternList);
   const setTemplateTypeList = useSetRecoilState(templateTypeList);
   const setTextileList = useSetRecoilState(textileList);
+  const setOrderList = useSetRecoilState(orderList);
+  const setModelList = useSetRecoilState(modelList);
 
   useEffect(() => {
     async function fetchData() {
@@ -50,12 +65,15 @@ export default function Reports() {
         const data = await getAllDropdownOptions();
         console.log("response data : ", data);
 
+        setDepartmentList(data.departments);
         setProductCatalogueList(data.productCatalogues);
         setProductCategoryOneList(data.productCategoryOne);
         setProductCategoryTwoList(data.productCategoryTwo);
         setTemplatePatternList(data.templatePattern);
         setTemplateTypeList(data.templateType);
         setTextileList(data.textiles);
+        setOrderList(data.orders);
+        setModelList(data.models);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
@@ -63,20 +81,31 @@ export default function Reports() {
 
     fetchData();
   }, [
+    setDepartmentList,
     setProductCatalogueList,
     setProductCategoryOneList,
     setProductCategoryTwoList,
     setTemplatePatternList,
     setTemplateTypeList,
     setTextileList,
+    setOrderList,
+    setModelList,
   ]);
 
+  const departmentsNamesOptions = useRecoilValue(departmentList);
   const productCatalogueOptions = useRecoilValue(productCatalogueList);
   const productCategoryOneOptions = useRecoilValue(productCategoryOneList);
   const productCategoryTwoOptions = useRecoilValue(productCategoryTwoList);
   const templatePatternOptions = useRecoilValue(templatePatternList);
   const templateTypeOptions = useRecoilValue(templateTypeList);
   const textilesOptions = useRecoilValue(textileList);
+  const ordersOptions = useRecoilValue(orderList);
+  const modelsOptions = useRecoilValue(modelList);
+
+  const departmentsNamesMenu = departmentsNamesOptions.map((dept: any) => ({
+    value: dept.Id + "",
+    label: dept.Name,
+  }));
 
   const productCatalogueMenu = productCatalogueOptions.map(
     (catalogue: any) => ({
@@ -113,11 +142,24 @@ export default function Reports() {
     value: textile.Id + "",
     label: textile.TextileName,
   }));
+  const ordersMenu = ordersOptions.map((ord: any) => ({
+    value: ord.Id + "",
+    label: ord.OrderNumber,
+  }));
 
-  // Log the reports whenever they change
-  useEffect(() => {
-    console.log("reports are : ", reports);
-  }, [reports]);
+  const barcodesMenu = modelsOptions.map((model: any) => {
+    return {
+      value: model.Id,
+      label: model.Barcode,
+    };
+  });
+
+  const modelNumbersMenu = modelsOptions.map((model: any) => {
+    return {
+      value: model.Id,
+      label: model.ModelNumber,
+    };
+  });
 
   const onSubmit = async (data: any) => {
     try {
@@ -141,7 +183,8 @@ export default function Reports() {
     });
   };
 
-  const reportsColumns = [
+  const reportsColumns: ColumnDef<any>[] = [
+    // { accessorKey: "modelId", header: t("Model Id") },
     { accessorKey: "modelName", header: t("Model Name") },
     { accessorKey: "modelNumber", header: t("Model Number") },
     { accessorKey: "productCatalogues", header: t("Product Catalogues") },
@@ -151,6 +194,25 @@ export default function Reports() {
     { accessorKey: "detailColor", header: t("Detail Color") },
     { accessorKey: "detailSize", header: t("Detail Size") },
     { accessorKey: "detailQuantity", header: t("Detail Quantity") },
+    {
+      header: t("Action"),
+      cell: ({ row }) => {
+        return (
+          <Button
+            className="text-white-600"
+            onClick={() =>
+              window.open(
+                `/models/viewdetails/${row.original.modelId}`,
+                "_blank"
+              )
+            }
+          >
+            <ScanEye className="mr-2 h-4 w-4" />
+            <span>{t("ViewSummary")}</span>
+          </Button>
+        );
+      },
+    },
   ];
 
   return (
@@ -173,7 +235,7 @@ export default function Reports() {
             {!isCardCollapsed && (
               <CardContent className="space-y-4">
                 {/* First Row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <FieldWithCheckbox
                     name="status"
                     label=""
@@ -199,7 +261,7 @@ export default function Reports() {
                     control={form.control}
                     fieldComponent={SelectFieldForForm}
                     fieldProps={{
-                      placeholder: "Departments Company",
+                      placeholder: "Departments Category",
                       items: [
                         { label: t("CUTTING"), value: "1" },
                         { label: t("TAILORING"), value: "2" },
@@ -212,6 +274,24 @@ export default function Reports() {
                       handleCheckboxChange(
                         setDepartmentsEnabled,
                         "departments",
+                        ""
+                      )
+                    }
+                  />
+                  <FieldWithCheckbox
+                    name="departmentsNames"
+                    label=""
+                    control={form.control}
+                    fieldComponent={SelectFieldForForm}
+                    fieldProps={{
+                      placeholder: "Departments Names",
+                      items: departmentsNamesMenu,
+                    }}
+                    isEnabled={isDepartmentsNamesEnabled}
+                    onCheckedChange={() =>
+                      handleCheckboxChange(
+                        setDepartmentsNamesEnabled,
+                        "departmentsNames",
                         ""
                       )
                     }
@@ -310,7 +390,6 @@ export default function Reports() {
                       )
                     }
                   />
-
                   <FieldWithCheckbox
                     name="templatePattern"
                     label=""
@@ -331,6 +410,47 @@ export default function Reports() {
                   />
                 </div>
 
+                {/* Fourth Row */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <CheckboxWithTextField
+                    name="orderNumber"
+                    placeholder="Order Number"
+                    emptyBox={t("NoOrderFound")}
+                    selectText={t("SelectOrder")}
+                    items={ordersMenu}
+                    control={form.control}
+                    form={form}
+                    isEnabled={isOrderEnabled}
+                    setEnabled={setOrderEnabled}
+                    setSelected={SelectFieldForForm}
+                  />
+                  <CheckboxWithTextField
+                    name="modelNumber"
+                    placeholder="Model Number"
+                    emptyBox={t("NoModelFound")}
+                    selectText={t("SelectModel")}
+                    items={modelNumbersMenu}
+                    control={form.control}
+                    form={form}
+                    isEnabled={isModelEnabled}
+                    setEnabled={setModelEnabled}
+                    setSelected={SelectFieldForForm}
+                  />
+                  <CheckboxWithTextField
+                    name="barcode"
+                    placeholder="Barcode"
+                    emptyBox={t("NoBarcodeFound")}
+                    selectText={t("SelectBarcode")}
+                    items={barcodesMenu}
+                    control={form.control}
+                    form={form}
+                    isEnabled={isBarcodeEnabled}
+                    setEnabled={setBarcodeEnabled}
+                    setSelected={SelectFieldForForm}
+                  />
+                </div>
+
+                {/* Fifth Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FieldWithCheckbox
                     name="startDate"
