@@ -166,6 +166,7 @@ export const filterModels = async (
         Authorization: `Bearer ${Cookies.get("access_token")}`,
       },
     });
+
     const reports = response.data.data.flatMap((item: any) =>
       item.Details.map((detail: any, index: number) => ({
         modelId: item.Id,
@@ -176,7 +177,7 @@ export const filterModels = async (
         productCategoryTwo: index === 0 ? item.CategoryTwo : "",
         textiles: index === 0 ? item.Textiles : "",
         detailColor: detail.Color,
-        detailSize: detail.Sizes,
+        detailSize: JSON.parse(detail.Sizes),
         detailQuantity: detail.Quantity,
         totalDurationInDays: index === 0 ? item.TotalDurationInDays : "",
         action: index === 0 ? item.Action : "",

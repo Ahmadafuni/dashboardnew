@@ -162,7 +162,6 @@ export default function Reports() {
 
   const onSubmit = async (data: any) => {
     try {
-      console.log("Form Data are : \n", data);
 
       await filterModels(setReports, data);
     } catch (error) {
