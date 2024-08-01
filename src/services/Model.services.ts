@@ -168,7 +168,7 @@ export const filterModels = async (
     });
     const reports = response.data.data.flatMap((item: any) =>
       item.Details.map((detail: any, index: number) => ({
-        modelId: item.Id,
+        modelId: item.ModelId,
         modelName: index === 0 ? item.ModelName : "",
         modelNumber: index === 0 ? item.ModelNumber : "",
         productCatalogues: index === 0 ? item.ProductCatalog : "",
