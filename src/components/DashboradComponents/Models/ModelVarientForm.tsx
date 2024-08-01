@@ -5,7 +5,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { colorList } from "@/store/Color";
 import { sizeList } from "@/store/Sizes";
 import { useRecoilValue } from "recoil";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   form: any;
@@ -17,7 +17,7 @@ export default function ModelVarientForm({ form, onSubmit }: Props) {
   const sizesList = useRecoilValue(sizeList);
   const { t } = useTranslation();
 
-    return (
+  return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}

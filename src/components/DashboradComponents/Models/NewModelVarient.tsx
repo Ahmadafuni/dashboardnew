@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export default function NewModelVarient() {
   // Dropdown
@@ -67,7 +67,6 @@ export default function NewModelVarient() {
         Sizes: data.Sizes,
       },
     ]);
-
     form.reset();
   };
   // Remove Varient
