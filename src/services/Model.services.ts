@@ -176,7 +176,7 @@ export const filterModels = async (
         productCategoryTwo: index === 0 ? item.CategoryTwo : "",
         textiles: index === 0 ? item.Textiles : "",
         detailColor: detail.Color,
-        detailSize: detail.Sizes,
+        detailSize: JSON.parse(detail.Sizes),
         detailQuantity: detail.Quantity,
         totalDurationInDays: index === 0 ? item.TotalDurationInDays : "",
         action: index === 0 ? item.Action : "",

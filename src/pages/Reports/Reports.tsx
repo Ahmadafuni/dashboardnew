@@ -488,11 +488,11 @@ export default function Reports() {
                   <Button
                     type="button"
                     onClick={handleReset}
-                    className="text-white-600"
+                    className="text-white-600 bg-[#ff0000]"
                   >
                     {t("RESET")}
                   </Button>
-                  <Button type="submit" className="text-white-600 bg-[#ff0000]">
+                  <Button type="submit" className="text-white-600">
                     {t("SEARCH")}
                   </Button>
                 </div>
