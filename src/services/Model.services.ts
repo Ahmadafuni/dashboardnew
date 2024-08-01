@@ -160,15 +160,12 @@ export const filterModels = async (
   setData: Dispatch<SetStateAction<any>>,
   searchParams: any
 ) => {
-  console.log("search parameters are: ", searchParams);
   try {
     const response = await axios.post("model/search", searchParams, {
       headers: {
         Authorization: `Bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log("new filter data are: ", response.data);
-
     const reports = response.data.data.flatMap((item: any) =>
       item.Details.map((detail: any, index: number) => ({
         modelId: item.Id,

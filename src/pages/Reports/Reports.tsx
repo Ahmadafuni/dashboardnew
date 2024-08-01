@@ -63,7 +63,6 @@ export default function Reports() {
     async function fetchData() {
       try {
         const data = await getAllDropdownOptions();
-        console.log("response data : ", data);
 
         setDepartmentList(data.departments);
         setProductCatalogueList(data.productCatalogues);
@@ -163,6 +162,8 @@ export default function Reports() {
 
   const onSubmit = async (data: any) => {
     try {
+      console.log("Form Data are : \n", data);
+
       await filterModels(setReports, data);
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -184,7 +185,6 @@ export default function Reports() {
   };
 
   const reportsColumns: ColumnDef<any>[] = [
-    // { accessorKey: "modelId", header: t("Model Id") },
     { accessorKey: "modelName", header: t("Model Name") },
     { accessorKey: "modelNumber", header: t("Model Number") },
     { accessorKey: "productCatalogues", header: t("Product Catalogues") },
@@ -279,7 +279,7 @@ export default function Reports() {
                     }
                   />
                   <FieldWithCheckbox
-                    name="departmentsNames"
+                    name="currentStage"
                     label=""
                     control={form.control}
                     fieldComponent={SelectFieldForForm}
@@ -291,7 +291,7 @@ export default function Reports() {
                     onCheckedChange={() =>
                       handleCheckboxChange(
                         setDepartmentsNamesEnabled,
-                        "departmentsNames",
+                        "currentStage",
                         ""
                       )
                     }

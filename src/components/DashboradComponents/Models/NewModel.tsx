@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import axios, { AxiosError } from "axios";
@@ -81,6 +81,8 @@ export default function NewModel() {
     },
   });
 
+  useEffect(() => {}, []);
+
   // Form submit function
   const onSubmit = async (data: z.infer<typeof ModelSchema>) => {
     if (varients.length <= 0) {
@@ -95,6 +97,14 @@ export default function NewModel() {
           formData.append("models", files[i]);
         }
       }
+      // const newVarientsSizes = varients
+      //   .flatMap((e: any) => e.Sizes.map((s: any) => s.label))
+      //   .join(",");
+      const newVarients = varients.map((varient: any) => ({
+        ...varient,
+        Sizes: varient.Sizes.map((s: any) => s.label),
+      }));
+      console.log("newVarients are ", newVarients);
 
       formData.append("DemoModelNumber", data.DemoModelNumber);
       formData.append("ProductCatalog", data.ProductCatalog);
@@ -108,7 +118,10 @@ export default function NewModel() {
       formData.append("PrintName", data.PrintName);
       formData.append("PrintLocation", data.PrintLocation);
       formData.append("Description", data.Description);
-      formData.append("Varients", JSON.stringify(varients));
+      formData.append("Varients", JSON.stringify(newVarients));
+
+      console.log("formData are : ", data);
+      console.log("formData  varients are : ", varients);
 
       const newModel = await axios.post(`model/${id}`, formData, {
         headers: {
