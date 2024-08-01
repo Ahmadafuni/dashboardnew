@@ -139,7 +139,7 @@ export default function AwaitingTable({ works, setWorks }: Props) {
                     {item.ModelVariant.Model.DemoModelNumber}
                   </TableCell>
                   <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
-                  <TableCell>{item.ModelVariant.Sizes.slice(1, -1)}</TableCell>
+                  <TableCell>{item.ModelVariant.Sizes}</TableCell>
                   <TableCell>{item.ModelVariant.Quantity}</TableCell>
                   {item?.QuantityInKg != null ? (
                     <TableCell>{renderQuantity(item.QuantityInNum)}</TableCell>
