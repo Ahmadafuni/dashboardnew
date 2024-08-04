@@ -156,7 +156,7 @@ export default function Reports() {
   const modelNumbersMenu = modelsOptions.map((model: any) => {
     return {
       value: model.Id,
-      label: model.ModelNumber,
+      label: model.DemoModelNumber,
     };
   });
 
@@ -184,7 +184,7 @@ export default function Reports() {
 
   const reportsColumns: ColumnDef<any>[] = [
     { accessorKey: "modelName", header: t("Model Name") },
-    { accessorKey: "modelNumber", header: t("Model Number") },
+    { accessorKey: "demoModelNumber", header: t("Demo Model Number") },
     { accessorKey: "productCatalogues", header: t("Product Catalogues") },
     { accessorKey: "productCategoryOne", header: t("Product Category One") },
     { accessorKey: "productCategoryTwo", header: t("Product Category Two") },
@@ -423,8 +423,8 @@ export default function Reports() {
                     setSelected={SelectFieldForForm}
                   />
                   <CheckboxWithTextField
-                    name="modelNumber"
-                    placeholder="Model Number"
+                    name="demoModelNumber"
+                    placeholder="Demo Model Number"
                     emptyBox={t("NoModelFound")}
                     selectText={t("SelectModel")}
                     items={modelNumbersMenu}

@@ -170,7 +170,7 @@ export const filterModels = async (
       item.Details.map((detail: any, index: number) => ({
         modelId: item.ModelId,
         modelName: index === 0 ? item.ModelName : "",
-        modelNumber: index === 0 ? item.ModelNumber : "",
+        demoModelNumber: index === 0 ? item.DemoModelNumber : "",
         productCatalogues: index === 0 ? item.ProductCatalog : "",
         productCategoryOne: index === 0 ? item.CategoryOne : "",
         productCategoryTwo: index === 0 ? item.CategoryTwo : "",
