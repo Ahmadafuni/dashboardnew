@@ -26,67 +26,53 @@ ChartJS.register(
   LinearScale
 );
 
-export default function OrderBarChart() {
-  const data = {
-    labels: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
+export default function OrderBarChart(props: any) {
+  const chartData = {
+    labels: props.labels[props.type],
     datasets: [
       {
-        label: "Orderls Finished",
-        data: [12, 19, 3, 17, 28, 24, 7, 25, 11, 14, 8, 18],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.5)",
-          "rgba(255, 159, 64, 0.5)",
-          "rgba(255, 205, 86, 0.5)",
-          "rgba(75, 192, 192, 0.5)",
-          "rgba(54, 162, 235, 0.5)",
-          "rgba(153, 102, 255, 0.5)",
-          "rgba(201, 203, 207, 0.5)",
-        ],
-        borderColor: "rgba(255, 99, 132, 1)",
+        label: "Orders Awaiting",
+        data: props.data.map((item: any) => item.pending),
+        backgroundColor: "rgba(255, 205, 86, 0.5)",
+        borderColor: "rgba(255, 205, 86, 1)",
+      },
+      {
+        label: "Orders In Progress",
+        data: props.data.map((item: any) => item.ongoing),
+        backgroundColor: "rgba(255,99,132,0.5)",
+        borderColor: "rgba(255,99,132, 1)",
+      },
+      {
+        label: "Orders Done",
+        data: props.data.map((item: any) => item.completed),
+        backgroundColor: "rgba(75, 192, 192, 0.5)",
+        borderColor: "rgba(75, 192, 192, 1)",
       },
     ],
   };
-  // const config = {
-  //   type: "bar",
-  //   data: data,
-  //   options: {
-  //     scales: {
-  //       y: {
-  //         beginAtZero: true,
-  //       },
-  //     },
-  //   },
-  // };
+
   return (
     <div>
       <div className="flex justify-end">
-        <Select defaultValue="Monthly">
+        <Select
+          defaultValue="monthly"
+          onValueChange={(value) => {
+            props.setType(value);
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select Time Span" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="Weekly">Weekly</SelectItem>
-              <SelectItem value="Monthly">Monthly</SelectItem>
-              <SelectItem value="Yearly">Yearly</SelectItem>
+              <SelectItem value="daily">Daily</SelectItem>
+              <SelectItem value="weekly">Weekly</SelectItem>
+              <SelectItem value="monthly">Monthly</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
-      <Bar data={data} />
+      <Bar data={chartData} />
     </div>
   );
 }

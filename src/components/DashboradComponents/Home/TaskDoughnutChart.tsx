@@ -26,14 +26,22 @@ ChartJS.register(
   ArcElement
 );
 
-export default function TaskDoughnutChart() {
+export default function TaskDoughnutChart(props: any) {
   const data = {
-    labels: ["Finished", "Not Finished"],
+    labels: ["Pending", "On Going", "Completed"],
     datasets: [
       {
         label: "Task Status",
-        data: [300, 50],
-        backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
+        data: [
+          props.statsData.PENDING,
+          props.statsData.ONGOING,
+          props.statsData.COMPLETED,
+        ],
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
         hoverOffset: 4,
       },
     ],
@@ -41,15 +49,20 @@ export default function TaskDoughnutChart() {
   return (
     <div>
       <div className="flex justify-end">
-        <Select defaultValue="Monthly">
+        <Select
+          defaultValue="monthly"
+          onValueChange={(value) => {
+            props.setType(value);
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select Time Span" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="Weekly">Weekly</SelectItem>
-              <SelectItem value="Monthly">Monthly</SelectItem>
-              <SelectItem value="Yearly">Yearly</SelectItem>
+              <SelectItem value="daily">Daily</SelectItem>
+              <SelectItem value="weekly">Weekly</SelectItem>
+              <SelectItem value="monthly">Monthly</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

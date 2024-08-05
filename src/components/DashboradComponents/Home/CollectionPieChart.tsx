@@ -26,13 +26,17 @@ ChartJS.register(
   ArcElement
 );
 
-export default function CollectionPieChart() {
+export default function CollectionPieChart(props: any) {
   const data = {
-    labels: ["In Progress", "Completed", "Awaiting"],
+    labels: ["Pending", "On Going", "Completed"],
     datasets: [
       {
-        label: "Order Status",
-        data: [300, 50, 100],
+        label: "Collections Status",
+        data: [
+          props.statsData.PENDING,
+          props.statsData.ONGOING,
+          props.statsData.COMPLETED,
+        ],
         backgroundColor: [
           "rgb(255, 99, 132)",
           "rgb(54, 162, 235)",
@@ -45,15 +49,20 @@ export default function CollectionPieChart() {
   return (
     <div>
       <div className="flex justify-end">
-        <Select defaultValue="Monthly">
+        <Select
+          defaultValue="monthly"
+          onValueChange={(value) => {
+            props.setType(value);
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select Time Span" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="Weekly">Weekly</SelectItem>
-              <SelectItem value="Monthly">Monthly</SelectItem>
-              <SelectItem value="Yearly">Yearly</SelectItem>
+              <SelectItem value="daily">Daily</SelectItem>
+              <SelectItem value="weekly">Weekly</SelectItem>
+              <SelectItem value="monthly">Monthly</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

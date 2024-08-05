@@ -1,12 +1,39 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form";
 import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
+import React from "react";
 
-const CheckboxWithTextField = (props: any) => {
+interface CheckboxWithTextFieldProps {
+  name: string;
+  label?: string;
+  placeholder?: string;
+  emptyBox: string;
+  selectText: string;
+  items: Array<{ value: string; label: string }>;
+  control: any;
+  form: any;
+  isEnabled: boolean;
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelected: (value: any) => void;
+}
+
+const CheckboxWithTextField: React.FC<CheckboxWithTextFieldProps> = ({
+  name,
+  label,
+  placeholder,
+  emptyBox,
+  selectText,
+  items,
+  control,
+  form,
+  isEnabled,
+  setEnabled,
+  setSelected,
+}) => {
   const handleCheckboxChange = () => {
-    props.setEnabled((prev: any) => {
+    setEnabled((prev) => {
       if (prev) {
-        props.form.setValue(props.name, "");
+        form.setValue(name, "");
       }
       return !prev;
     });
@@ -16,27 +43,27 @@ const CheckboxWithTextField = (props: any) => {
     <div className="flex items-center space-x-2">
       <Checkbox
         className="mt-8"
-        checked={props.isEnabled}
+        checked={isEnabled}
         onCheckedChange={handleCheckboxChange}
       />
       <FormField
-        name={props.name}
-        control={props.control}
+        name={name}
+        control={control}
         render={({ field }) => (
           <ComboSelectFieldForForm
             field={field}
-            label={props.label}
-            placeholder={props.placeholder}
-            emptyBox={props.emptyBox}
-            form={props.form}
-            name={props.name}
-            selectText={props.selectText}
-            items={props.items}
+            label={label ?? ""}
+            placeholder={placeholder ?? ""}
+            emptyBox={emptyBox}
+            form={form}
+            name={name}
+            selectText={selectText}
+            items={items}
             onChange={(value) => {
               field.onChange(value);
-              props.setSelected(value);
+              setSelected(value);
             }}
-            disabled={!props.isEnabled}
+            disabled={!isEnabled}
           />
         )}
       />

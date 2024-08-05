@@ -166,26 +166,119 @@ export const filterModels = async (
         Authorization: `Bearer ${Cookies.get("access_token")}`,
       },
     });
+
     const reports = response.data.data.flatMap((item: any) =>
-      item.Details.map((detail: any, index: number) => ({
-        modelId: item.ModelId,
-        modelName: index === 0 ? item.ModelName : "",
-        demoModelNumber: index === 0 ? item.DemoModelNumber : "",
-        productCatalogues: index === 0 ? item.ProductCatalog : "",
-        productCategoryOne: index === 0 ? item.CategoryOne : "",
-        productCategoryTwo: index === 0 ? item.CategoryTwo : "",
-        textiles: index === 0 ? item.Textiles : "",
-        detailColor: detail.Color,
-        detailSize: JSON.parse(detail.Sizes),
-        detailQuantity: detail.Quantity,
-        totalDurationInDays: index === 0 ? item.TotalDurationInDays : "",
-        action: index === 0 ? item.Action : "",
-      }))
+      item.Details.map((detail: any, index: number) => {
+        return {
+          modelStats: index === 0 ? item.ModelStats : "",
+          modelId: item.ModelId,
+          modelProgress: index === 0 ? item.ModelProgress : "skip",
+          modelName: index === 0 ? item.ModelName : "",
+          demoModelNumber: index === 0 ? item.DemoModelNumber : "",
+          productCatalogues: index === 0 ? item.ProductCatalog : "",
+          productCategoryOne: index === 0 ? item.CategoryOne : "",
+          productCategoryTwo: index === 0 ? item.CategoryTwo : "",
+          textiles: index === 0 ? item.Textiles : "",
+          detailColor: detail.Color,
+          detailSize: JSON.parse(detail.Sizes),
+          currentStage: detail.Quantity.StageName,
+          detailQuantity: Object.entries(detail.Quantity.QuantityDelivered)
+            .map(([key, value]) => `${key} : ${value}`)
+            .join(" , "),
+          totalDurationInDays: index === 0 ? item.TotalDurationInDays : "",
+          action: index === 0 ? item.Action : "",
+        };
+      })
     );
 
     setData(reports);
   } catch (error) {
-    console.error("Failed to fetch dropdown options:", error);
+    console.error("Failed to fetch report results:", error);
     throw error;
+  }
+};
+
+export const getModelsStats = async (
+  setData: Dispatch<SetStateAction<any>>,
+  type: string
+) => {
+  try {
+    const response = await axios.get("model/model-stats", {
+      params: type,
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+
+    console.log("Models Stats Are : ", response.data);
+
+    setData(response.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const getOrdersStats = async (
+  setData: Dispatch<SetStateAction<any>>,
+  type: string
+) => {
+  try {
+    const response = await axios.get("model/orders-stats", {
+      params: type,
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    console.log("Orders Stats Are : ", response.data);
+
+    setData(response.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const getCollectionsStats = async (
+  setData: Dispatch<SetStateAction<any>>,
+  type: string
+) => {
+  try {
+    const response = await axios.get("model/collections-stats", {
+      params: type,
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    console.log("Collections Stats Are : ", response.data);
+
+    setData(response.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+export const getTasksStats = async (
+  setData: Dispatch<SetStateAction<any>>,
+  type: string
+) => {
+  try {
+    const response = await axios.get("model/tasks-stats", {
+      params: type,
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    console.log("Tasks Stats Are : ", response.data);
+
+    setData(response.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
   }
 };

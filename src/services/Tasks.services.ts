@@ -26,7 +26,6 @@ export const getCurrentTasks = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log("Tasks data are : ", data);
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {

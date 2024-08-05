@@ -24,6 +24,7 @@ import { modelList } from "@/store/Models";
 import { ColumnDef } from "@tanstack/react-table";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
 import { ScanEye } from "lucide-react";
+import AnimatedProgressBar from "@/components/common/AnimatedProgressBar";
 
 export default function Reports() {
   const { t } = useTranslation();
@@ -103,7 +104,7 @@ export default function Reports() {
 
   const departmentsNamesMenu = departmentsNamesOptions.map((dept: any) => ({
     value: dept.Id + "",
-    label: dept.Name,
+    label: dept.StageName,
   }));
 
   const productCatalogueMenu = productCatalogueOptions.map(
@@ -142,25 +143,26 @@ export default function Reports() {
     label: textile.TextileName,
   }));
   const ordersMenu = ordersOptions.map((ord: any) => ({
-    value: ord.Id + "",
+    value: ord.OrderNumber,
     label: ord.OrderNumber,
   }));
 
   const barcodesMenu = modelsOptions.map((model: any) => {
     return {
-      value: model.Id,
+      value: model.Barcode,
       label: model.Barcode,
     };
   });
 
-  const modelNumbersMenu = modelsOptions.map((model: any) => {
+  const demoModelNumbersMenu = modelsOptions.map((model: any) => {
     return {
-      value: model.Id,
+      value: model.DemoModelNumber,
       label: model.DemoModelNumber,
     };
   });
 
   const onSubmit = async (data: any) => {
+
     try {
       await filterModels(setReports, data);
     } catch (error) {
@@ -184,14 +186,38 @@ export default function Reports() {
 
   const reportsColumns: ColumnDef<any>[] = [
     { accessorKey: "modelName", header: t("Model Name") },
+    {
+      header: t("Model Progress"),
+      cell: ({ row }) => {
+        return (
+          row.original.modelProgress != "skip" && (
+            <AnimatedProgressBar
+              id={`progress-bar-${row.index}`}
+              progress={parseFloat(row.original.modelProgress)}
+              modelStats={Object.entries(row.original.modelStats).map(
+                ([key, value]) => {
+                  return (
+                    <span key={key}>
+                      {key}: {`${value}`}
+                      <br />
+                    </span>
+                  );
+                }
+              )}
+            />
+          )
+        );
+      },
+    },
     { accessorKey: "demoModelNumber", header: t("Demo Model Number") },
     { accessorKey: "productCatalogues", header: t("Product Catalogues") },
     { accessorKey: "productCategoryOne", header: t("Product Category One") },
     { accessorKey: "productCategoryTwo", header: t("Product Category Two") },
     { accessorKey: "textiles", header: t("Textiles") },
-    { accessorKey: "detailColor", header: t("Detail Color") },
-    { accessorKey: "detailSize", header: t("Detail Size") },
-    { accessorKey: "detailQuantity", header: t("Detail Quantity") },
+    { accessorKey: "currentStage", header: t("CurrentStage") },
+    { accessorKey: "detailColor", header: t("Color") },
+    { accessorKey: "detailSize", header: t("Sizes") },
+    { accessorKey: "detailQuantity", header: t("Delivered Quantity") },
     {
       header: t("Action"),
       cell: ({ row }) => {
@@ -412,7 +438,7 @@ export default function Reports() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <CheckboxWithTextField
                     name="orderNumber"
-                    placeholder="Order Number"
+                    placeholder={t("Order Number")}
                     emptyBox={t("NoOrderFound")}
                     selectText={t("SelectOrder")}
                     items={ordersMenu}
@@ -420,23 +446,25 @@ export default function Reports() {
                     form={form}
                     isEnabled={isOrderEnabled}
                     setEnabled={setOrderEnabled}
-                    setSelected={SelectFieldForForm}
+                    setSelected={(value) => form.setValue("orderNumber", value)}
                   />
                   <CheckboxWithTextField
                     name="demoModelNumber"
-                    placeholder="Demo Model Number"
+                    placeholder={t("ModelNo")}
                     emptyBox={t("NoModelFound")}
                     selectText={t("SelectModel")}
-                    items={modelNumbersMenu}
+                    items={demoModelNumbersMenu}
                     control={form.control}
                     form={form}
                     isEnabled={isModelEnabled}
                     setEnabled={setModelEnabled}
-                    setSelected={SelectFieldForForm}
+                    setSelected={(value) =>
+                      form.setValue("demoModelNumber", value)
+                    }
                   />
                   <CheckboxWithTextField
                     name="barcode"
-                    placeholder="Barcode"
+                    placeholder={t("Barcode")}
                     emptyBox={t("NoBarcodeFound")}
                     selectText={t("SelectBarcode")}
                     items={barcodesMenu}
@@ -444,7 +472,7 @@ export default function Reports() {
                     form={form}
                     isEnabled={isBarcodeEnabled}
                     setEnabled={setBarcodeEnabled}
-                    setSelected={SelectFieldForForm}
+                    setSelected={(value) => form.setValue("barcode", value)}
                   />
                 </div>
 
