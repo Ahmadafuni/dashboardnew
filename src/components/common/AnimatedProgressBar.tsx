@@ -1,23 +1,39 @@
-import { Tooltip } from "react-tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@radix-ui/react-tooltip";
 import "./ProgressBar.css";
 
 const AnimatedProgressBar = (props: any) => {
   return (
-    <>
-      <div className="progress-bar-container" id={props.id}>
-        <div
-          className="progress-bar"
-          style={{ width: `${props.progress}%` }}
-        ></div>
-        <span className="progress-label">
-          {parseFloat(props.progress).toFixed(1)}%
-        </span>
-      </div>
-
-      <Tooltip anchorSelect={`#${props.id}`} place="bottom">
-        {props.modelStats}
+    <TooltipProvider>
+      <Tooltip key={props.id}>
+        <TooltipTrigger asChild>
+          <div className="progress-bar-container" id={props.id}>
+            <div
+              className="progress-bar"
+              style={{ width: `${props.progress}%` }}
+            ></div>
+            <span className="progress-label">
+              {parseFloat(props.progress).toFixed(1)}%
+            </span>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent
+          side="bottom"
+          align="center"
+          style={{
+            backgroundColor: "black",
+            padding: "20px",
+            borderRadius: "20px",
+          }}
+        >
+          {props.modelStats}
+        </TooltipContent>
       </Tooltip>
-    </>
+    </TooltipProvider>
   );
 };
 
