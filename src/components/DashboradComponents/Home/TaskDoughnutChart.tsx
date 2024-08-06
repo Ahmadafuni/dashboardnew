@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { t } from "i18next";
 
 ChartJS.register(
   Title,
@@ -28,10 +29,10 @@ ChartJS.register(
 
 export default function TaskDoughnutChart(props: any) {
   const data = {
-    labels: ["Pending", "On Going", "Completed"],
+    labels: [t("Pending"), t("OnGoing"), t("Completed")],
     datasets: [
       {
-        label: "Task Status",
+        label: t("TaskStatus"),
         data: [
           props.statsData.PENDING,
           props.statsData.ONGOING,
@@ -60,9 +61,9 @@ export default function TaskDoughnutChart(props: any) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="daily">Daily</SelectItem>
-              <SelectItem value="weekly">Weekly</SelectItem>
-              <SelectItem value="monthly">Monthly</SelectItem>
+              <SelectItem value="daily"> {t("Daily")}</SelectItem>
+              <SelectItem value="weekly"> {t("Weekly")}</SelectItem>
+              <SelectItem value="monthly">{t("Monthly")}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

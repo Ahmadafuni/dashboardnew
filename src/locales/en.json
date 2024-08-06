@@ -320,7 +320,6 @@
   "ChildMaterials": "Child Materials",
   "AddChildMaterial": "Add Child Material",
 
-
   "ParentMaterialName": "Parent Material Name",
   "ChildMaterialName": "Child Material Name",
   "MovedFrom": "Moved From",
@@ -341,7 +340,6 @@
   "Reset": "Reset",
   "INCOMING": "INCOMING",
   "OUTGOING": "OUTGOING",
-
 
   "EditParentMaterial": "Edit Parent Material",
   "NewChild": "New Child",
@@ -371,5 +369,44 @@
   "NewProductCatalogueDetailsfor": "New Product Catalogue Details for",
   "Reason": "Reason",
   "Pause": "Pause",
-  "Restart": "Restart"
+  "Restart": "Restart",
+
+  "Pending": "Pending",
+  "OnGoing": "On Going",
+  "TaskStatus": "Task Status",
+  "Monthly": "Monthly",
+  "Weekly": "Weekly",
+  "Daily": "Daily",
+  "CollectionsStatus": "Collections Status",
+  "OrdersDone": "Orders Done",
+  "OrdersInProgress": "Orders In Progress",
+  "OrdersAwaiting": "Orders Awaiting",
+  "ModelsDone": "Orders Done",
+  "ModelsInProgress": "Orders In Progress",
+  "ModelsAwaiting": "Orders Awaiting",
+  "Jan": "Jan",
+  "Feb": "Feb",
+  "Mar": "Mar",
+  "Apr": "Apr",
+  "May": "May",
+  "Jun": "Jun",
+  "Jul": "Jul",
+  "Aug": "Aug",
+  "Sep": "Sep",
+  "Oct": "Oct",
+  "Nov": "Nov",
+  "Dec": "Dec",
+
+  "Week1": "Week 1",
+  "Week2": "Week 2",
+  "Week3": "Week 3",
+  "Week4": "Week 4",
+
+  "Sun": "Sun",
+  "Mon": "Mon",
+  "Tue": "Tue",
+  "Wed": "Wed",
+  "Thu": "Thu",
+  "Fri": "Fri",
+  "Sat": "Sat"
 }

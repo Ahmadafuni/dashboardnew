@@ -25,9 +25,10 @@ const AnimatedProgressBar = (props: any) => {
           side="bottom"
           align="center"
           style={{
-            backgroundColor: "black",
+            backgroundColor: "rgba(0,0,0,0.4)",
             padding: "20px",
             borderRadius: "20px",
+            marginTop: "5px",
           }}
         >
           {props.modelStats}

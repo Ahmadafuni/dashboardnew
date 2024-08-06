@@ -44,7 +44,7 @@ export default function Home() {
   const setFeedbackId = useSetRecoilState(feedbackId);
   const setCurrentFeedback = useSetRecoilState(feedbackData);
   const setSubmitTaskModal = useSetRecoilState(submitTaskModal);
-  const user = useRecoilValue(userInfo); // Get user info from global state
+  const user = useRecoilValue(userInfo);
 
   const noteColumns: ColumnDef<NoteType>[] = [
     {
@@ -202,27 +202,35 @@ export default function Home() {
     }
   };
 
-  const [typeModelStat, setTypeModelStat] = useState("Monthly");
-  const [typeOrderStat, setTypeOrderStat] = useState("Monthly");
-  const [typeCollectionStat, setTypeCollectionStat] = useState("Monthly");
-  const [typeTaskStat, setTypeTaskStat] = useState("Monthly");
+  const [typeModelStat, setTypeModelStat] = useState("monthly");
+  const [typeOrderStat, setTypeOrderStat] = useState("monthly");
+  const [typeCollectionStat, setTypeCollectionStat] = useState("monthly");
+  const [typeTaskStat, setTypeTaskStat] = useState("monthly");
   const labels = {
     monthly: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      t("Jan"),
+      t("Feb"),
+      t("Mar"),
+      t("Apr"),
+      t("May"),
+      t("Jun"),
+      t("Jul"),
+      t("Aug"),
+      t("Sep"),
+      t("Oct"),
+      t("Nov"),
+      t("Dec"),
     ],
-    weekly: ["Week 1", "Week 2", "Week 3", "Week 4"],
-    daily: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    weekly: [t("Week1"), t("Week2"), t("Week3"), t("Week4")],
+    daily: [
+      t("Sun"),
+      t("Mon"),
+      t("Tue"),
+      t("Wed"),
+      t("Thu"),
+      t("Fri"),
+      t("Sat"),
+    ],
   };
 
   useEffect(() => {
@@ -249,10 +257,6 @@ export default function Home() {
   useEffect(() => {
     getStats("tasks", typeTaskStat);
   }, [typeTaskStat]);
-
-  useEffect(() => {
-    console.log("Collections Status are : ", collecStat);
-  }, [collecStat]);
 
   return (
     <div className="w-full p-4 space-y-6">

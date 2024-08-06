@@ -7,7 +7,7 @@ import DatePickerForForm from "@/components/common/DatePickerForForm";
 import SelectFieldForForm from "@/components/common/SelectFieldForForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import DataTable from "@/components/common/DataTable";
 import { productCatalogueList } from "@/store/ProductCatalogue";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
@@ -25,10 +25,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
 import { ScanEye } from "lucide-react";
 import AnimatedProgressBar from "@/components/common/AnimatedProgressBar";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export default function Reports() {
   const { t } = useTranslation();
   const form = useForm();
+  const [isLoading, setIsLoading] = useState(false);
+
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
   const [isStartDateEnabled, setIsStartDateEnabled] = useState(false);
@@ -162,12 +166,16 @@ export default function Reports() {
   });
 
   const onSubmit = async (data: any) => {
-
+    setIsLoading(true);
     try {
       await filterModels(setReports, data);
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
       console.error("Failed to fetch data:", error);
     }
+    setIsLoading(false);
   };
 
   const handleReset = () => {
@@ -195,6 +203,29 @@ export default function Reports() {
               id={`progress-bar-${row.index}`}
               progress={parseFloat(row.original.modelProgress)}
               modelStats={Object.entries(row.original.modelStats).map(
+                ([key, value]) => {
+                  return (
+                    <span key={key}>
+                      {key}: {`${value}`}
+                      <br />
+                    </span>
+                  );
+                }
+              )}
+            />
+          )
+        );
+      },
+    },
+    {
+      header: t("Order Progress"),
+      cell: ({ row }) => {
+        return (
+          row.original.modelProgress != "skip" && (
+            <AnimatedProgressBar
+              id={`progress-bar-${row.index}`}
+              progress={parseFloat(row.original.orderProgress)}
+              modelStats={Object.entries(row.original.orderStats).map(
                 ([key, value]) => {
                   return (
                     <span key={key}>
@@ -520,8 +551,20 @@ export default function Reports() {
                   >
                     {t("RESET")}
                   </Button>
-                  <Button type="submit" className="text-white-600">
-                    {t("SEARCH")}
+
+                  <Button
+                    type="submit"
+                    className="text-white-600"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        {t("PleaseWait")}
+                      </>
+                    ) : (
+                      t("SEARCH")
+                    )}
                   </Button>
                 </div>
               </CardContent>

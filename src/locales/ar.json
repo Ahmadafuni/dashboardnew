@@ -33,7 +33,6 @@
   "Update": "تحديث",
   "Newdepartment": "انشاء قسم",
 
-
   "CUTTING": "القص",
   "TAILORING": "الخياطة",
   "PRINTING": "الطباعة",
@@ -245,7 +244,7 @@
   "ClothLength": "طول المدة",
   "ClothWidth": "عرض المدة",
   "ClothWeight": "وزن المدة",
-  "ReplacedItemInKg": "التعويض بالكيلوغرام" ,
+  "ReplacedItemInKg": "التعويض بالكيلوغرام",
 
   "DyeNumber": "رقم الصبغة",
   "Kashan": "كاشاشان",
@@ -328,7 +327,6 @@
   "ChildMaterials": "مواد فرعية",
   "AddChildMaterial": "إضافة مادة فرعية",
 
-
   "Supplier": "مورد",
   "ParentMaterialName": "اسم المادة الاب",
   "ChildMaterialName": "اسم المادة الفرعية",
@@ -349,7 +347,6 @@
   "Reset": "مسح",
   "INCOMING": "الوارد",
   "OUTGOING": "الصادر",
-
 
   "EditParentMaterial": "تعديل المادة الاب",
   "NewChild": "مادة فرعية جديدة",
@@ -377,5 +374,42 @@
   "NewProductCatalogueDetailsfor": "تفاصيل كتالوج المنتج الجديد",
   "Reason": "السبب",
   "Pause": "إيقاف",
-  "Restart": "إعادة تشغيل"
+  "Restart": "إعادة تشغيل",
+  "Pending": "معلقة",
+  "OnGoing": "جارية",
+  "TaskStatus": "حالة المهام",
+  "Monthly": "شهرياً",
+  "Weekly": "أسبوعياً",
+  "Daily": "يومياً",
+  "CollectionsStatus": "حالة المجموعات",
+  "OrdersDone": "منتهية",
+  "OrdersInProgress": "يتم العمل عليها",
+  "OrdersAwaiting": "في الانتظار ",
+  "ModelsDone": "منتهية",
+  "ModelsInProgress": "يتم العمل عليها",
+  "ModelsAwaiting": "في الانتظار ",
+  "Jan": "كانون الثاني",
+  "Feb": "شباط",
+  "Mar": "آذار",
+  "Apr": "نيسان",
+  "May": "أيار",
+  "Jun": "حزيران",
+  "Jul": "تموز",
+  "Aug": "آب",
+  "Sep": "أيلول",
+  "Oct": "تشرين الأول",
+  "Nov": "تشرين الثاني",
+  "Dec": "كانون الأول",
+
+  "Week1": "الأسبوع الأول",
+  "Week2": "الأسبوع الثاني",
+  "Week3": "الأسبوع الثالث",
+  "Week4": "الأسبوع الرابع",
+  "Sun": "الأحد",
+  "Mon": "الاثنين",
+  "Tue": "الثلاثاء",
+  "Wed": "الأربعاء",
+  "Thu": "الخميس",
+  "Fri": "الجمعة",
+  "Sat": "السبت"
 }

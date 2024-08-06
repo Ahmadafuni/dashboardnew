@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { t } from "i18next";
 
 ChartJS.register(
   Title,
@@ -31,19 +32,19 @@ export default function ModelBarChart(props: any) {
     labels: props.labels[props.type],
     datasets: [
       {
-        label: "Models Awaiting",
+        label: t("ModelsAwaiting"),
         data: props.data.map((item: any) => item.awaiting),
         backgroundColor: "rgba(255, 205, 86, 0.5)",
         borderColor: "rgba(255, 205, 86, 1)",
       },
       {
-        label: "Models In Progress",
+        label: t("ModelsInProgress"),
         data: props.data.map((item: any) => item.inprogress),
         backgroundColor: "rgba(255,99,132,0.5)",
         borderColor: "rgba(255,99,132, 1)",
       },
       {
-        label: "Models Done",
+        label: t("ModelsDone"),
         data: props.data.map((item: any) => item.done),
         backgroundColor: "rgba(75, 192, 192, 0.5)",
         borderColor: "rgba(75, 192, 192, 1)",
@@ -65,9 +66,9 @@ export default function ModelBarChart(props: any) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="daily">Daily</SelectItem>
-              <SelectItem value="weekly">Weekly</SelectItem>
-              <SelectItem value="monthly">Monthly</SelectItem>
+              <SelectItem value="daily"> {t("Daily")}</SelectItem>
+              <SelectItem value="weekly"> {t("Weekly")}</SelectItem>
+              <SelectItem value="monthly">{t("Monthly")}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
