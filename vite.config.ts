@@ -10,6 +10,25 @@ export default defineConfig({
     },
   },
   build: {
-    chunkSizeWarningLimit: 10000, // Adjust the limit to 1000 kB
+    chunkSizeWarningLimit: 1500, // Adjust this limit as needed
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+          if (id.includes('src/components')) {
+            return 'components';
+          }
+          if (id.includes('src/pages')) {
+            return 'pages';
+          }
+          if (id.includes('src/utils')) {
+            return 'utils';
+          }
+          // Add more custom chunking logic as needed
+        }
+      }
+    }
   },
 });
