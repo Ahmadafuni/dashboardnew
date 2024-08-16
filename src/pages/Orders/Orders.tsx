@@ -96,11 +96,12 @@ export default function Orders() {
             ) : (
               <BasicConfirmationDialog
                 btnText={t("HoldOrder")}
-                takeAction={(reason: string) => holdOrder(setOrders, row.original.Id, reason)}
+                takeAction={(reason: string) =>
+                  holdOrder(setOrders, row.original.Id, reason)
+                }
                 className="bg-orange-500 hover:bg-orange-600"
                 showInput={true}
               />
-
             )}
           </div>
         );
@@ -172,6 +173,7 @@ export default function Orders() {
   useEffect(() => {
     getAllOrders(setOrders);
   }, []);
+
   return (
     <div className="w-full space-y-2">
       <NewOrder getAllOrders={() => getAllOrders(setOrders)} />

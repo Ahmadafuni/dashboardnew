@@ -61,10 +61,11 @@ import ChildMaterials from "@/pages/Warehouse/ChildMaterials.tsx";
 import IncomingMovement from "@/pages/Warehouse/IncomingMovement.tsx";
 import OutgoingMovement from "@/pages/Warehouse/OutgoingMovement.tsx";
 import MaterialReport from "@/pages/Warehouse/MaterialReport.tsx";
+import Archive from "./pages/Archive/Archive.tsx";
 
 // Axios config
-//axios.defaults.baseURL = "http://localhost:3002/";
-axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+axios.defaults.baseURL = "http://localhost:3002/";
+// axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
 };
@@ -102,23 +103,45 @@ const router = createBrowserRouter([
 
       { path: "/dashboard/departments", element: <Departments /> },
       { path: "/dashboard/departments/new", element: <NewDepartment /> },
-      { path: "/dashboard/departments/:departmentID", element: <UpdateDepartment />,},
+      {
+        path: "/dashboard/departments/:departmentID",
+        element: <UpdateDepartment />,
+      },
 
       { path: "/dashboard/home", element: <Home /> },
       { path: "/dashboard/reports", element: <Reports /> },
+      { path: "/dashboard/archive", element: <Archive /> },
       { path: "/dashboard/statistics", element: <Statistics /> },
 
       { path: "/dashboard/productcatalogues", element: <ProductCatalogues /> },
-      { path: "/dashboard/productcatalogues/cataloguedetails/:catalogueId", element: <ProductCatalogueDetails />,},
-      { path: "/dashboard/productcatalogues/cataloguedetails/new/:catalogueId", element: <NewProductCatalogueDetail />,},
-      { path: "/dashboard/productcatalogues/cataloguedetails/update/:detailId", element: <UpdateProductCatalogueDetail />,},
+      {
+        path: "/dashboard/productcatalogues/cataloguedetails/:catalogueId",
+        element: <ProductCatalogueDetails />,
+      },
+      {
+        path: "/dashboard/productcatalogues/cataloguedetails/new/:catalogueId",
+        element: <NewProductCatalogueDetail />,
+      },
+      {
+        path: "/dashboard/productcatalogues/cataloguedetails/update/:detailId",
+        element: <UpdateProductCatalogueDetail />,
+      },
       { path: "/dashboard/templates", element: <Templates /> },
       { path: "/dashboard/templates/new", element: <NewTemplateBlock /> },
-      { path: "/dashboard/templates/update/:templateId", element: <UpdateTemplateBlock />,},
+      {
+        path: "/dashboard/templates/update/:templateId",
+        element: <UpdateTemplateBlock />,
+      },
       { path: "/dashboard/orders", element: <Orders /> },
       { path: "/dashboard/orders/model/:id", element: <Models /> },
-      { path: "/dashboard/orders/model/varients/:id", element: <ModelVarients />,},
-      { path: "/dashboard/orders/model/update/:id/:modelId", element: <UpdateModel />,},
+      {
+        path: "/dashboard/orders/model/varients/:id",
+        element: <ModelVarients />,
+      },
+      {
+        path: "/dashboard/orders/model/update/:id/:modelId",
+        element: <UpdateModel />,
+      },
       { path: "/dashboard/orders/model/new/:id", element: <NewModel /> },
       { path: "/dashboard/tasks", element: <Tasks /> },
       { path: "/dashboard/notes", element: <Notes /> },
@@ -129,11 +152,13 @@ const router = createBrowserRouter([
       { path: "/dashboard/materials", element: <Materials /> },
       { path: "/dashboard/materials/new", element: <NewMaterial /> },
       { path: "/dashboard/materials/:materialID", element: <UpdateMaterial /> },
-      { path: "/dashboard/materials/child/:materialID", element: <ChildMaterials />,},
-      { path: "/dashboard/incoming", element: <IncomingMovement />,},
-      { path: "/dashboard/outgoing", element: <OutgoingMovement />,},
-      { path: "/dashboard/materialreport", element: <MaterialReport />,},
-
+      {
+        path: "/dashboard/materials/child/:materialID",
+        element: <ChildMaterials />,
+      },
+      { path: "/dashboard/incoming", element: <IncomingMovement /> },
+      { path: "/dashboard/outgoing", element: <OutgoingMovement /> },
+      { path: "/dashboard/materialreport", element: <MaterialReport /> },
 
       { path: "/dashboard/entities/collections", element: <Collections /> },
       { path: "/dashboard/entities/colors", element: <Colors /> },
@@ -141,13 +166,22 @@ const router = createBrowserRouter([
       { path: "/dashboard/entities/textiles", element: <Textiles /> },
       { path: "/dashboard/entities/templatetype", element: <TemplateType /> },
 
-      { path: "/dashboard/entities/templatepattern", element: <TemplatePattern />,},
-      { path: "/dashboard/entities/productcategoryone", element: <ProductCategoryOne />,},
-      { path: "/dashboard/entities/productcategorytwo", element: <ProductCategoryTwo />,},
+      {
+        path: "/dashboard/entities/templatepattern",
+        element: <TemplatePattern />,
+      },
+      {
+        path: "/dashboard/entities/productcategoryone",
+        element: <ProductCategoryOne />,
+      },
+      {
+        path: "/dashboard/entities/productcategorytwo",
+        element: <ProductCategoryTwo />,
+      },
     ],
   },
-  { path: "/templates/viewdetails/:id", element: <TemplateViewDetails />,},
-  { path: "/models/viewdetails/:id", element: <ViewModelSummary />,},
+  { path: "/templates/viewdetails/:id", element: <TemplateViewDetails /> },
+  { path: "/models/viewdetails/:id", element: <ViewModelSummary /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

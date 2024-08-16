@@ -20,6 +20,49 @@ export const getModelsByOrderId = async (
     }
   }
 };
+export const getArchivedModels = async (
+  setData: Dispatch<SetStateAction<any>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    const response = await axios.get(`model/archived`, {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(response.data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+  setLoading(false);
+};
+
+export const toggleArchivedModelById = async (
+  id: number,
+  toggle: boolean,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    const response = await axios.get("model/update-archived", {
+      params: {
+        id,
+        toggle,
+      },
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+  setLoading(false);
+};
 
 export const getAllModel = async (setData: Dispatch<SetStateAction<any>>) => {
   try {
@@ -158,10 +201,13 @@ export const getAllDropdownOptions = async () => {
 
 export const filterModels = async (
   setData: Dispatch<SetStateAction<any>>,
-  searchParams: any
+  setTotalPages: Dispatch<SetStateAction<any>>,
+  searchParams: any,
+  pageParams: object
 ) => {
   try {
     const response = await axios.post("model/search", searchParams, {
+      params: pageParams,
       headers: {
         Authorization: `Bearer ${Cookies.get("access_token")}`,
       },
@@ -171,6 +217,7 @@ export const filterModels = async (
       item.Details.map((detail: any, index: number) => {
         return {
           modelId: item.ModelId,
+          orderId: item.OrderId,
           modelStats: index === 0 ? item.ModelStats : "",
           modelProgress: index === 0 ? item.ModelProgress : "skip",
           orderStats: index === 0 ? item.OrderStats : "",
@@ -194,6 +241,7 @@ export const filterModels = async (
     );
 
     setData(reports);
+    setTotalPages(response.data.totalPages);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
     throw error;

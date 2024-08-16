@@ -21,10 +21,10 @@ import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog
 
 export default function Models() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { id } = useParams();
 
   const [models, setModels] = useState<ModelTypes[]>([]);
-  const { t } = useTranslation();
 
   const modelColumns: ColumnDef<ModelTypes>[] = [
      {

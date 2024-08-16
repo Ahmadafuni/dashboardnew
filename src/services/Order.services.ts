@@ -17,7 +17,49 @@ export const getAllOrders = async (setData: Dispatch<SetStateAction<any>>) => {
     }
   }
 };
+export const getArchivedOrders = async (
+  setData: Dispatch<SetStateAction<any>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    const response = await axios.get("orders/archived", {
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(response.data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+  setLoading(false);
+};
 
+export const toggleArchivedOrderById = async (
+  id: number,
+  toggle: boolean,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    const response = await axios.get("orders/update-archived", {
+      params: {
+        id,
+        toggle,
+      },
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+  setLoading(false);
+};
 export const getOrderById = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number
@@ -75,19 +117,19 @@ export const startOrder = async (
 };
 
 export const holdOrder = async (
-    setData: Dispatch<SetStateAction<any>>,
-    id: number,
-    reasonText: string
+  setData: Dispatch<SetStateAction<any>>,
+  id: number,
+  reasonText: string
 ) => {
   try {
     await axios.put(
-        `orders/hold/${id}`,
-        { reasonText },
-        {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        }
+      `orders/hold/${id}`,
+      { reasonText },
+      {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      }
     );
     getAllOrders(setData);
     toast.success("Order on hold successfully!");
@@ -97,7 +139,6 @@ export const holdOrder = async (
     }
   }
 };
-
 
 export const restartOrder = async (
   setData: Dispatch<SetStateAction<any>>,

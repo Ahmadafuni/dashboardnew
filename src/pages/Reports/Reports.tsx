@@ -7,7 +7,15 @@ import DatePickerForForm from "@/components/common/DatePickerForForm";
 import SelectFieldForForm from "@/components/common/SelectFieldForForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import {
+  Archive,
+  ChevronDown,
+  ChevronUp,
+  EllipsisVertical,
+  Eye,
+  Loader2,
+  Pen,
+} from "lucide-react";
 import DataTable from "@/components/common/DataTable";
 import { productCatalogueList } from "@/store/ProductCatalogue";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
@@ -15,7 +23,12 @@ import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { templatePatternList } from "@/store/TemplatePattern";
 import { templateTypeList } from "@/store/TemplateType";
 import { textileList } from "@/store/Textiles";
-import { filterModels, getAllDropdownOptions } from "@/services/Model.services";
+import {
+  filterModels,
+  getAllDropdownOptions,
+  getArchivedModels,
+  toggleArchivedModelById,
+} from "@/services/Model.services";
 import FieldWithCheckbox from "@/components/common/CheckboxWIthField";
 import { departmentList } from "@/store/Department";
 import CheckboxWithTextField from "@/components/common/CheckboxWithTextField";
@@ -27,11 +40,27 @@ import { ScanEye } from "lucide-react";
 import AnimatedProgressBar from "@/components/common/AnimatedProgressBar";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import Spinner from "@/components/common/Spinner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import {
+  toggleArchivedOrderById,
+  getArchivedOrders,
+} from "@/services/Order.services";
 
 export default function Reports() {
   const { t } = useTranslation();
   const form = useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [isReportsLoading, setIsReportsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
@@ -63,28 +92,50 @@ export default function Reports() {
   const setTextileList = useSetRecoilState(textileList);
   const setOrderList = useSetRecoilState(orderList);
   const setModelList = useSetRecoilState(modelList);
+  const [isOrdersLoading, setIsOrdersLoading] = useState(false);
+  const [isModelsLoading, setIsModelsLoading] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getAllDropdownOptions();
-
-        setDepartmentList(data.departments);
-        setProductCatalogueList(data.productCatalogues);
-        setProductCategoryOneList(data.productCategoryOne);
-        setProductCategoryTwoList(data.productCategoryTwo);
-        setTemplatePatternList(data.templatePattern);
-        setTemplateTypeList(data.templateType);
-        setTextileList(data.textiles);
-        setOrderList(data.orders);
-        setModelList(data.models);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
+  async function fetchData() {
+    setIsReportsLoading(true);
+    try {
+      await filterModels(
+        setReports,
+        setTotalPages,
+        {},
+        {
+          page: page,
+          size: size,
+        }
+      );
+      const data = await getAllDropdownOptions();
+      setDepartmentList(data.departments);
+      setProductCatalogueList(data.productCatalogues);
+      setProductCategoryOneList(data.productCategoryOne);
+      setProductCategoryTwoList(data.productCategoryTwo);
+      setTemplatePatternList(data.templatePattern);
+      setTemplateTypeList(data.templateType);
+      setTextileList(data.textiles);
+      setOrderList(data.orders);
+      setModelList(data.models);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
     }
+    setIsReportsLoading(false);
+  }
 
+  const handleRemoveModelFromArchive = async (modelId: number) => {
+    await toggleArchivedModelById(modelId, true, setIsModelsLoading);
+    await fetchData();
+  };
+  const handleRemoveOrderFromArchive = async (orderId: number) => {
+    await toggleArchivedOrderById(orderId, true, setIsOrdersLoading);
+    await fetchData();
+  };
+  useEffect(() => {
     fetchData();
   }, [
+    page,
+    size,
     setDepartmentList,
     setProductCatalogueList,
     setProductCategoryOneList,
@@ -253,18 +304,53 @@ export default function Reports() {
       header: t("Action"),
       cell: ({ row }) => {
         return (
-          <Button
-            className="text-white-600"
-            onClick={() =>
-              window.open(
-                `/models/viewdetails/${row.original.modelId}`,
-                "_blank"
-              )
-            }
-          >
-            <ScanEye className="mr-2 h-4 w-4" />
-            <span>{t("ViewSummary")}</span>
-          </Button>
+          row.original.modelProgress != "skip" && (
+            <>
+              <div className="flex gap-1 items-end	">
+                <Button
+                  className="text-white-600 mt-2 w-15 text-wrap	"
+                  onClick={() =>
+                    window.open(
+                      `/models/viewdetails/${row.original.modelId}`,
+                      "_blank"
+                    )
+                  }
+                >
+                  <ScanEye className="mr-2 h-4 w-4" />
+                  <span>{t("Summary")}</span>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      <EllipsisVertical className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-35 bg-black bg-opacity-50	mr-5 p-2 rounded-2xl">
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          handleRemoveOrderFromArchive(row.original.orderId)
+                        }
+                        className=" pt-2 pb-2 pl-4 pr-4 flex gap-1   cursor-pointer	hover:bg-green-700 rounded-md"
+                      >
+                        <Archive className="mr-2 h-4 w-4" />
+                        <span>{t("Archive Order")}</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          handleRemoveModelFromArchive(row.original.modelId)
+                        }
+                        className=" pt-2 pb-2 pl-4 pr-4 flex gap-1  cursor-pointer	hover:bg-green-700 rounded-md"
+                      >
+                        <Archive className="mr-2 h-4 w-4" />
+                        <span>{t("Archive Model")}</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </>
+          )
         );
       },
     },
@@ -577,8 +663,26 @@ export default function Reports() {
           </div>
         </form>
       </Form>
-      <div id="datatable" className="mt-10">
-        <DataTable columns={reportsColumns} data={reports} />
+      <div
+        id="datatable"
+        className="mt-10"
+        style={{
+          position: "relative",
+        }}
+      >
+        {
+          (console.log("isReportsLoading : ", isReportsLoading),
+          isReportsLoading && <Spinner />)
+        }
+        <DataTable
+          columns={reportsColumns}
+          data={reports}
+          totalPages={totalPages}
+          page={page}
+          setPage={setPage}
+          size={size}
+          setSize={setSize}
+        />
       </div>
     </div>
   );
