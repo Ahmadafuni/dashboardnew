@@ -90,11 +90,11 @@ export default function TemplateProductCatalogueDetailSearchForm({
                 <ComboSelectFieldForForm
                   field={field}
                   label={"Product Catalogue"}
-                  placeholder="Search Product Catalogue..."
-                  emptyBox="No product catalogue found"
+                  placeholder="Search Product ..."
+                  emptyBox="No product found"
                   form={form}
                   name="productCatalogue"
-                  selectText="Select Product Catalogue"
+                  selectText="Select Product"
                   items={catalogueList}
                 />
               )}

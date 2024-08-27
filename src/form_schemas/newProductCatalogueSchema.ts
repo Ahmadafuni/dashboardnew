@@ -4,10 +4,10 @@ export const productCatalogueSchema = z.object({
   name: z
     .string()
     .min(1, {
-      message: "Please enter a name for the product catalogue.",
+      message: "Please enter a name for the product.",
     })
     .max(255, {
-      message: "Maximum characters for the product catalogue name is 255.",
+      message: "Maximum characters for the product  name is 255.",
     }),
   description: z.string(),
 });

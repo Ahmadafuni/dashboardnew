@@ -357,7 +357,7 @@ export default function Reports() {
                     control={form.control}
                     fieldComponent={SelectFieldForForm}
                     fieldProps={{
-                      placeholder: "Product Catalogue",
+                      placeholder: "Product",
                       items: productCatalogueMenu,
                     }}
                     isEnabled={isProductCatalogueEnabled}
