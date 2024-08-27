@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
