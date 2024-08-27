@@ -91,7 +91,7 @@ export default function ProductCatalogueDetails() {
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
-            <ButtonTooltipStructure description="Edit product catalogue detail">
+            <ButtonTooltipStructure description="Edit product detail">
               <Button
                 onClick={() => {
                   navigate(

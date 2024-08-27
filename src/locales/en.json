@@ -2,7 +2,7 @@
   "Home": "Home",
   "Reports": "Reports",
   "Statistics": "Statistics",
-  "ProductCatalogues": "Product Catalogues",
+  "ProductCatalogues": "Products",
   "Templates": "Templates",
   "Orders": "Orders",
   "Models": "Models",
@@ -70,12 +70,12 @@
   "UpdateTemplateType": "Update Template Type",
   "NewTextile": "New Textile",
   "UpdateTextile": "UpdateTextile",
-  "NewProductCatalogue": "New Product Catalogue",
-  "UpdateProductCatalogue": "Update Product Catalogue",
+  "NewProductCatalogue": "New Product",
+  "UpdateProductCatalogue": "Update Product",
 
-  "ProductCatalogueName": "Product Catalogue Name",
-  "ProductCatalogueDetailsNew": "New Product Catalogue Details",
-  "ProductCatalogueDetails": "Product Catalogue Details",
+  "ProductCatalogueName": "Product Name",
+  "ProductCatalogueDetailsNew": "New Product Details",
+  "ProductCatalogueDetails": "Product Details",
 
   "Colors": "Colors",
   "Sizes": "Sizes",
@@ -366,7 +366,7 @@
   "CollectionName": "Collection Name",
   "NewCollection": "New Collection",
   "UpdateCollection": "Update Collection",
-  "NewProductCatalogueDetailsfor": "New Product Catalogue Details for",
+  "NewProductCatalogueDetailsfor": "New Product Details for",
   "Reason": "Reason",
   "Pause": "Pause",
   "Restart": "Restart",
@@ -408,5 +408,13 @@
   "Wed": "Wed",
   "Thu": "Thu",
   "Fri": "Fri",
-  "Sat": "Sat"
+  "Sat": "Sat",
+
+  "InvalidFileType": "Invalid file type. Please upload an Excel file.",
+  "FileSizeExceeded": "File size exceeds the 5 MB limit. Please upload a smaller file.",
+  "InsufficientRows": "Excel not valid: insufficient rows.",
+  "IncorrectStructure": "Excel not valid: incorrect structure.",
+  "MissingSizes": "Please make sure that all sizes are available in the droplist. Missing sizes: {{sizes}}",
+  "NoValidMeasurements": "Excel not valid: no valid measurements found.",
+  "ImportFromExcel": "Import from Excel"
 }

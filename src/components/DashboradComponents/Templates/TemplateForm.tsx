@@ -80,11 +80,11 @@ export default function TemplateForm({
             <ComboSelectFieldForForm
               field={field}
               label={t("ProductCatalogues")}
-              placeholder="Search Product Catalogue..."
-              emptyBox="No product catalogue found"
+              placeholder="Search Product ..."
+              emptyBox="No product found"
               form={form}
               name="productCatalog"
-              selectText="Select Product Catalogue"
+              selectText="Select Product"
               items={catalogueList}
             />
           )}
