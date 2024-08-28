@@ -3,7 +3,7 @@ import { z } from "zod";
 export const ModelSchema = z.object({
   ProductCatalog: z
     .string()
-    .min(1, { message: "Please select product catalogue." }),
+    .min(1, { message: "Please select product." }),
   CategoryOne: z.string().min(1, { message: "Please select category one." }),
   CategoryTwo: z.string().min(1, { message: "Please select category two." }),
   Textile: z.string().min(1, { message: "Please select textile." }),
@@ -21,7 +21,7 @@ export const ModelSchema = z.object({
 export const UpdateModelSchema = z.object({
   ProductCatalog: z
     .string()
-    .min(1, { message: "Please select product catalogue." }),
+    .min(1, { message: "Please select product." }),
   CategoryOne: z.string().min(1, { message: "Please select category one." }),
   CategoryTwo: z.string().min(1, { message: "Please select category two." }),
   Textile: z.string().min(1, { message: "Please select textile." }),

@@ -50,7 +50,7 @@ export default function ProductCatalogues() {
       cell: ({ row }) => {
         return (
           <div className="flex gap-1">
-            <ButtonTooltipStructure description="Edit product catalogue">
+            <ButtonTooltipStructure description="Edit product">
               <Button
                 onClick={() => {
                   setCatalogueId(row.original.Id);
@@ -61,7 +61,7 @@ export default function ProductCatalogues() {
                 <Pen className="h-4 w-4" />
               </Button>
             </ButtonTooltipStructure>
-            <ButtonTooltipStructure description="Add product catalogue detail">
+            <ButtonTooltipStructure description="Add product detail">
               <Button
                 onClick={() =>
                   navigate(
@@ -72,7 +72,7 @@ export default function ProductCatalogues() {
                 <ListPlus className="h-4 w-4" />
               </Button>
             </ButtonTooltipStructure>
-            <ButtonTooltipStructure description="View product catalogue details">
+            <ButtonTooltipStructure description="View product details">
               <Button
                 onClick={() =>
                   navigate(

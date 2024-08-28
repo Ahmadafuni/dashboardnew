@@ -2,7 +2,7 @@
   "Home": "الصفحة الرئيسية",
   "Reports": "التقارير",
   "Statistics": "الإحصائيات",
-  "ProductCatalogues": "كتالوج المنتجات",
+  "ProductCatalogues": "المنتجات",
   "Templates": "القوالب",
   "Orders": "الطلبيات",
   "Models": "الموديلات",
@@ -67,12 +67,12 @@
   "UpdateTemplateType": "تحديث نوع القالب",
   "NewTextile": "قماش جديد",
   "UpdateTextile": "تحديث القماش",
-  "NewProductCatalogue": "كتالوج منتج جديد",
-  "UpdateProductCatalogue": "تحديث كتالوج المنتج",
+  "NewProductCatalogue": "منتج جديد",
+  "UpdateProductCatalogue": "تحديث المنتج",
 
-  "ProductCatalogueName": " اسم كتالوج المنتج",
-  "ProductCatalogueDetailsNew": "انشاء تفاصيل كتالوج المنتج",
-  "ProductCatalogueDetails": "تفاصيل كتالوج المنتجات",
+  "ProductCatalogueName": " اسم المنتج",
+  "ProductCatalogueDetailsNew": "انشاء تفاصيل المنتج",
+  "ProductCatalogueDetails": "تفاصيل المنتجات",
 
   "ProductCatalogCategoryOne": "فئة منتج (المستوى الأول)",
   "ProductCatalogCategoryTwo": "فئة منتج (المستوى الثاني)",
@@ -371,7 +371,7 @@
   "CollectionName": "اسم المجموعة",
   "NewCollection": "مجموعة جديدة",
   "UpdateCollection": "تحديث المجموعة",
-  "NewProductCatalogueDetailsfor": "تفاصيل كتالوج المنتج الجديد",
+  "NewProductCatalogueDetailsfor": "تفاصيل المنتج الجديد",
   "Reason": "السبب",
   "Pause": "إيقاف",
   "Restart": "إعادة تشغيل",
@@ -411,5 +411,13 @@
   "Wed": "الأربعاء",
   "Thu": "الخميس",
   "Fri": "الجمعة",
-  "Sat": "السبت"
+  "Sat": "السبت",
+
+  "InvalidFileType": "نوع الملف غير صالح. يرجى تحميل ملف Excel.",
+  "FileSizeExceeded": "يتجاوز حجم الملف حد 5 ميجابايت. يرجى تحميل ملف أصغر.",
+  "InsufficientRows": "الملف غير صالح: عدد الصفوف غير كافٍ.",
+  "IncorrectStructure": "الملف غير صالح: هيكل غير صحيح.",
+  "MissingSizes": "يرجى التأكد من توفر جميع المقاسات في قائمة الاختيارات. المقاسات المفقودة: {{sizes}}",
+  "NoValidMeasurements": "الملف غير صالح: لم يتم العثور على قياسات صالحة.",
+  "ImportFromExcel": "استيراد من اكسل"
 }

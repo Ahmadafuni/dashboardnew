@@ -10,7 +10,7 @@ export const templateSchema = z.object({
   description: z.string(),
   productCatalog: z
     .string()
-    .min(1, { message: "Please select product catalogue!" }),
+    .min(1, { message: "Please select product!" }),
   category1: z.string().min(1, { message: "Please select category one!" }),
   category2: z.string().min(1, { message: "Please select category two!" }),
   season: z.string().min(1, { message: "Please select season!" }),
