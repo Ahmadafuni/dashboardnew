@@ -116,12 +116,12 @@ export default function Sidebar() {
           icon: FileBarChart2,
           userRole: ["FACTORYMANAGER"],
         },
-        {
+        /*{
           name: t("Archive"),
           link: "/dashboard/archive",
           icon: Archive,
           userRole: ["FACTORYMANAGER"],
-        },
+        },*/
       ],
     },
     {
