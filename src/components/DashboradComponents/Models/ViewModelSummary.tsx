@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getModelSummary } from "@/services/Model.services";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import { useRef } from "react";
@@ -20,11 +20,11 @@ export default function ViewModelSummary() {
   // Model summary
   const [summary, setSummary] = useState<any>({});
   const { t } = useTranslation();
-  const printRef = useRef();
+  const printRef = useRef<HTMLDivElement | null>(null);
 
   const handlePrint = useReactToPrint({
-        content: () => printRef.current,
-      documentTitle: `Model_Summary_${summary?.modelInfo?.Barcode}`
+        content: () => printRef.current ?? null,
+        documentTitle: `Model_Summary_${summary?.modelInfo?.Barcode}`
   });
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function ViewModelSummary() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead as="thead">{t("MeasurementName")}</TableHead>
+                    <TableHead>{t("MeasurementName")}</TableHead>
                     {Object.entries(summary?.cutting[0])
                       .sort()
                       // @ts-expect-error

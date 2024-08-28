@@ -64,10 +64,10 @@ export default function Reports() {
   const setTextileList = useSetRecoilState(textileList);
   const setOrderList = useSetRecoilState(orderList);
   const setModelList = useSetRecoilState(modelList);
-  const printRef = useRef();
+  const printRef = useRef<HTMLDivElement | null>(null);
 
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
+    content: () => printRef.current ?? null,
     documentTitle: `Report${new Date().toLocaleString().replace(/[/,: ]/g, "_")}`,
 
   });

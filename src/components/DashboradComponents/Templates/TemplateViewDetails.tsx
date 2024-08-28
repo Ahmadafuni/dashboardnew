@@ -20,10 +20,10 @@ export default function TemplateViewDetails() {
   const { id } = useParams();
   const [details, setDetails] = useState<any>({});
   const { t } = useTranslation();
-  const printRef = useRef();
+  const printRef = useRef<HTMLDivElement | null>(null);
 
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
+    content: () => printRef.current ?? null,
     documentTitle: `Template_Summary_${details?.template?.TemplateName}`
   });
 
@@ -62,7 +62,7 @@ export default function TemplateViewDetails() {
             </CardHeader>
             <CardContent>
               <Table>
-                <TableHeader as="thead">
+                <TableHeader>
                   <TableRow>
                     <TableHead>{t("MeasurementName")}</TableHead>
                     {Object.entries(details?.cutting[0])
