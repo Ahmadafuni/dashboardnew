@@ -95,7 +95,7 @@ export const deleteCollection = async (
       },
     });
     toast.success("Collection deleted successfully");
-    getAllCollections(setData);
+    getAllCollections(false, setData);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);

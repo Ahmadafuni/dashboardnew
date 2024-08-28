@@ -13,17 +13,25 @@ import { getTemplateDetail } from "@/services/Templates.services";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import { useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
 
 export default function TemplateViewDetails() {
   const { id } = useParams();
   const [details, setDetails] = useState<any>({});
   const { t } = useTranslation();
+  const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: `Template_Summary_${details?.template?.TemplateName}`
+  });
 
   useEffect(() => {
     getTemplateDetail(setDetails, id);
   }, []);
   return (
-    <div className="p-4">
+    <div className="p-4"  ref={printRef}>
       <div className="space-y-2">
         <br/>
         <div className="grid grid-cols-2">
@@ -54,7 +62,7 @@ export default function TemplateViewDetails() {
             </CardHeader>
             <CardContent>
               <Table>
-                <TableHeader>
+                <TableHeader as="thead">
                   <TableRow>
                     <TableHead>{t("MeasurementName")}</TableHead>
                     {Object.entries(details?.cutting[0])
@@ -173,7 +181,7 @@ export default function TemplateViewDetails() {
         </Card>
       )}
       <div className="flex justify-end mt-4 print:hidden">
-        <Button onClick={() => window.print()}>{t("DownloadPDF")}</Button>
+        <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
       </div>
     </div>
   );

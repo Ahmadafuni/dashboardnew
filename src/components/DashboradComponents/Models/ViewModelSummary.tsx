@@ -12,18 +12,26 @@ import { getModelSummary } from "@/services/Model.services";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import { useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
 
 export default function ViewModelSummary() {
   const { id } = useParams();
   // Model summary
   const [summary, setSummary] = useState<any>({});
   const { t } = useTranslation();
+  const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+        content: () => printRef.current,
+      documentTitle: `Model_Summary_${summary?.modelInfo?.Barcode}`
+  });
 
   useEffect(() => {
     getModelSummary(setSummary, id);
   }, []);
   return (
-    <div className="p-4">
+    <div className="p-4" ref={printRef}>
       <div>
         <div className="border-2 grid grid-cols-4 text-right">
           <div className="border-2 p-2">{summary?.modelInfo?.OrderNumber}</div>
@@ -79,7 +87,7 @@ export default function ViewModelSummary() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t("MeasurementName")}</TableHead>
+                    <TableHead as="thead">{t("MeasurementName")}</TableHead>
                     {Object.entries(summary?.cutting[0])
                       .sort()
                       // @ts-expect-error
@@ -162,7 +170,7 @@ export default function ViewModelSummary() {
         </div>
       )}
       <div className="flex justify-end mt-4 print:hidden">
-        <Button onClick={() => window.print()}>{t("DownloadPDF")}</Button>
+          <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
       </div>
     </div>
   );

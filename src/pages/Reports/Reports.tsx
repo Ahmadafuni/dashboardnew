@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -23,17 +23,11 @@ import { orderList } from "@/store/Orders";
 import { modelList } from "@/store/Models";
 import { ColumnDef } from "@tanstack/react-table";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
-import { ScanEye, Archive, EllipsisVertical } from "lucide-react";
+import { ScanEye } from "lucide-react";
 import AnimatedProgressBar from "@/components/common/AnimatedProgressBar";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { toggleArchivedCollectionById } from "@/services/Collection.services";
+import { useReactToPrint } from 'react-to-print';
 
 export default function Reports() {
   const { t } = useTranslation();
@@ -70,7 +64,13 @@ export default function Reports() {
   const setTextileList = useSetRecoilState(textileList);
   const setOrderList = useSetRecoilState(orderList);
   const setModelList = useSetRecoilState(modelList);
+  const printRef = useRef();
 
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: `Report${new Date().toLocaleString().replace(/[/,: ]/g, "_")}`,
+
+  });
   async function fetchData(withModels: boolean) {
     try {
       withModels && (await filterModels(setReports, {}));
@@ -584,14 +584,12 @@ export default function Reports() {
             )}
           </Card>
           <div className="flex justify-end mt-4 print:hidden ">
-            <Button onClick={() => window.print()} className="text-white-600">
-              {t("DownloadPDF")}
-            </Button>
+            <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
           </div>
         </form>
       </Form>
-      <div id="datatable" className="mt-10">
-        <DataTable columns={reportsColumns} data={reports} />
+      <div id="datatable" className="mt-10" ref={printRef}>
+        <DataTable  columns={reportsColumns} data={reports} />
       </div>
     </div>
   );
