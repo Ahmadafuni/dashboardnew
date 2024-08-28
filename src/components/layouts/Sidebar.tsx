@@ -25,7 +25,6 @@ import {
   PackagePlusIcon,
   PackageMinusIcon,
   Clipboard,
-  Archive,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
