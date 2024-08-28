@@ -23,10 +23,17 @@ import { orderList } from "@/store/Orders";
 import { modelList } from "@/store/Models";
 import { ColumnDef } from "@tanstack/react-table";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
-import { ScanEye } from "lucide-react";
+import { ScanEye, Archive, EllipsisVertical } from "lucide-react";
 import AnimatedProgressBar from "@/components/common/AnimatedProgressBar";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { toggleArchivedCollectionById } from "@/services/Collection.services";
 
 export default function Reports() {
   const { t } = useTranslation();
@@ -64,26 +71,26 @@ export default function Reports() {
   const setOrderList = useSetRecoilState(orderList);
   const setModelList = useSetRecoilState(modelList);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getAllDropdownOptions();
-
-        setDepartmentList(data.departments);
-        setProductCatalogueList(data.productCatalogues);
-        setProductCategoryOneList(data.productCategoryOne);
-        setProductCategoryTwoList(data.productCategoryTwo);
-        setTemplatePatternList(data.templatePattern);
-        setTemplateTypeList(data.templateType);
-        setTextileList(data.textiles);
-        setOrderList(data.orders);
-        setModelList(data.models);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
+  async function fetchData(withModels: boolean) {
+    try {
+      withModels && (await filterModels(setReports, {}));
+      const data = await getAllDropdownOptions();
+      setDepartmentList(data.departments);
+      setProductCatalogueList(data.productCatalogues);
+      setProductCategoryOneList(data.productCategoryOne);
+      setProductCategoryTwoList(data.productCategoryTwo);
+      setTemplatePatternList(data.templatePattern);
+      setTemplateTypeList(data.templateType);
+      setTextileList(data.textiles);
+      setOrderList(data.orders);
+      setModelList(data.models);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
     }
+  }
 
-    fetchData();
+  useEffect(() => {
+    fetchData(false);
   }, [
     setDepartmentList,
     setProductCatalogueList,
@@ -253,18 +260,24 @@ export default function Reports() {
       header: t("Action"),
       cell: ({ row }) => {
         return (
-          <Button
-            className="text-white-600"
-            onClick={() =>
-              window.open(
-                `/models/viewdetails/${row.original.modelId}`,
-                "_blank"
-              )
-            }
-          >
-            <ScanEye className="mr-2 h-4 w-4" />
-            <span>{t("ViewSummary")}</span>
-          </Button>
+          row.original.modelProgress != "skip" && (
+            <>
+              <div className="flex gap-1 items-end	">
+                <Button
+                  className="text-white-600 mt-2 w-15 text-wrap	"
+                  onClick={() =>
+                    window.open(
+                      `/models/viewdetails/${row.original.modelId}`,
+                      "_blank"
+                    )
+                  }
+                >
+                  <ScanEye className="mr-2 h-4 w-4" />
+                  <span>{t("Summary")}</span>
+                </Button>
+              </div>
+            </>
+          )
         );
       },
     },

@@ -99,6 +99,11 @@ export default function CompletedTable({ works }: Props) {
           <TableHeader>
             <TableRow>
               <TableHead>{t("ModelNumber")}</TableHead>
+              <TableHead>{t("Barcode")}</TableHead>
+              <TableHead>{t("Name")}</TableHead>
+              <TableHead>{t("Collection")}</TableHead>
+              <TableHead>{t("Order Number")}</TableHead>
+              <TableHead>{t("Textile")}</TableHead>
               <TableHead>{t("Color")}</TableHead>
               <TableHead>{t("Sizes")}</TableHead>
               <TableHead>{t("TargetQuantity")}</TableHead>
@@ -138,6 +143,18 @@ export default function CompletedTable({ works }: Props) {
                 <TableCell className="font-medium">
                   {item.ModelVariant.Model.DemoModelNumber}
                 </TableCell>
+                <TableCell className="font-medium">{item.Barcode}</TableCell>
+                <TableCell className="font-medium">{item.name}</TableCell>
+                <TableCell className="font-medium">
+                  {item.CollectionName}
+                </TableCell>
+                <TableCell className="font-medium">
+                  {item.OrderNumber}
+                </TableCell>
+                <TableCell className="font-medium">
+                  {item.TextileName}
+                </TableCell>
+
                 <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                 <TableCell>
                   {JSON.parse(item.ModelVariant.Sizes)

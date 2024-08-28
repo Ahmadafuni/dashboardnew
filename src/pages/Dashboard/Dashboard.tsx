@@ -6,82 +6,83 @@ import OthersSendForConfirmation from "@/components/DashboradComponents/Dashboar
 import PausingUnpausingReasoneModal from "@/components/DashboradComponents/Dashboard/PausingUnpausingReasoneModal";
 import RejectVariantDialog from "@/components/DashboradComponents/Dashboard/RejectVariantDialog";
 import { Separator } from "@/components/ui/separator";
-import {getAllTracking, getAllWork} from "@/services/Dashboard.services";
+import { getAllTracking, getAllWork } from "@/services/Dashboard.services";
 import { WorkType } from "@/types/Dashboard/Dashboard.types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AwaitingTable from "@/components/DashboradComponents/Dashboard/AwaitingTable.tsx";
 import CompleteDialog from "@/components/DashboradComponents/Dashboard/CompleteDialog.tsx";
-import {useRecoilValue} from "recoil";
-import {userInfo} from "@/store/authentication.ts";
+import { useRecoilValue } from "recoil";
+import { userInfo } from "@/store/authentication.ts";
 
 export default function Dashboard() {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const user = useRecoilValue(userInfo);
+  const user = useRecoilValue(userInfo);
 
-    const [works, setWorks] = useState<WorkType>({
-        awaiting: [],
-        inProgress: [],
-        completed: [],
-        givingConfirmation: [],
-    });
+  const [works, setWorks] = useState<WorkType>({
+    awaiting: [],
+    inProgress: [],
+    completed: [],
+    givingConfirmation: [],
+  });
 
-    const hasNullNextStage = (workList: any) => {
-        return workList.some((item: { NextStage: null; }) => item.NextStage === null);
-    };
-
-    const hideConfirmationTable = !(
-        user?.userRole === "FACTORYMANAGER" ||
-        !hasNullNextStage(works.awaiting) &&
-        !hasNullNextStage(works.inProgress) &&
-        !hasNullNextStage(works.completed) &&
-        !hasNullNextStage(works.givingConfirmation)
+  const hasNullNextStage = (workList: any) => {
+    return workList.some(
+      (item: { NextStage: null }) => item.NextStage === null
     );
+  };
 
+  const hideConfirmationTable = !(
+    user?.userRole === "FACTORYMANAGER" ||
+    (!hasNullNextStage(works.awaiting) &&
+      !hasNullNextStage(works.inProgress) &&
+      !hasNullNextStage(works.completed) &&
+      !hasNullNextStage(works.givingConfirmation))
+  );
 
-    const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-    const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
 
-    useEffect(() => {
-        if (user?.userRole === "FACTORYMANAGER") {
-            getAllTracking(setWorks);
-        } else {
-            getAllWork(setWorks);
-        }
-    }, [user]);
+  useEffect(() => {
+    if (user?.userRole === "FACTORYMANAGER") {
+      getAllTracking(setWorks);
+    } else {
+      getAllWork(setWorks);
+    }
+  }, [user]);
 
-    return (
-        <div className="w-full p-4 space-y-6">
-            <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
-            <CuttingSendForConfirmationModal
-                getAllWorks={() => getAllWork(setWorks)}
-                selectedSizes={selectedSizes}
-            />
-            <OthersSendForConfirmation
-                getAllWorks={() => getAllWork(setWorks)}
-                selectedSizes={selectedSizes}
-                quantityReceived={quantityReceived}
-            />
-            <CompleteDialog
-                getAllWorks={() => getAllWork(setWorks)}
-                selectedSizes={selectedSizes}
-                quantityReceived={quantityReceived}
-            />
-            <RejectVariantDialog getWorks={() => getAllWork(setWorks)} />
-            <div className="space-y-2">
-                <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
-                <Separator />
-            </div>
-            <AwaitingTable setWorks={setWorks} works={works} />
-            <OngoingTable
-                works={works}
-                setWorks={setWorks}
-                setSelectedSizes={setSelectedSizes}
-                setQuantityReceived={setQuantityReceived} // Pass the setter for quantity received
-            />
-            {!hideConfirmationTable && <OnConfirmationTable works={works} />}
-            <CompletedTable works={works} />
-        </div>
-    );
+  return (
+    <div className="w-full p-4 space-y-6">
+      <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
+      <CuttingSendForConfirmationModal
+        getAllWorks={() => getAllWork(setWorks)}
+        selectedSizes={selectedSizes}
+      />
+      <OthersSendForConfirmation
+        getAllWorks={() => getAllWork(setWorks)}
+        selectedSizes={selectedSizes}
+        quantityReceived={quantityReceived}
+      />
+      <CompleteDialog
+        getAllWorks={() => getAllWork(setWorks)}
+        selectedSizes={selectedSizes}
+        quantityReceived={quantityReceived}
+      />
+      <RejectVariantDialog getWorks={() => getAllWork(setWorks)} />
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
+        <Separator />
+      </div>
+      <AwaitingTable setWorks={setWorks} works={works} />
+      <OngoingTable
+        works={works}
+        setWorks={setWorks}
+        setSelectedSizes={setSelectedSizes}
+        setQuantityReceived={setQuantityReceived} // Pass the setter for quantity received
+      />
+      {!hideConfirmationTable && <OnConfirmationTable works={works} />}
+      <CompletedTable works={works} />
+    </div>
+  );
 }
