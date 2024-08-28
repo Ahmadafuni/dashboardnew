@@ -106,8 +106,8 @@ export default function AwaitingTable({ works, setWorks }: Props) {
               <TableHead>{t("ModelNumber")}</TableHead>
               <TableHead>{t("Barcode")}</TableHead>
               <TableHead>{t("Name")}</TableHead>
-              <TableHead>{t("Collection")}</TableHead>
-              <TableHead>{t("Order Number")}</TableHead>
+              <TableHead>{t("Collections")}</TableHead>
+              <TableHead>{t("OrderNumber")}</TableHead>
               <TableHead>{t("Textile")}</TableHead>
               <TableHead>{t("Color")}</TableHead>
               <TableHead>{t("Size")}</TableHead>
