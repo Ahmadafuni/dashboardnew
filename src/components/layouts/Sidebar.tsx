@@ -25,6 +25,7 @@ import {
   PackagePlusIcon,
   PackageMinusIcon,
   Clipboard,
+  Archive,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -113,6 +114,12 @@ export default function Sidebar() {
           name: t("Reports"),
           link: "/dashboard/reports",
           icon: FileBarChart2,
+          userRole: ["FACTORYMANAGER"],
+        },
+        {
+          name: t("Archive"),
+          link: "/dashboard/archive",
+          icon: Archive,
           userRole: ["FACTORYMANAGER"],
         },
       ],

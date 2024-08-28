@@ -15,21 +15,15 @@ import {
   updateCollectionModal,
 } from "@/store/Collection.ts";
 import { ColumnDef } from "@tanstack/react-table";
-import { Archive, EllipsisVertical, Pen, Plus } from "lucide-react";
+import { Pen, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { CollectionType } from "@/types/Entities/Collections.types.ts";
 import NewCollection from "@/components/DashboradComponents/Entities/Collections/NewCollection.tsx";
 import UpdateCollection from "@/components/DashboradComponents/Entities/Collections/UpdateCollection.tsx";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
 
-export default function Collections() {
+export default function Archive() {
   const setNewCollectionModal = useSetRecoilState(newCollectionModal);
   const setUpdateCollectionModal = useSetRecoilState(updateCollectionModal);
   const setCollectionId = useSetRecoilState(CollectionId);
@@ -37,11 +31,9 @@ export default function Collections() {
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const { t } = useTranslation();
 
-  const handleRemoveModelFromArchive = async (collectionId: number) => {
-    console.log(collectionId);
-
-    await toggleArchivedCollectionById(collectionId, true);
-    await getAllCollections(false, setCollections);
+  const handleRemoveCollectionFromArchive = async (collectionId: number) => {
+    await toggleArchivedCollectionById(collectionId, false);
+    await getAllCollections(true, setCollections);
   };
 
   const collectionColumns: ColumnDef<CollectionType>[] = [
@@ -72,22 +64,12 @@ export default function Collections() {
                 deleteCollection(setCollections, row.original.Id)
               }
             />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <EllipsisVertical className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-35 bg-black bg-opacity-50	mr-5 p-2 rounded-2xl">
-                <DropdownMenuItem
-                  onClick={() => handleRemoveModelFromArchive(row.original.Id)}
-                  className=" pt-2 pb-2 pl-4 pr-4 flex gap-1  cursor-pointer	hover:bg-green-700 rounded-md"
-                >
-                  <Archive className="mr-2 h-4 w-4" />
-                  <span>{t("Archive Collection")}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button
+              className="text-white bg-green-700"
+              onClick={() => handleRemoveCollectionFromArchive(row.original.Id)}
+            >
+              Remove From Archive
+            </Button>
           </div>
         );
       },
@@ -95,15 +77,15 @@ export default function Collections() {
   ];
 
   useEffect(() => {
-    getAllCollections(false, setCollections);
+    getAllCollections(true, setCollections);
   }, []);
   return (
     <div className="w-full space-y-2">
       <NewCollection
-        getAllCollections={() => getAllCollections(false, setCollections)}
+        getAllCollections={() => getAllCollections(true, setCollections)}
       />
       <UpdateCollection
-        getAllCollections={() => getAllCollections(false, setCollections)}
+        getAllCollections={() => getAllCollections(true, setCollections)}
       />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Collections")}</h1>

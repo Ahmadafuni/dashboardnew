@@ -18,13 +18,17 @@ export const getAllWork = async (setData: Dispatch<SetStateAction<any>>) => {
   }
 };
 
-export const getAllTracking = async (setData: Dispatch<SetStateAction<any>>) => {
+export const getAllTracking = async (
+  setData: Dispatch<SetStateAction<any>>
+) => {
   try {
     const { data } = await axios.get("trackingmodels/alltracking", {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    console.log(data.data);
+
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -32,7 +36,6 @@ export const getAllTracking = async (setData: Dispatch<SetStateAction<any>>) => 
     }
   }
 };
-
 
 export const startVariant = async (
   setData: Dispatch<SetStateAction<any>>,

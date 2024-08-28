@@ -15,11 +15,16 @@ type ModelVariant = {
   Quantity: number;
   Model: Model;
   Color: Color;
-  RunningStatus?: string
+  RunningStatus?: string;
 };
 
 type Tracking = {
   Id: number;
+  name: string;
+  Barcode: string;
+  CollectionName: string;
+  OrderNumber: string;
+  TextileName: string;
   Notes: string | null;
   ModelVariant: ModelVariant;
   StartTime: Date | null;
