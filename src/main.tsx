@@ -65,6 +65,7 @@ import MaterialReport from "@/pages/Warehouse/MaterialReport.tsx";
 // Axios config
 //axios.defaults.baseURL = "http://localhost:3002/";
 axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+//axios.defaults.baseURL = "https://dashboard-backend.qnv2oe.easypanel.host/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
 };

@@ -53,6 +53,7 @@
   "TemplateTypeName": "Template Type",
 
   "TextileName": "Textile Name",
+  "Textile": "Textile",
   "TextileType": "TextileType",
   "Composition": "Composition",
 
@@ -416,5 +417,6 @@
   "IncorrectStructure": "Excel not valid: incorrect structure.",
   "MissingSizes": "Please make sure that all sizes are available in the droplist. Missing sizes: {{sizes}}",
   "NoValidMeasurements": "Excel not valid: no valid measurements found.",
-  "ImportFromExcel": "Import from Excel"
+  "ImportFromExcel": "Import from Excel",
+  "Archive": "Archive"
 }

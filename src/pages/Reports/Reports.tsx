@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -27,6 +27,7 @@ import { ScanEye } from "lucide-react";
 import AnimatedProgressBar from "@/components/common/AnimatedProgressBar";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import { useReactToPrint } from 'react-to-print';
 
 export default function Reports() {
   const { t } = useTranslation();
@@ -63,27 +64,33 @@ export default function Reports() {
   const setTextileList = useSetRecoilState(textileList);
   const setOrderList = useSetRecoilState(orderList);
   const setModelList = useSetRecoilState(modelList);
+  const printRef = useRef<HTMLDivElement | null>(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current ?? null,
+    documentTitle: `Report${new Date().toLocaleString().replace(/[/,: ]/g, "_")}`,
+
+  });
+  async function fetchData(withModels: boolean) {
+    try {
+      withModels && (await filterModels(setReports, {}));
+      const data = await getAllDropdownOptions();
+      setDepartmentList(data.departments);
+      setProductCatalogueList(data.productCatalogues);
+      setProductCategoryOneList(data.productCategoryOne);
+      setProductCategoryTwoList(data.productCategoryTwo);
+      setTemplatePatternList(data.templatePattern);
+      setTemplateTypeList(data.templateType);
+      setTextileList(data.textiles);
+      setOrderList(data.orders);
+      setModelList(data.models);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getAllDropdownOptions();
-
-        setDepartmentList(data.departments);
-        setProductCatalogueList(data.productCatalogues);
-        setProductCategoryOneList(data.productCategoryOne);
-        setProductCategoryTwoList(data.productCategoryTwo);
-        setTemplatePatternList(data.templatePattern);
-        setTemplateTypeList(data.templateType);
-        setTextileList(data.textiles);
-        setOrderList(data.orders);
-        setModelList(data.models);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    }
-
-    fetchData();
+    fetchData(false);
   }, [
     setDepartmentList,
     setProductCatalogueList,
@@ -253,18 +260,24 @@ export default function Reports() {
       header: t("Action"),
       cell: ({ row }) => {
         return (
-          <Button
-            className="text-white-600"
-            onClick={() =>
-              window.open(
-                `/models/viewdetails/${row.original.modelId}`,
-                "_blank"
-              )
-            }
-          >
-            <ScanEye className="mr-2 h-4 w-4" />
-            <span>{t("ViewSummary")}</span>
-          </Button>
+          row.original.modelProgress != "skip" && (
+            <>
+              <div className="flex gap-1 items-end	">
+                <Button
+                  className="text-white-600 mt-2 w-15 text-wrap	"
+                  onClick={() =>
+                    window.open(
+                      `/models/viewdetails/${row.original.modelId}`,
+                      "_blank"
+                    )
+                  }
+                >
+                  <ScanEye className="mr-2 h-4 w-4" />
+                  <span>{t("Summary")}</span>
+                </Button>
+              </div>
+            </>
+          )
         );
       },
     },
@@ -571,14 +584,12 @@ export default function Reports() {
             )}
           </Card>
           <div className="flex justify-end mt-4 print:hidden ">
-            <Button onClick={() => window.print()} className="text-white-600">
-              {t("DownloadPDF")}
-            </Button>
+            <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
           </div>
         </form>
       </Form>
-      <div id="datatable" className="mt-10">
-        <DataTable columns={reportsColumns} data={reports} />
+      <div id="datatable" className="mt-10" ref={printRef}>
+        <DataTable  columns={reportsColumns} data={reports} />
       </div>
     </div>
   );
