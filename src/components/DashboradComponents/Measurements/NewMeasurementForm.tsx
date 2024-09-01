@@ -124,7 +124,7 @@ export default function NewMeasurementForm() {
 
         // Iterate through each size column (from index 1 onwards)
         headers.slice(1).forEach((sizeLabel, colIndex) => {
-          const size = sizes.find((s) => s.label === sizeLabel);
+          const size = sizes.find((s) => s.label === sizeLabel.toString());
           if (!size) {
             // Track missing sizes
             missingSizes.add(sizeLabel);
