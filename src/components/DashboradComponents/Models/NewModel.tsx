@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import { ModelSchema } from "@/form_schemas/newModelSchema.ts";
 import { templateList } from "@/store/Template";
 import { textileList } from "@/store/Textiles";
-import { colorList } from "@/store/Color";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { productCatalogueList } from "@/store/ProductCatalogue";
@@ -103,7 +102,7 @@ export default function NewModel({ setNext }: Props) {
       toast.success(newModel.data.message);
       setIsLoading(false);
       setSearchParams({ model: newModel.data.data.Id, tab: "details" });
-      setNext("details");
+      setNext("stages");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);

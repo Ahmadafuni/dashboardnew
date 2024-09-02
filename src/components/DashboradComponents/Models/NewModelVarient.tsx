@@ -27,14 +27,11 @@ import { useEffect, useState } from "react";
 import NewColor from "../Entities/Colors/NewColor";
 import { getAllColorsList } from "@/services/Colors.services.ts";
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-interface Props {
-  setNext: (tab: string) => void;
-}
-
-export default function NewModelVarient({ setNext }: Props) {
+export default function NewModelVarient() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const modelId = searchParams.get("model");
 
@@ -94,6 +91,10 @@ export default function NewModelVarient({ setNext }: Props) {
   };
 
   const handleFinalSubmit = async () => {
+    if (varients.length === 0) {
+      toast.error("You have to enter model details before proceeding!");
+      return;
+    }
     setIsLoading(true);
     try {
       for (const variant of varients) {
@@ -109,11 +110,11 @@ export default function NewModelVarient({ setNext }: Props) {
       }
 
       toast.success("All variants submitted successfully!");
-      setNext("stages"); // Move to the next tab
     } catch (error) {
       toast.error(`An error occurred: ${error.message}`);
     } finally {
       setIsLoading(false);
+      navigate(`/dashboard/orders/model/varients/${modelId}`);
     }
   };
 
@@ -240,7 +241,7 @@ export default function NewModelVarient({ setNext }: Props) {
                   {t("Please wait")}
                 </>
             ) : (
-                t("Next")
+                t("Done")
             )}
           </Button>
         </div>

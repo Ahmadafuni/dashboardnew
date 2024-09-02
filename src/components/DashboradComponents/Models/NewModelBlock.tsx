@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import NewModelVarient from "./NewModelVarient";
-import NewManufacturingStages from "@/components/DashboradComponents/ManufacturingStages/NewManufacturingStages";
 import NewModel from "@/components/DashboradComponents/Models/NewModel.tsx";
+import NewManufacturingStageModel from "@/components/DashboradComponents/ManufacturingStageModel/NewManufacturingStageModel.tsx";
 
 export default function NewModelBlock() {
     const { t } = useTranslation();
@@ -19,21 +19,21 @@ export default function NewModelBlock() {
                 <TabsTrigger value="model" className="cursor-default">
                     {t("Model")}
                 </TabsTrigger>
-                <TabsTrigger value="details" className="cursor-default">
-                    {t("Details")}
-                </TabsTrigger>
                 <TabsTrigger value="stages" className="cursor-default">
                     {t("Stages")}
+                </TabsTrigger>
+                <TabsTrigger value="details" className="cursor-default">
+                    {t("Details")}
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="model">
                 <NewModel setNext={setCurrentTab} />
             </TabsContent>
-            <TabsContent value="details">
-                <NewModelVarient setNext={() => setCurrentTab("stages")}/>
-            </TabsContent>
             <TabsContent value="stages">
-                <NewManufacturingStages />
+                <NewManufacturingStageModel setNext={setCurrentTab} /> {/* Pass setCurrentTab */}
+            </TabsContent>
+            <TabsContent value="details">
+                <NewModelVarient />
             </TabsContent>
         </Tabs>
     );
