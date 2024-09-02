@@ -28,6 +28,7 @@ import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCate
 import NewTemplatePattern from "../Entities/TemplatePattern/NewTemplatePattern";
 import NewTemplateType from "../Entities/TemplateType/NewTemplateType";
 import {useTranslation} from "react-i18next";
+
 export default function UpdateTemplate() {
   const { templateId } = useParams();
   const [isLoading, setIsLoading] = useState(false);

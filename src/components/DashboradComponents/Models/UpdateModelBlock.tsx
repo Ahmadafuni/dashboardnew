@@ -1,21 +1,14 @@
-// @ts-nocheck
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import UpdateModel from "@/components/DashboradComponents/Models/UpdateModel";
 import { useTranslation } from "react-i18next";
-import NewModelVarient from "./NewModelVarient";
-import NewModel from "@/components/DashboradComponents/Models/NewModel.tsx";
-import NewManufacturingStageModel from "@/components/DashboradComponents/ManufacturingStageModel/NewManufacturingStageModel.tsx";
+import ViewManufacturingStageModel from "@/components/DashboradComponents/ManufacturingStageModel/ViewManufacturingStageModel.tsx";
+import ModelVarients from "@/pages/Models/ModelVarients.tsx";
 
-export default function NewModelBlock() {
+export default function UpdateModelBlock() {
     const { t } = useTranslation();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [currentTab, setCurrentTab] = useState(
-        searchParams.get("tab") !== null ? searchParams.get("tab") : "model"
-    );
 
     return (
-        <Tabs value={currentTab} className="mt-2">
+        <Tabs defaultValue="model" className="mt-2">
             <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="model" className="cursor-default">
                     {t("Model")}
@@ -27,14 +20,16 @@ export default function NewModelBlock() {
                     {t("Details")}
                 </TabsTrigger>
             </TabsList>
+
             <TabsContent value="model">
-                <NewModel setNext={setCurrentTab} />
+                <UpdateModel />
             </TabsContent>
+
             <TabsContent value="stages">
-                <NewManufacturingStageModel setNext={setCurrentTab} /> {/* Pass setCurrentTab */}
+                <ViewManufacturingStageModel />
             </TabsContent>
             <TabsContent value="details">
-                <NewModelVarient />
+                <ModelVarients />
             </TabsContent>
         </Tabs>
     );

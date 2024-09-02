@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
-  currentModelVarient,
   currentModelVarientId,
   updateModelVarientModal,
 } from "@/store/ModelVarients";
@@ -33,18 +32,15 @@ type Props = {
   modelId: string | undefined;
 };
 export default function UpdateModelVarientDialog({
-  getAllVarients,
-  modelId,
-}: Props) {
+                                                   getAllVarients,
+                                                   modelId,
+                                                 }: Props) {
   const [open, setOpen] = useRecoilState(updateModelVarientModal);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
 
-  // Current Varient
-  const currentVarient = useRecoilValue(currentModelVarient);
   const varientId = useRecoilValue(currentModelVarientId);
 
-  // Dropdowns
   const setColor = useSetRecoilState(colorList);
   const setSizes = useSetRecoilState(sizeList);
 
@@ -55,24 +51,41 @@ export default function UpdateModelVarientDialog({
       Quantity: "",
       Sizes: [],
     },
-    // @ts-expect-error
-    values: currentVarient,
   });
 
   const onSubmit = async (data: z.infer<typeof ModelVarientSchema>) => {
-    if (+data.Quantity % data.Sizes.length !== 0) {
+    // Check if the sizes array is empty or not
+    if (data.Sizes.length === 0) {
+      toast.error("Please select at least one size.");
+      return;
+    }
+
+    const quantityPerSize = +data.Quantity / data.Sizes.length;
+
+    if (quantityPerSize % 1 !== 0) {
       toast.error(
-        "Getting decimal value after splitting quantity into all sizes in equal part. Please change the quantity!"
+          "Getting a decimal value after splitting quantity into all sizes in equal parts. Please change the quantity!"
       );
       return;
     }
+
+    // Format the sizes with quantities
+    const sizesWithQuantities = data.Sizes.map((size) => ({
+      label: size.label,
+      value: quantityPerSize,
+    }));
+
     setIsLoading(true);
     try {
-      const newVarients = await axios.put(`model/varients/${varientId}`, data, {
-        headers: {
-          Authorization: `bearer ${Cookies.get("access_token")}`,
-        },
-      });
+      const newVarients = await axios.put(
+          `model/varients/${varientId}`,
+          { ...data, Sizes: sizesWithQuantities }, // Send formatted sizes
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
+      );
       toast.success(newVarients.data.message);
       getAllVarients();
       form.reset();
@@ -90,32 +103,33 @@ export default function UpdateModelVarientDialog({
   useEffect(() => {
     getAllColorsList(setColor);
     getAllSizesListByModel(setSizes, modelId);
-  }, []);
+  }, [modelId]); // Depend on modelId
+
   return (
-    <div className="w-full space-y-2">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>{t("UpdateModelDetails")}</DialogTitle>
-          </DialogHeader>
-          <ModelVarientForm form={form} onSubmit={onSubmit} />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>
-              {t("Close")}
-            </Button>
-            <Button type="submit" disabled={isLoading} form="model-varient">
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t("Please wait")}
-                </>
-              ) : (
-                t("Update")
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+      <div className="w-full space-y-2">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>{t("UpdateModelDetails")}</DialogTitle>
+            </DialogHeader>
+            <ModelVarientForm form={form} onSubmit={onSubmit} />
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpen(false)}>
+                {t("Close")}
+              </Button>
+              <Button type="submit" disabled={isLoading} form="model-varient">
+                {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t("Please wait")}
+                    </>
+                ) : (
+                    t("Update")
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
   );
 }

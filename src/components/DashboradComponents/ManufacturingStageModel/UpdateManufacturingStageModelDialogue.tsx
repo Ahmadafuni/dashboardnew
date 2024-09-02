@@ -49,7 +49,7 @@ export default function UpdateManufacturingStageModelDialogue({
   const onSubmit = async (data: z.infer<typeof manufacturingStageSchema>) => {
     setIsLoading(true);
     try {
-      const response = await axios.put(`manufacturingstage/${stageID}`, data, {
+      const response = await axios.put(`manufacturingstagemodel/${stageID}`, data, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },

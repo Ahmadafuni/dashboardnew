@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { manufacturingStageSchema } from "@/form_schemas/newManufacturingStageSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,13 +21,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
-import {
-  deleteStages,
-  getAllStages,
-  getStagesId,
-  toggleStageDown,
-  toggleStageUp,
-} from "@/services/ManufacturingStages.services";
 import UpdateManufacturingStageModelDialogue from "./UpdateManufacturingStageModelDialogue.tsx";
 import { useSetRecoilState } from "recoil";
 import {
@@ -35,11 +29,18 @@ import {
   updateManufacturingStageModal,
 } from "@/store/ManufacturingStage";
 import {useTranslation} from "react-i18next";
+import {
+  deleteStageModel,
+  getAllStageModel, getStagesIdModel,
+  toggleStageDownModel,
+  toggleStageUpModel
+} from "@/services/ManufacturingStageModel.services.ts";
 
 export default function ViewManufacturingStageModel() {
-  const [isLoading, setIsLoading] = useState(false);
-  const { templateId } = useParams();
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
+
 
   const setUpdateStageModal = useSetRecoilState(updateManufacturingStageModal);
   const setStageId = useSetRecoilState(manufacturingStageId);
@@ -60,8 +61,8 @@ export default function ViewManufacturingStageModel() {
     setIsLoading(true);
     try {
       const newMS = await axios.post(
-        "manufacturingstage/",
-        { ...data, template: templateId },
+        "manufacturingstagemodel/",
+        { ...data, model: id },
         {
           headers: {
             Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -69,7 +70,7 @@ export default function ViewManufacturingStageModel() {
         }
       );
       toast.success(newMS.data.message);
-      getAllStages(setStages, templateId);
+      getAllStageModel(setStages, id);
       form.reset();
       setIsLoading(false);
     } catch (error) {
@@ -97,25 +98,25 @@ export default function ViewManufacturingStageModel() {
   // Toggle Up
   const toggleUp = async (id: number) => {
     try {
-      await toggleStageUp(id);
-      getAllStages(setStages, templateId);
+      await toggleStageUpModel(id);
+      getAllStageModel(setStages, id);
     } catch (error) {}
   };
   // Toggle Down
-  const toggleDown = async (id: number) => {
+  const toggleDown = async (ID: number) => {
     try {
-      await toggleStageDown(id);
-      getAllStages(setStages, templateId);
+      await toggleStageDownModel(ID);
+      getAllStageModel(setStages, id);
     } catch (error) {}
   };
 
   useEffect(() => {
-    getAllStages(setStages, templateId);
+    getAllStageModel(setStages, id);
   }, []);
   return (
     <div className="space-y-1">
       <UpdateManufacturingStageModelDialogue
-        getStages={() => getAllStages(setStages, templateId)}
+        getStages={() => getAllStageModel(setStages, id)}
       />
       <ManufacturingStageModelForm
         form={form}
@@ -151,7 +152,7 @@ export default function ViewManufacturingStageModel() {
                       <Button
                         onClick={() => {
                           setStageId(step.Id);
-                          getStagesId(setStage, step.Id);
+                          getStagesIdModel(setStage, step.Id);
                           setUpdateStageModal(true);
                         }}
                       >
@@ -173,7 +174,7 @@ export default function ViewManufacturingStageModel() {
                       </Button>
                       <DeleteConfirmationDialog
                         deleteRow={() =>
-                          deleteStages(setStages, step.Id, templateId)
+                          deleteStageModel(setStages, step.Id, id)
                         }
                       />
                     </TableCell>

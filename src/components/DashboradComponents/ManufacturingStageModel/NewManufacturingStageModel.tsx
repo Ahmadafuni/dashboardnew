@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UUID } from "crypto";
-import { createMultipleStages } from "@/services/ManufacturingStageModel.services";
+import { createMultipleStageModel } from "@/services/ManufacturingStageModel.services";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { manufacturingStageSchema } from "@/form_schemas/newManufacturingStageSchema";
@@ -54,6 +54,7 @@ export default function NewManufacturingStageModel({ setNext }: Props) {
       id: uid,
       model: modelId,
       stageNumber: steps.length + 1,
+      // @ts-ignore
       departmentName: departments.find((d) => d.value === data.department)?.label,
     };
     setSteps([...steps, stageObj]);
@@ -68,7 +69,7 @@ export default function NewManufacturingStageModel({ setNext }: Props) {
     }
     setIsLoading(true);
     try {
-      const newStages = await createMultipleStages({ stages: steps });
+      const newStages = await createMultipleStageModel({ stages: steps });
       if (newStages) {
         toast.success("All stages submitted successfully!");
         resetSteps(); // Reset steps after successful submission

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
 import MultiSelectFieldForForm from "@/components/common/MultiSelectFieldForForm";
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";

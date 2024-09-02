@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export const createMultipleStages = async (data: any) => {
+export const createMultipleStageModel = async (data: any) => {
   try {
     const newStages = await axios.post("manufacturingstagemodel/multi", data, {
       headers: {
@@ -20,7 +20,7 @@ export const createMultipleStages = async (data: any) => {
   }
 };
 
-export const getAllStages = async (
+export const getAllStageModel = async (
   setData: Dispatch<SetStateAction<any>>,
   id: string | undefined
 ) => {
@@ -38,7 +38,7 @@ export const getAllStages = async (
   }
 };
 
-export const getStagesId = async (
+export const getStagesIdModel = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number
 ) => {
@@ -56,7 +56,7 @@ export const getStagesId = async (
   }
 };
 
-export const toggleStageUp = async (id: number) => {
+export const toggleStageUpModel = async (id: number) => {
   try {
     const { data } = await axios.get(`manufacturingstagemodel/toggleup/${id}`, {
       headers: {
@@ -71,7 +71,7 @@ export const toggleStageUp = async (id: number) => {
   }
 };
 
-export const toggleStageDown = async (id: number) => {
+export const toggleStageDownModel = async (id: number) => {
   try {
     const { data } = await axios.get(`manufacturingstagemodel/toggledown/${id}`, {
       headers: {
@@ -86,7 +86,7 @@ export const toggleStageDown = async (id: number) => {
   }
 };
 
-export const deleteStages = async (
+export const deleteStageModel = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number,
   templateId: string | undefined
@@ -97,7 +97,7 @@ export const deleteStages = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllStages(setData, templateId);
+    getAllStageModel(setData, templateId);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
