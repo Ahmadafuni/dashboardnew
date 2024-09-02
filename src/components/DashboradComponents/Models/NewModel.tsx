@@ -22,7 +22,6 @@ import { getAllProductCataloguesList } from "@/services/ProductCatalogues.servic
 import { getAllProductCategoryOneList } from "@/services/ProductCategoryOne.services";
 import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.services";
 import { getAllTextilesList } from "@/services/Textiles.services";
-import { getAllColorsList } from "@/services/Colors.services";
 import NewProductCategoryOne from "../Entities/ProductCategoryOne/NewProductCategoryOne";
 import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCategoryTwo";
 import { getAllTemplatesList } from "@/services/Templates.services";

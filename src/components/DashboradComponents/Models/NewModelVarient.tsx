@@ -19,16 +19,15 @@ import { sizeList } from "@/store/Sizes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Plus, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil"; // Import useResetRecoilState
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import NewColor from "../Entities/Colors/NewColor";
-import {getAllColorsList} from "@/services/Colors.services.ts";
+import { getAllColorsList } from "@/services/Colors.services.ts";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
-
 
 interface Props {
   setNext: (tab: string) => void;
@@ -44,6 +43,7 @@ export default function NewModelVarient({ setNext }: Props) {
   const setNewColorModal = useSetRecoilState(newColorModal);
   const setColor = useSetRecoilState(colorList);
   const [varients, setVarients] = useRecoilState(modelVarientNew);
+  const resetVariants = useResetRecoilState(modelVarientNew); // Create reset function
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof ModelVarientSchema>>({
@@ -81,6 +81,7 @@ export default function NewModelVarient({ setNext }: Props) {
         Id: crypto.randomUUID(),
         Color: data.Color,
         Quantity: data.Quantity,
+        QuantityDetails: +data.Quantity / data.Sizes.length,
         Sizes: sizesWithQuantities,
       },
     ]);
@@ -96,7 +97,6 @@ export default function NewModelVarient({ setNext }: Props) {
     setIsLoading(true);
     try {
       for (const variant of varients) {
-        console.log("variant",variant)
         const response = await axios.post(`/model/varients/${modelId}`, {
           Sizes: variant.Sizes,
           Color: variant.Color,
@@ -115,11 +115,11 @@ export default function NewModelVarient({ setNext }: Props) {
     } finally {
       setIsLoading(false);
     }
-  }
-
+  };
 
   // Page on load
   useEffect(() => {
+    resetVariants(); // Clear variants state on component load
     getAllColorsList(setColor);
   }, []);
 
@@ -208,7 +208,7 @@ export default function NewModelVarient({ setNext }: Props) {
             </TableHeader>
             <TableBody>
               {varients.map((variant) => (
-                  <TableRow key={variant.Color}>
+                  <TableRow key={variant.Id}>
                     <TableCell>
                       {colorsList.find((item) => item.value === variant.Color)?.label}
                     </TableCell>
