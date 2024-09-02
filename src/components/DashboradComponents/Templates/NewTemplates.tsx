@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-  // templateProductCatalogueDetailSearchSchema,
   templateSchema,
 } from "@/form_schemas/newTemplateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +12,6 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import TemplateForm from "./TemplateForm";
-// import TemplateProductCatalogueDetailSearchForm from "./TemplateProductCatalogueDetailSearchForm.tsx";
 import { useSetRecoilState } from "recoil";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";

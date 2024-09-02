@@ -52,7 +52,6 @@ import Materials from "@/pages/Warehouse/Materials.tsx";
 import NewMaterial from "@/components/DashboradComponents/Warehouse/Materials/NewMaterial.tsx";
 import UpdateMaterial from "@/components/DashboradComponents/Warehouse/Materials/UpdateMaterial.tsx";
 import TemplateViewDetails from "@/components/DashboradComponents/Templates/TemplateViewDetails.tsx";
-import NewModel from "./components/DashboradComponents/Models/NewModel.tsx";
 import ModelVarients from "./pages/Models/ModelVarients.tsx";
 import UpdateModel from "./components/DashboradComponents/Models/UpdateModel.tsx";
 import ViewModelSummary from "./components/DashboradComponents/Models/ViewModelSummary.tsx";
@@ -61,6 +60,7 @@ import ChildMaterials from "@/pages/Warehouse/ChildMaterials.tsx";
 import IncomingMovement from "@/pages/Warehouse/IncomingMovement.tsx";
 import OutgoingMovement from "@/pages/Warehouse/OutgoingMovement.tsx";
 import MaterialReport from "@/pages/Warehouse/MaterialReport.tsx";
+import NewModelBlock from "@/components/DashboradComponents/Models/NewModelBlock.tsx";
 
 // Axios config
 //axios.defaults.baseURL = "http://localhost:3002/";
@@ -120,7 +120,7 @@ const router = createBrowserRouter([
       { path: "/dashboard/orders/model/:id", element: <Models /> },
       { path: "/dashboard/orders/model/varients/:id", element: <ModelVarients />,},
       { path: "/dashboard/orders/model/update/:id/:modelId", element: <UpdateModel />,},
-      { path: "/dashboard/orders/model/new/:id", element: <NewModel /> },
+      { path: "/dashboard/orders/model/new/:id", element: <NewModelBlock /> },
       { path: "/dashboard/tasks", element: <Tasks /> },
       { path: "/dashboard/notes", element: <Notes /> },
       { path: "/dashboard/users", element: <Users /> },

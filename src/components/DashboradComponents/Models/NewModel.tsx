@@ -4,9 +4,9 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import axios, { AxiosError } from "axios";
@@ -28,40 +28,29 @@ import NewProductCategoryTwo from "../Entities/ProductCategoryTwo/NewProductCate
 import { getAllTemplatesList } from "@/services/Templates.services";
 import NewTextiles from "../Entities/Textiles/NewTextiles";
 import NewProductCatalogueDialog from "../ProductCatalogue/NewProductCatalogueDialog";
-import NewColor from "../Entities/Colors/NewColor";
-import { useNavigate, useParams } from "react-router-dom";
-import NewModelVarient from "./NewModelVarient";
-import { modelVarientNew } from "@/store/Models";
+import { useSearchParams,useParams } from "react-router-dom";
 import BackButton from "@/components/common/BackButton";
 
-export default function NewModel() {
-  // Translation
+interface Props {
+  setNext: Dispatch<SetStateAction<any>>;
+}
+export default function NewModel({ setNext }: Props) {
   const { t } = useTranslation();
   const { id } = useParams();
-  // Loading
   const [isLoading, setIsLoading] = useState(false);
-
-  // Navigate
-  const navigate = useNavigate();
-
-  // Varients
-  const [varients, setVarients] = useRecoilState(modelVarientNew);
-
-  // Recoil state
+  // @ts-expect-error
+  let [searchParams, setSearchParams] = useSearchParams();
   const setTemplates = useSetRecoilState(templateList);
   const setTextile = useSetRecoilState(textileList);
-  const setColor = useSetRecoilState(colorList);
   const setCategoryOne = useSetRecoilState(productCategoryOneList);
   const setCategoryTwo = useSetRecoilState(productCategoryTwoList);
   const setProductCatalogue = useSetRecoilState(productCatalogueList);
 
-  // Files
   const [files, setFiles] = useState({});
   const handleFileChange = (e: any) => {
     setFiles(e.target.files);
   };
 
-  // Form fields
   const form = useForm<z.infer<typeof ModelSchema>>({
     resolver: zodResolver(ModelSchema),
     defaultValues: {
@@ -83,12 +72,7 @@ export default function NewModel() {
 
   useEffect(() => {}, []);
 
-  // Form submit function
   const onSubmit = async (data: z.infer<typeof ModelSchema>) => {
-    if (varients.length <= 0) {
-      toast.error("Please add varients first!");
-    }
-    setIsLoading(true);
     try {
       const formData = new FormData();
       if (Object.keys(files).length > 0) {
@@ -97,15 +81,6 @@ export default function NewModel() {
           formData.append("models", files[i]);
         }
       }
-      // const newVarientsSizes = varients
-      //   .flatMap((e: any) => e.Sizes.map((s: any) => s.label))
-      //   .join(",");
-      const newVarients = varients.map((varient: any) => ({
-        ...varient,
-        Sizes: varient.Sizes.map((s: any) => s.label),
-      }));
-      console.log("newVarients are ", newVarients);
-
       formData.append("DemoModelNumber", data.DemoModelNumber);
       formData.append("ProductCatalog", data.ProductCatalog);
       formData.append("CategoryOne", data.CategoryOne);
@@ -118,10 +93,8 @@ export default function NewModel() {
       formData.append("PrintName", data.PrintName);
       formData.append("PrintLocation", data.PrintLocation);
       formData.append("Description", data.Description);
-      formData.append("Varients", JSON.stringify(newVarients));
 
       console.log("formData are : ", data);
-      console.log("formData  varients are : ", varients);
 
       const newModel = await axios.post(`model/${id}`, formData, {
         headers: {
@@ -130,8 +103,8 @@ export default function NewModel() {
       });
       toast.success(newModel.data.message);
       setIsLoading(false);
-      setVarients([]);
-      navigate(`/dashboard/orders/model/${id}`);
+      setSearchParams({ model: newModel.data.data.Id, tab: "details" });
+      setNext("details");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -142,12 +115,10 @@ export default function NewModel() {
 
   // Page on load
   useEffect(() => {
-    setVarients([]);
     getAllProductCataloguesList(setProductCatalogue);
     getAllProductCategoryOneList(setCategoryOne);
     getAllProductCategoryTwoList(setCategoryTwo);
     getAllTextilesList(setTextile);
-    getAllColorsList(setColor);
     getAllTemplatesList(setTemplates);
   }, []);
   return (
@@ -166,7 +137,6 @@ export default function NewModel() {
       <NewProductCatalogueDialog
         getCatalogues={() => getAllProductCataloguesList(setProductCatalogue)}
       />
-      <NewColor getColors={() => getAllColorsList(setColor)} />
       <div className="w-full space-y-1 flex items-center">
         <BackButton />
         <h1 className="text-3xl font-bold">{t("NewModel")}</h1>
@@ -179,7 +149,6 @@ export default function NewModel() {
           handleFileChange={handleFileChange}
         />
       </div>
-      <NewModelVarient />
       <div className="flex justify-end">
         <Button type="submit" disabled={isLoading} form="model">
           {isLoading ? (
@@ -188,7 +157,7 @@ export default function NewModel() {
               {t("Please wait")}
             </>
           ) : (
-            t("AddModel")
+            t("Next")
           )}
         </Button>
       </div>

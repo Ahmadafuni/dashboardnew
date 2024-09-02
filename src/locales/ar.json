@@ -278,7 +278,7 @@
   "Material": "المادة",
   "ChildMaterial": "المادة الفرعية",
   "UnitOfQuantity": "وحدة الكمية",
-  "Model": "النموذج",
+  "Model": "الموديل",
   "SearchMaterial": "البحث عن مادة",
   "NoMaterialFound": "لم يتم العثور على مادة",
   "SelectMaterial": "اختر مادة",
@@ -419,5 +419,6 @@
   "IncorrectStructure": "الملف غير صالح: هيكل غير صحيح.",
   "MissingSizes": "يرجى التأكد من توفر جميع المقاسات في قائمة الاختيارات. المقاسات المفقودة: {{sizes}}",
   "NoValidMeasurements": "الملف غير صالح: لم يتم العثور على قياسات صالحة.",
-  "ImportFromExcel": "استيراد من اكسل"
+  "ImportFromExcel": "استيراد من اكسل",
+  "DragMessage": "اسحب بعض الصور هنا أو انقر لتحديد الصور"
 }

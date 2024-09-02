@@ -72,3 +72,30 @@
   }
 
 }
+@media print {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid black; /* Ensures borders are printed */
+    padding: 8px;
+  }
+
+  tr {
+    page-break-inside: avoid; /* Prevents rows from being split across pages */
+  }
+
+  thead {
+    display: table-header-group; /* Ensures table headers repeat on each page */
+  }
+
+  tfoot {
+    display: table-footer-group; /* Ensures table footers repeat on each page */
+  }
+
+  .page-break {
+    page-break-before: always; /* Forces a page break before elements with this class */
+  }
+}

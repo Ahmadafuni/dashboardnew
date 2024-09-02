@@ -17,23 +17,35 @@ import { colorList, newColorModal } from "@/store/Color";
 import { modelVarientNew } from "@/store/Models";
 import { sizeList } from "@/store/Sizes";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, Trash } from "lucide-react";
+import { Loader2, Plus, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
+import {useEffect, useState} from "react";
+import NewColor from "../Entities/Colors/NewColor";
+import {getAllColorsList} from "@/services/Colors.services.ts";
+import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
-export default function NewModelVarient() {
-  // Dropdown
+
+interface Props {
+  setNext: (tab: string) => void;
+}
+
+export default function NewModelVarient({ setNext }: Props) {
+  const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const modelId = searchParams.get("model");
+
   const colorsList = useRecoilValue(colorList);
   const sizesList = useRecoilValue(sizeList);
-  const { t } = useTranslation();
-  // Color Modal
   const setNewColorModal = useSetRecoilState(newColorModal);
-  // Varients
+  const setColor = useSetRecoilState(colorList);
   const [varients, setVarients] = useRecoilState(modelVarientNew);
-  // Form fields
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof ModelVarientSchema>>({
     resolver: zodResolver(ModelVarientSchema),
     defaultValues: {
@@ -42,147 +54,196 @@ export default function NewModelVarient() {
       Sizes: [],
     },
   });
-  // Form submit function
-  const onSubmit = async (data: z.infer<typeof ModelVarientSchema>) => {
-    // @ts-expect-error
+
+  const handleAddVariant = async (data: z.infer<typeof ModelVarientSchema>) => {
     if (varients.some((v) => v.Color === data.Color)) {
-      toast.error("Cann't add same color twice!");
+      toast.error("Cannot add the same color twice!");
       return;
     }
+
     if (+data.Quantity % data.Sizes.length !== 0) {
       toast.error(
-        "Getting decimal value after splitting quantity into all sizes in equal part. Please change the quantity!"
+          "Getting a decimal value after splitting the quantity into equal parts for all sizes. Please change the quantity!"
       );
       return;
     }
+
+    const quantityPerSize = +data.Quantity / data.Sizes.length;
+    const sizesWithQuantities = data.Sizes.map((size) => ({
+      label: size.label,
+      value: quantityPerSize,
+    }));
+
+    // Add new variant to the list
     setVarients([
-      // @ts-expect-error
       ...varients,
-      // @ts-expect-error
       {
         Id: crypto.randomUUID(),
         Color: data.Color,
         Quantity: data.Quantity,
-        QuantityDetails: +data.Quantity / data.Sizes.length,
-        Sizes: data.Sizes,
+        Sizes: sizesWithQuantities,
       },
     ]);
+
     form.reset();
   };
-  // Remove Varient
-  const removeVarient = (id: string) => {
-    // @ts-expect-error
-    setVarients(varients.filter((e) => e.Id !== id));
+
+  const handleRemoveVariant = (id: string) => {
+    setVarients(varients.filter((variant) => variant.Id !== id));
   };
+
+  const handleFinalSubmit = async () => {
+    setIsLoading(true);
+    try {
+      for (const variant of varients) {
+        console.log("variant",variant)
+        const response = await axios.post(`/model/varients/${modelId}`, {
+          Sizes: variant.Sizes,
+          Color: variant.Color,
+          Quantity: variant.Quantity,
+        });
+
+        if (response.status !== 201) {
+          throw new Error(`Failed to add variant: ${variant.Color}`);
+        }
+      }
+
+      toast.success("All variants submitted successfully!");
+      setNext("stages"); // Move to the next tab
+    } catch (error) {
+      toast.error(`An error occurred: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+
+  // Page on load
+  useEffect(() => {
+    getAllColorsList(setColor);
+  }, []);
+
   return (
-    <div className="space-y-2">
-      <div className="w-full space-y-1 flex items-center">
-        <h1 className="text-3xl font-bold">{t("ModelDetails")}</h1>
-      </div>
-      <Separator />
       <div className="space-y-2">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-3 gap-2"
-            id="model-varient"
-          >
-            <FormField
-              control={form.control}
-              name="Color"
-              render={({ field }) => (
-                <div className="flex gap-x-1">
-                  <ComboSelectFieldForForm
-                    field={field}
-                    label={t("Colors")}
-                    placeholder="Search Color..."
-                    emptyBox="No color found"
-                    form={form}
-                    name="Color"
-                    selectText="Select Color"
-                    items={colorsList}
-                  />
-                  <Button
-                    variant="outline"
-                    className="mt-8"
-                    onClick={() => setNewColorModal(true)}
-                    type="button"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="Sizes"
-              render={({ field }) => (
-                <MultiSelectFieldForForm
-                  label={t("Sizes")}
-                  selectText="Select Color"
-                  form={form}
+        <div className="w-full space-y-1 flex items-center">
+          <h1 className="text-3xl font-bold">{t("ModelDetails")}</h1>
+        </div>
+        <Separator />
+        <div className="space-y-2">
+          <NewColor getColors={() => getAllColorsList(setColor)} />
+
+          <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(handleAddVariant)} // Attach handleAddVariant to form submission
+                className="grid grid-cols-3 gap-2"
+                id="model-varient"
+            >
+              <FormField
+                  control={form.control}
+                  name="Color"
+                  render={({ field }) => (
+                      <div className="flex gap-x-1">
+                        <ComboSelectFieldForForm
+                            field={field}
+                            label={t("Colors")}
+                            placeholder="Search Color..."
+                            emptyBox="No color found"
+                            form={form}
+                            name="Color"
+                            selectText="Select Color"
+                            items={colorsList}
+                        />
+                        <Button
+                            variant="outline"
+                            className="mt-8"
+                            onClick={() => setNewColorModal(true)} // This line correctly sets the modal state to open
+                            type="button"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                  )}
+              />
+              <FormField
+                  control={form.control}
                   name="Sizes"
-                  items={sizesList}
-                  field={field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="Quantity"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder="Enter quantity"
-                  label={t("Quantity")}
-                  field={field}
-                />
-              )}
-            />
-          </form>
-        </Form>
+                  render={({ field }) => (
+                      <MultiSelectFieldForForm
+                          label={t("Sizes")}
+                          selectText="Select Size"
+                          form={form}
+                          name="Sizes"
+                          items={sizesList}
+                          field={field}
+                      />
+                  )}
+              />
+              <FormField
+                  control={form.control}
+                  name="Quantity"
+                  render={({ field }) => (
+                      <TextInputFieldForForm
+                          placeholder="Enter quantity"
+                          label={t("Quantity")}
+                          field={field}
+                      />
+                  )}
+              />
+              <div className="flex justify-end col-span-3">
+                <Button type="submit">
+                  {t("AddDetail")}
+                </Button>
+              </div>
+            </form>
+          </Form>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t("Colors")}</TableHead>
+                <TableHead>{t("Sizes")}</TableHead>
+                <TableHead>{t("Quantity")}</TableHead>
+                <TableHead>{t("QuantityDetails")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {varients.map((variant) => (
+                  <TableRow key={variant.Color}>
+                    <TableCell>
+                      {colorsList.find((item) => item.value === variant.Color)?.label}
+                    </TableCell>
+                    <TableCell>{variant.Sizes.map((size) => size.label).join(", ")}</TableCell>
+                    <TableCell>{variant.Quantity}</TableCell>
+                    <TableCell>{variant.QuantityDetails}</TableCell>
+                    <TableCell>
+                      <Button
+                          variant="destructive"
+                          onClick={() => handleRemoveVariant(variant.Id)}
+                      >
+                        <Trash className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
         <div className="flex justify-end">
-          <Button type="submit" form="model-varient">
-            {t("AddDetail")}
+          <Button
+              type="button"
+              disabled={isLoading}
+              onClick={handleFinalSubmit} // Handle final submission
+          >
+            {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {t("Please wait")}
+                </>
+            ) : (
+                t("Next")
+            )}
           </Button>
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t("Colors")}</TableHead>
-              <TableHead>{t("Sizes")}</TableHead>
-              <TableHead>{t("Quantity")}</TableHead>
-              <TableHead>{t("QuantityDetails")}</TableHead>
-              <TableHead>{t("Action")}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {varients.map((e) => (
-              // @ts-expect-error
-              <TableRow key={e.Color}>
-                <TableCell>
-                  {/* @ts-expect-error */}
-                  {colorsList.find((item) => item.value === e.Color).label}
-                </TableCell>
-                {/* @ts-expect-error */}
-                <TableCell>{e.Sizes.map((e) => e.label).join(", ")}</TableCell>
-                {/* @ts-expect-error */}
-                <TableCell>{e.Quantity}</TableCell>
-                {/* @ts-expect-error */}
-                <TableCell>{e.QuantityDetails}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="destructive"
-                    // @ts-expect-error
-                    onClick={() => removeVarient(e.Id)}
-                  >
-                    <Trash className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
       </div>
-    </div>
   );
 }

@@ -418,5 +418,7 @@
   "MissingSizes": "Please make sure that all sizes are available in the droplist. Missing sizes: {{sizes}}",
   "NoValidMeasurements": "Excel not valid: no valid measurements found.",
   "ImportFromExcel": "Import from Excel",
-  "Archive": "Archive"
+  "Archive": "Archive",
+  "DragMessage": "Drag 'n' drop some images here, or click to select files"
+
 }
