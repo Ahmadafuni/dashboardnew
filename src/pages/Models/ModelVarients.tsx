@@ -58,7 +58,7 @@ export default function ModelVarients() {
                             );
                         }}
                     >
-                        {row.original.Sizes.map((e) => e.label).join(", ")}
+                        {row.original.Sizes.join(", ")}
                     </Button>
                 );
             },

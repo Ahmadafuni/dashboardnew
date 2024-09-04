@@ -167,7 +167,7 @@ export default function AwaitingTable({ works, setWorks }: Props) {
                     <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                     <TableCell>
                       {JSON.parse(item.ModelVariant.Sizes)
-                        .map((e: any) => e.label)
+                        //.map((e: any) => e.label)
                         .join(", ")}
                     </TableCell>
                     <TableCell>{item.ModelVariant.Quantity}</TableCell>

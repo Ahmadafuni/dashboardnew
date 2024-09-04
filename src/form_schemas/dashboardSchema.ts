@@ -14,12 +14,12 @@ export const pauseUnpuaseReasoneSchema = z.object({
   Reasone: z.string().min(1, { message: "Please write a reasone!" }),
 });
 export const cuttingSendConfirmationSchema = z.object({
-    ClothCount: z.string().optional(),
-    ClothLength: z.string().optional(),
-    ClothWeight: z.string().optional(),
-    ClothWidth: z.string().optional(),
+    ClothCount: z.string().nonempty("ClothCount is required."),
+    ClothLength: z.string().nonempty("ClothLength is required."),
+    ClothWeight: z.string().nonempty("ClothWeight is required."),
+    ClothWidth: z.string().nonempty("ClothWidth is required."),
     Notes: z.string().optional(),
-    QuantityInKg: z.string().optional(),
+    QuantityInKg: z.string().nonempty("QuantityInKg is required."),
     ReplacedItemInKG: z.string().optional(),
     DamagedItem: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
     QuantityInNum: z.array(z.object({ size: z.string(), value: z.string() })).optional(),

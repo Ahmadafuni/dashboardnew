@@ -58,7 +58,11 @@ export default function NewModelVarientDialog({
     }
     setIsLoading(true);
     try {
-      const newVarients = await axios.post(`model/varients/${modelId}`, data, {
+      const updatedData = {
+        ...data,
+        Sizes: data.Sizes.map((size) => size.label), // Use the transformed sizes array
+      };
+      const newVarients = await axios.post(`model/varients/${modelId}`, updatedData, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },

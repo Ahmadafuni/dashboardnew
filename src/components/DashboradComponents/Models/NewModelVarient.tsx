@@ -29,6 +29,7 @@ import NewColor from "../Entities/Colors/NewColor";
 import { getAllColorsList } from "@/services/Colors.services.ts";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function NewModelVarient() {
   const { t } = useTranslation();
@@ -98,14 +99,23 @@ export default function NewModelVarient() {
     }
     setIsLoading(true);
     try {
-      for (const variant of varients) {
-        const response = await axios.post(`/model/varients/${modelId}`, {
-          Sizes: variant.Sizes,
-          Color: variant.Color,
-          Quantity: variant.Quantity,
-        });
 
-        if (response.status !== 201) {
+      for (const variant of varients) {
+        const updatedData = {
+          ...variant,
+          Sizes: variant.Sizes.map((size) => size.label), // Use the transformed sizes array
+        };
+        const newVarients = await axios.post(
+            `/model/varients/${modelId}`,
+            updatedData,
+            {
+              headers: {
+                Authorization: `bearer ${Cookies.get("access_token")}`, // Corrected 'bearer' to 'Bearer' (capitalize first letter)
+              },
+            }
+        );
+
+        if (newVarients.status !== 201) {
           throw new Error(`Failed to add variant: ${variant.Color}`);
         }
       }
