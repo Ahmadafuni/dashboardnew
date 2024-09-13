@@ -61,10 +61,12 @@ import OutgoingMovement from "@/pages/Warehouse/OutgoingMovement.tsx";
 import MaterialReport from "@/pages/Warehouse/MaterialReport.tsx";
 import NewModelBlock from "@/components/DashboradComponents/Models/NewModelBlock.tsx";
 import UpdateModelBlock from "@/components/DashboradComponents/Models/UpdateModelBlock.tsx";
+import { BASE_URL } from "./config/index.ts";
 
 // Axios config
-//axios.defaults.baseURL = "http://localhost:3002/";
-axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
+axios.defaults.baseURL = BASE_URL;
+
+// axios.defaults.baseURL = "https://dashboardbackendnew.onrender.com/";
 //axios.defaults.baseURL = "https://dashboard-backend.qnv2oe.easypanel.host/";
 axios.defaults.headers.common = {
   Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -95,7 +97,7 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <MainLayout />,
-    children: [
+    children: [ 
       { path: "/dashboard/dashboard", element: <Dashboard /> },
       { path: "/dashboard/users", element: <Users /> },
       { path: "/dashboard/users/new", element: <NewUsers /> },

@@ -1,7 +1,7 @@
 import ComboSelectFieldForForm from "@/components/common/ComboSelectFieldForForm";
 import TextInputFieldForForm from "@/components/common/TextInputFieldForForm";
-import {Button} from "@/components/ui/button";
-import {Form, FormField, FormItem, FormLabel} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import {
     newProductCatalogueModal,
     productCatalogueList,
@@ -14,31 +14,35 @@ import {
     newProductCategoryTwoModal,
     productCategoryTwoList,
 } from "@/store/ProductCategoryTwo";
-import {templateList} from "@/store/Template";
-import {newTextileModal, textileList} from "@/store/Textiles";
-import {Plus, Trash} from "lucide-react";
-import {useTranslation} from "react-i18next";
-import {useRecoilValue, useSetRecoilState} from "recoil";
-import {useState} from "react";
-import {useDropzone} from "react-dropzone";
+import { templateList } from "@/store/Template";
+import { newTextileModal, textileList } from "@/store/Textiles";
+import { Plus, Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useState, useEffect } from "react";
+import { useDropzone } from "react-dropzone";
+import { BASE_URL } from "@/config"; // تأكد من أنك تستخدم الرابط الغلوبال هنا
 
 interface Props {
     form: any;
     onSubmit: any;
     handleFileChange: any;
+    oldImage?: string;
 }
 
 interface FileWithPreview extends File {
     preview: string;
+    isOld: boolean;
+   
 }
 
-
 export default function UpdateModelForm({
-                                            form,
-                                            onSubmit,
-                                            handleFileChange,
-                                        }: Props) {
-    const {t} = useTranslation();
+    form,
+    onSubmit,
+    handleFileChange,
+    oldImage,
+}: Props) {
+    const { t } = useTranslation();
 
     // Dropdown state
     const categoryOneList = useRecoilValue(productCategoryOneList);
@@ -56,15 +60,30 @@ export default function UpdateModelForm({
     // Image Upload State
     const [images, setImages] = useState<FileWithPreview[]>([]);
 
+    // Load old images when component mounts
+    useEffect(() => {
+        console.log(oldImage);
+        if (oldImage) {
+            const oldImageFile = {
+                name: "old-image.jpg", 
+                size: 0, 
+                type: "image/jpeg", 
+                preview: `${BASE_URL}${oldImage}`, 
+                isOld: true,
+            } as FileWithPreview; 
+            setImages([oldImageFile]); 
+        }
+    }, [oldImage]);
+
     // Dropzone setup for image uploads with restrictions
-    const {getRootProps, getInputProps} = useDropzone({
-        accept: {'image/*': []}, // Only accept image files
+    const { getRootProps, getInputProps } = useDropzone({
+        accept: { "image/*": [] }, // Only accept image files
         maxSize: 5 * 1024 * 1024, // Set max file size to 5MB
         onDrop: (acceptedFiles, fileRejections) => {
             // Handle rejected files
             if (fileRejections.length > 0) {
                 fileRejections.forEach((rejection) => {
-                    const {file, errors} = rejection;
+                    const { file, errors } = rejection;
                     errors.forEach((error) => {
                         if (error.code === "file-too-large") {
                             alert(`The file ${file.name} is too large. Max size is 5MB.`);
@@ -79,10 +98,11 @@ export default function UpdateModelForm({
             const newImages = acceptedFiles.map((file) =>
                 Object.assign(file, {
                     preview: URL.createObjectURL(file),
+                    isOld: false, 
                 })
             );
-            setImages((prevImages) => [...prevImages, ...newImages]);
-            handleFileChange({target: {files: [...images, ...acceptedFiles]}}); // Send updated files to parent
+            setImages((prevImages) => [...prevImages, ...newImages]); 
+            handleFileChange({ target: { files: [...images, ...acceptedFiles] } }); // Send updated files to parent
         },
     });
 
@@ -91,7 +111,9 @@ export default function UpdateModelForm({
         const updatedImages = [...images];
         updatedImages.splice(index, 1); // Remove selected image
         setImages(updatedImages);
-        handleFileChange({target: {files: updatedImages}}); // Send updated files to parent
+        handleFileChange({
+            target: { files: updatedImages.filter((image) => !image.isOld) }, // Send only new files
+        });
     };
 
     const handleSubmit = async (data: any) => {
@@ -108,7 +130,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="DemoModelNumber"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder="Enter model number"
                             label={t("ModelNumber")}
@@ -119,7 +141,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="CategoryOne"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <div className="flex gap-x-1">
                             <ComboSelectFieldForForm
                                 field={field}
@@ -137,7 +159,7 @@ export default function UpdateModelForm({
                                 onClick={() => setNewCategoryOneModal(true)}
                                 type="button"
                             >
-                                <Plus className="h-4 w-4"/>
+                                <Plus className="h-4 w-4" />
                             </Button>
                         </div>
                     )}
@@ -145,7 +167,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="CategoryTwo"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <div className="flex gap-x-1">
                             <ComboSelectFieldForForm
                                 field={field}
@@ -163,7 +185,7 @@ export default function UpdateModelForm({
                                 onClick={() => setNewCategoryTwoModal(true)}
                                 type="button"
                             >
-                                <Plus className="h-4 w-4"/>
+                                <Plus className="h-4 w-4" />
                             </Button>
                         </div>
                     )}
@@ -171,7 +193,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="ProductCatalog"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <div className="flex gap-x-1">
                             <ComboSelectFieldForForm
                                 field={field}
@@ -189,7 +211,7 @@ export default function UpdateModelForm({
                                 onClick={() => setNewProductCatalogueModal(true)}
                                 type="button"
                             >
-                                <Plus className="h-4 w-4"/>
+                                <Plus className="h-4 w-4" />
                             </Button>
                         </div>
                     )}
@@ -197,7 +219,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="ModelName"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
                             label={t("ModelName")}
@@ -208,7 +230,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="Template"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <div className="flex gap-x-1">
                             <ComboSelectFieldForForm
                                 field={field}
@@ -226,7 +248,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="Textile"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <div className="flex gap-x-1">
                             <ComboSelectFieldForForm
                                 field={field}
@@ -244,7 +266,7 @@ export default function UpdateModelForm({
                                 onClick={() => setNewTextileModal(true)}
                                 type="button"
                             >
-                                <Plus className="h-4 w-4"/>
+                                <Plus className="h-4 w-4" />
                             </Button>
                         </div>
                     )}
@@ -252,7 +274,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="Characteristics"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
                             label={t("Characteristics")}
@@ -263,7 +285,7 @@ export default function UpdateModelForm({
                 <FormField
                     control={form.control}
                     name="Barcode"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
                             label={t("Barcode")}
@@ -273,63 +295,35 @@ export default function UpdateModelForm({
                 />
                 <FormField
                     control={form.control}
-                    name="LabelType"
-                    render={({field}) => (
+                    name="Location"
+                    render={({ field }) => (
                         <TextInputFieldForForm
                             placeholder=""
-                            label={t("LabelType")}
-                            field={field}
-                        />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="PrintName"
-                    render={({field}) => (
-                        <TextInputFieldForForm
-                            placeholder=""
-                            label={t("PrintName")}
-                            field={field}
-                        />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="PrintLocation"
-                    render={({field}) => (
-                        <TextInputFieldForForm
-                            placeholder=""
-                            label={t("PrintLocation")}
-                            field={field}
-                        />
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="Description"
-                    render={({field}) => (
-                        <TextInputFieldForForm
-                            placeholder=""
-                            label={t("Description")}
+                            label={t("Location")}
                             field={field}
                         />
                     )}
                 />
 
                 <FormItem className="col-span-2">
-                    <FormLabel>{t("Images")}</FormLabel>
+                    <FormLabel>{t("UploadImages")}</FormLabel>
                     <div
-                        {...getRootProps({
-                            className:
-                                "border-dashed border-2 p-4 cursor-pointer rounded-md",
-                        })}
+                        {...getRootProps({ className: "dropzone" })}
+                        className="border-2 border-dashed p-6"
                     >
                         <input {...getInputProps()} />
-                        <p>{t("DragMessage")}</p>
+                        <p className="text-sm text-muted-foreground">
+                            Drag 'n' drop some files here, or click to select files
+                        </p>
+                        <em className="text-xs text-muted-foreground">
+                            (Only *.jpeg, *.png, *.jpg files will be accepted, max size: 5MB)
+                        </em>
                     </div>
+
                     <div className="grid grid-cols-3 gap-4 mt-4">
                         {images.map((file, index) => (
-                            <div key={file.name} className="relative">
+                            
+                            <div key={file.preview} className="relative">
                                 <img
                                     src={file.preview}
                                     alt="Preview"
@@ -340,12 +334,14 @@ export default function UpdateModelForm({
                                     className="absolute top-1 right-1 bg-white rounded-full p-1 shadow-md hover:bg-red-600 hover:text-white"
                                     onClick={() => handleRemoveImage(index)}
                                 >
-                                    <Trash className="h-4 w-4"/>
+                                    <Trash className="h-4 w-4" />
                                 </button>
                             </div>
                         ))}
                     </div>
                 </FormItem>
+
+             
             </form>
         </Form>
     );

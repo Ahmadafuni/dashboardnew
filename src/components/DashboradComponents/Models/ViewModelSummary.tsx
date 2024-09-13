@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
+import { BASE_URL } from "@/config";
 
 export default function ViewModelSummary() {
   const { id } = useParams();
@@ -74,8 +75,10 @@ export default function ViewModelSummary() {
       </div>
       <div className="grid grid-cols-6 gap-2 mt-2">
         {summary?.modelInfo?.Images.split(",").map((i: any) => (
-          <img key={i} src={`https://dashboardbackendnew.onrender.com${i}`} />
+          // <img key={i} src={`https://dashboardbackendnew.onrender.com${i}`} />
+          <img key={i} src={`${BASE_URL}${i}`} />
         ))}
+        
       </div>
       {summary?.cutting?.length > 0 && (
         <div className="grid grid-cols-1 gap-2 mt-2">
@@ -123,6 +126,7 @@ export default function ViewModelSummary() {
               </Table>
             </CardContent>
           </Card>
+          
           <Card>
             <CardHeader>
               <CardTitle>{t("Dressup")}</CardTitle>

@@ -70,7 +70,7 @@ export default function UpdateModel() {
     },
     values: currentModel,
   });
-
+  
 
   const onSubmit = async (data: z.infer<typeof UpdateModelSchema>) => {
     setIsLoading(true);
@@ -80,6 +80,7 @@ export default function UpdateModel() {
         for (let i = 0; i < Object.keys(files).length; i++) {
           // @ts-expect-error
           formData.append("models", files[i]);
+          
         }
       }
 
@@ -138,10 +139,11 @@ export default function UpdateModel() {
       </div>
       <Separator />
       <div className="space-y-1">
-        <UpdateModelForm
-          form={form}
-          onSubmit={onSubmit}
-          handleFileChange={handleFileChange}
+      <UpdateModelForm
+            form={form}
+            onSubmit={onSubmit}
+            handleFileChange={handleFileChange}
+            oldImage={currentModel?.image} 
         />
         <div className="flex justify-end">
           <Button type="submit" disabled={isLoading} form="model-update">

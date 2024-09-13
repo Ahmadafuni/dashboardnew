@@ -32,6 +32,7 @@ export const model = atom({
     Description: "",
     DemoModelNumber: "",
     ReasonText: "",
+    image: ""
   },
 });
 
