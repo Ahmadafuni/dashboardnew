@@ -232,6 +232,43 @@ const handleXSLUpload = (e: any) => {
     },
   });
   
+
+  const checkModelsDistribution = (models: any[]) => {
+    let isValid = true;
+    const errors: string[] = [];
+  
+    models.forEach((model) => {
+      const scales = model.scale ? model.scale.split('-') : [];
+  
+      // تحقق من كل لون في السجل
+      const colors = [
+        "White",
+        "black",
+        "oil",
+        "drunken",
+        "SilverMons",
+        "feathery",
+        "iron",
+        "navyBlue",
+      ];
+  
+      colors.forEach((color) => {
+        if (model[color]) {
+          const quantity = model[color];
+          if (scales.length > 0) {
+            const quantityPerScale = quantity / scales.length;
+            if (!Number.isInteger(quantityPerScale)) {
+              errors.push(`عدد الموديلات (${quantity}) للون ${color} لا يمكن تقسيمه على عدد القياسات (${scales.length}).`);
+              isValid = false;
+            }
+          }
+        }
+      });
+    });
+  
+    return { isValid, errors };
+  };
+
   
   const onSubmit = async (data: z.infer<typeof OrderSchema>) => {
     setIsLoading(true);
@@ -245,6 +282,15 @@ const handleXSLUpload = (e: any) => {
       formData.append("deadline", data.deadline);
       
       if (xslModels.length > 0) {
+
+        const { isValid, errors } = checkModelsDistribution(xslModels);
+       
+        if (!isValid) {
+          errors.forEach((error) => toast.error(error));
+          setIsLoading(false);
+          return;
+        }
+
         const invalidModels = xslModels.filter((model) => !model.ModelNumber);
   
         if (invalidModels.length > 0) {
