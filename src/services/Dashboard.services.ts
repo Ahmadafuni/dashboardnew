@@ -19,10 +19,29 @@ export const getAllWork = async (setData: Dispatch<SetStateAction<any>>) => {
 };
 
 export const getAllTracking = async (
-  setData: Dispatch<SetStateAction<any>>
+  pages: {
+    awaitingPage: number;
+    inProgressPage: number;
+    completedPage: number;
+    givingConfirmationPage: number;
+  },
+  sizes: {
+    awaitingSize: number;
+    inProgressSize: number;
+    completedSize: number;
+    givingConfirmationSize: number;
+  },
+  setData: Dispatch<SetStateAction<any>>,
+  setTotalPages: Dispatch<SetStateAction<any>>,
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
+    setIsLoading(true);
     const { data } = await axios.get("trackingmodels/alltracking", {
+      params: {
+        ...pages,
+        ...sizes,
+      },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
@@ -30,13 +49,14 @@ export const getAllTracking = async (
     console.log(data.data);
 
     setData(data.data);
+    setTotalPages(data.totalPages);
+    setIsLoading(false);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
   }
 };
-
 export const startVariant = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number
