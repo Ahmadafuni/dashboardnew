@@ -59,6 +59,7 @@ export default function CompletedTable({
   const user = useRecoilValue(userInfo);
   const userRole = user?.userRole;
   const { t } = useTranslation();
+  // @ts-ignore
   const [pageSize, setPageSize] = useState(10);
 
   const renderQuantity = (quantity: any) => {
