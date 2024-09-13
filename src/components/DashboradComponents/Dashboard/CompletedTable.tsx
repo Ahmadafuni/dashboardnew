@@ -22,7 +22,7 @@ import {
   SelectScrollDownButton,
 } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface Props {
   page: number;
@@ -59,21 +59,17 @@ export default function CompletedTable({
   const user = useRecoilValue(userInfo);
   const userRole = user?.userRole;
   const { t } = useTranslation();
-  const [pageSize, setPageSize] = useState(10);
-
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
       return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
     }
     return quantity;
   };
-
   const calculateDuration = (start: Date, end: Date) => {
     const days = differenceInDays(end, start);
     const hours = differenceInHours(end, start) % 24;
     return `${days}d ${hours}h`;
   };
-
   const renderAdminRow = (item: any) => (
     <>
       <TableCell>{item.CurrentStage?.Department?.Name || t("NA")}</TableCell>
@@ -128,7 +124,9 @@ export default function CompletedTable({
       </TableCell>
     </>
   );
-
+  useEffect(() => {
+    console.log("works : ", works);
+  }, [works]);
   return (
     <div>
       <h2 className="text-2xl font-bold">{t("Completed")}</h2>
@@ -163,7 +161,7 @@ export default function CompletedTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {works.completed.length <= 0 && (
+            {works && works.completed.length <= 0 && (
               <TableRow>
                 <TableCell
                   colSpan={
@@ -177,35 +175,36 @@ export default function CompletedTable({
                 </TableCell>
               </TableRow>
             )}
-            {works.completed.map((item) => (
-              <TableRow key={item.Id}>
-                <TableCell className="font-medium">
-                  {item.ModelVariant.Model.DemoModelNumber}
-                </TableCell>
-                <TableCell className="font-medium">{item.Barcode}</TableCell>
-                <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell className="font-medium">
-                  {item.CollectionName}
-                </TableCell>
-                <TableCell className="font-medium">
-                  {item.OrderNumber}
-                </TableCell>
-                <TableCell className="font-medium">
-                  {item.TextileName}
-                </TableCell>
+            {works &&
+              works.completed.map((item) => (
+                <TableRow key={item.Id}>
+                  <TableCell className="font-medium">
+                    {item.ModelVariant.Model.DemoModelNumber}
+                  </TableCell>
+                  <TableCell className="font-medium">{item.Barcode}</TableCell>
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell className="font-medium">
+                    {item.CollectionName}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {item.OrderNumber}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {item.TextileName}
+                  </TableCell>
 
-                <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
-                <TableCell>
-                  {JSON.parse(item.ModelVariant.Sizes)
-                    // .map((e: any) => e.label)
-                    .join(", ")}
-                </TableCell>
-                <TableCell>{item.ModelVariant.Quantity}</TableCell>
-                {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                  ? renderAdminRow(item)
-                  : renderUserRow(item)}
-              </TableRow>
-            ))}
+                  <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
+                  <TableCell>
+                    {JSON.parse(item.ModelVariant.Sizes)
+                      // .map((e: any) => e.label)
+                      .join(", ")}
+                  </TableCell>
+                  <TableCell>{item.ModelVariant.Quantity}</TableCell>
+                  {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
+                    ? renderAdminRow(item)
+                    : renderUserRow(item)}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
 

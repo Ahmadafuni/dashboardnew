@@ -57,33 +57,50 @@ export default function Dashboard() {
     totalPagesCompleted: 1,
     totalPagesGivingConfirmation: 1,
   });
+  
   const [isLoading, setIsLoading] = useState(false);
+  
+  
   useEffect(() => {
     if (user?.userRole === "FACTORYMANAGER") {
       getAllTracking(pages, sizes, setWorks, setTotalPages, setIsLoading);
     } else {
-      getAllWork(setWorks);
+      getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading);
     }
   }, [user, pages, sizes]);
 
   return (
     <div className="w-full p-4 space-y-6">
-      <PausingUnpausingReasoneModal getAllWorks={() => getAllWork(setWorks)} />
+      <PausingUnpausingReasoneModal
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
+      />
       <CuttingSendForConfirmationModal
-        getAllWorks={() => getAllWork(setWorks)}
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
         selectedSizes={selectedSizes}
       />
       <OthersSendForConfirmation
-        getAllWorks={() => getAllWork(setWorks)}
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <CompleteDialog
-        getAllWorks={() => getAllWork(setWorks)}
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
-      <RejectVariantDialog getWorks={() => getAllWork(setWorks)} />
+      <RejectVariantDialog
+        getWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
+      />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
         <Separator />
