@@ -105,7 +105,8 @@ export default function OngoingTable({
   }, [actionInProgress]);
 
   const fetchWorks = async () => {
-    await getAllWork(setWorks);
+    // @ts-ignore
+    await getAllWork({}, {}, setWorks);
   };
 
   const handleSendConfirmation = (item: any, type: string) => {
@@ -113,7 +114,7 @@ export default function OngoingTable({
     const sizes = item.ModelVariant.Sizes
       ? JSON.parse(item.ModelVariant.Sizes)
       : //   .map((e: any) => e.label)
-        [];
+      [];
 
     const quantityReceived = item.QuantityReceived || [];
     setSelectedSizes(sizes);
@@ -130,7 +131,7 @@ export default function OngoingTable({
     const sizes = item.ModelVariant.Sizes
       ? JSON.parse(item.ModelVariant.Sizes)
       : //   .map((e: any) => e.label)
-        [];
+      [];
     setSelectedSizes(sizes);
     setCurrentVariant(item.ModelVariant.Id);
     setCuttingConfirmation(true);

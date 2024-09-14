@@ -90,6 +90,7 @@ export const startVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    // @ts-ignore
     getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
@@ -109,6 +110,7 @@ export const completeVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    // @ts-ignore
     getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
@@ -131,6 +133,7 @@ export const sentForCheckingVariant = async (
         },
       }
     );
+    // @ts-ignore
     getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
@@ -150,6 +153,7 @@ export const confirmVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    // @ts-ignore
     getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
@@ -169,6 +173,7 @@ export const rejectVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    // @ts-ignore
     getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
