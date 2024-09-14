@@ -3,14 +3,37 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export const getAllWork = async (setData: Dispatch<SetStateAction<any>>) => {
+export const getAllWork = async (
+  pages: {
+    awaitingPage: number;
+    inProgressPage: number;
+    completedPage: number;
+    givingConfirmationPage: number;
+  },
+  sizes: {
+    awaitingSize: number;
+    inProgressSize: number;
+    completedSize: number;
+    givingConfirmationSize: number;
+  },
+  setData: Dispatch<SetStateAction<any>>,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+) => {
   try {
+    setIsLoading && setIsLoading(true);
     const { data } = await axios.get("trackingmodels/current/dep", {
+      params: {
+        ...pages,
+        ...sizes,
+      },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
     setData(data.data);
+    setTotalPages && setTotalPages(data.totalPages);
+    setIsLoading && setIsLoading(false);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
@@ -32,11 +55,11 @@ export const getAllTracking = async (
     givingConfirmationSize: number;
   },
   setData: Dispatch<SetStateAction<any>>,
-  setTotalPages: Dispatch<SetStateAction<any>>,
-  setIsLoading: Dispatch<SetStateAction<boolean>>
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    setIsLoading(true);
+    setIsLoading && setIsLoading(true);
     const { data } = await axios.get("trackingmodels/alltracking", {
       params: {
         ...pages,
@@ -49,8 +72,8 @@ export const getAllTracking = async (
     console.log(data.data);
 
     setData(data.data);
-    setTotalPages(data.totalPages);
-    setIsLoading(false);
+    setTotalPages && setTotalPages(data.totalPages);
+    setIsLoading && setIsLoading(false);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
@@ -67,7 +90,7 @@ export const startVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork(setData);
+    getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -86,7 +109,7 @@ export const completeVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork(setData);
+    getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -108,7 +131,7 @@ export const sentForCheckingVariant = async (
         },
       }
     );
-    getAllWork(setData);
+    getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -127,7 +150,7 @@ export const confirmVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork(setData);
+    getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -146,7 +169,7 @@ export const rejectVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork(setData);
+    getAllWork({}, {}, setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
