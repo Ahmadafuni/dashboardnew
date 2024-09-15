@@ -175,13 +175,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
         errors.push(`القماش غير موجود لـ ${model.Textiles}`);
       }
 
-      const template = templatesList.find((item) => item.label === model.templateId);
-      if (template) {
-        model.templateId = template.value;
-      } else {
-        errors.push(`رقم القالب غير موجود لـ ${model.templateId}`);
-      }
-
       return model;
     });
 
