@@ -141,6 +141,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
     categoryOneList: { value: string; label: string }[],
     categoryTwoList: { value: string; label: string }[],
     textilesList: { value: string; label: string }[],
+    // @ts-ignore
     templatesList: { value: string; label: string }[],
     CatalogueList: { value: string; label: string }[]
   ): Model[] | null => {
