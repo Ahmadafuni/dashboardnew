@@ -46,10 +46,8 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
   const setCollectionList = useSetRecoilState(CollectionList);
-  const [xslModels, setXslModels] = useState<any[]>([]); 
-  const [xslModelsVarients, setXslModelsVarients] = useState<any[]>([]); 
-
-
+  const [xslModels, setXslModels] = useState<any[]>([]);
+  const [xslModelsVarients, setXslModelsVarients] = useState<any[]>([]);
 
   // lists
   // let [searchParams, setSearchParams] = useSearchParams();
@@ -59,15 +57,14 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const setCategoryTwo = useSetRecoilState(productCategoryTwoList);
   const setProductCatalogue = useSetRecoilState(productCatalogueList);
 
-  
-    // جلب القوائم من Recoil
-    const CatalogueList = useRecoilValue(productCatalogueList);
-    const categoryOneList = useRecoilValue(productCategoryOneList);
-    const categoryTwoList = useRecoilValue(productCategoryTwoList);
-    const textilesList = useRecoilValue(textileList);
-    const templatesList = useRecoilValue(templateList);
+  // جلب القوائم من Recoil
+  const CatalogueList = useRecoilValue(productCatalogueList);
+  const categoryOneList = useRecoilValue(productCategoryOneList);
+  const categoryTwoList = useRecoilValue(productCategoryTwoList);
+  const textilesList = useRecoilValue(textileList);
+  const templatesList = useRecoilValue(templateList);
 
-    
+
 
 
   const renameFields = (data: any[]) => {
@@ -112,7 +109,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
       "feathery",
       "iron",
       "navyBlue",
-    ]; 
+    ];
 
     data.forEach((record) => {
       colors.forEach((colorField) => {
@@ -127,100 +124,118 @@ const NewOrder = ({ getAllOrders }: Props) => {
         }
       });
     });
-    
+
     return finalRecords;
   };
-  
+
+  type Model = {
+    CategoryOne: string;
+    CategoryTwo: string;
+    ProductName: string;
+    Textiles: string;
+    templateId: string;
+  };
+
   const replaceNamesWithIds = (
-    models: any[],
+    models: Model[],
     categoryOneList: { value: string; label: string }[],
     categoryTwoList: { value: string; label: string }[],
     textilesList: { value: string; label: string }[],
     templatesList: { value: string; label: string }[],
-    CatalogueList: { value: string; label: string }[],
-  ) => {
+    CatalogueList: { value: string; label: string }[]
+  ): Model[] | null => {
+    const errors: string[] = [];
 
-    return models.map((model) => {
+    const updatedModels = models.map((model) => {
       const categoryOne = categoryOneList.find((item) => item.label === model.CategoryOne);
       if (categoryOne) {
-        model.CategoryOne = categoryOne.value; 
+        model.CategoryOne = categoryOne.value;
       } else {
-        console.warn(`CategoryOne not found for ${model.CategoryOne}`);
+        errors.push(`الصنف  غير موجود لـ ${model.CategoryOne}`);
       }
-  
+
       const categoryTwo = categoryTwoList.find((item) => item.label === model.CategoryTwo);
       if (categoryTwo) {
-        model.CategoryTwo = categoryTwo.value; 
+        model.CategoryTwo = categoryTwo.value;
       } else {
-        console.warn(`CategoryTwo not found for ${model.CategoryTwo}`);
+        errors.push(`الفئة غير موجود لـ ${model.CategoryTwo}`);
       }
-  
+
       const product = CatalogueList.find((item) => item.label === model.ProductName);
       if (product) {
-        model.ProductName = product.value; 
+        model.ProductName = product.value;
       } else {
-        console.warn(`ProductName not found for ${model.ProductName}`);
+        errors.push(`الزمرة غير موجود لـ ${model.ProductName}`);
       }
-  
+
       const textile = textilesList.find((item) => item.label === model.Textiles);
       if (textile) {
-        model.Textiles = textile.value; 
+        model.Textiles = textile.value;
       } else {
-        console.warn(`Textile not found for ${model.Textiles}`);
+        errors.push(`القماش غير موجود لـ ${model.Textiles}`);
       }
-  
+
       const template = templatesList.find((item) => item.label === model.templateId);
       if (template) {
-        model.templateId = template.value; 
+        model.templateId = template.value;
       } else {
-        console.warn(`TemplateId not found for ${model.templateId}`);
+        errors.push(`رقم القالب غير موجود لـ ${model.templateId}`);
       }
-  
-      return model; 
+
+      return model;
     });
+
+    if (errors.length > 0) {
+      const errorMessage = errors.join("\n");
+      toast.error(errorMessage);
+      return null;
+    }
+
+    return updatedModels;
   };
 
-  
-const handleXSLUpload = (e: any) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  
-  reader.onload = (event: any) => {
 
+  const handleXSLUpload = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
 
-    // categoryOneList.map(input => {
+    reader.onload = (event: any) => {
+      const data = new Uint8Array(event.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      let jsonData = XLSX.utils.sheet_to_json<Model>(worksheet);
 
-    //   console.log(input);
+      jsonData = renameFields(jsonData);
 
-    // }) ;
-    // templatesList.map(input => {
+      const updatedJsonData = replaceNamesWithIds(
+        jsonData,
+        categoryOneList,
+        categoryTwoList,
+        textilesList,
+        templatesList,
+        CatalogueList
+      );
 
-    //   console.log(input);
+      if (updatedJsonData === null) {
+        return;
+      }
 
-    // }) ;
+      setXslModels(updatedJsonData);
 
+      const processedData = splitRecordsByColor(updatedJsonData);
+      setXslModelsVarients(processedData);
 
-    const data = new Uint8Array(event.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
-    const firstSheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[firstSheetName];
-    let jsonData = XLSX.utils.sheet_to_json(worksheet);
-    
-    jsonData = renameFields(jsonData);
+      console.log(xslModelsVarients);
+    };
 
-    jsonData = replaceNamesWithIds(jsonData, categoryOneList, categoryTwoList, textilesList, templatesList,CatalogueList);
-    
-    setXslModels(jsonData); 
-    
-    const processedData = splitRecordsByColor(jsonData);
-    setXslModelsVarients(processedData);
-    
-    console.log(xslModelsVarients);
+    reader.readAsArrayBuffer(file);
   };
-  
-  reader.readAsArrayBuffer(file);
-};
-  
+
+
+
+
+
   const form = useForm<z.infer<typeof OrderSchema>>({
     resolver: zodResolver(OrderSchema),
     defaultValues: {
@@ -231,15 +246,25 @@ const handleXSLUpload = (e: any) => {
       deadline: new Date().toISOString().split("T")[0], // Initialize with today's date
     },
   });
-  
+
+  const colorNamesMap: { [key: string]: string } = {
+    "White": "أبيض",
+    "black": "أسود",
+    "oil": "زيتي",
+    "drunken": "سكري",
+    "SilverMons": "فضي مونس",
+    "feathery": "ريشي",
+    "iron": "حديدي",
+    "navyBlue": "كحلي",
+  };
 
   const checkModelsDistribution = (models: any[]) => {
     let isValid = true;
     const errors: string[] = [];
-  
+
     models.forEach((model) => {
       const scales = model.scale ? model.scale.split('-') : [];
-  
+
       // تحقق من كل لون في السجل
       const colors = [
         "White",
@@ -251,28 +276,31 @@ const handleXSLUpload = (e: any) => {
         "iron",
         "navyBlue",
       ];
-  
+
       colors.forEach((color) => {
         if (model[color]) {
           const quantity = model[color];
           if (scales.length > 0) {
             const quantityPerScale = quantity / scales.length;
             if (!Number.isInteger(quantityPerScale)) {
-              errors.push(`عدد الموديلات (${quantity}) للون ${color} لا يمكن تقسيمه على عدد القياسات (${scales.length}).`);
+              const arabicColorName = colorNamesMap[color] || color;
+              errors.push(`عدد الموديلات (${quantity}) للون "${arabicColorName}" لا يمكن تقسيمه على عدد القياسات (${scales.length}).`);
               isValid = false;
             }
           }
         }
       });
     });
-  
+
     return { isValid, errors };
   };
 
-  
+
+
   const onSubmit = async (data: z.infer<typeof OrderSchema>) => {
     setIsLoading(true);
-  
+    const errors: string[] = [];
+
     try {
       const formData = new FormData();
       formData.append("collection", data.collection);
@@ -280,96 +308,81 @@ const handleXSLUpload = (e: any) => {
       formData.append("orderName", data.orderName);
       formData.append("quantity", data.quantity);
       formData.append("deadline", data.deadline);
-      
-      if (xslModels.length > 0) {
 
-        const { isValid, errors } = checkModelsDistribution(xslModels);
-       
+      if (xslModels.length > 0) {
+        const { isValid, errors: distributionErrors } = checkModelsDistribution(xslModels);
+
         if (!isValid) {
-          errors.forEach((error) => toast.error(error));
-          setIsLoading(false);
-          return;
+          errors.push(...distributionErrors);
         }
 
         const invalidModels = xslModels.filter((model) => !model.ModelNumber);
-  
+
         if (invalidModels.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون رقم موديل.");
-          setIsLoading(false);
-          return;
+          errors.push("يرجى التحقق من البيانات هناك سجلات بدون رقم موديل.");
         }
 
         const invalidProductName = xslModels.filter((model) => !model.ProductName);
-  
         if (invalidProductName.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون صنف");
-          setIsLoading(false);
-          return; 
+          errors.push(`يرجى التحقق من البيانات هناك سجلات بدون صنف للموديل`);
         }
 
         const invalidCategoryOne = xslModels.filter((model) => !model.CategoryOne);
-  
         if (invalidCategoryOne.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون فئة");
-          setIsLoading(false);
-          return;
+          errors.push("يرجى التحقق من البيانات هناك سجلات بدون فئة.");
         }
 
         const invalidCategoryTwo = xslModels.filter((model) => !model.CategoryTwo);
-  
         if (invalidCategoryTwo.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون زمرة");
-          setIsLoading(false);
-          return; 
+          errors.push("يرجى التحقق من البيانات هناك سجلات بدون زمرة.");
         }
 
-    
+        if (errors.length > 0) {
+          const errorMessage = errors.join("\n");
+          toast.error(errorMessage);
+          setIsLoading(false);
+          return;
+        }
 
         const newOrder = await axios.post("orders", formData, {
           headers: {
             Authorization: `bearer ${Cookies.get("access_token")}`,
           },
         });
-  
-        const orderId = newOrder.data.data.Id; 
-  
+
+        const orderId = newOrder.data.data.Id;
+
         toast.success(newOrder.data.message);
-  
 
         const payload = {
           Models: xslModels,
-          ModelsVarients: xslModelsVarients, 
+          ModelsVarients: xslModelsVarients,
         };
 
+        const multiModel = await axios.post(`/model/addFileXsl/${orderId}`, payload, {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        });
+        toast.success(multiModel.data.message);
 
-      const multiModel = await axios.post(`/model/addFileXsl/${orderId}`, payload, {
-        headers: {
-          Authorization: `bearer ${Cookies.get("access_token")}`,
-        },
-      });
-      toast.success(multiModel.data.message);
-
-       
         getAllOrders();
         form.reset();
         setIsLoading(false);
         setOpen(false);
-  
       } else {
-
         const newOrder = await axios.post("orders", formData, {
           headers: {
             Authorization: `bearer ${Cookies.get("access_token")}`,
           },
         });
-  
+
         toast.success(newOrder.data.message);
         getAllOrders();
         form.reset();
         setIsLoading(false);
         setOpen(false);
       }
-  
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -387,10 +400,10 @@ const handleXSLUpload = (e: any) => {
     getAllTextilesList(setTextile);
     getAllTemplatesList(setTemplates);
 
-    
-  } , []);
 
-  
+  }, []);
+
+
 
   return (
     <div className="w-full space-y-2">
@@ -403,7 +416,7 @@ const handleXSLUpload = (e: any) => {
           <OrderForm
             form={form}
             onSubmit={onSubmit}
-            handleFileChange={handleXSLUpload} 
+            handleFileChange={handleXSLUpload}
           />
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
