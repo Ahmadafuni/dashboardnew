@@ -47,7 +47,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const { t } = useTranslation();
   const setCollectionList = useSetRecoilState(CollectionList);
   const [xslModels, setXslModels] = useState<any[]>([]);
-  const [xslModelsVarients, setXslModelsVarients] = useState<any[]>([]);
 
   // lists
   // let [searchParams, setSearchParams] = useSearchParams();
@@ -97,36 +96,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
     });
   };
 
-  const splitRecordsByColor = (data: any[]) => {
-    let finalRecords: any[] = [];
-
-    const colors = [
-      "White",
-      "black",
-      "oil",
-      "drunken",
-      "SilverMons",
-      "feathery",
-      "iron",
-      "navyBlue",
-    ];
-
-    data.forEach((record) => {
-      colors.forEach((colorField) => {
-        if (record[colorField]) {
-          let newRecord = { ...record, color: colorField, colorValue: record[colorField] };
-
-          colors.forEach((color) => {
-            delete newRecord[color];
-          });
-
-          finalRecords.push(newRecord);
-        }
-      });
-    });
-
-    return finalRecords;
-  };
 
   type Model = {
     CategoryOne: string;
@@ -216,11 +185,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
       }
 
       setXslModels(updatedJsonData);
-
-      const processedData = splitRecordsByColor(updatedJsonData);
-      setXslModelsVarients(processedData);
-
-      console.log(xslModelsVarients);
     };
 
     reader.readAsArrayBuffer(file);
@@ -350,7 +314,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
 
         const payload = {
           Models: xslModels,
-          ModelsVarients: xslModelsVarients,
         };
 
         const multiModel = await axios.post(`/model/addFileXsl/${orderId}`, payload, {
