@@ -51,6 +51,8 @@ const NewOrder = ({ getAllOrders }: Props) => {
 
 
 
+
+
   // lists
   // let [searchParams, setSearchParams] = useSearchParams();
   const setTemplates = useSetRecoilState(templateList);
@@ -131,216 +133,236 @@ const NewOrder = ({ getAllOrders }: Props) => {
     return finalRecords;
   };
   
-  const replaceNamesWithIds = (
-    models: any[],
-    categoryOneList: { value: string; label: string }[],
-    categoryTwoList: { value: string; label: string }[],
-    textilesList: { value: string; label: string }[],
-    templatesList: { value: string; label: string }[],
-    CatalogueList: { value: string; label: string }[],
-  ) => {
+type Model = {
+  CategoryOne: string;
+  CategoryTwo: string;
+  ProductName: string;
+  Textiles: string;
+  templateId: string;
+};
 
-    return models.map((model) => {
-      const categoryOne = categoryOneList.find((item) => item.label === model.CategoryOne);
-      if (categoryOne) {
-        model.CategoryOne = categoryOne.value; 
-      } else {
-        console.warn(`CategoryOne not found for ${model.CategoryOne}`);
-      }
-  
-      const categoryTwo = categoryTwoList.find((item) => item.label === model.CategoryTwo);
-      if (categoryTwo) {
-        model.CategoryTwo = categoryTwo.value; 
-      } else {
-        console.warn(`CategoryTwo not found for ${model.CategoryTwo}`);
-      }
-  
-      const product = CatalogueList.find((item) => item.label === model.ProductName);
-      if (product) {
-        model.ProductName = product.value; 
-      } else {
-        console.warn(`ProductName not found for ${model.ProductName}`);
-      }
-  
-      const textile = textilesList.find((item) => item.label === model.Textiles);
-      if (textile) {
-        model.Textiles = textile.value; 
-      } else {
-        console.warn(`Textile not found for ${model.Textiles}`);
-      }
-  
-      const template = templatesList.find((item) => item.label === model.templateId);
-      if (template) {
-        model.templateId = template.value; 
-      } else {
-        console.warn(`TemplateId not found for ${model.templateId}`);
-      }
-  
-      return model; 
-    });
-  };
+const replaceNamesWithIds = (
+  models: Model[],
+  categoryOneList: { value: string; label: string }[],
+  categoryTwoList: { value: string; label: string }[],
+  textilesList: { value: string; label: string }[],
+  templatesList: { value: string; label: string }[],
+  CatalogueList: { value: string; label: string }[]
+): Model[] | null => {  
+  const errors: string[] = []; 
 
-  
+  const updatedModels = models.map((model) => {
+    const categoryOne = categoryOneList.find((item) => item.label === model.CategoryOne);
+    if (categoryOne) {
+      model.CategoryOne = categoryOne.value;
+    } else {
+      errors.push(`الصنف  غير موجود لـ ${model.CategoryOne}`);
+    }
+
+    const categoryTwo = categoryTwoList.find((item) => item.label === model.CategoryTwo);
+    if (categoryTwo) {
+      model.CategoryTwo = categoryTwo.value;
+    } else {
+      errors.push(`الفئة غير موجود لـ ${model.CategoryTwo}`); 
+    }
+
+    const product = CatalogueList.find((item) => item.label === model.ProductName);
+    if (product) {
+      model.ProductName = product.value;
+    } else {
+      errors.push(`الزمرة غير موجود لـ ${model.ProductName}`); 
+    }
+
+    const textile = textilesList.find((item) => item.label === model.Textiles);
+    if (textile) {
+      model.Textiles = textile.value;
+    } else {
+      errors.push(`القماش غير موجود لـ ${model.Textiles}`); 
+    }
+
+    const template = templatesList.find((item) => item.label === model.templateId);
+    if (template) {
+      model.templateId = template.value;
+    } else {
+      errors.push(`رقم القالب غير موجود لـ ${model.templateId}`); 
+    }
+
+    return model;
+  });
+
+  if (errors.length > 0) {
+    const errorMessage = errors.join("\n"); 
+    toast.error(errorMessage); 
+    return null; 
+  }
+
+  return updatedModels; 
+};
+
+
 const handleXSLUpload = (e: any) => {
   const file = e.target.files[0];
   const reader = new FileReader();
-  
+
   reader.onload = (event: any) => {
-
-
-    // categoryOneList.map(input => {
-
-    //   console.log(input);
-
-    // }) ;
-    // templatesList.map(input => {
-
-    //   console.log(input);
-
-    // }) ;
-
-
     const data = new Uint8Array(event.target.result);
     const workbook = XLSX.read(data, { type: "array" });
     const firstSheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[firstSheetName];
-    let jsonData = XLSX.utils.sheet_to_json(worksheet);
-    
+    let jsonData = XLSX.utils.sheet_to_json<Model>(worksheet); 
+
     jsonData = renameFields(jsonData);
 
-    jsonData = replaceNamesWithIds(jsonData, categoryOneList, categoryTwoList, textilesList, templatesList,CatalogueList);
-    
-    setXslModels(jsonData); 
-    
-    const processedData = splitRecordsByColor(jsonData);
+    const updatedJsonData = replaceNamesWithIds(
+      jsonData,
+      categoryOneList,
+      categoryTwoList,
+      textilesList,
+      templatesList,
+      CatalogueList
+    );
+
+    if (updatedJsonData === null) {
+      return;
+    }
+
+    setXslModels(updatedJsonData);
+
+    const processedData = splitRecordsByColor(updatedJsonData);
     setXslModelsVarients(processedData);
-    
+
     console.log(xslModelsVarients);
   };
-  
+
   reader.readAsArrayBuffer(file);
 };
-  
-  const form = useForm<z.infer<typeof OrderSchema>>({
-    resolver: zodResolver(OrderSchema),
-    defaultValues: {
-      collection: "",
-      description: "",
-      orderName: "",
-      quantity: "",
-      deadline: new Date().toISOString().split("T")[0], // Initialize with today's date
-    },
-  });
+
+
   
 
-  const checkModelsDistribution = (models: any[]) => {
-    let isValid = true;
-    const errors: string[] = [];
-  
-    models.forEach((model) => {
-      const scales = model.scale ? model.scale.split('-') : [];
-  
-      // تحقق من كل لون في السجل
-      const colors = [
-        "White",
-        "black",
-        "oil",
-        "drunken",
-        "SilverMons",
-        "feathery",
-        "iron",
-        "navyBlue",
-      ];
-  
-      colors.forEach((color) => {
-        if (model[color]) {
-          const quantity = model[color];
-          if (scales.length > 0) {
-            const quantityPerScale = quantity / scales.length;
-            if (!Number.isInteger(quantityPerScale)) {
-              errors.push(`عدد الموديلات (${quantity}) للون ${color} لا يمكن تقسيمه على عدد القياسات (${scales.length}).`);
-              isValid = false;
-            }
+
+const form = useForm<z.infer<typeof OrderSchema>>({
+  resolver: zodResolver(OrderSchema),
+  defaultValues: {
+    collection: "",
+    description: "",
+    orderName: "",
+    quantity: "",
+    deadline: new Date().toISOString().split("T")[0], // Initialize with today's date
+  },
+});
+
+const colorNamesMap: { [key: string]: string } = {
+  "White": "أبيض",
+  "black": "أسود",
+  "oil": "زيتي",
+  "drunken": "سكري",
+  "SilverMons": "فضي مونس",
+  "feathery": "ريشي",
+  "iron": "حديدي",
+  "navyBlue": "كحلي",
+};
+
+const checkModelsDistribution = (models: any[]) => {
+  let isValid = true;
+  const errors: string[] = [];
+
+  models.forEach((model) => {
+    const scales = model.scale ? model.scale.split('-') : [];
+
+    // تحقق من كل لون في السجل
+    const colors = [
+      "White",
+      "black",
+      "oil",
+      "drunken",
+      "SilverMons",
+      "feathery",
+      "iron",
+      "navyBlue",
+    ];
+
+    colors.forEach((color) => {
+      if (model[color]) {
+        const quantity = model[color];
+        if (scales.length > 0) {
+          const quantityPerScale = quantity / scales.length;
+          if (!Number.isInteger(quantityPerScale)) {
+            const arabicColorName = colorNamesMap[color] || color; 
+            errors.push(`عدد الموديلات (${quantity}) للون "${arabicColorName}" لا يمكن تقسيمه على عدد القياسات (${scales.length}).`);
+            isValid = false;
           }
         }
-      });
+      }
     });
-  
-    return { isValid, errors };
-  };
+  });
+
+  return { isValid, errors };
+};
+
 
   
-  const onSubmit = async (data: z.infer<typeof OrderSchema>) => {
-    setIsLoading(true);
-  
-    try {
-      const formData = new FormData();
-      formData.append("collection", data.collection);
-      formData.append("description", data.description);
-      formData.append("orderName", data.orderName);
-      formData.append("quantity", data.quantity);
-      formData.append("deadline", data.deadline);
+const onSubmit = async (data: z.infer<typeof OrderSchema>) => {
+  setIsLoading(true);
+  const errors: string[] = [];
+
+  try {
+    const formData = new FormData();
+    formData.append("collection", data.collection);
+    formData.append("description", data.description);
+    formData.append("orderName", data.orderName);
+    formData.append("quantity", data.quantity);
+    formData.append("deadline", data.deadline);
+
+    if (xslModels.length > 0) {
+      const { isValid, errors: distributionErrors } = checkModelsDistribution(xslModels);
+
+      if (!isValid) {
+        errors.push(...distributionErrors);
+      }
+
+      const invalidModels = xslModels.filter((model) => !model.ModelNumber);
+
+      if (invalidModels.length > 0) {
+        errors.push("يرجى التحقق من البيانات هناك سجلات بدون رقم موديل.");
+      }
+
+      const invalidProductName = xslModels.filter((model) => !model.ProductName);
+      if (invalidProductName.length > 0) {
+        errors.push(`يرجى التحقق من البيانات هناك سجلات بدون صنف للموديل`);
+      }
+
+      const invalidCategoryOne = xslModels.filter((model) => !model.CategoryOne);
+      if (invalidCategoryOne.length > 0) {
+        errors.push("يرجى التحقق من البيانات هناك سجلات بدون فئة.");
+      }
+
+      const invalidCategoryTwo = xslModels.filter((model) => !model.CategoryTwo);
+      if (invalidCategoryTwo.length > 0) {
+        errors.push("يرجى التحقق من البيانات هناك سجلات بدون زمرة.");
+      }
+
+      if (errors.length > 0) {
+        const errorMessage = errors.join("\n"); 
+        toast.error(errorMessage);
+        setIsLoading(false);
+        return;
+      }
       
-      if (xslModels.length > 0) {
+      const newOrder = await axios.post("orders", formData, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
 
-        const { isValid, errors } = checkModelsDistribution(xslModels);
-       
-        if (!isValid) {
-          errors.forEach((error) => toast.error(error));
-          setIsLoading(false);
-          return;
-        }
+      const orderId = newOrder.data.data.Id;
 
-        const invalidModels = xslModels.filter((model) => !model.ModelNumber);
-  
-        if (invalidModels.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون رقم موديل.");
-          setIsLoading(false);
-          return;
-        }
+      toast.success(newOrder.data.message);
 
-        const invalidProductName = xslModels.filter((model) => !model.ProductName);
-  
-        if (invalidProductName.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون صنف");
-          setIsLoading(false);
-          return; 
-        }
-
-        const invalidCategoryOne = xslModels.filter((model) => !model.CategoryOne);
-  
-        if (invalidCategoryOne.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون فئة");
-          setIsLoading(false);
-          return;
-        }
-
-        const invalidCategoryTwo = xslModels.filter((model) => !model.CategoryTwo);
-  
-        if (invalidCategoryTwo.length > 0) {
-          toast.error("يرجى التحقق من البيانات هناك سجلات بدون زمرة");
-          setIsLoading(false);
-          return; 
-        }
-
-    
-
-        const newOrder = await axios.post("orders", formData, {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        });
-  
-        const orderId = newOrder.data.data.Id; 
-  
-        toast.success(newOrder.data.message);
-  
-
-        const payload = {
-          Models: xslModels,
-          ModelsVarients: xslModelsVarients, 
-        };
-
+      const payload = {
+        Models: xslModels,
+        ModelsVarients: xslModelsVarients,
+      };
 
       const multiModel = await axios.post(`/model/addFileXsl/${orderId}`, payload, {
         headers: {
@@ -349,34 +371,30 @@ const handleXSLUpload = (e: any) => {
       });
       toast.success(multiModel.data.message);
 
-       
-        getAllOrders();
-        form.reset();
-        setIsLoading(false);
-        setOpen(false);
-  
-      } else {
-
-        const newOrder = await axios.post("orders", formData, {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        });
-  
-        toast.success(newOrder.data.message);
-        getAllOrders();
-        form.reset();
-        setIsLoading(false);
-        setOpen(false);
-      }
-  
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
-      }
+      getAllOrders();
+      form.reset();
       setIsLoading(false);
+      setOpen(false);
+    } else {
+      const newOrder = await axios.post("orders", formData, {
+        headers: {
+          Authorization: `bearer ${Cookies.get("access_token")}`,
+        },
+      });
+
+      toast.success(newOrder.data.message);
+      getAllOrders();
+      form.reset();
+      setIsLoading(false);
+      setOpen(false);
     }
-  };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+    setIsLoading(false);
+  }
+};
 
   // Page on load
   useEffect(() => {
