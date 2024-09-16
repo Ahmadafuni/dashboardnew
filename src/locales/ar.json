@@ -21,7 +21,6 @@
   "ProfilePhoto": "الصورة الشخصية",
   "Newuser": "انشاء مستخدم",
   "Users": "المستخدمون",
-
   "AddDepartment": "إضافة قسم",
   "Name": "الاسم",
   "Category": "الفئة",
@@ -32,7 +31,6 @@
   "Close": "إغلاق",
   "Update": "تحديث",
   "Newdepartment": "انشاء قسم",
-
   "CUTTING": "القص",
   "TAILORING": "الخياطة",
   "PRINTING": "الطباعة",
@@ -40,19 +38,14 @@
   "ENGINEERING": "الهندسة",
   "FACTORYMANAGER": "مدير المصنع",
   "WAREHOUSEMANAGER": "مدير المستودع",
-
   "ColorName": "اسم اللون",
   "ColorCode": "كود اللون",
-
   "SizeName": "اسم المقاس",
-
   "TemplatePatternName": "رمز القالب",
   "TemplateTypeName": "نوع القالب",
-
   "TextileName": "اسم القماش",
   "TextileType": "نوع القماش",
   "Composition": "التركيبة",
-
   "NewColor": "لون جديد",
   "UpdateColor": "تحديث اللون",
   "NewProductCategoryOne": "فئة منتج جديدة (المستوى الأول)",
@@ -69,14 +62,11 @@
   "UpdateTextile": "تحديث القماش",
   "NewProductCatalogue": "منتج جديد",
   "UpdateProductCatalogue": "تحديث المنتج",
-
   "ProductCatalogueName": " اسم المنتج",
   "ProductCatalogueDetailsNew": "انشاء تفاصيل المنتج",
   "ProductCatalogueDetails": "تفاصيل المنتجات",
-
   "ProductCatalogCategoryOne": "فئة منتج (المستوى الأول)",
   "ProductCatalogCategoryTwo": "فئة منتج (المستوى الثاني)",
-
   "Colors": "الألوان",
   "Sizes": "المقاسات",
   "Textiles": "الاقمشة",
@@ -87,12 +77,10 @@
   "Season": "المواسم",
   "Grammage": "جراماج",
   "StandardWeight": "الوزن القياسي",
-
   "DeleteConfirmationDialogTitle": "هل ترغب في حذف هذا؟",
   "DeleteConfirmationDialogDescription": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف هذا بشكل دائم.",
   "DeleteConfirmationDialogContinue": "متابعة",
   "DeleteConfirmationDialogCancel": "إلغاء",
-
   "Dashboard": "لوحة التحكم",
   "BusinessEntities": "كيانات الأعمال",
   "Collections": "مجموعةالتصاميم",
@@ -105,27 +93,22 @@
   "TemplateName": "اسم القالب",
   "File": "ملفات",
   "Download": "تنزيل",
-
   "Template": "القالب",
   "Cutting": "جدول التفصيل",
   "Dressup": "جدول التلبيس",
   "Stages": "مراحل العمل",
   "TemplatePDF": "رفع ملف",
   "DownloadPDF": "PDF تنزيل",
-
   "Next": "التالي",
-
   "SUMMER": "الصيف",
   "SPRING": "الربيع",
   "FALL": "الخريف",
   "WINTER": "الشتاء",
-
   "MeasurementName": "اسم القياس",
   "MeasurementValue": "قيمة القياس",
   "MeasurementUnit": "وحدة القياس",
   "Measurements": "القياسات",
   "UpdateMeasurement": "تحديث القياس",
-
   "StageName": "اسم المرحلة",
   "Duration": "المدة",
   "WorkDescription": "وصف العمل",
@@ -133,7 +116,6 @@
   "Done": "إنهاء",
   "UpdateManufacturingStage": "تحديث مرحلة العمل",
   "UpdateTemplate": "تحديث القالب",
-
   "OrderNumber": "رقم الطلبية",
   "OrderName": "اسم الطلبية",
   "Quantity": "الكمية",
@@ -144,11 +126,9 @@
   "EditOrder": "تحديث الطلبية",
   "ViewModels": "عرض الموديلات",
   "AddModel": "إضافة موديل",
-
   "NewOrder": "طلبية جديدة",
   "UpdateOrder": "تحديث الطلبية",
   "OrderFile": "ملف الطلبية",
-
   "ModelNumber": "رقم الموديل",
   "Characteristics": "الخصائص",
   "Barcode": "الباركود",
@@ -156,17 +136,14 @@
   "PrintName": "اسم الطبعة",
   "PrintLocation": "مكان الطباعة",
   "Images": "الصور",
-
   "NewModel": "موديل جديد",
   "NewModelDetails": "تفاصيل موديل جديد",
   "UpdateModel": "تحديث الموديل",
-
   "ModelDetails": "تفاصيل الموديل",
   "AddDetail": "إضافة تفصيل",
   "QuantityDetails": "تفاصيل الكمية",
   "ModelName": "اسم الموديل",
   "ModelCreatedDate": "تاريخ إنشاء الموديل",
-
   "AssignedToDepartment": "تعيين إلى القسم",
   "DueDate": "تاريخ الاستحقاق",
   "TaskName": "اسم المهمة",
@@ -174,7 +151,6 @@
   "UpdateTask": "تحديث مهمة",
   "TaskFile": "ملف المهمة",
   "NewTask": "مهمة جديدة",
-
   "GENERAL": "عام",
   "REMINDER": "تذكير",
   "ATTENTION": "تنبيه",
@@ -183,11 +159,9 @@
   "UpdateNote": "تحديث ملاحظة",
   "Note": "ملاحظات",
   "AddNote": "إضافة ملاحظة",
-
   "EditModel": "تعديل الموديل",
   "ViewDetails": "عرض التفاصيل",
   "ViewSummary": "عرض الملخص",
-
   "Awaiting": "جاهز للعمل",
   "Color": "اللون",
   "Size": "القياس",
@@ -201,42 +175,33 @@
   "Details": "التفاصيل",
   "Start": "ابدأ",
   "N/A": "غير متاح",
-
   "Ongoing": "جار العمل",
   "Stop": "توقف",
   "Continue": "استمر",
   "SendForConfirmation": "إرسال للتأكيد",
   "Complete": "اكتمل",
-
   "OnConfirmation": "في انتظار التأكيد",
   "DeliveredQuantity": "الكمية المسلمة",
   "DamageQuantity": "الكمية التالفة",
-
   "Completed": "الموديلات الجاهزة",
-
   "CompleteVariant": "اكتمال الموديل",
   "QuantityReceived": "الكمية المستلمة",
   "QuantityDelivered": "الكمية المسلمة",
   "DamagedItems": "الموديل السقط",
-
   "Confirm": "تأكيد",
   "ConfirmVariant": "تأكيد الموديل؟",
   "WillYouConfirmQuantities": "هل ستؤكد الكميات التالية؟",
   "Cancel": "إلغاء",
   "No": "لا",
   "Yes": "نعم",
-
   "Confirmation": "تأكيد",
   "PleaseWait": "يرجى الانتظار",
   "Send": "إرسال",
-
   "StopContinue": "إيقاف / استئناف",
   "Reasone": "السبب",
-
   "RejectVariant": "رفض النوع",
   "DamagedItem": "الموديل السقط",
   "Reject": "رفض",
-
   "CuttingConfirmation": "تأكيد القص",
   "QuantityInKg": "الكمية بالكيلوغرام",
   "QuantityInNumber": "الكمية بالعدد",
@@ -245,21 +210,16 @@
   "ClothWidth": "عرض المدة",
   "ClothWeight": "وزن المدة",
   "ReplacedItemInKg": "التعويض بالكيلوغرام",
-
   "DyeNumber": "رقم الصبغة",
   "Kashan": "كاشاشان",
   "Halil": "حليل",
   "Phthalate": "فتلان",
   "GramWeight": "وزن الجرام",
-
   "NewChildMaterial": "مادة فرعية جديدة",
   "UpdateChildMaterial": "تحديث المادة الفرعية",
   "CategoryName": "اسم الفئة",
-
   "NewMaterialCategory": "فئة مادة جديدة",
-
   "UpdateMaterialCategory": "تحديث فئة المادة",
-
   "MainInformations": "المعلومات الرئيسية",
   "InvoiceNumber": "رقم الفاتورة",
   "MovementDate": "تاريخ الحركة",
@@ -286,7 +246,6 @@
   "NoOptions": "لا توجد خيارات",
   "SelectOption": "اختر خيارًا",
   "SelectModel": "اختر موديل",
-
   "MaterialCategory": "فئة المادة",
   "SearchMaterialCategory": "البحث عن فئة المادة...",
   "NoCategoryFound": "لم يتم العثور على فئة",
@@ -297,36 +256,26 @@
   "AlternativeMaterials": "المواد البديلة",
   "HasChildren": "له مواد فرعية",
   "IsRelevantToProduction": "مرتبط بالإنتاج",
-
   "UpdateMaterial": "تحديث المادة",
-
   "NewSupplier": "مورد جديد",
-
   "Address": "العنوان",
-
   "UpdateSupplier": "تحديث المورد",
-
   "NewWarehouse": "مستودع جديد",
   "UpdateWarehouse": "تحديث المستودع",
-
   "WarehouseName": "اسم المستودع",
   "Capacity": "السعة",
   "MANAGEMENT": "الإدارة",
   "PRODUCTION": "الإنتاج",
   "SERVICES": "الخدمات",
-
   "Notifications": "الإشعارات",
   "ClearAll": "مسح الكل",
   "MarkAsRead": "تحديد كمقروء",
-
   "Warehouse": "مستودع",
   "Incoming": "استلام مواد",
   "Outgoing": "تسليم مواد",
   "MaterialReport": "تقرير المواد",
-
   "ChildMaterials": "مواد فرعية",
   "AddChildMaterial": "إضافة مادة فرعية",
-
   "Supplier": "مورد",
   "ParentMaterialName": "اسم المادة الاب",
   "ChildMaterialName": "اسم المادة الفرعية",
@@ -334,10 +283,8 @@
   "MovedTo": "نقل إلى",
   "Date": "تاريخ",
   "IncomingMaterialMovements": "حركات المواد الواردة",
-
   "MaterialCategories": "فئات المواد",
   "AddMaterialCategory": "إضافة فئة المواد",
-
   "MovementType": "نوع الحركة",
   "StartDate": "تاريخ البدء",
   "EndDate": "تاريخ الانتهاء",
@@ -347,23 +294,19 @@
   "Reset": "مسح",
   "INCOMING": "الوارد",
   "OUTGOING": "الصادر",
-
   "EditParentMaterial": "تعديل المادة الاب",
   "NewChild": "مادة فرعية جديدة",
   "ViewChild": "عرض المواد الفرعية",
   "AddMaterial": "إضافة مادة",
-
   "OutgoingMaterialMovements": "حركات المواد الصادرة",
   "AddSupplier": "إضافة مورد",
   "AddWarehouse": "إضافة مستودع",
   "Clear": "مسح",
   "Logout": "تسجيل الخروج",
-
   "AssignedBy": "تم التعيين بواسطة",
   "CreatedByDepartment": "تم الإنشاء بواسطة القسم",
   "ActionConfirmation": "تأكيد الإجراء!",
   "AreYouSure": "هل أنت متأكد أنك تريد اتخاذ هذا الإجراء!",
-
   "BesharaFactoryManagement": "إدارة مصنع بشارة",
   "LoginToBesharaDashboard": "تسجيل الدخول إلى لوحة تحكم بشارة",
   "Password": "كلمة المرور",
@@ -374,6 +317,7 @@
   "NewProductCatalogueDetailsfor": "تفاصيل المنتج الجديد",
   "Reason": "السبب",
   "Pause": "إيقاف",
+  "StartModel": "تشغيل",
   "Restart": "إعادة تشغيل",
   "Pending": "معلقة",
   "OnGoing": "جارية",
@@ -400,7 +344,6 @@
   "Oct": "تشرين الأول",
   "Nov": "تشرين الثاني",
   "Dec": "كانون الأول",
-
   "Week1": "الأسبوع الأول",
   "Week2": "الأسبوع الثاني",
   "Week3": "الأسبوع الثالث",
@@ -412,7 +355,6 @@
   "Thu": "الخميس",
   "Fri": "الجمعة",
   "Sat": "السبت",
-
   "InvalidFileType": "نوع الملف غير صالح. يرجى تحميل ملف Excel.",
   "FileSizeExceeded": "يتجاوز حجم الملف حد 5 ميجابايت. يرجى تحميل ملف أصغر.",
   "InsufficientRows": "الملف غير صالح: عدد الصفوف غير كافٍ.",
