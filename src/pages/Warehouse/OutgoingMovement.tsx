@@ -22,7 +22,9 @@ export default function OutgoingMovement() {
     ];
     const movementToOptions = [
         { label: t("Warehouse"), value: "Warehouse" },
-        { label: t("Supplier"), value: "Supplier" }
+        { label: t("Supplier"), value: "Supplier" },
+        { label: t("Department"), value: "Department" },
+
     ];
 
     const materialMovementsColumns: ColumnDef<any>[] = [
@@ -74,6 +76,8 @@ export default function OutgoingMovement() {
 
         fetchData();
     }, [setMaterialMovements]);
+
+    console.log("materialMovements", materialMovements);
 
     return (
         <div className="w-full space-y-2">
