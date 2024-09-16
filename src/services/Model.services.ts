@@ -1,3 +1,4 @@
+import { ReportsType } from "@/types/Reports/ProductionReports.types";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
@@ -169,8 +170,6 @@ export const filterModels = async (
 
     const reports = response.data.data.flatMap((item: any) =>
       item.Details.map((detail: any, index: number) => {
-        console.log(item);
-
         return {
           modelId: item.ModelId,
           collectionId: item.CollectionId,
@@ -192,6 +191,97 @@ export const filterModels = async (
             .join(" , "),
           totalDurationInDays: index === 0 ? item.TotalDurationInDays : "",
           action: index === 0 ? item.Action : "",
+        };
+      })
+    );
+
+    setData(reports);
+  } catch (error) {
+    console.error("Failed to fetch report results:", error);
+    throw error;
+  }
+};
+
+export const filterProductionModels = async (
+  setData: Dispatch<SetStateAction<any>>,
+  searchParams: any
+) => {
+  try {
+    const response = await axios.post("model/search", searchParams, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    const responseData: ReportsType = response.data;
+    console.log("responseData : ", responseData);
+
+    const reports = responseData.data.flatMap((item) =>
+      item.Details.map((detail) => {
+        return {
+          modelNumber: item.DemoModelNumber,
+          barcode: item.Barcode,
+          name:
+            item.ProductCatalog +
+            "-" +
+            item.CategoryOne +
+            "-" +
+            item.CategoryTwo,
+          textile: item.Textiles,
+          colors: detail.Color,
+          sizes: JSON.parse(detail.Sizes),
+          currentStage: detail.Quantity.StageName,
+          quantities: Object.entries(detail.Quantity.QuantityDelivered)
+            .map(([key, value]) => `${key} : ${value}`)
+            .join(" , "),
+
+          duration: item.TotalDurationInDays,
+        };
+      })
+    );
+
+    setData(reports);
+  } catch (error) {
+    console.error("Failed to fetch report results:", error);
+    throw error;
+  }
+};
+export const filterOrderModels = async (
+  setData: Dispatch<SetStateAction<any>>,
+  searchParams: any
+) => {
+  try {
+    const response = await axios.post("model/search", searchParams, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    const responseData: ReportsType = response.data;
+
+    const reports = responseData.data.flatMap((item) =>
+      item.Details.map((detail) => {
+        return {
+          modelNumber: item.DemoModelNumber,
+          barcode: item.Barcode,
+          //
+          collection: item.CollectionName,
+          order: item.OrderName,
+          //
+          name:
+            item.ProductCatalog +
+            "-" +
+            item.CategoryOne +
+            "-" +
+            item.CategoryTwo,
+          textile: item.Textiles,
+          colors: detail.Color,
+          sizes: JSON.parse(detail.Sizes),
+          quantities: Object.entries(detail.Quantity.QuantityDelivered)
+            .map(([key, value]) => `${key} : ${value}`)
+            .join(" , "),
+
+          currentStage: detail.Quantity.StageName,
+          //
+          modelStatus: item.ModelStatus,
         };
       })
     );

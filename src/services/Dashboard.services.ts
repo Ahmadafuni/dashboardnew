@@ -4,19 +4,19 @@ import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const getAllWork = async (
-  pages: {
+  setData: Dispatch<SetStateAction<any>>,
+  pages?: {
     awaitingPage: number;
     inProgressPage: number;
     completedPage: number;
     givingConfirmationPage: number;
   },
-  sizes: {
+  sizes?: {
     awaitingSize: number;
     inProgressSize: number;
     completedSize: number;
     givingConfirmationSize: number;
   },
-  setData: Dispatch<SetStateAction<any>>,
   setTotalPages?: Dispatch<SetStateAction<any>>,
   setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
@@ -90,7 +90,7 @@ export const startVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork({}, {}, setData);
+    getAllWork(setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -109,7 +109,7 @@ export const completeVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork({}, {}, setData);
+    getAllWork(setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -131,7 +131,7 @@ export const sentForCheckingVariant = async (
         },
       }
     );
-    getAllWork({}, {}, setData);
+    getAllWork(setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -150,7 +150,7 @@ export const confirmVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork({}, {}, setData);
+    getAllWork(setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -169,7 +169,7 @@ export const rejectVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllWork({}, {}, setData);
+    getAllWork(setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {
