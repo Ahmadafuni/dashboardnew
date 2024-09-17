@@ -4,21 +4,22 @@ import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const getAllWork = async (
-  pages: {
-    awaitingPage: number;
-    inProgressPage: number;
-    completedPage: number;
-    givingConfirmationPage: number;
-  },
-  sizes: {
-    awaitingSize: number;
-    inProgressSize: number;
-    completedSize: number;
-    givingConfirmationSize: number;
-  },
-  setData: Dispatch<SetStateAction<any>>,
-  setTotalPages?: Dispatch<SetStateAction<any>>,
-  setIsLoading?: Dispatch<SetStateAction<boolean>>
+    depId: any,
+    pages: {
+      awaitingPage: number;
+      inProgressPage: number;
+      completedPage: number;
+      givingConfirmationPage: number;
+    },
+    sizes: {
+      awaitingSize: number;
+      inProgressSize: number;
+      completedSize: number;
+      givingConfirmationSize: number;
+    },
+    setData: Dispatch<SetStateAction<any>>,
+    setTotalPages?: Dispatch<SetStateAction<any>>,
+    setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     setIsLoading && setIsLoading(true);
@@ -26,6 +27,7 @@ export const getAllWork = async (
       params: {
         ...pages,
         ...sizes,
+        depId
       },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,

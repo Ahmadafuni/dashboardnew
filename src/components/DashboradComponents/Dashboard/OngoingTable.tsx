@@ -152,7 +152,7 @@ export default function OngoingTable({
 
   const fetchWorks = async () => {
     // @ts-ignore
-    await getAllWork({}, {}, setWorks);
+    await getAllWork(user?.userDepartmentId,{}, {}, setWorks);
   };
 
   const handleSendConfirmation = (item: any, type: string) => {

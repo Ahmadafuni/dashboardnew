@@ -76,7 +76,7 @@ export default function Dashboard() {
     if (user?.userRole === "FACTORYMANAGER") {
       getAllTracking(pages, sizes, setWorks, setTotalPages, setIsLoading);
     } else {
-      getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading);
+      getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading);
     }
   }, [user, pages, sizes]);
 
@@ -136,24 +136,24 @@ export default function Dashboard() {
   return (
     <div className="w-full p-4 space-y-6">
       <PausingUnpausingReasoneModal
-        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
       />
       <CuttingSendForConfirmationModal
-        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+          getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
       />
       <OthersSendForConfirmation
-        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+          getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <CompleteDialog
-        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <RejectVariantDialog
-        getWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
       />
 
       <div className="w-full p-4 space-y-6">
