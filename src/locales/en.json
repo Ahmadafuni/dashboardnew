@@ -12,7 +12,6 @@
   "Departments": "Departments",
   "Stores": "Stores",
   "Users": "Users",
-
   "AddUser": "Add User",
   "Firstname": "First Name",
   "Lastname": "Last Name",
@@ -23,7 +22,6 @@
   "IsActive": "IsActive",
   "ProfilePhoto": "Profile Photo",
   "Newuser": "New User",
-
   "AddDepartment": "Add Department",
   "Name": "Name",
   "Category": "Category",
@@ -34,7 +32,6 @@
   "Close": "Close",
   "Update": "Update",
   "Newdepartment": "New Department",
-
   "CUTTING": "CUTTING",
   "TAILORING": "TAILORING",
   "PRINTING": "PRINTING",
@@ -42,21 +39,16 @@
   "ENGINEERING": "ENGINEERING",
   "FACTORYMANAGER": "FACTORYMANAGER",
   "WAREHOUSEMANAGER": "WAREHOUSEMANAGER",
-
   "ColorName": "Color Name",
   "ColorCode": "Color Code",
-
   "ProductCatalogCategoryOne": "Product Category One",
   "ProductCatalogCategoryTwo": "Product Category Two",
-
   "TemplatePatternName": "Template Pattern",
   "TemplateTypeName": "Template Type",
-
   "TextileName": "Textile Name",
   "Textile": "Textile",
   "TextileType": "TextileType",
   "Composition": "Composition",
-
   "NewColor": "New Color",
   "UpdateColor": "Update Color",
   "NewProductCategoryOne": "New Product Category One",
@@ -73,11 +65,9 @@
   "UpdateTextile": "UpdateTextile",
   "NewProductCatalogue": "New Product",
   "UpdateProductCatalogue": "Update Product",
-
   "ProductCatalogueName": "Product Name",
   "ProductCatalogueDetailsNew": "New Product Details",
   "ProductCatalogueDetails": "Product Details",
-
   "Colors": "Colors",
   "Sizes": "Sizes",
   "Textiles": "Textiles",
@@ -88,16 +78,13 @@
   "Season": "Season",
   "Grammage": "Grammage",
   "StandardWeight": "Standard Weight",
-
   "DeleteConfirmationDialogTitle": "Do you want to delete this?",
   "DeleteConfirmationDialogDescription": "This action cannot be undone. This will permanently delete this.",
   "DeleteConfirmationDialogContinue": "Continue",
   "DeleteConfirmationDialogCancel": "Cancel",
-
   "AssignedToDepartment": "Assigned To Departmnet",
   "DueDate": "Due Date",
   "TaskName": "Task Name",
-
   "Dashboard": "Dashboard",
   "BusinessEntities": "Business Entities",
   "Collections": "Collections",
@@ -107,11 +94,9 @@
   "Suppliers": "Suppliers",
   "Materials": "Materials",
   "MaterialsCategory": "Materials Category",
-
   "TemplateName": "Template Name",
   "File": "File",
   "Download": "Download",
-
   "Template": "Template",
   "Cutting": "Cutting",
   "Dressup": "Dressup",
@@ -119,18 +104,15 @@
   "TemplatePDF": "Upload File",
   "DownloadPDF": "Download PDF",
   "Next": "Next",
-
   "SUMMER": "Summer",
   "SPRING": "Spring",
   "FALL": "Fall",
   "WINTER": "Winter",
-
   "MeasurementName": "Measurement Name",
   "MeasurementValue": "Measurement Value",
   "MeasurementUnit": "Measurement Unit",
   "Measurements": "Measurements",
   "UpdateMeasurement": "Update Measurement",
-
   "StageName": "Stage name",
   "Duration": "Duration",
   "WorkDescription": "Work Description",
@@ -138,7 +120,6 @@
   "Done": "Done",
   "UpdateManufacturingStage": "Update Manufacturing Stage",
   "UpdateTemplate": "Update Template",
-
   "OrderNumber": "Order Number",
   "OrderName": "Order Name",
   "Quantity": "Quantity",
@@ -149,11 +130,9 @@
   "EditOrder": "Edit Order",
   "ViewModels": "View Models",
   "AddModel": "Add Model",
-
   "NewOrder": "New Order",
   "UpdateOrder": "Update Order",
   "OrderFile": "Order File",
-
   "ModelNumber": "Model Number",
   "Characteristics": "Characteristics",
   "Barcode": "Barcode",
@@ -161,7 +140,6 @@
   "PrintName": "PrintName",
   "PrintLocation": "PrintLocation",
   "Images": "Images",
-
   "NewModel": "New Model",
   "NewModelDetails": "New Model Details",
   "UpdateModel": "Update Model",
@@ -171,23 +149,19 @@
   "QuantityDetails": "QuantityDetails",
   "ModelName": "Model Name",
   "ModelCreatedDate": "Model Created Date",
-
   "AddTask": "Add Task",
   "NewTask": "New Task",
   "UpdateTask": "Update Task",
   "TaskFile": "Task File",
-
   "GENERAL": "General",
   "REMINDER": "Reminder",
   "ATTENTION": "Attention",
   "NewNote": "New Note",
   "UpdateNote": "Update Note",
   "AddNote": "Add Note",
-
   "EditModel": "Edit Model",
   "ViewDetails": "View Details",
   "ViewSummary": "View Summary",
-
   "Awaiting": "Awaiting",
   "Color": "Color",
   "Size": "Size",
@@ -201,7 +175,6 @@
   "Details": "Details",
   "Start": "Start",
   "N/A": "N/A",
-
   "Ongoing": "Ongoing",
   "Stop": "Stop",
   "Continue": "Continue",
@@ -210,32 +183,25 @@
   "OnConfirmation": "On Confirmation",
   "DeliveredQuantity": "Delivered Quantity",
   "DamageQuantity": "Damage Quantity",
-
   "Completed": "Completed",
-
   "CompleteVariant": "Complete Variant",
   "QuantityReceived": "Quantity Received",
   "QuantityDelivered": "Quantity Delivered",
   "DamagedItems": "Damaged Items",
-
   "Confirm": "Confirm",
   "ConfirmVariant": "Confirm Variant?",
   "WillYouConfirmQuantities": "Will you confirm the following quantities?",
   "Cancel": "Cancel",
   "No": "No",
   "Yes": "Yes",
-
   "Confirmation": "Confirmation",
   "PleaseWait": "Please wait",
   "Send": "Send",
-
   "StopContinue": "Stop/Continue",
   "Reasone": "Reason",
-
   "RejectVariant": "Reject Variant",
   "DamagedItem": "Damaged Item",
   "Note": "Note",
-
   "CuttingConfirmation": "Cutting Confirmation",
   "QuantityInKg": "Quantity In Kg",
   "QuantityInNumber": "Quantity In Number",
@@ -244,19 +210,16 @@
   "ClothWidth": "Cloth Width",
   "ClothWeight": "Cloth Weight",
   "ReplacedItemInKg": "Replaced Item In Kg",
-
   "DyeNumber": "Dye Number",
   "Kashan": "Kashan",
   "Halil": "Halil",
   "Phthalate": "Phthalate",
   "GramWeight": "Gram Weight",
-
   "NewChildMaterial": "New Child Material",
   "UpdateChildMaterial": "Update Child Material",
   "CategoryName": "Category Name",
   "NewMaterialCategory": "New Material Category",
   "UpdateMaterialCategory": "Update Material Category",
-
   "MainInformations": "Main Informations",
   "InvoiceNumber": "Invoice Number",
   "MovementDate": "Movement Date",
@@ -283,7 +246,6 @@
   "NoOptions": "No options",
   "SelectOption": "Select an option",
   "SelectModel": "Select a model",
-
   "MaterialCategory": "Material Category",
   "SearchMaterialCategory": "Search Material Category...",
   "NoCategoryFound": "No category found",
@@ -294,44 +256,34 @@
   "AlternativeMaterials": "Alternative Materials",
   "HasChildren": "Has Children",
   "IsRelevantToProduction": "Is Relevant To Production",
-
   "UpdateMaterial": "Update Material",
   "NewSupplier": "New Supplier",
   "Address": "Address",
-
   "UpdateSupplier": "Update Supplier",
   "NewWarehouse": "New Warehouse",
   "UpdateWarehouse": "Update Warehouse",
-
   "WarehouseName": "Warehouse Name",
   "Capacity": "Capacity",
   "MANAGEMENT": "Management",
   "PRODUCTION": "Production",
   "SERVICES": "Services",
-
   "Notifications": "Notifications",
   "ClearAll": "Clear All",
   "MarkAsRead": "Mark as Read",
-
   "Warehouse": "Warehouse",
   "Incoming": "Incoming",
   "Outgoing": "Outgoing",
   "MaterialReport": "Material Report",
-
   "ChildMaterials": "Child Materials",
   "AddChildMaterial": "Add Child Material",
-
   "ParentMaterialName": "Parent Material Name",
   "ChildMaterialName": "Child Material Name",
   "MovedFrom": "Moved From",
   "MovedTo": "Moved To",
-
   "Date": "Date",
   "IncomingMaterialMovements": "Incoming Material Movements",
-
   "MaterialCategories": "Material Categories",
   "AddMaterialCategory": "Add Material Category",
-
   "MovementType": "Movement Type",
   "StartDate": "Start Date",
   "EndDate": "End Date",
@@ -341,25 +293,20 @@
   "Reset": "Reset",
   "INCOMING": "INCOMING",
   "OUTGOING": "OUTGOING",
-
   "EditParentMaterial": "Edit Parent Material",
   "NewChild": "New Child",
   "ViewChild": "View Child",
   "AddMaterial": "Add Material",
-
   "Supplier": "Supplier",
   "OutgoingMaterialMovements": "Outgoing Material Movements",
-
   "AddSupplier": "Add Supplier",
   "AddWarehouse": "Add Warehouse",
   "Clear": "Clear",
   "Logout": "Logout",
-
   "AssignedBy": "Assigned By",
   "CreatedByDepartment": "Created By Department",
   "ActionConfirmation": "Action Confirmation!",
   "AreYouSure": "Are you sure you want to take this action!",
-
   "BesharaFactoryManagement": "Beshara Factory Management",
   "LoginToBesharaDashboard": "Login to Beshara dashboard.",
   "Password": "Password",
@@ -370,8 +317,8 @@
   "NewProductCatalogueDetailsfor": "New Product Details for",
   "Reason": "Reason",
   "Pause": "Pause",
+  "StartModel": "Start",
   "Restart": "Restart",
-
   "Pending": "Pending",
   "OnGoing": "On Going",
   "TaskStatus": "Task Status",
@@ -397,12 +344,10 @@
   "Oct": "Oct",
   "Nov": "Nov",
   "Dec": "Dec",
-
   "Week1": "Week 1",
   "Week2": "Week 2",
   "Week3": "Week 3",
   "Week4": "Week 4",
-
   "Sun": "Sun",
   "Mon": "Mon",
   "Tue": "Tue",
@@ -410,7 +355,6 @@
   "Thu": "Thu",
   "Fri": "Fri",
   "Sat": "Sat",
-
   "InvalidFileType": "Invalid file type. Please upload an Excel file.",
   "FileSizeExceeded": "File size exceeds the 5 MB limit. Please upload a smaller file.",
   "InsufficientRows": "Excel not valid: insufficient rows.",
@@ -420,5 +364,4 @@
   "ImportFromExcel": "Import from Excel",
   "Archive": "Archive",
   "DragMessage": "Drag 'n' drop some images here, or click to select files"
-
 }

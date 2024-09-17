@@ -30,11 +30,11 @@ interface Props {
 }
 
 export default function MovementForm({
-                                         form,
-                                         onSubmit,
-                                         movementFromOptions,
-                                         movementToOptions,
-                                     }: Props) {
+    form,
+    onSubmit,
+    movementFromOptions,
+    movementToOptions,
+}: Props) {
     const { t } = useTranslation();
 
     const departments = useRecoilValue(departmentList);
@@ -212,6 +212,20 @@ export default function MovementForm({
                                             label={t("WarehouseTo")}
                                             placeholder={t("SelectWarehouse")}
                                             items={warehouses}
+                                        />
+                                    )}
+                                />
+                            )}
+                            {selectedMovementTo === "Department" && (
+                                <FormField
+                                    control={form.control}
+                                    name="departmentToId"
+                                    render={({ field }) => (
+                                        <SelectFieldForForm
+                                            field={field}
+                                            label={t("DepartmentTo")}
+                                            placeholder={t("SelectDepartment")}
+                                            items={departments}
                                         />
                                     )}
                                 />
