@@ -19,7 +19,7 @@ import { useRecoilValue } from "recoil";
 import { userInfo } from "@/store/authentication";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import {
   Select,
   SelectTrigger,
@@ -29,7 +29,7 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "@/components/ui/select";
-import { Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 
 interface Props {
   page: number;
@@ -68,6 +68,51 @@ export default function AwaitingTable({
   const userRole = user?.userRole;
   const { t } = useTranslation();
 
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
+
+
+  const sortedWorks = [...works.awaiting].sort((a, b) => {
+    if (sortConfig !== null) {
+      const keyParts = sortConfig.key.split('.'); 
+      const getValue = (obj: any, keyParts: string[]) => {
+        return keyParts.reduce((nestedObj, key) => {
+          return nestedObj && nestedObj[key] !== undefined ? nestedObj[key] : null;
+        }, obj);
+      };
+  
+      const aValue = getValue(a, keyParts);
+      const bValue = getValue(b, keyParts);
+  
+      if (aValue !== null && bValue !== null) {
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return sortConfig.direction === 'ascending'
+            ? aValue.toLowerCase().localeCompare(bValue.toLowerCase())
+            : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
+        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return sortConfig.direction === 'ascending' ? aValue - bValue : bValue - aValue;
+        } else {
+          return 0;
+        }
+      }
+      if (aValue === null && bValue !== null) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (aValue !== null && bValue === null) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+  
+  const requestSort = (key: string) => {
+    let direction = "ascending";
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
       return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
@@ -77,7 +122,6 @@ export default function AwaitingTable({
 
   const renderAdminRow = (item: any) => (
     <>
-      <TableCell>{item.PrevStage?.Department?.Name || t("N/A")}</TableCell>
       <TableCell>{item.CurrentStage?.Department?.Name || t("N/A")}</TableCell>
       <TableCell>{item.NextStage?.Department?.Name || t("N/A")}</TableCell>
       <TableCell>
@@ -86,6 +130,15 @@ export default function AwaitingTable({
           : t("N/A")}
       </TableCell>
       <TableCell>
+      <div className="flex">
+      <Button
+          variant="secondary"
+          onClick={()=>{}}
+        >
+          {t("Summary")}
+        </Button>
+
+
         <Button
           variant="secondary"
           onClick={() =>
@@ -97,6 +150,8 @@ export default function AwaitingTable({
         >
           {t("Details")}
         </Button>
+
+      </div>
       </TableCell>
     </>
   );
@@ -141,22 +196,89 @@ export default function AwaitingTable({
         <Table className="min-w-full">
           <TableHeader>
             <TableRow>
-              <TableHead>{t("ModelNumber")}</TableHead>
-              <TableHead>{t("Barcode")}</TableHead>
-              <TableHead>{t("Name")}</TableHead>
-              <TableHead>{t("Collections")}</TableHead>
-              <TableHead>{t("OrderNumber")}</TableHead>
-              <TableHead>{t("Textile")}</TableHead>
-              <TableHead>{t("Color")}</TableHead>
-              <TableHead>{t("Size")}</TableHead>
-              <TableHead>{t("TargetQuantity")}</TableHead>
-              <TableHead>{t("ReceivedQuantity")}</TableHead>
+              <TableHead onClick={() => requestSort("ModelVariant.Model.DemoModelNumber")}>
+                {t("ModelNumber")}
+                {sortConfig?.key === "ModelVariant.Model.DemoModelNumber" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("Barcode")}>
+                {t("Barcode")}
+                {sortConfig?.key === "Barcode" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("name")}>
+                {t("Name")}
+                {sortConfig?.key === "name" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("CollectionName")}>
+                {t("Collections")}
+                {sortConfig?.key === "CollectionName" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("OrderNumber")}>
+                {t("OrderNumber")}
+                {sortConfig?.key === "OrderNumber" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("TextileName")}>
+                {t("Textile")}
+                {sortConfig?.key === "TextileName" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("ModelVariant.Color.ColorName")}>
+                {t("Color")}
+                {sortConfig?.key === "ModelVariant.Color.ColorName" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("ModelVariant.Sizes")}>
+                {t("Sizes")}
+                {sortConfig?.key === "ModelVariant.Sizes" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("ModelVariant.Quantity")}>
+                {t("Quantity")}
+                {sortConfig?.key === "ModelVariant.Quantity" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("QuantityDelivered")}>
+                {t("QuantityDelivered")}
+                {sortConfig?.key === "QuantityDelivered" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
               {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
                 <>
-                  <TableHead>{t("PrevStage")}</TableHead>
-                  <TableHead>{t("CurrentStage")}</TableHead>
-                  <TableHead>{t("NextStage")}</TableHead>
-                  <TableHead>{t("StartTime")}</TableHead>
+              
+                  <TableHead onClick={() => requestSort("CurrentStage.Department.Name")}>
+                    {t("CurrentStage")}
+                    {sortConfig?.key === "CurrentStage.Department.Name" && (
+                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                    )}
+                  </TableHead>
+
+                  <TableHead onClick={() => requestSort("NextStage.Department.Name")}>
+                    {t("NextStage")}
+                    {sortConfig?.key === "NextStage.Department.Name" && (
+                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                    )}
+                  </TableHead>
+
+                  <TableHead onClick={() => requestSort("StartTime")}>
+                    {t("StartTime")}
+                    {sortConfig?.key === "StartTime" && (
+                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                    )}
+                  </TableHead>
                   <TableHead>{t("Action")}</TableHead>
                 </>
               ) : (
@@ -164,129 +286,86 @@ export default function AwaitingTable({
               )}
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {works?.awaiting?.length <= 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={user?.category !== "CUTTING" ? 6 : 5}
-                  className="h-24 text-center"
+            {sortedWorks.map((item) => {
+           const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
+              return (
+                <TableRow 
+                key={item.Id} 
+                style={isPaused ? { backgroundColor: "orange" } : {}}
                 >
-                  {t("NoResults")}
-                </TableCell>
-              </TableRow>
-            )}
-            {works?.awaiting?.length > 0 &&
-              works?.awaiting.map((item) => {
-                const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
+                  <TableCell>{item.ModelVariant?.Model?.DemoModelNumber || t("N/A")}</TableCell>
+                  <TableCell>{item.Barcode || t("N/A")}</TableCell>
+                  <TableCell>{item.name || t("N/A")}</TableCell>
+                  <TableCell>{item.CollectionName || t("N/A")}</TableCell>
+                  <TableCell>{item.OrderName || t("N/A")}</TableCell>
+                  <TableCell>{item.TextileName || t("N/A")}</TableCell>
+                  <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
+                  <TableCell>{JSON.parse(item.ModelVariant.Sizes)
+                        // .map((e: any) => e.label)
+                        .join(", ") || t("N/A")}</TableCell>
+                  <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
+                  <TableCell>{item.QuantityDelivered || t("N/A")}</TableCell>
+  
+                  {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
+                    renderAdminRow(item)
+                  ) : (
+                    renderUserRow(item)
+                  )}
+                </TableRow>
+              );
 
-                console.log("items", item);
-
-                return (
-                  <TableRow
-                    key={item.Id}
-                    style={isPaused ? { backgroundColor: "orange" } : {}}
-                  >
-                    <TableCell className="font-medium">
-                      {item.ModelVariant.Model.DemoModelNumber}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.Barcode}
-                    </TableCell>
-                    <TableCell className="font-medium">{item.name}</TableCell>
-                    <TableCell className="font-medium">
-                      {item.CollectionName}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.OrderNumber}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.TextileName}
-                    </TableCell>
-                    <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
-                    <TableCell>
-                      {JSON.parse(item.ModelVariant.Sizes)
-                        //.map((e: any) => e.label)
-                        .join(", ")}
-                    </TableCell>
-                    <TableCell>{item.ModelVariant.Quantity}</TableCell>
-                    {item?.QuantityInKg != null ? (
-                      <TableCell>
-                        {renderQuantity(item.QuantityInNum)}
-                      </TableCell>
-                    ) : (
-                      <TableCell>
-                        {renderQuantity(
-                          item.MainStatus === "CHECKING"
-                            ? item.QuantityDelivered
-                            : item.QuantityReceived
-                        )}
-                      </TableCell>
-                    )}
-                    {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                      ? renderAdminRow(item)
-                      : renderUserRow(item)}
-                  </TableRow>
-                );
-              })}
+            } )}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={() => {
-                if (page > 1) {
-                  setPage((prev) => ({
-                    ...prev,
-                    awaitingPage: prev.awaitingPage - 1,
-                  }));
-                }
-              }}
-              disabled={page == 1}
-              className="mr-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <Button
-              onClick={() => {
-                if (page < totalPages) {
-                  setPage((prev) => ({
-                    ...prev,
-                    awaitingPage: prev.awaitingPage + 1,
-                  }));
-                }
-              }}
-              disabled={page == totalPages}
-              className="mr-2"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-            <span className="text-sm text-gray-600 mr-2">
-              Page {page} of {totalPages}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Rows per page:</span>
-            <Select
-              value={size.toString()}
-              onValueChange={(value) =>
-                setSize((prev) => ({ ...prev, awaitingSize: Number(value) }))
-              }
-            >
-              <SelectTrigger className="w-20">
-                <SelectValue placeholder={size.toString()} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectScrollUpButton />
-                {[2, 5, 10, 20, 40, 50].map((s) => (
-                  <SelectItem key={s} value={s.toString()}>
-                    {s}
-                  </SelectItem>
-                ))}
-                <SelectScrollDownButton />
-              </SelectContent>
-            </Select>
-            {/* <span className="text-sm text-gray-600">Showing </span> */}
-          </div>
+      </div>
+      <div className="flex items-center justify-between py-4">
+        <div className="flex-1 flex items-center justify-start space-x-2">
+          <Button
+            onClick={() =>
+              setPage((prev) => ({
+                ...prev,
+                awaitingPage: Math.max(1, page - 1),
+              }))
+            }
+            disabled={page === 1}
+          >
+            <ChevronLeft />
+          </Button>
+          <span>{`${t("Page")} ${page} ${t("of")} ${totalPages}`}</span>
+          <Button
+            onClick={() =>
+              setPage((prev) => ({
+                ...prev,
+                awaitingPage: Math.min(totalPages, page + 1),
+              }))
+            }
+            disabled={page === totalPages}
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+        <div className="flex-1 flex items-center justify-end space-x-2">
+         <Select
+            value={size.toString()} 
+            onValueChange={(value) =>
+              setSize((prev) => ({ ...prev, awaitingSize: +value })) 
+            }
+          >
+
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder={t("Rows per page")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectScrollUpButton />
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
+              <SelectScrollDownButton />
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>

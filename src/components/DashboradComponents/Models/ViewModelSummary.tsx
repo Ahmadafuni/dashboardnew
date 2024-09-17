@@ -74,11 +74,10 @@ export default function ViewModelSummary() {
         </div>
       </div>
       <div className="grid grid-cols-6 gap-2 mt-2">
-        {summary?.modelInfo?.Images.split(",").map((i: any) => (
+        {summary?.modelInfo?.Images != null && summary?.modelInfo?.Images.split(",").map((i: any) => (
           // <img key={i} src={`https://dashboardbackendnew.onrender.com${i}`} />
           <img key={i} src={`${BASE_URL}${i}`} />
         ))}
-        
       </div>
       {summary?.cutting?.length > 0 && (
         <div className="grid grid-cols-1 gap-2 mt-2">

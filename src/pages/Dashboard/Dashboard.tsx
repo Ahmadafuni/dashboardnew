@@ -7,7 +7,7 @@ import PausingUnpausingReasoneModal from "@/components/DashboradComponents/Dashb
 import RejectVariantDialog from "@/components/DashboradComponents/Dashboard/RejectVariantDialog";
 import { Separator } from "@/components/ui/separator";
 import { getAllTracking, getAllWork } from "@/services/Dashboard.services";
-import { WorkType } from "@/types/Dashboard/Dashboard.types";
+import { Tracking, WorkType } from "@/types/Dashboard/Dashboard.types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AwaitingTable from "@/components/DashboradComponents/Dashboard/AwaitingTable.tsx";
@@ -15,6 +15,10 @@ import CompleteDialog from "@/components/DashboradComponents/Dashboard/CompleteD
 import { useRecoilValue } from "recoil";
 import { userInfo } from "@/store/authentication.ts";
 import Spinner from "@/components/common/Spinner";
+
+import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button.tsx";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -25,18 +29,28 @@ export default function Dashboard() {
     completed: [],
     givingConfirmation: [],
   });
-  const hasNullNextStage = (workList: any) => {
-    return workList.some(
-      (item: { NextStage: null }) => item.NextStage === null
-    );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [modelDetails, setModelDetails] = useState({
+    awaitingModels: 0,
+    awaitingQuantity: 0,
+    inProgressModels: 0,
+    inProgressQuantity: 0,
+    completedModels: 0,
+    completedQuantity: 0,
+    givingConfirmationModels: 0,
+    givingConfirmationQuantity: 0,
+  });
+
+  const openModal = () => {
+    setIsModalOpen(true);
   };
-  const hideConfirmationTable = !(
-    user?.userRole === "FACTORYMANAGER" ||
-    (!hasNullNextStage(works.awaiting) &&
-      !hasNullNextStage(works.inProgress) &&
-      !hasNullNextStage(works.completed) &&
-      !hasNullNextStage(works.givingConfirmation))
-  );
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
   const [pages, setPages] = useState({
@@ -57,10 +71,7 @@ export default function Dashboard() {
     totalPagesCompleted: 1,
     totalPagesGivingConfirmation: 1,
   });
-  
-  const [isLoading, setIsLoading] = useState(false);
-  
-  
+
   useEffect(() => {
     if (user?.userRole === "FACTORYMANAGER") {
       getAllTracking(pages, sizes, setWorks, setTotalPages, setIsLoading);
@@ -69,52 +80,138 @@ export default function Dashboard() {
     }
   }, [user, pages, sizes]);
 
+  useEffect(() => {
+    const calculateModelDetails = () => {
+      const getUniqueDemoModelCount = (workItems: Tracking[]) => {
+        const uniqueDemoModels = new Set();
+
+        workItems.forEach((item) => {
+          if (item.ModelVariant?.Model?.DemoModelNumber) {
+            uniqueDemoModels.add(item.ModelVariant.Model.DemoModelNumber);
+          }
+        });
+        return uniqueDemoModels.size;
+      };
+
+      const awaitingModels = getUniqueDemoModelCount(works.awaiting);
+      const awaitingQuantity = works.awaiting.reduce((total, item) => total + (Number(item.QuantityDelivered) || 0), 0);
+
+      const inProgressModels = getUniqueDemoModelCount(works.inProgress);
+      const inProgressQuantity = works.inProgress.reduce((total, item) => total + (Number(item.QuantityReceived) || 0), 0);
+
+      const completedModels = getUniqueDemoModelCount(works.completed);
+      const completedQuantity = works.completed.reduce((total, item) => total + (Number(item.ModelVariant.Quantity) || 0), 0);
+
+      const givingConfirmationModels = getUniqueDemoModelCount(works.givingConfirmation);
+      const givingConfirmationQuantity = works.givingConfirmation.reduce((total, item) => total + (Number(item.QuantityDelivered) || 0), 0);
+
+      // Update state with new model details
+      setModelDetails({
+        awaitingModels,
+        awaitingQuantity,
+        inProgressModels,
+        inProgressQuantity,
+        completedModels,
+        completedQuantity,
+        givingConfirmationModels,
+        givingConfirmationQuantity,
+      });
+    };
+
+    calculateModelDetails();
+  }, [works]);
+
+  const hasNullNextStage = (workList: any) => {
+    return workList.some((item: { NextStage: null }) => item.NextStage === null);
+  };
+
+  const hideConfirmationTable = !(
+    user?.userRole === "FACTORYMANAGER" ||
+    (!hasNullNextStage(works.awaiting) &&
+      !hasNullNextStage(works.inProgress) &&
+      !hasNullNextStage(works.completed) &&
+      !hasNullNextStage(works.givingConfirmation))
+  );
+
   return (
     <div className="w-full p-4 space-y-6">
       <PausingUnpausingReasoneModal
-        getAllWorks={() =>
-          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
-        }
+        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
       />
       <CuttingSendForConfirmationModal
-        getAllWorks={() =>
-          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
-        }
+        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
       />
       <OthersSendForConfirmation
-        getAllWorks={() =>
-          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
-        }
+        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <CompleteDialog
-        getAllWorks={() =>
-          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
-        }
+        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <RejectVariantDialog
-        getWorks={() =>
-          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
-        }
+        getWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
       />
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
-        <Separator />
+
+      <div className="w-full p-4 space-y-6">
+        <div className="space-y-2 flex justify-between items-center">
+          <h1 className="text-3xl font-bold">{t("Dashboard")}</h1>
+          <Button variant="outline" onClick={openModal}>
+            عرض تفاصيل الموديلات
+          </Button>
+        </div>
+
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-[600px] bg-gray-800">
+            <DialogHeader>
+              <h2 className="text-2xl font-semibold text-gray-100 mb-4">{t("ModelDetails")}</h2>
+            </DialogHeader>
+            <div className="overflow-x-auto">
+              <Table className="min-w-full border border-gray-600">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-gray-300">{"حالة العمل"}</TableHead>
+                    <TableHead className="text-gray-300">{"عدد الموديلات"}</TableHead>
+                    <TableHead className="text-gray-300">{"كمية المنتجات"}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow className="hover:bg-gray-700">
+                    <TableCell className="text-gray-300">{"جاهز للعمل"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.awaitingModels} {"موديل"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.awaitingQuantity} {"قطعة"}</TableCell>
+                  </TableRow>
+                  <TableRow className="hover:bg-gray-700">
+                    <TableCell className="text-gray-300">{"جار العمل"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.inProgressModels} {"موديل"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.inProgressQuantity} {"قطعة"}</TableCell>
+                  </TableRow>
+                  <TableRow className="hover:bg-gray-700">
+                    <TableCell className="text-gray-300">{"في انتظار التأكيد"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationModels} {"موديل"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationQuantity} {"قطعة"}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+            <DialogFooter className="mt-4">
+              <Button variant="outline" onClick={closeModal} className="bg-gray-600 text-gray-200 hover:bg-gray-500">
+                {t("Close")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
-      <div
-        id="datatable"
-        className="mt-10"
-        style={{
-          position: "relative",
-          top: "50%",
-        }}
-      >
+
+      <Separator />
+
+      <div id="datatable" className="mt-10" style={{ position: "relative", top: "50%" }}>
         {isLoading && <Spinner />}
       </div>
+
       <AwaitingTable
         page={pages.awaitingPage}
         setPage={setPages}

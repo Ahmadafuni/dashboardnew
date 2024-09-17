@@ -35,7 +35,7 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 
 interface Props {
   page: number;
@@ -56,6 +56,7 @@ interface Props {
       givingConfirmationSize: number;
     }>
   >;
+  
   totalPages: number;
   works: WorkType;
   setWorks: (data: any) => void;
@@ -75,6 +76,51 @@ export default function OngoingTable({
   setQuantityReceived,
 }: Props) {
   const { t } = useTranslation();
+
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
+
+  const sortedWorks = [...works.inProgress].sort((a, b) => {
+    if (sortConfig !== null) {
+      const keyParts = sortConfig.key.split('.'); 
+      const getValue = (obj: any, keyParts: string[]) => {
+        return keyParts.reduce((nestedObj, key) => {
+          return nestedObj && nestedObj[key] !== undefined ? nestedObj[key] : null;
+        }, obj);
+      };
+  
+      const aValue = getValue(a, keyParts);
+      const bValue = getValue(b, keyParts);
+  
+      if (aValue !== null && bValue !== null) {
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return sortConfig.direction === 'ascending'
+            ? aValue.toLowerCase().localeCompare(bValue.toLowerCase())
+            : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
+        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return sortConfig.direction === 'ascending' ? aValue - bValue : bValue - aValue;
+        } else {
+          return 0;
+        }
+      }
+  
+      if (aValue === null && bValue !== null) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (aValue !== null && bValue === null) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+  
+  const requestSort = (key: string) => {
+    let direction = "ascending";
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
 
   const renderQuantity = (quantity: any) => {
     console.log("quantity : ", quantity);
@@ -162,7 +208,6 @@ export default function OngoingTable({
 
   const renderAdminRow = (item: any) => (
     <>
-      <TableCell>{item.PrevStage?.Department?.Name || t("N/A")}</TableCell>
       <TableCell>{item.CurrentStage?.Department?.Name || t("N/A")}</TableCell>
       <TableCell>{item.NextStage?.Department?.Name || t("N/A")}</TableCell>
       <TableCell>
@@ -238,33 +283,112 @@ export default function OngoingTable({
         <Table className="min-w-full">
           <TableHeader>
             <TableRow>
-              <TableHead>{t("ModelNumber")}</TableHead>
-              <TableHead>{t("Barcode")}</TableHead>
-              <TableHead>{t("Name")}</TableHead>
-              <TableHead>{t("Collections")}</TableHead>
-              <TableHead>{t("OrderNumber")}</TableHead>
-              <TableHead>{t("Textile")}</TableHead>
-              <TableHead>{t("Color")}</TableHead>
-              <TableHead>{t("Size")}</TableHead>
-              <TableHead>{t("TargetQuantity")}</TableHead>
-              <TableHead>{t("ReceivedQuantity")}</TableHead>
+            <TableHead onClick={() => requestSort("ModelVariant.Model.DemoModelNumber")}>
+                {t("ModelNumber")}
+                {sortConfig?.key === "ModelVariant.Model.DemoModelNumber" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("Barcode")}>
+                {t("Barcode")}
+                {sortConfig?.key === "Barcode" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("name")}>
+                {t("Name")}
+                {sortConfig?.key === "name" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("CollectionName")}>
+                {t("Collections")}
+                {sortConfig?.key === "CollectionName" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("OrderNumber")}>
+                {t("OrderNumber")}
+                {sortConfig?.key === "OrderNumber" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("TextileName")}>
+                {t("Textile")}
+                {sortConfig?.key === "TextileName" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+              <TableHead onClick={() => requestSort("ModelVariant.Color.ColorName")}>
+                {t("Color")}
+                {sortConfig?.key === "ModelVariant.Color.ColorName" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+
+              <TableHead onClick={() => requestSort("ModelVariant.Sizes")}>
+                {t("Sizes")}
+                {sortConfig?.key === "ModelVariant.Sizes" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+
+              <TableHead onClick={() => requestSort("ModelVariant.Quantity")}>
+                {t("TargetQuantity")}
+                {sortConfig?.key === "ModelVariant.Quantity" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+
+              <TableHead onClick={() => requestSort("QuantityReceived")}>
+                {t("ReceivedQuantity")}
+                {sortConfig?.key === "QuantityReceived" && (
+                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                )}
+              </TableHead>
+
+              
               {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
                 <>
-                  <TableHead>{t("PrevStage")}</TableHead>
-                  <TableHead>{t("CurrentStage")}</TableHead>
-                  <TableHead>{t("NextStage")}</TableHead>
-                  <TableHead>{t("StartTime")}</TableHead>
+                  <TableHead onClick={() => requestSort("CurrentStage.Department.Name")}>
+                  {t("CurrentStage")}
+                  {sortConfig?.key === "CurrentStage.Department.Name" && (
+                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                  )}
+                </TableHead>
+
+                <TableHead onClick={() => requestSort("NextStage.Department.Name")}>
+                  {t("NextStage")}
+                  {sortConfig?.key === "NextStage.Department.Name" && (
+                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                  )}
+                </TableHead>
+
+                <TableHead onClick={() => requestSort("StartTime")}>
+                  {t("StartTime")}
+                  {sortConfig?.key === "StartTime" && (
+                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                  )}
+                </TableHead>
+
                   <TableHead>{t("Action")}</TableHead>
                 </>
               ) : (
                 <>
-                  <TableHead>{t("StartTime")}</TableHead>
+                  <TableHead onClick={() => requestSort("StartTime")}>
+                    {t("StartTime")}
+                    {sortConfig?.key === "StartTime" && (
+                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
+                    )}
+                  </TableHead>
                   <TableHead>{t("Action")}</TableHead>
                 </>
               )}
             </TableRow>
           </TableHeader>
           <TableBody>
+
+            
             {works.inProgress.length <= 0 && (
               <TableRow>
                 <TableCell
@@ -279,8 +403,8 @@ export default function OngoingTable({
                 </TableCell>
               </TableRow>
             )}
-            {works?.inProgress?.length > 0 &&
-              works?.inProgress.map((item) => {
+            {sortedWorks?.length > 0 &&
+              sortedWorks?.map((item) => {
                 const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
                 return (
                   <TableRow
@@ -288,29 +412,29 @@ export default function OngoingTable({
                     style={isPaused ? { backgroundColor: "orange" } : {}}
                   >
                     <TableCell className="font-medium">
-                      {item.ModelVariant.Model.DemoModelNumber}
+                      {item.ModelVariant.Model.DemoModelNumber || t("N/A")} 
                     </TableCell>
                     <TableCell className="font-medium">
-                      {item.Barcode}
+                      {item.Barcode || t("N/A")}
                     </TableCell>
-                    <TableCell className="font-medium">{item.name}</TableCell>
+                    <TableCell className="font-medium">{item.name || t("N/A")}</TableCell>
                     <TableCell className="font-medium">
-                      {item.CollectionName}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.OrderNumber}
+                      {item.CollectionName || t("N/A")}
                     </TableCell>
                     <TableCell className="font-medium">
-                      {item.TextileName}
+                      {item.OrderName || t("N/A")}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {item.TextileName || t("N/A")}
                     </TableCell>
 
-                    <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
+                    <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
                     <TableCell>
-                      {JSON.parse(item.ModelVariant.Sizes)
+                      {JSON.parse(item.ModelVariant.Sizes || t("N/A"))
                         // .map((e: any) => e.label)
                         .join(", ")}
                     </TableCell>
-                    <TableCell>{item.ModelVariant.Quantity}</TableCell>
+                    <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
                     <TableCell>
                       {renderQuantity(item.QuantityReceived)}
                     </TableCell>

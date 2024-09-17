@@ -18,12 +18,13 @@ type ModelVariant = {
   RunningStatus?: string;
 };
 
-type Tracking = {
+export type Tracking = {
   Id: number;
   name: string;
   Barcode: string;
   CollectionName: string;
   OrderNumber: string;
+  OrderName: string;
   TextileName: string;
   Notes: string | null;
   ModelVariant: ModelVariant;
