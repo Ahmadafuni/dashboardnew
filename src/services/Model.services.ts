@@ -204,14 +204,23 @@ export const filterModels = async (
 
 export const filterProductionModels = async (
   setData: Dispatch<SetStateAction<any>>,
-  searchParams: any
+  searchParams: any,
+  pages: number,
+  sizes: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    const response = await axios.post("model/search", searchParams, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get("access_token")}`,
-      },
-    });
+    setIsLoading && setIsLoading(true);
+    const response = await axios.post(
+      "model/search",
+      { ...searchParams, page: pages, size: sizes },
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      }
+    );
     const responseData: ReportsType = response.data;
     console.log("responseData : ", responseData);
 
@@ -240,6 +249,8 @@ export const filterProductionModels = async (
     );
 
     setData(reports);
+    setTotalPages && setTotalPages(responseData.totalPages);
+    setIsLoading && setIsLoading(false);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
     throw error;
@@ -247,14 +258,26 @@ export const filterProductionModels = async (
 };
 export const filterOrderModels = async (
   setData: Dispatch<SetStateAction<any>>,
-  searchParams: any
+  searchParams: any,
+  pages: number,
+  sizes: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    const response = await axios.post("model/search", searchParams, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get("access_token")}`,
-      },
-    });
+    setIsLoading && setIsLoading(true);
+
+    const response = await axios.post(
+      "model/search",
+
+      { ...searchParams, page: pages, size: sizes },
+
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      }
+    );
     const responseData: ReportsType = response.data;
 
     const reports = responseData.data.flatMap((item) =>
@@ -262,10 +285,8 @@ export const filterOrderModels = async (
         return {
           modelNumber: item.DemoModelNumber,
           barcode: item.Barcode,
-          //
           collection: item.CollectionName,
           order: item.OrderName,
-          //
           name:
             item.ProductCatalog +
             "-" +
@@ -280,13 +301,16 @@ export const filterOrderModels = async (
             .join(" , "),
 
           currentStage: detail.Quantity.StageName,
-          //
+
           modelStatus: item.ModelStatus,
         };
       })
     );
 
     setData(reports);
+    setTotalPages && setTotalPages(responseData.totalPages);
+
+    setIsLoading && setIsLoading(false);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
     throw error;

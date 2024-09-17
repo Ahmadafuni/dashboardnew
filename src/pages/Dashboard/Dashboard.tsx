@@ -38,7 +38,8 @@ export default function Dashboard() {
       !hasNullNextStage(works.givingConfirmation))
   );
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
+  const [quantityReceived, setQuantityReceived] = useState<any[]>([]);
+
   const [pages, setPages] = useState({
     awaitingPage: 1,
     inProgressPage: 1,
@@ -57,7 +58,6 @@ export default function Dashboard() {
     totalPagesCompleted: 1,
     totalPagesGivingConfirmation: 1,
   });
-
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

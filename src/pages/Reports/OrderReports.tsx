@@ -34,6 +34,9 @@ export default function OrderReports() {
   const { t } = useTranslation();
   const form = useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
@@ -75,7 +78,15 @@ export default function OrderReports() {
   });
   async function fetchData(withModels: boolean) {
     try {
-      withModels && (await filterOrderModels(setReports, {}));
+      withModels &&
+        (await filterOrderModels(
+          setReports,
+          {},
+          pages,
+          sizes,
+          setTotalPages,
+          setIsLoading
+        ));
       const data = await getAllDropdownOptions();
       setDepartmentList(data.departments);
       setProductCatalogueList(data.productCatalogues);
@@ -177,7 +188,14 @@ export default function OrderReports() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      await filterOrderModels(setReports, data);
+      await filterOrderModels(
+        setReports,
+        data,
+        pages,
+        sizes,
+        setTotalPages,
+        setIsLoading
+      );
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -525,7 +543,15 @@ export default function OrderReports() {
         </form>
       </Form>
       <div id="datatable" className="mt-10" ref={printRef}>
-        <DataTable columns={reportsColumns} data={reports} />
+        <DataTable
+          columns={reportsColumns}
+          data={reports}
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

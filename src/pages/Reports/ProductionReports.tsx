@@ -33,6 +33,9 @@ import { useReactToPrint } from "react-to-print";
 export default function ProductionReports() {
   const { t } = useTranslation();
   const form = useForm();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
@@ -75,7 +78,15 @@ export default function ProductionReports() {
   });
   async function fetchData(withModels: boolean) {
     try {
-      withModels && (await filterProductionModels(setReports, {}));
+      withModels &&
+        (await filterProductionModels(
+          setReports,
+          {},
+          pages,
+          sizes,
+          setTotalPages,
+          setIsLoading
+        ));
       const data = await getAllDropdownOptions();
       setDepartmentList(data.departments);
       setProductCatalogueList(data.productCatalogues);
@@ -177,7 +188,14 @@ export default function ProductionReports() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      await filterProductionModels(setReports, data);
+      await filterProductionModels(
+        setReports,
+        data,
+        pages,
+        sizes,
+        setTotalPages,
+        setIsLoading
+      );
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -523,7 +541,15 @@ export default function ProductionReports() {
         </form>
       </Form>
       <div id="datatable" className="mt-10" ref={printRef}>
-        <DataTable columns={reportsColumns} data={reports} />
+        <DataTable
+          columns={reportsColumns}
+          data={reports}
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );
