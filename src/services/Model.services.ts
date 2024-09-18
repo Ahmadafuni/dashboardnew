@@ -211,51 +211,63 @@ export const filterProductionModels = async (
   setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    setIsLoading && setIsLoading(true);
+    if (setIsLoading) setIsLoading(true);
+
     const response = await axios.post(
       "model/search",
-      { ...searchParams, page: pages, size: sizes },
+      { ...searchParams },
       {
+        params: {
+          page: pages,
+          size: sizes,
+        },
         headers: {
           Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
       }
     );
+
     const responseData: ReportsType = response.data;
-    console.log("responseData : ", responseData);
 
-    const reports = responseData.data.flatMap((item) =>
-      item.Details.map((detail) => {
-        return {
-          modelNumber: item.DemoModelNumber,
-          barcode: item.Barcode,
-          name:
-            item.ProductCatalog +
-            "-" +
-            item.CategoryOne +
-            "-" +
-            item.CategoryTwo,
-          textile: item.Textiles,
-          colors: detail.Color,
-          sizes: JSON.parse(detail.Sizes),
-          currentStage: detail.Quantity.StageName,
-          quantities: Object.entries(detail.Quantity.QuantityDelivered)
-            .map(([key, value]) => `${key} : ${value}`)
-            .join(" , "),
+    const reports = Array.isArray(responseData.data)
+      ? responseData.data.flatMap((item) =>
+          item.Details.map((detail) => {
+            console.log(detail);
 
-          duration: item.TotalDurationInDays,
-        };
-      })
-    );
+            return {
+              modelNumber: item.DemoModelNumber,
+              barcode: item.Barcode,
+              name:
+                item.ProductCatalog +
+                "-" +
+                item.CategoryOne +
+                "-" +
+                item.CategoryTwo,
+              textile: item.Textiles,
+              colors: detail.Color,
+              sizes: JSON.parse(detail.Sizes).map(
+                (size: { size: string; value: string }) =>
+                  size.size + " : " + size.value
+              ),
+              currentStage: detail.Quantity.StageName,
+              quantities: Object.entries(detail.Quantity.QuantityDelivered)
+                .map(([key, value]) => `${key} : ${value}`)
+                .join(" , "),
+              duration: item.TotalDurationInDays,
+            };
+          })
+        )
+      : [];
 
     setData(reports);
-    setTotalPages && setTotalPages(responseData.totalPages);
-    setIsLoading && setIsLoading(false);
+    if (setTotalPages) setTotalPages(responseData.totalPages);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
-    throw error;
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
+
 export const filterOrderModels = async (
   setData: Dispatch<SetStateAction<any>>,
   searchParams: any,

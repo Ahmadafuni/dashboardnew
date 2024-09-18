@@ -57,6 +57,8 @@ export default function DataTable<TData, TValue>({
   setSize,
   totalPages,
 }: DataTableProps<TData, TValue>) {
+  console.log("Size is :  ", size);
+
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState([]);
 
@@ -66,6 +68,10 @@ export default function DataTable<TData, TValue>({
     state: {
       globalFilter,
       sorting,
+      pagination: {
+        pageIndex: page ? page - 1 : 0, // Convert to 0-based index
+        pageSize: size || 10,
+      },
     },
     onGlobalFilterChange: setGlobalFilter,
     // @ts-ignore
@@ -74,6 +80,14 @@ export default function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    onPaginationChange: (updater) => {
+      const newState =
+        typeof updater === "function"
+          ? updater(table.getState().pagination)
+          : updater;
+      setPage && setPage(newState.pageIndex + 1); // Convert back to 1-based page
+      setSize && setSize(newState.pageSize);
+    },
   });
 
   const exportToExcel = () => {
@@ -96,9 +110,6 @@ export default function DataTable<TData, TValue>({
     XLSX.writeFile(wb, filename);
   };
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -235,8 +246,11 @@ export default function DataTable<TData, TValue>({
               table.getState().pagination.pageSize +
               1}
             -
-            {(table.getState().pagination.pageIndex + 1) *
-              table.getState().pagination.pageSize}{" "}
+            {Math.min(
+              (table.getState().pagination.pageIndex + 1) *
+                table.getState().pagination.pageSize,
+              table.getFilteredRowModel().rows.length
+            )}{" "}
             of {table.getFilteredRowModel().rows.length}
           </span>
         </div>

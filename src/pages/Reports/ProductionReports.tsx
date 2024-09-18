@@ -76,6 +76,7 @@ export default function ProductionReports() {
       .toLocaleString()
       .replace(/[/,: ]/g, "_")}`,
   });
+
   async function fetchData(withModels: boolean) {
     try {
       withModels &&
@@ -104,17 +105,18 @@ export default function ProductionReports() {
 
   useEffect(() => {
     fetchData(false);
-  }, [
-    setDepartmentList,
-    setProductCatalogueList,
-    setProductCategoryOneList,
-    setProductCategoryTwoList,
-    setTemplatePatternList,
-    setTemplateTypeList,
-    setTextileList,
-    setOrderList,
-    setModelList,
-  ]);
+  }, []);
+
+  useEffect(() => {
+    filterProductionModels(
+      setReports,
+      {},
+      pages,
+      sizes,
+      setTotalPages,
+      setIsLoading
+    );
+  }, [pages, sizes]);
 
   const departmentsNamesOptions = useRecoilValue(departmentList);
   const productCatalogueOptions = useRecoilValue(productCatalogueList);
