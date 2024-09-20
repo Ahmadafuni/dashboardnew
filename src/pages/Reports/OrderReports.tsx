@@ -104,17 +104,18 @@ export default function OrderReports() {
 
   useEffect(() => {
     fetchData(false);
-  }, [
-    setDepartmentList,
-    setProductCatalogueList,
-    setProductCategoryOneList,
-    setProductCategoryTwoList,
-    setTemplatePatternList,
-    setTemplateTypeList,
-    setTextileList,
-    setOrderList,
-    setModelList,
-  ]);
+  }, []);
+
+  useEffect(() => {
+    filterOrderModels(
+      setReports,
+      {},
+      pages,
+      sizes,
+      setTotalPages,
+      setIsLoading
+    );
+  }, [pages, sizes]);
 
   const departmentsNamesOptions = useRecoilValue(departmentList);
   const productCatalogueOptions = useRecoilValue(productCatalogueList);
@@ -186,7 +187,6 @@ export default function OrderReports() {
   });
 
   const onSubmit = async (data: any) => {
-    setIsLoading(true);
     try {
       await filterOrderModels(
         setReports,
@@ -202,7 +202,6 @@ export default function OrderReports() {
       }
       console.error("Failed to fetch data:", error);
     }
-    setIsLoading(false);
   };
 
   const handleReset = () => {

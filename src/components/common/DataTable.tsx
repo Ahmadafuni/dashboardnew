@@ -57,7 +57,6 @@ export default function DataTable<TData, TValue>({
   setSize,
   totalPages,
 }: DataTableProps<TData, TValue>) {
-  console.log("Size is :  ", size);
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState([]);

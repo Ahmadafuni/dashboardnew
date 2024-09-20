@@ -179,7 +179,6 @@ export default function AwaitingTable({
               works?.awaiting.map((item) => {
                 const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
 
-                console.log("items", item);
 
                 return (
                   <TableRow

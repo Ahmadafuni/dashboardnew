@@ -184,7 +184,10 @@ export const filterModels = async (
           productCategoryTwo: index === 0 ? item.CategoryTwo : "",
           textiles: index === 0 ? item.Textiles : "",
           detailColor: detail.Color,
-          detailSize: JSON.parse(detail.Sizes),
+          sizes: JSON.parse(detail.Sizes).map(
+            (size: { size: string; value: string }) =>
+              size.size + " : " + size.value
+          ),
           currentStage: detail.Quantity.StageName,
           detailQuantity: Object.entries(detail.Quantity.QuantityDelivered)
             .map(([key, value]) => `${key} : ${value}`)
@@ -232,8 +235,6 @@ export const filterProductionModels = async (
     const reports = Array.isArray(responseData.data)
       ? responseData.data.flatMap((item) =>
           item.Details.map((detail) => {
-            console.log(detail);
-
             return {
               modelNumber: item.DemoModelNumber,
               barcode: item.Barcode,
@@ -250,9 +251,14 @@ export const filterProductionModels = async (
                   size.size + " : " + size.value
               ),
               currentStage: detail.Quantity.StageName,
-              quantities: Object.entries(detail.Quantity.QuantityDelivered)
-                .map(([key, value]) => `${key} : ${value}`)
-                .join(" , "),
+              quantities: detail.Quantity.QuantityDelivered
+                ? // @ts-ignore
+                  detail.Quantity.QuantityDelivered.map(
+                    (size: { size: string; value: string }) =>
+                      `${size.size} : ${size.value}`
+                  ).join(" , ")
+                : [],
+
               duration: item.TotalDurationInDays,
             };
           })
@@ -281,15 +287,18 @@ export const filterOrderModels = async (
 
     const response = await axios.post(
       "model/search",
-
-      { ...searchParams, page: pages, size: sizes },
-
+      { ...searchParams },
       {
+        params: {
+          page: pages,
+          size: sizes,
+        },
         headers: {
           Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
       }
     );
+
     const responseData: ReportsType = response.data;
 
     const reports = responseData.data.flatMap((item) =>
@@ -307,21 +316,26 @@ export const filterOrderModels = async (
             item.CategoryTwo,
           textile: item.Textiles,
           colors: detail.Color,
-          sizes: JSON.parse(detail.Sizes),
-          quantities: Object.entries(detail.Quantity.QuantityDelivered)
-            .map(([key, value]) => `${key} : ${value}`)
-            .join(" , "),
-
+          sizes: JSON.parse(detail.Sizes).map(
+            (size: { size: string; value: string }) =>
+              size.size + " : " + size.value
+          ),
+          quantities: detail.Quantity.QuantityDelivered
+            ? // @ts-ignore
+              detail.Quantity.QuantityDelivered.map(
+                (size: { size: string; value: string }) =>
+                  `${size.size} : ${size.value}`
+              ).join(" , ")
+            : [],
           currentStage: detail.Quantity.StageName,
-
           modelStatus: item.ModelStatus,
         };
       })
     );
 
+    console.log(reports);
     setData(reports);
     setTotalPages && setTotalPages(responseData.totalPages);
-
     setIsLoading && setIsLoading(false);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
