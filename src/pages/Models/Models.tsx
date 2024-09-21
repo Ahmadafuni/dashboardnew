@@ -62,8 +62,11 @@ export default function Models() {
       },
     },
     {
-      accessorKey: "ModelName",
+      // accessorKey: "ModelName",
       header: t("ModelName"),
+      cell: ({ row }) => {
+        return <p>{`${row.original.ProductCatalog.ProductCatalogName} - ${row.original.CategoryOne.CategoryName} - ${row.original.categoryTwo.CategoryName} - ${row.original.Template.TemplateName}`}</p>;
+      },
     },
     {
       accessorKey: "Barcode",

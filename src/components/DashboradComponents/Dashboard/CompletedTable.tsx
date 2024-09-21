@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/select";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect , useState } from "react";
+import axios from "axios";
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 
 interface Props {
   page: number;
@@ -60,7 +62,22 @@ export default function CompletedTable({
   const userRole = user?.userRole;
   const { t } = useTranslation();
 
+  const [summaryData, setSummaryData] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
+
+
+  const fetchSummary = async (modelVariantId: number) => {
+    try {
+      const response = await axios.get(`/model/testModel/${modelVariantId}`);
+      setSummaryData(response.data);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Failed to fetch summary", error);
+    } finally {
+    }
+  };
 
   const sortedWorks = [...works.completed].sort((a, b) => {
     if (sortConfig !== null) {
@@ -116,6 +133,7 @@ export default function CompletedTable({
     }
     return quantity;
   };
+  
   const calculateDuration = (start: Date, end: Date) => {
     const days = differenceInDays(end, start);
     const hours = differenceInHours(end, start) % 24;
@@ -130,17 +148,23 @@ export default function CompletedTable({
           : t("NA")}
       </TableCell>
       <TableCell>
-        <Button
-          variant="secondary"
-          onClick={() =>
-            window.open(
-              `/models/viewdetails/${item.ModelVariant.Model.Id}`,
-              "_blank"
-            )
-          }
-        >
-          {t("Details")}
-        </Button>
+            <div className="flex space-x-2">
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  window.open(`/models/viewdetails/${item.ModelVariant.Model.Id}`, "_blank")
+                }
+              >
+                {t("Details")}
+              </Button>
+
+              <Button
+                variant="secondary"
+                onClick={() => fetchSummary(item.ModelVariant.Id)}
+              >
+                {t("Summary")}
+              </Button>
+           </div>
       </TableCell>
     </>
   );
@@ -176,8 +200,14 @@ export default function CompletedTable({
     </>
   );
   useEffect(() => {
-    console.log("works : ", works);
+
   }, [works]);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSummaryData(null);
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-bold">{t("Completed")}</h2>
@@ -321,6 +351,55 @@ export default function CompletedTable({
               ))}
           </TableBody>
         </Table>
+
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-[600px] bg-gray-800">
+            <DialogHeader>
+              <h2 className="text-2xl font-semibold text-gray-100 mb-4">
+                {t("Stage Summary")}
+              </h2>
+            </DialogHeader>
+            <div className="overflow-x-auto">
+              <Table className="min-w-full border border-gray-600">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-gray-300">{t("Stage Name")}</TableHead>
+                    <TableHead className="text-gray-300">{t("Start Time")}</TableHead>
+                    <TableHead className="text-gray-300">{t("End Time")}</TableHead>
+                    <TableHead className="text-gray-300">{t("Duration (hours)")}</TableHead>
+                    <TableHead className="text-gray-300">{t("Quantity Received")}</TableHead>
+                    <TableHead className="text-gray-300">{t("Quantity Delivered")}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {summaryData?.stages.map((stage: any, index: number) => (
+                    <TableRow key={index} className="hover:bg-gray-700">
+                      <TableCell className="text-gray-300">{stage.stageName}</TableCell>
+                      <TableCell className="text-gray-300">{new Date(stage.startTime).toLocaleString()}</TableCell>
+                      <TableCell className="text-gray-300">{new Date(stage.endTime).toLocaleString()}</TableCell>
+                      <TableCell className="text-gray-300">{stage.duration}</TableCell>
+                      <TableCell className="text-gray-300">
+                        {renderQuantity(stage.quantityReceived)}
+                      </TableCell>
+                      <TableCell className="text-gray-300">
+                        {renderQuantity(stage.quantityDelivered)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            <DialogFooter className="mt-4">
+              <Button
+                variant="outline"
+                onClick={closeModal}
+                className="bg-gray-600 text-gray-200 hover:bg-gray-500"
+              >
+                {t("Close")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-2">

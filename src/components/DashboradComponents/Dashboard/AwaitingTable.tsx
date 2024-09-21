@@ -130,15 +130,7 @@ export default function AwaitingTable({
           : t("N/A")}
       </TableCell>
       <TableCell>
-      <div className="flex">
-      <Button
-          variant="secondary"
-          onClick={()=>{}}
-        >
-          {t("Summary")}
-        </Button>
-
-
+     
         <Button
           variant="secondary"
           onClick={() =>
@@ -151,7 +143,6 @@ export default function AwaitingTable({
           {t("Details")}
         </Button>
 
-      </div>
       </TableCell>
     </>
   );
@@ -358,12 +349,13 @@ export default function AwaitingTable({
               <SelectValue placeholder={t("Rows per page")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectScrollUpButton />
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-              <SelectItem value="100">100</SelectItem>
-              <SelectScrollDownButton />
+            <SelectScrollUpButton />
+                {[2, 5, 10, 20, 40, 50, 100].map((s) => (
+                  <SelectItem key={s} value={s.toString()}>
+                    {s}
+                  </SelectItem>
+                ))}
+                <SelectScrollDownButton />
             </SelectContent>
           </Select>
         </div>

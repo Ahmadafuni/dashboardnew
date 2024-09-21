@@ -43,7 +43,7 @@ export const getAllWork = async (
   }
 };
 
-export const getAllTracking = async (
+export const getAllTracking= async (
   pages: {
     awaitingPage: number;
     inProgressPage: number;
@@ -71,8 +71,8 @@ export const getAllTracking = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log(data.data);
-
+  
+    console.log("works" , data.data);
     setData(data.data);
     setTotalPages && setTotalPages(data.totalPages);
     setIsLoading && setIsLoading(false);
@@ -82,6 +82,61 @@ export const getAllTracking = async (
     }
   }
 };
+
+
+export const getModelDetailsDepartment = async (
+    depId: any,
+    setData: Dispatch<SetStateAction<any>>,
+    setIsLoading?: Dispatch<SetStateAction<boolean>>  
+
+) => {
+
+  try {
+    setIsLoading && setIsLoading(true);
+    const { data } = await axios.get("trackingmodels/model/details/dept", {
+      params: {
+        depId
+      },
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+    setIsLoading && setIsLoading(false);
+    console.log("ModelDetailsDept" , data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
+
+export const getModelDetailsManager = async (
+  setData: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>  
+
+) => {
+
+try {
+  setIsLoading && setIsLoading(true);
+  const { data } = await axios.get("trackingmodels/model/details/mang", {
+    
+    headers: {
+      Authorization: `bearer ${Cookies.get("access_token")}`,
+    },
+  });
+  setData(data.data);
+  setIsLoading && setIsLoading(false);
+  console.log("ModelDetailsMang" , data.data);
+} catch (error) {
+  if (error instanceof AxiosError) {
+    toast.error(error.response?.data.message);
+  }
+}
+};
+
+
 export const startVariant = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number

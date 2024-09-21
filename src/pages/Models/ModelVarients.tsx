@@ -58,7 +58,7 @@ export default function ModelVarients() {
                             );
                         }}
                     >
-                        {row.original.Sizes.join(", ")}
+                        {row.original.Sizes.map((si)=> si.label).join(",")}
                     </Button>
                 );
             },
@@ -127,6 +127,7 @@ export default function ModelVarients() {
     useEffect(() => {
         getAllModelVarients(setModelVarients, id);
     }, []);
+
     return (
         <div className="w-full space-y-2">
             <NewModelVarientDialog

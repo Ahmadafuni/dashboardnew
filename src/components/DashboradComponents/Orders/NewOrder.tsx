@@ -23,7 +23,7 @@ import NewCollection from "@/components/DashboradComponents/Entities/Collections
 import { CollectionList } from "@/store/Collection.ts";
 import { getAllCollectionsList } from "@/services/Collection.services.ts";
 
-import { templateList } from "@/store/Template";
+import {  templateList } from "@/store/Template";
 import { textileList } from "@/store/Textiles";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
@@ -36,6 +36,8 @@ import { getAllTextilesList } from "@/services/Textiles.services";
 import * as XLSX from "xlsx";
 // import { useSearchParams } from "react-router-dom";
 import { getAllTemplatesList } from "@/services/Templates.services.ts";
+import { getAllColors } from "@/services/Colors.services.ts";
+import { ColorType } from "@/types/Entities/Color.types.ts";
 
 type Props = {
   getAllOrders: any;
@@ -47,6 +49,8 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const { t } = useTranslation();
   const setCollectionList = useSetRecoilState(CollectionList);
   const [xslModels, setXslModels] = useState<any[]>([]);
+
+  const [colors , setColors] = useState<ColorType[]>([]);
 
   // lists
   // let [searchParams, setSearchParams] = useSearchParams();
@@ -76,20 +80,13 @@ const NewOrder = ({ getAllOrders }: Props) => {
       "رقم القالب": "templateId",
       "مراحل العمل": "Stages",
       "القياس": "scale",
-      "ابيض": "White",
-      "اسود": "black",
-      "زيتي": "oil",
-      "سكري ": "drunken",
-      "فضي مونس": "SilverMons",
-      "ريشي": "feathery",
-      "حديدي": "iron",
-      "كحلي": "navyBlue",
     };
 
     return data.map((record: any) => {
       let renamedRecord: any = {};
       Object.keys(record).forEach((key) => {
         const newKey = fieldNamesMap[key]?.replace(/\s+/g, "") || key.replace(/\s+/g, "");
+
         renamedRecord[newKey] = record[key];
       });
       return renamedRecord;
@@ -98,11 +95,13 @@ const NewOrder = ({ getAllOrders }: Props) => {
 
 
   type Model = {
+    ModelNumber: string;
     CategoryOne: string;
     CategoryTwo: string;
     ProductName: string;
     Textiles: string;
     templateId: string;
+   
   };
 
   const replaceNamesWithIds = (
@@ -121,28 +120,28 @@ const NewOrder = ({ getAllOrders }: Props) => {
       if (categoryOne) {
         model.CategoryOne = categoryOne.value;
       } else {
-        errors.push(`الصنف  غير موجود لـ ${model.CategoryOne}`);
+        errors.push(`الصنف  غير موجود لـ ${model.CategoryOne} للموديل '${model.ModelNumber}'....`);
       }
 
       const categoryTwo = categoryTwoList.find((item) => item.label === model.CategoryTwo);
       if (categoryTwo) {
         model.CategoryTwo = categoryTwo.value;
       } else {
-        errors.push(`الفئة غير موجود لـ ${model.CategoryTwo}`);
+        errors.push(`الفئة غير موجود لـ ${model.CategoryTwo} للموديل '${model.ModelNumber}'....`);
       }
 
       const product = CatalogueList.find((item) => item.label === model.ProductName);
       if (product) {
         model.ProductName = product.value;
       } else {
-        errors.push(`الزمرة غير موجود لـ ${model.ProductName}`);
+        errors.push(`الزمرة غير موجود لـ ${model.ProductName} للموديل '${model.ModelNumber}'....`);
       }
 
       const textile = textilesList.find((item) => item.label === model.Textiles);
       if (textile) {
         model.Textiles = textile.value;
       } else {
-        errors.push(`القماش غير موجود لـ ${model.Textiles}`);
+        errors.push(`القماش غير موجود لـ ${model.Textiles} للموديل '${model.ModelNumber}'....`);
       }
 
       return model;
@@ -153,7 +152,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
       toast.error(errorMessage);
       return null;
     }
-
     return updatedModels;
   };
 
@@ -185,13 +183,12 @@ const NewOrder = ({ getAllOrders }: Props) => {
       }
 
       setXslModels(updatedJsonData);
+
+      console.log("xslModels" , xslModels);
     };
 
     reader.readAsArrayBuffer(file);
   };
-
-
-
 
 
   const form = useForm<z.infer<typeof OrderSchema>>({
@@ -205,54 +202,34 @@ const NewOrder = ({ getAllOrders }: Props) => {
     },
   });
 
-  const colorNamesMap: { [key: string]: string } = {
-    "White": "أبيض",
-    "black": "أسود",
-    "oil": "زيتي",
-    "drunken": "سكري",
-    "SilverMons": "فضي مونس",
-    "feathery": "ريشي",
-    "iron": "حديدي",
-    "navyBlue": "كحلي",
-  };
-
   const checkModelsDistribution = (models: any[]) => {
     let isValid = true;
     const errors: string[] = [];
-
+    console.log("test");
     models.forEach((model) => {
       const scales = model.scale ? model.scale.split('-') : [];
-
-      // تحقق من كل لون في السجل
-      const colors = [
-        "White",
-        "black",
-        "oil",
-        "drunken",
-        "SilverMons",
-        "feathery",
-        "iron",
-        "navyBlue",
-      ];
-
-      colors.forEach((color) => {
+  
+      const arrColors = colors.map((colorObj) => colorObj.ColorName);
+  
+      arrColors?.forEach((color) => {
         if (model[color]) {
           const quantity = model[color];
           if (scales.length > 0) {
             const quantityPerScale = quantity / scales.length;
             if (!Number.isInteger(quantityPerScale)) {
-              const arabicColorName = colorNamesMap[color] || color;
-              errors.push(`عدد الموديلات (${quantity}) للون "${arabicColorName}" لا يمكن تقسيمه على عدد القياسات (${scales.length}).`);
+              errors.push(
+                `عدد الموديلات (${quantity}) للون "${color}" لا يمكن تقسيمه على عدد القياسات (${scales.length}) للموديل "${model.ModelNumber}" .... \n`
+              );
               isValid = false;
             }
           }
         }
       });
     });
-
+  
     return { isValid, errors };
   };
-
+  
 
 
   const onSubmit = async (data: z.infer<typeof OrderSchema>) => {
@@ -269,11 +246,35 @@ const NewOrder = ({ getAllOrders }: Props) => {
 
       if (xslModels.length > 0) {
         const { isValid, errors: distributionErrors } = checkModelsDistribution(xslModels);
-
         if (!isValid) {
           errors.push(...distributionErrors);
         }
 
+        const allKeys = new Set<string>();
+
+        xslModels.forEach((model) => {
+          Object.keys(model).forEach((key) => allKeys.add(key));
+        });
+        
+        const keys = Array.from(allKeys);
+
+
+      const firstColorIndex = keys.findIndex((key) => key === "أسود");
+
+      if (firstColorIndex !== -1) {
+        const colorFields = keys.slice(firstColorIndex);
+
+        const arrColors = colors.map((colorObj) => colorObj.ColorName);
+
+        colorFields.forEach((color) => {
+          if (!arrColors.includes(color)) {
+            errors.push(`اللون "${color}" الموجود في ملف الاكسل غير موجود في النظام.`);
+          }
+        });
+      } else {
+        errors.push("لم يتم العثور على حقل اللون 'أسود' في البيانات.");
+      }
+      
         const invalidModels = xslModels.filter((model) => !model.ModelNumber);
 
         if (invalidModels.length > 0) {
@@ -307,11 +308,8 @@ const NewOrder = ({ getAllOrders }: Props) => {
             Authorization: `bearer ${Cookies.get("access_token")}`,
           },
         });
-
         const orderId = newOrder.data.data.Id;
-
         toast.success(newOrder.data.message);
-
         const payload = {
           Models: xslModels,
         };
@@ -357,9 +355,11 @@ const NewOrder = ({ getAllOrders }: Props) => {
     getAllTextilesList(setTextile);
     getAllTemplatesList(setTemplates);
 
+    getAllColors(setColors);
+
+    console.log("color" , colors);
 
   }, []);
-
 
 
   return (

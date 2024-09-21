@@ -6,8 +6,8 @@ import OthersSendForConfirmation from "@/components/DashboradComponents/Dashboar
 import PausingUnpausingReasoneModal from "@/components/DashboradComponents/Dashboard/PausingUnpausingReasoneModal";
 import RejectVariantDialog from "@/components/DashboradComponents/Dashboard/RejectVariantDialog";
 import { Separator } from "@/components/ui/separator";
-import { getAllTracking, getAllWork } from "@/services/Dashboard.services";
-import { Tracking, WorkType } from "@/types/Dashboard/Dashboard.types";
+import {  getAllTracking , getAllWork, getModelDetailsDepartment, getModelDetailsManager } from "@/services/Dashboard.services";
+import {  WorkType } from "@/types/Dashboard/Dashboard.types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AwaitingTable from "@/components/DashboradComponents/Dashboard/AwaitingTable.tsx";
@@ -29,18 +29,24 @@ export default function Dashboard() {
     completed: [],
     givingConfirmation: [],
   });
+
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const [modelDetails, setModelDetails] = useState({
-    awaitingModels: 0,
-    awaitingQuantity: 0,
-    inProgressModels: 0,
-    inProgressQuantity: 0,
-    completedModels: 0,
-    completedQuantity: 0,
-    givingConfirmationModels: 0,
-    givingConfirmationQuantity: 0,
+    awaitingModels:0,
+    awaitingDeliveredQuantity:0,
+    awaitingReceivedQuantity:0,
+    inProgressModels:0,
+    inProgressDeliveredQuantity:0,
+    inProgressReceivedQuantity:0,
+    completedModels:0,
+    completedDeliveredQuantity:0,
+    completedReceivedQuantity:0,
+    givingConfirmationModels:0,
+    givingConfirmationDeliveredQuantity:0,
+    givingConfirmationReceivedQuantity:0
   });
 
   const openModal = () => {
@@ -75,52 +81,18 @@ export default function Dashboard() {
   useEffect(() => {
     if (user?.userRole === "FACTORYMANAGER") {
       getAllTracking(pages, sizes, setWorks, setTotalPages, setIsLoading);
+      getModelDetailsManager(setModelDetails , setIsLoading);
     } else {
       getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading);
+      getModelDetailsDepartment(user?.userDepartmentId ,  setModelDetails , setIsLoading);
     }
+
+    console.log("works" , works);
+    console.log("ModelDetails" , modelDetails);
+
   }, [user, pages, sizes]);
 
-  useEffect(() => {
-    const calculateModelDetails = () => {
-      const getUniqueDemoModelCount = (workItems: Tracking[]) => {
-        const uniqueDemoModels = new Set();
-
-        workItems.forEach((item) => {
-          if (item.ModelVariant?.Model?.DemoModelNumber) {
-            uniqueDemoModels.add(item.ModelVariant.Model.DemoModelNumber);
-          }
-        });
-        return uniqueDemoModels.size;
-      };
-
-      const awaitingModels = getUniqueDemoModelCount(works.awaiting);
-      const awaitingQuantity = works.awaiting.reduce((total, item) => total + (Number(item.QuantityDelivered) || 0), 0);
-
-      const inProgressModels = getUniqueDemoModelCount(works.inProgress);
-      const inProgressQuantity = works.inProgress.reduce((total, item) => total + (Number(item.QuantityReceived) || 0), 0);
-
-      const completedModels = getUniqueDemoModelCount(works.completed);
-      const completedQuantity = works.completed.reduce((total, item) => total + (Number(item.ModelVariant.Quantity) || 0), 0);
-
-      const givingConfirmationModels = getUniqueDemoModelCount(works.givingConfirmation);
-      const givingConfirmationQuantity = works.givingConfirmation.reduce((total, item) => total + (Number(item.QuantityDelivered) || 0), 0);
-
-      // Update state with new model details
-      setModelDetails({
-        awaitingModels,
-        awaitingQuantity,
-        inProgressModels,
-        inProgressQuantity,
-        completedModels,
-        completedQuantity,
-        givingConfirmationModels,
-        givingConfirmationQuantity,
-      });
-    };
-
-    calculateModelDetails();
-  }, [works]);
-
+  
   const hasNullNextStage = (workList: any) => {
     return workList.some((item: { NextStage: null }) => item.NextStage === null);
   };
@@ -175,24 +147,32 @@ export default function Dashboard() {
                   <TableRow>
                     <TableHead className="text-gray-300">{"حالة العمل"}</TableHead>
                     <TableHead className="text-gray-300">{"عدد الموديلات"}</TableHead>
-                    <TableHead className="text-gray-300">{"كمية المنتجات"}</TableHead>
+                    <TableHead className="text-gray-300">{"كمية المنتجات المستلمة"}</TableHead>
+                    <TableHead className="text-gray-300">{"كمية المنتجات المسلمة"}</TableHead>
+
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   <TableRow className="hover:bg-gray-700">
                     <TableCell className="text-gray-300">{"جاهز للعمل"}</TableCell>
                     <TableCell className="text-gray-300">{modelDetails.awaitingModels} {"موديل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.awaitingQuantity} {"قطعة"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.awaitingReceivedQuantity} {"قطعة"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.awaitingDeliveredQuantity} {"قطعة"}</TableCell>
+
                   </TableRow>
                   <TableRow className="hover:bg-gray-700">
                     <TableCell className="text-gray-300">{"جار العمل"}</TableCell>
                     <TableCell className="text-gray-300">{modelDetails.inProgressModels} {"موديل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.inProgressQuantity} {"قطعة"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.inProgressReceivedQuantity} {"قطعة"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.inProgressDeliveredQuantity} {"قطعة"}</TableCell>
+
                   </TableRow>
                   <TableRow className="hover:bg-gray-700">
                     <TableCell className="text-gray-300">{"في انتظار التأكيد"}</TableCell>
                     <TableCell className="text-gray-300">{modelDetails.givingConfirmationModels} {"موديل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationQuantity} {"قطعة"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationReceivedQuantity} {"قطعة"}</TableCell>
+                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationDeliveredQuantity} {"قطعة"}</TableCell>
+
                   </TableRow>
                 </TableBody>
               </Table>
