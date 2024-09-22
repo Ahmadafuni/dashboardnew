@@ -236,7 +236,7 @@ export default function OngoingTable({
         {item.StartTime && format(new Date(item.StartTime), "dd/MM/yyyy HH:mm")}
       </TableCell>
       <TableCell className="space-x-1 space-y-1">
-        {item.ModelVariant.RunningStatus === "RUNNING" ? (
+        {item.ModelVariant.RunningStatus === "ONGOING" ? (
           <BasicConfirmationDialog
             key={`pause-${item.Id}`}
             btnText={t("Pause")}
