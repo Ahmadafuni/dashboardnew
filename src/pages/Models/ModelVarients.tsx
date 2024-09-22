@@ -79,10 +79,16 @@ export default function ModelVarients() {
                 return (
                     <div className="space-x-1">
 
-                        {row.original.RunningStatus === "RUNNING" ? (
+                        {row.original.RunningStatus === "ONGOING" ? (
                             <BasicConfirmationDialog
                                 btnText={t("Pause")}
-                                takeAction={(reason: string) => holdModelVarinte(setModelVarients, row.original.Id, reason, id)}
+                                takeAction={(reason: string) => holdModelVarinte(setModelVarients, row.original.Id,
+                                    {
+                                        StartStopTime: new Date(),
+                                        EndStopTime: null,
+                                        ReasonText: reason,
+                                    }
+                                    , id)}
                                 className="bg-orange-500 hover:bg-orange-600"
                                 showInput={true}
                             />

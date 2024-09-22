@@ -78,10 +78,16 @@ export default function Models() {
         return (
             <div className="space-x-1">
 
-              {row.original.RunningStatus === "RUNNING" ? (
+              {row.original.RunningStatus === "ONGOING" ? (
                   <BasicConfirmationDialog
                       btnText={t("Pause")}
-                      takeAction={(reason: string) => holdModel(setModels, row.original.Id, reason)}
+                      takeAction={(reason: string) => holdModel(setModels, row.original.Id,
+                          {
+                            StartStopTime: new Date(),
+                            EndStopTime: null,
+                            ReasonText: reason,
+                          }
+                      )}
                       className="bg-orange-500 hover:bg-orange-600"
                       showInput={true}
                   />

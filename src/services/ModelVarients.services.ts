@@ -62,14 +62,13 @@ export const deleteModelVarient = async (
 export const holdModelVarinte = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number,
-    reasonText: string,
+    stopData: any,
     modelId: any
-
 ) => {
   try {
         await axios.put(
         `model/model-variants-hold/${id}`,
-        { reasonText },
+        { stopData },
         {
           headers: {
             Authorization: `bearer ${Cookies.get("access_token")}`,

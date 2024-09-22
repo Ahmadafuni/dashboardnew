@@ -34,7 +34,6 @@ import { getAllProductCategoryTwoList } from "@/services/ProductCategoryTwo.serv
 import { getAllTextilesList } from "@/services/Textiles.services";
 
 import * as XLSX from "xlsx";
-// import { useSearchParams } from "react-router-dom";
 import { getAllTemplatesList } from "@/services/Templates.services.ts";
 import { getAllColors } from "@/services/Colors.services.ts";
 import { ColorType } from "@/types/Entities/Color.types.ts";
@@ -49,11 +48,9 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const { t } = useTranslation();
   const setCollectionList = useSetRecoilState(CollectionList);
   const [xslModels, setXslModels] = useState<any[]>([]);
-
   const [colors , setColors] = useState<ColorType[]>([]);
 
   // lists
-  // let [searchParams, setSearchParams] = useSearchParams();
   const setTemplates = useSetRecoilState(templateList);
   const setTextile = useSetRecoilState(textileList);
   const setCategoryOne = useSetRecoilState(productCategoryOneList);
@@ -66,9 +63,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const categoryTwoList = useRecoilValue(productCategoryTwoList);
   const textilesList = useRecoilValue(textileList);
   const templatesList = useRecoilValue(templateList);
-
-
-
 
   const renameFields = (data: any[]) => {
     const fieldNamesMap: { [key: string]: string } = {
@@ -159,7 +153,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const handleXSLUpload = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-
     reader.onload = (event: any) => {
       const data = new Uint8Array(event.target.result);
       const workbook = XLSX.read(data, { type: "array" });
@@ -190,22 +183,9 @@ const NewOrder = ({ getAllOrders }: Props) => {
     reader.readAsArrayBuffer(file);
   };
 
-
-  const form = useForm<z.infer<typeof OrderSchema>>({
-    resolver: zodResolver(OrderSchema),
-    defaultValues: {
-      collection: "",
-      description: "",
-      orderName: "",
-      quantity: "",
-      deadline: new Date().toISOString().split("T")[0], // Initialize with today's date
-    },
-  });
-
   const checkModelsDistribution = (models: any[]) => {
     let isValid = true;
     const errors: string[] = [];
-    console.log("test");
     models.forEach((model) => {
       const scales = model.scale ? model.scale.split('-') : [];
   
@@ -229,8 +209,17 @@ const NewOrder = ({ getAllOrders }: Props) => {
   
     return { isValid, errors };
   };
-  
 
+  const form = useForm<z.infer<typeof OrderSchema>>({
+    resolver: zodResolver(OrderSchema),
+    defaultValues: {
+      collection: "",
+      description: "",
+      orderName: "",
+      quantity: "",
+      deadline: new Date().toISOString().split("T")[0], // Initialize with today's date
+    },
+  });
 
   const onSubmit = async (data: z.infer<typeof OrderSchema>) => {
     setIsLoading(true);
@@ -354,13 +343,8 @@ const NewOrder = ({ getAllOrders }: Props) => {
     getAllProductCategoryTwoList(setCategoryTwo);
     getAllTextilesList(setTextile);
     getAllTemplatesList(setTemplates);
-
     getAllColors(setColors);
-
-    console.log("color" , colors);
-
   }, []);
-
 
   return (
     <div className="w-full space-y-2">

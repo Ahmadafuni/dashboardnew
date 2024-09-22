@@ -95,12 +95,12 @@ export const getModelSummary = async (
 export const holdModel = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number,
-  reasonText: string
+  stopData: any
 ) => {
   try {
     await axios.put(
       `model/hold/${id}`,
-      { reasonText },
+      { stopData },
       {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,

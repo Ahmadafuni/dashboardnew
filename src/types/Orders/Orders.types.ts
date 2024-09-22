@@ -9,5 +9,5 @@ export type OrderType = {
   DeadlineDate: Date;
   FilePath: string; // .xlsx
   Description: string;
-  Status: string;
+  RunningStatus: string;
 };

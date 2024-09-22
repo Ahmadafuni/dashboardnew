@@ -79,15 +79,16 @@ export default function Orders() {
     {
       header: t("Status"),
       cell: ({ row }) => {
+        console.log("row",row);
         return (
           <div className="space-x-1">
-            {row.original.Status === "PENDING" ? (
+            {row.original.RunningStatus === "PENDING" ? (
               <BasicConfirmationDialog
                 btnText={t("StartOrder")}
                 takeAction={() => startOrder(setOrders, row.original.Id)}
                 className="bg-green-500 hover:bg-green-600"
               />
-            ) : row.original.Status === "ONHOLD" ? (
+            ) : row.original.RunningStatus === "ONHOLD" ? (
               <BasicConfirmationDialog
                 btnText={t("RestartOrder")}
                 takeAction={() => restartOrder(setOrders, row.original.Id)}
@@ -96,7 +97,13 @@ export default function Orders() {
             ) : (
               <BasicConfirmationDialog
                 btnText={t("HoldOrder")}
-                takeAction={(reason: string) => holdOrder(setOrders, row.original.Id, reason)}
+                takeAction={(reason: string) => holdOrder(setOrders, row.original.Id,
+                    {
+                      StartStopTime: new Date(),
+                      EndStopTime: null,
+                      ReasonText: reason,
+                    }
+                )}
                 className="bg-orange-500 hover:bg-orange-600"
                 showInput={true}
               />

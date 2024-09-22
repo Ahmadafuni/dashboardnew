@@ -16,4 +16,3 @@ export const OrderSchema = z.object({
   deadline: z.any(),
   description: z.string(),
 });
-// orderName, amount, collection, description, deadline, quantity;

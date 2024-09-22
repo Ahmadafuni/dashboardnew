@@ -77,12 +77,12 @@ export const startOrder = async (
 export const holdOrder = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number,
-    reasonText: string
+    stopData: any
 ) => {
   try {
     await axios.put(
         `orders/hold/${id}`,
-        { reasonText },
+        { stopData },
         {
           headers: {
             Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -110,7 +110,7 @@ export const restartOrder = async (
       },
     });
     getAllOrders(setData);
-    toast.success("Order on hold successfully!");
+    toast.success("Order restarted successfully!");
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
