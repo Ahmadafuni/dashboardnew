@@ -70,7 +70,6 @@ export default function AwaitingTable({
 
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
 
-
   const sortedWorks = [...works.awaiting].sort((a, b) => {
     if (sortConfig !== null) {
       const keyParts = sortConfig.key.split('.'); 
@@ -111,7 +110,6 @@ export default function AwaitingTable({
     }
     setSortConfig({ key, direction });
   };
-
 
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
@@ -280,7 +278,7 @@ export default function AwaitingTable({
 
           <TableBody>
             {sortedWorks.map((item) => {
-           const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
+           const isPaused = item.ModelVariant.RunningStatus === "ONHOLD";
               return (
                 <TableRow 
                 key={item.Id} 

@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const getAllWork = async (
-    depId: any,
     pages: {
       awaitingPage: number;
       inProgressPage: number;
@@ -27,7 +26,6 @@ export const getAllWork = async (
       params: {
         ...pages,
         ...sizes,
-        depId
       },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -85,7 +83,6 @@ export const getAllTracking= async (
 
 
 export const getModelDetailsDepartment = async (
-    depId: any,
     setData: Dispatch<SetStateAction<any>>,
     setIsLoading?: Dispatch<SetStateAction<boolean>>  
 
@@ -94,9 +91,6 @@ export const getModelDetailsDepartment = async (
   try {
     setIsLoading && setIsLoading(true);
     const { data } = await axios.get("trackingmodels/model/details/dept", {
-      params: {
-        depId
-      },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
