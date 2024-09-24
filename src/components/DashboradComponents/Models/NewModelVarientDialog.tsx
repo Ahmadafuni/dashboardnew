@@ -58,9 +58,13 @@ export default function NewModelVarientDialog({
     }
     setIsLoading(true);
     try {
+      const quantityPerSize = +data.Quantity / data.Sizes.length;
       const updatedData = {
         ...data,
-        Sizes: data.Sizes.map((size) => size.label), // Use the transformed sizes array
+        Sizes: data.Sizes.map((size) => ({
+          label: size.label,
+          value: quantityPerSize,
+        })),
       };
       const newVarients = await axios.post(`model/varients/${modelId}`, updatedData, {
         headers: {
@@ -79,7 +83,6 @@ export default function NewModelVarientDialog({
       setIsLoading(false);
     }
   };
-
   // Page on load
   useEffect(() => {
     getAllColorsList(setColor);

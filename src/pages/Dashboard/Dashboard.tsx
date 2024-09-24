@@ -33,7 +33,7 @@ export default function Dashboard() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modelDetails, setModelDetails] = useState({
     awaitingModels:0,
     awaitingDeliveredQuantity:0,
@@ -58,7 +58,7 @@ export default function Dashboard() {
   };
 
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [quantityReceived, setQuantityReceived] = useState<any[]>([]); // State to hold the quantity received data
+  const [quantityReceived, setQuantityReceived] = useState<any[]>([]);
   const [pages, setPages] = useState({
     awaitingPage: 1,
     inProgressPage: 1,
@@ -83,13 +83,9 @@ export default function Dashboard() {
       getAllTracking(pages, sizes, setWorks, setTotalPages, setIsLoading);
       getModelDetailsManager(setModelDetails , setIsLoading);
     } else {
-      getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading);
-      getModelDetailsDepartment(user?.userDepartmentId ,  setModelDetails , setIsLoading);
+      getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading);
+      getModelDetailsDepartment(setModelDetails , setIsLoading);
     }
-
-    console.log("works" , works);
-    console.log("ModelDetails" , modelDetails);
-
   }, [user, pages, sizes]);
 
   
@@ -108,24 +104,24 @@ export default function Dashboard() {
   return (
     <div className="w-full p-4 space-y-6">
       <PausingUnpausingReasoneModal
-        getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
       />
       <CuttingSendForConfirmationModal
-          getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
+          getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
       />
       <OthersSendForConfirmation
-          getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
+          getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <CompleteDialog
-        getAllWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <RejectVariantDialog
-        getWorks={() => getAllWork(user?.userDepartmentId, pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
       />
 
       <div className="w-full p-4 space-y-6">

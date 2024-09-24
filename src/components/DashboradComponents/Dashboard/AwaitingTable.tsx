@@ -70,7 +70,6 @@ export default function AwaitingTable({
 
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
 
-
   const sortedWorks = [...works.awaiting].sort((a, b) => {
     if (sortConfig !== null) {
       const keyParts = sortConfig.key.split('.'); 
@@ -111,7 +110,6 @@ export default function AwaitingTable({
     }
     setSortConfig({ key, direction });
   };
-
 
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
@@ -280,7 +278,7 @@ export default function AwaitingTable({
 
           <TableBody>
             {sortedWorks.map((item) => {
-           const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
+           const isPaused = item.ModelVariant.RunningStatus === "ONHOLD";
               return (
                 <TableRow 
                 key={item.Id} 
@@ -293,9 +291,14 @@ export default function AwaitingTable({
                   <TableCell>{item.OrderName || t("N/A")}</TableCell>
                   <TableCell>{item.TextileName || t("N/A")}</TableCell>
                   <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
-                  <TableCell>{JSON.parse(item.ModelVariant.Sizes)
-                        // .map((e: any) => e.label)
-                        .join(", ") || t("N/A")}</TableCell>
+                  <TableCell>
+                  {item.ModelVariant.Sizes
+                    ? JSON.parse(item.ModelVariant.Sizes)
+                        .map((e: any) => e.size)
+                        .join(", ")
+                    : t("N/A")}
+                 </TableCell>
+
                   <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
                   <TableCell>{item.QuantityDelivered || t("N/A")}</TableCell>
   

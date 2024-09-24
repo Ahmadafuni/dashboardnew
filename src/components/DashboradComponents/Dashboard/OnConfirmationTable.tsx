@@ -292,10 +292,12 @@ export default function OnConfirmationTable({
 
                   <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                   <TableCell>
-                    {JSON.parse(item.ModelVariant.Sizes)
-                      // .map((e: any) => e.label)
-                      .join(", ")}
-                  </TableCell>
+                  {item.ModelVariant.Sizes
+                    ? JSON.parse(item.ModelVariant.Sizes)
+                        .map((e: any) => e.size)
+                        .join(", ")
+                    : t("N/A")}
+                 </TableCell>
                   <TableCell>{item.ModelVariant.Quantity}</TableCell>
                   {user?.category === "CUTTING" ? (
                     <>
