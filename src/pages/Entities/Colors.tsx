@@ -32,14 +32,16 @@ export default function Colors() {
   const [colors, setColors] = useState<ColorType[]>([]); // Assuming ColorType is a type for color objects
   const colorColumns: ColumnDef<ColorType>[] = [
     {
-      accessorKey: "ColorName",
+      id: "ColorName",
       header: t("ColorName"),
+      accessorFn:(row) => row.ColorName
     },
     {
-      accessorKey: "ColorCode",
+      id: "ColorCode",
       header: t("ColorCode"),
     },
     {
+      id: "Demo",
       header: t("Demo"),
       cell: ({ row }) => {
         return (
@@ -51,7 +53,7 @@ export default function Colors() {
       },
     },
     {
-      accessorKey: "Description",
+      id: "Description",
       header: t("Description"),
     },
     {
