@@ -429,10 +429,12 @@ export default function OngoingTable({
 
                     <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
                     <TableCell>
-                      {JSON.parse(item.ModelVariant.Sizes || t("N/A"))
-                        // .map((e: any) => e.label)
-                        .join(", ")}
-                    </TableCell>
+                  {item.ModelVariant.Sizes
+                    ? JSON.parse(item.ModelVariant.Sizes)
+                        .map((e: any) => e.size)
+                        .join(", ")
+                    : t("N/A")}
+                 </TableCell>
                     <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
                     <TableCell>
                       {renderQuantity(item.QuantityReceived)}

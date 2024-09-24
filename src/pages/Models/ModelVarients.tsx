@@ -58,8 +58,8 @@ export default function ModelVarients() {
                             );
                         }}
                     >
-                        {/*row.original.Sizes.map((si)=> si.label).join(",")*/}
-                        {row.original.Sizes.join(", ")}
+                        {row.original.Sizes.map((si)=> si.label).join(",")}
+                        {/* {row.original.Sizes.join(", ")} */}
 
                     </Button>
                 );

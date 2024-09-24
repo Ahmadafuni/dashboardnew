@@ -339,10 +339,12 @@ export default function CompletedTable({
 
                   <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
                   <TableCell>
-                    {JSON.parse(item.ModelVariant.Sizes)
-                      // .map((e: any) => e.label)
-                      .join(", ")}
-                  </TableCell>
+                  {item.ModelVariant.Sizes
+                    ? JSON.parse(item.ModelVariant.Sizes)
+                        .map((e: any) => e.size)
+                        .join(", ")
+                    : t("N/A")}
+                 </TableCell>
                   <TableCell>{item.ModelVariant.Quantity}</TableCell>
                   {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
                     ? renderAdminRow(item)

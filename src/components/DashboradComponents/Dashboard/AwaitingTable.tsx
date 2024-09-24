@@ -291,9 +291,14 @@ export default function AwaitingTable({
                   <TableCell>{item.OrderName || t("N/A")}</TableCell>
                   <TableCell>{item.TextileName || t("N/A")}</TableCell>
                   <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
-                  <TableCell>{JSON.parse(item.ModelVariant.Sizes)
-                        // .map((e: any) => e.label)
-                        .join(", ") || t("N/A")}</TableCell>
+                  <TableCell>
+                  {item.ModelVariant.Sizes
+                    ? JSON.parse(item.ModelVariant.Sizes)
+                        .map((e: any) => e.size)
+                        .join(", ")
+                    : t("N/A")}
+                 </TableCell>
+
                   <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
                   <TableCell>{item.QuantityDelivered || t("N/A")}</TableCell>
   
