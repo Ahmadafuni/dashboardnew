@@ -70,6 +70,7 @@ export default function FinishedTable({
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
 
 
+
   const fetchSummary = async (modelVariantId: number) => {
     try {
       const response = await axios.get(`/model/testModel/${modelVariantId}`);
@@ -81,18 +82,19 @@ export default function FinishedTable({
     }
   };
 
-  const sortedWorks = [...works.completed].sort((a, b) => {
+  const sortedWorks = Array.isArray(works?.finished) ? [...works.finished].sort((a, b) => {
+
     if (sortConfig !== null) {
-      const keyParts = sortConfig.key.split('.'); 
+      const keyParts = sortConfig.key.split('.');
       const getValue = (obj: any, keyParts: string[]) => {
         return keyParts.reduce((nestedObj, key) => {
           return nestedObj && nestedObj[key] !== undefined ? nestedObj[key] : null;
         }, obj);
       };
-  
+
       const aValue = getValue(a, keyParts);
       const bValue = getValue(b, keyParts);
-  
+
       if (aValue !== null && bValue !== null) {
         if (typeof aValue === 'string' && typeof bValue === 'string') {
           return sortConfig.direction === 'ascending'
@@ -104,7 +106,7 @@ export default function FinishedTable({
           return 0;
         }
       }
-  
+
       if (aValue === null && bValue !== null) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
       }
@@ -113,8 +115,9 @@ export default function FinishedTable({
       }
     }
     return 0;
-  });
-  
+
+  }) : [];
+
   const requestSort = (key: string) => {
     let direction = "ascending";
     if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
@@ -138,6 +141,7 @@ export default function FinishedTable({
     const hours = differenceInHours(end, start) % 24;
     return `${days}d ${hours}h`;
   };
+
   const renderAdminRow = (item: any) => (
     <>
       <TableCell>{item.CurrentStage?.Department?.Name || t("NA")}</TableCell>
@@ -198,6 +202,7 @@ export default function FinishedTable({
       </TableCell>
     </>
   );
+
   useEffect(() => {
 
   }, [works]);
@@ -212,12 +217,11 @@ export default function FinishedTable({
       <h2 className="text-2xl font-bold">{t("Finished")}</h2>
       <div className="overflow-x-auto">
         <Table className="min-w-full">
-          {/* <TableCaption>{t("VariantsCompleted")}</TableCaption> */}
           <TableHeader>
             <TableRow>
-            <TableHead onClick={() => requestSort("ModelVariant.Model.DemoModelNumber")}>
+            <TableHead onClick={() => requestSort("Model.DemoModelNumber")}>
                 {t("ModelNumber")}
-                {sortConfig?.key === "ModelVariant.Model.DemoModelNumber" && (
+                {sortConfig?.key === "Model.DemoModelNumber" && (
                   sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
                 )}
               </TableHead>
@@ -319,36 +323,45 @@ export default function FinishedTable({
               </TableRow>
             )}
             {works &&
-              sortedWorks.map((item) => (
-                <TableRow key={item.Id}>
-                  <TableCell className="font-medium">
-                    {item.ModelVariant.Model.DemoModelNumber}
-                  </TableCell>
-                  <TableCell className="font-medium">{item.Barcode}</TableCell>
-                  <TableCell className="font-medium">{item.name}</TableCell>
-                  <TableCell className="font-medium">
-                    {item.CollectionName}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.OrderName}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.TextileName}
-                  </TableCell>
+              sortedWorks.map((item: any) => (
+                  <TableRow key={item.Id}>
+                    {/* Model Number */}
+                    <TableCell className="font-medium">
+                      {item.DemoModelNumber}
+                    </TableCell>
 
-                  <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
-                  <TableCell>
-                  {item.ModelVariant.Sizes
-                    ? item.ModelVariant.Sizes
-                        .map((e: any) => e.label)
-                        .join(", ")
-                    : t("N/A")}
-                 </TableCell>
-                  <TableCell>{item.ModelVariant.Quantity}</TableCell>
-                  {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                    ? renderAdminRow(item)
-                    : renderUserRow(item)}
-                </TableRow>
+                    {/* Barcode */}
+                    <TableCell className="font-medium">{item.Barcode || t("N/A")}</TableCell>
+
+                    {/* Model Name */}
+                    <TableCell className="font-medium">{item.ModelName}</TableCell>
+
+                    {/* Collections */}
+                    <TableCell className="font-medium">{item.Order?.Collection.CollectionName || t("N/A")}</TableCell>
+
+                    {/* Order Number */}
+                    <TableCell className="font-medium">{item.Order?.OrderName}</TableCell>
+
+                    {/* Textile Name */}
+                    <TableCell className="font-medium">{item.Textile?.TextileName || t("N/A")}</TableCell>
+
+                    {/* Color */}
+                    <TableCell className="font-medium">
+                      {item.ModelVarients[0]?.Color?.ColorName || t("N/A")}
+                    </TableCell>
+
+
+
+                    {/* Target Quantity */}
+                    <TableCell className="font-medium">
+                      {item.ModelVarients[0]?.Quantity || t("N/A")}
+                    </TableCell>
+
+                    {/* Conditional rendering for roles */}
+                    {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
+                        ? renderAdminRow(item)
+                        : renderUserRow(item)}
+                  </TableRow>
               ))}
           </TableBody>
         </Table>
@@ -409,7 +422,7 @@ export default function FinishedTable({
                 if (page > 1) {
                   setPage((prev) => ({
                     ...prev,
-                    completedPage: prev.completedPage - 1,
+                    finishedPage: prev.finishedPage - 1,
                   }));
                 }
               }}
@@ -423,7 +436,7 @@ export default function FinishedTable({
                 if (page < totalPages) {
                   setPage((prev) => ({
                     ...prev,
-                    completedPage: prev.completedPage + 1,
+                    finishedPage: prev.finishedPage + 1,
                   }));
                 }
               }}
@@ -441,7 +454,7 @@ export default function FinishedTable({
             <Select
               value={size.toString()}
               onValueChange={(value) =>
-                setSize((prev) => ({ ...prev, completedSize: Number(value) }))
+                setSize((prev) => ({ ...prev, finishedSize: Number(value) }))
               }
             >
               <SelectTrigger className="w-20">

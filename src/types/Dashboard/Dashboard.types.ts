@@ -44,5 +44,6 @@ export type WorkType = {
   awaiting: Tracking[];
   inProgress: Tracking[];
   completed: Tracking[];
+  finished: Tracking[];
   givingConfirmation: Tracking[];
 };

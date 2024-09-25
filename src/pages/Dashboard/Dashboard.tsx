@@ -28,6 +28,7 @@ export default function Dashboard() {
     awaiting: [],
     inProgress: [],
     completed: [],
+    finished: [],
     givingConfirmation: [],
   });
 
@@ -103,6 +104,7 @@ export default function Dashboard() {
     (!hasNullNextStage(works.awaiting) &&
       !hasNullNextStage(works.inProgress) &&
       !hasNullNextStage(works.completed) &&
+      !hasNullNextStage(works.finished) &&
       !hasNullNextStage(works.givingConfirmation))
   );
 
@@ -111,6 +113,7 @@ export default function Dashboard() {
           (!hasNullNextStage(works.awaiting) &&
           !hasNullNextStage(works.inProgress) &&
           !hasNullNextStage(works.completed) &&
+          !hasNullNextStage(works.finished) &&
           !hasNullNextStage(works.givingConfirmation))
   );
 
