@@ -11,7 +11,7 @@ type Color = {
 
 type ModelVariant = {
   Id: number;
-  Sizes: string;
+  Sizes: [label:string , value:string];
   Quantity: number;
   Model: Model;
   Color: Color;
