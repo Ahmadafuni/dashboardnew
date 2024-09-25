@@ -27,7 +27,7 @@ import { z } from "zod";
 
 type Props = {
     getAllWorks: any;
-    selectedSizes: string[];
+    selectedSizes: {label: string , value:  string}[];
 };
 
 export default function CuttingSendForConfirmationModal({ getAllWorks, selectedSizes }: Props) {
@@ -56,8 +56,9 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
 
     useEffect(() => {
         if (selectedSizes && selectedSizes.length > 0) {
-            setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
-            setQuantityInNumPairs(selectedSizes.map(size => ({ size, value: "" })));
+            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label, value: size.value })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label, value: size.value })));
+            
         }
     }, [selectedSizes]);
 
@@ -83,8 +84,8 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
             );
             toast.success(newNote.data.message);
             form.reset();
-            setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
-            setQuantityInNumPairs(selectedSizes.map(size => ({ size, value: "" })));
+            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
             getAllWorks();
             setIsLoading(false);
             setOpen(false);

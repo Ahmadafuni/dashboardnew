@@ -24,7 +24,7 @@ import { z } from "zod";
 
 type Props = {
   getAllWorks: any;
-  selectedSizes: string[];
+  selectedSizes: {label: string , value:  string}[];
   quantityReceived: any[];
 };
 
@@ -50,8 +50,8 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
 
   useEffect(() => {
     if (open) {
-      setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
-      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size, value: "" })));
+      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
       setQuantityReceivedPairs(quantityReceived.map(item => ({ size: item.size, value: item.value })));
       form.reset({
         QuantityReceived: quantityReceived.map(item => ({ size: item.size, value: item.value })),
@@ -83,9 +83,9 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
       );
       toast.success(newNote.data.message);
       form.reset();
-      setDamagedItemPairs(selectedSizes.map(size => ({ size, value: "" })));
-      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size, value: "" })));
-      setQuantityReceivedPairs(selectedSizes.map(size => ({ size, value: "" })));
+      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
+      setQuantityReceivedPairs(selectedSizes.map(size => ({size: size.label , value: size.value })));
       getAllWorks();
       setIsLoading(false);
       setOpen(false);

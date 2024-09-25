@@ -59,7 +59,7 @@ interface Props {
   totalPages: number;
   works: WorkType;
   setWorks: (data: any) => void;
-  setSelectedSizes: (sizes: string[]) => void;
+  setSelectedSizes: (sizes: {label: string , value:  string}[]) => void;
   setQuantityReceived: (quantity: any[]) => void;
 }
 
@@ -156,11 +156,7 @@ export default function OngoingTable({
 
   const handleSendConfirmation = (item: any, type: string) => {
     console.log("Sizes for confirmation are : ", item.ModelVariant.Sizes);
-    const sizes = item.ModelVariant.Sizes
-      ? JSON.parse(item.ModelVariant.Sizes)
-      : //   .map((e: any) => e.label)
-      [];
-
+    const sizes = item.ModelVariant.Sizes ;
     const quantityReceived = item.QuantityReceived || [];
     setSelectedSizes(sizes);
     setQuantityReceived(quantityReceived);
@@ -174,9 +170,6 @@ export default function OngoingTable({
 
   const handleSendCuttingConfirmation = (item: any) => {
     const sizes = item.ModelVariant.Sizes
-      ? JSON.parse(item.ModelVariant.Sizes)
-      : //   .map((e: any) => e.label)
-      [];
     setSelectedSizes(sizes);
     setCurrentVariant(item.ModelVariant.Id);
     setCuttingConfirmation(true);
