@@ -23,6 +23,7 @@ export const cuttingSendConfirmationSchema = z.object({
     ReplacedItemInKG: z.string().optional(),
     DamagedItem: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
     QuantityInNum: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
+
 });
 export const othersSendConfirmationSchema = z.object({
     QuantityReceived: z.array(z.object({ size: z.string(), value: z.string() })).optional(),

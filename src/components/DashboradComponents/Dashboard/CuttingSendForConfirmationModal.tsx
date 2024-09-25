@@ -56,9 +56,8 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
 
     useEffect(() => {
         if (selectedSizes && selectedSizes.length > 0) {
-            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label, value: size.value })));
-            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label, value: size.value })));
-            
+            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label, value: "" })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label, value: "" })));
         }
     }, [selectedSizes]);
 
@@ -71,8 +70,6 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
                 QuantityInNum: JSON.stringify(quantityInNumPairs),
             };
 
-            console.log("Payload:", payload);
-
             const newNote = await axios.post(
                 `trackingmodels/sent/cutting/checking/variant/${variantId}`,
                 payload,
@@ -84,8 +81,8 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
             );
             toast.success(newNote.data.message);
             form.reset();
-            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
-            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
+            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
             getAllWorks();
             setIsLoading(false);
             setOpen(false);

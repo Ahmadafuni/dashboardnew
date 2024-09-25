@@ -50,9 +50,10 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
 
   useEffect(() => {
     if (open) {
-      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
-      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
-      setQuantityReceivedPairs(quantityReceived.map(item => ({ size: item.size, value: item.value })));
+      setQuantityReceivedPairs(quantityReceived.map(size => ({ size: size.label, value: size.value })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
+      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: ""})));
+
       form.reset({
         QuantityReceived: quantityReceived.map(item => ({ size: item.size, value: item.value })),
         QuantityDelivered: [],
@@ -83,9 +84,9 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
       );
       toast.success(newNote.data.message);
       form.reset();
-      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
-      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: size.value })));
-      setQuantityReceivedPairs(selectedSizes.map(size => ({size: size.label , value: size.value })));
+      setQuantityReceivedPairs(selectedSizes.map(size => ({size: size.label , value: "" })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
+      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
       getAllWorks();
       setIsLoading(false);
       setOpen(false);

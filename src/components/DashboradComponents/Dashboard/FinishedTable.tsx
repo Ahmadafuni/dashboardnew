@@ -52,7 +52,7 @@ interface Props {
   works: WorkType;
 }
 
-export default function CompletedTable({
+export default function FinishedTable({
   page,
   setPage,
   size,
@@ -122,9 +122,6 @@ export default function CompletedTable({
     }
     setSortConfig({ key, direction });
   };
-
-
-
 
   // @ts-ignore
   const [pageSize, setPageSize] = useState(10);
@@ -212,7 +209,7 @@ export default function CompletedTable({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold">{t("Completed")}</h2>
+      <h2 className="text-2xl font-bold">{t("Finished")}</h2>
       <div className="overflow-x-auto">
         <Table className="min-w-full">
           {/* <TableCaption>{t("VariantsCompleted")}</TableCaption> */}

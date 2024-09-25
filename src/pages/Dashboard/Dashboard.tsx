@@ -19,6 +19,7 @@ import Spinner from "@/components/common/Spinner";
 import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import FinishedTable from "@/components/DashboradComponents/Dashboard/FinishedTable.tsx";
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -57,24 +58,28 @@ export default function Dashboard() {
     setIsModalOpen(false);
   };
 
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  // @ts-ignore
+  const [selectedSizes, setSelectedSizes] = useState<{ label: string; value: string }[]>([]);
   const [quantityReceived, setQuantityReceived] = useState<any[]>([]);
   const [pages, setPages] = useState({
     awaitingPage: 1,
     inProgressPage: 1,
     completedPage: 1,
+    finishedPage: 1,
     givingConfirmationPage: 1,
   });
   const [sizes, setSizes] = useState({
     awaitingSize: 10,
     inProgressSize: 10,
     completedSize: 10,
+    finishedSize: 10,
     givingConfirmationSize: 10,
   });
   const [totalPages, setTotalPages] = useState({
     totalPagesAwaiting: 1,
     totalPagesInProgress: 1,
     totalPagesCompleted: 1,
+    totalPagesFinished: 1,
     totalPagesGivingConfirmation: 1,
   });
 
@@ -99,6 +104,14 @@ export default function Dashboard() {
       !hasNullNextStage(works.inProgress) &&
       !hasNullNextStage(works.completed) &&
       !hasNullNextStage(works.givingConfirmation))
+  );
+
+  const showFinishTable = !(
+      user?.userRole === "FACTORYMANAGER" ||
+          (!hasNullNextStage(works.awaiting) &&
+          !hasNullNextStage(works.inProgress) &&
+          !hasNullNextStage(works.completed) &&
+          !hasNullNextStage(works.givingConfirmation))
   );
 
   return (
@@ -226,6 +239,16 @@ export default function Dashboard() {
         totalPages={totalPages.totalPagesCompleted}
         works={works}
       />
+      {!showFinishTable && (
+      <FinishedTable
+          page={pages.finishedPage}
+          setPage={setPages}
+          size={sizes.finishedSize}
+          setSize={setSizes}
+          totalPages={totalPages.totalPagesFinished}
+          works={works}
+      />
+      )}
     </div>
   );
 }

@@ -46,12 +46,14 @@ export const getAllTracking= async (
     awaitingPage: number;
     inProgressPage: number;
     completedPage: number;
+    finishedPage: number;
     givingConfirmationPage: number;
   },
   sizes: {
     awaitingSize: number;
     inProgressSize: number;
     completedSize: number;
+    finishedSize: number;
     givingConfirmationSize: number;
   },
   setData: Dispatch<SetStateAction<any>>,
