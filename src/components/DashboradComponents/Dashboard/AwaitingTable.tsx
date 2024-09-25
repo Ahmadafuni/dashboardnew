@@ -293,8 +293,8 @@ export default function AwaitingTable({
                   <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
                   <TableCell>
                   {item.ModelVariant.Sizes
-                    ? JSON.parse(item.ModelVariant.Sizes)
-                        .map((e: any) => e.size)
+                    ? item.ModelVariant.Sizes
+                        .map((e: any) => e.label)
                         .join(", ")
                     : t("N/A")}
                  </TableCell>
