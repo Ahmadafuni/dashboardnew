@@ -62,6 +62,8 @@ import MaterialReport from "@/pages/Warehouse/MaterialReport.tsx";
 import NewModelBlock from "@/components/DashboradComponents/Models/NewModelBlock.tsx";
 import UpdateModelBlock from "@/components/DashboradComponents/Models/UpdateModelBlock.tsx";
 import { BASE_URL } from "./config/index.ts";
+import ProductionReports from "./pages/Reports/ProductionReports.tsx";
+import OrderReports from "./pages/Reports/OrderReports.tsx";
 
 // Axios config
 axios.defaults.baseURL = BASE_URL;
@@ -112,6 +114,8 @@ const router = createBrowserRouter([
 
       { path: "/dashboard/home", element: <Home /> },
       { path: "/dashboard/reports", element: <Reports /> },
+      { path: "/dashboard/productionreports", element: <ProductionReports /> },
+      { path: "/dashboard/orderreports", element: <OrderReports /> },
       { path: "/dashboard/statistics", element: <Statistics /> },
 
       { path: "/dashboard/productcatalogues", element: <ProductCatalogues /> },
