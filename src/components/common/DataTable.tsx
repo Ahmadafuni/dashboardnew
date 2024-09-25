@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ArrowUpDown, FileText } from "lucide-react";
+import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ArrowUpDown, FileText, Minus, Plus } from "lucide-react";
 import * as XLSX from 'xlsx';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
@@ -75,59 +75,72 @@ export default function DataTable<TData, TValue>({
         <div>
             <div className="flex items-center justify-between mb-4">
                 {/* Filter Section */}
+               
                 <div className="flex flex-col gap-4">
-                    {filters.length === 0 ? (
-                        <Button onClick={() => setFilters([{ column: '', value: '' }])}>
-                            Add Filter
-                        </Button>
-                    ) : (
-                        filters.map((filter, index) => (
-                            <div key={index} className="flex flex-col md:flex-row items-start md:items-center gap-2">
-                                {/* Column Selector */}
-                                <Select
-                                    onValueChange={(value) => handleFilterChange(index, 'column', value)}
-                                >
-                                    <SelectTrigger className="w-full md:w-36 bg-white border border-gray-300 rounded-md text-sm focus:ring focus:ring-blue-500 focus:border-blue-500 text-gray-800">
-                                        <SelectValue placeholder="Select column" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {columns.map((column) => (
-                                            // @ts-ignore
-                                            <SelectItem key={column.id} value={column.header}>
-                                                {column.id}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+    {filters.length === 0 ? (
+        <Button onClick={() => setFilters([{ column: '', value: '' }])}>
+            Add Filter
+        </Button>
+    ) : (
+        filters.map((filter, index) => (
+            <div key={index} className="flex flex-col md:flex-row items-start md:items-center gap-2">
+                {/* Column Selector */}
+                <Select
+                    onValueChange={(value) => handleFilterChange(index, 'column', value)}
+                >
+                    <SelectTrigger className="w-full md:w-36 bg-white border border-gray-300 rounded-md text-sm focus:ring focus:ring-blue-500 focus:border-blue-500 text-gray-800">
+                        <SelectValue placeholder="Select column" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {columns.map((column) => (
+                            // @ts-ignore
+                            <SelectItem key={column.id} value={column.header}>
+                                {column.id}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
 
-                                {/* Input Field for Filter Value */}
-                                <input
-                                    type="text"
-                                    value={filter.value}
-                                    onChange={(e) => handleFilterChange(index, 'value', e.target.value)}
-                                    placeholder="Enter value..."
-                                    className="input w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm bg-white text-gray-800 focus:ring focus:ring-blue-500 focus:border-blue-500"
-                                />
+                {/* Input Field for Filter Value */}
+                <input
+                    type="text"
+                    value={filter.value}
+                    onChange={(e) => handleFilterChange(index, 'value', e.target.value)}
+                    placeholder="Enter value..."
+                    className="input w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm bg-white text-gray-800 focus:ring focus:ring-blue-500 focus:border-blue-500"
+                />
 
-                                {/* Add or remove filter buttons */}
-                                <Button
-                                    className="text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md px-4 py-2"
-                                    onClick={() => setFilters([...filters, { column: '', value: '' }])}
-                                >
-                                    Add Filter
-                                </Button>
-                                {filters.length > 1 && (
-                                    <Button
-                                        className="text-sm bg-red-500 text-white hover:bg-red-600 rounded-md px-4 py-2"
-                                        onClick={() => setFilters(filters.filter((_, i) => i !== index))}
-                                    >
-                                        Remove
-                                    </Button>
-                                )}
-                            </div>
-                        ))
-                    )}
-                </div>
+                {/* Add filter button */}
+                <Button
+                    className="text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md px-4 py-2 flex items-center"
+                    onClick={() => setFilters([...filters, { column: '', value: '' }])}
+                >
+                    <Plus size={20} />
+                </Button>
+
+                {/* Remove filter button */}
+                {filters.length > 1 && (
+                    <Button
+                        className="text-sm bg-red-500 text-white hover:bg-red-600 rounded-md px-4 py-2 flex items-center"
+                        onClick={() => {
+                            const updatedFilters = [...filters]; // نسخ قائمة الفلاتر
+                            updatedFilters.splice(index, 1); // حذف الفلتر بناءً على الفهرس المحدد
+                            setFilters(updatedFilters); // تحديث الحالة بعد الحذف
+                        }}
+                    >
+                        <Minus size={20} />
+                    </Button>
+                )}
+                        </div>
+                    ))
+                )}
+            </div>
+
+
+
+
+
+
 
                 {/* Export to Excel */}
                 <Tooltip.Provider>
