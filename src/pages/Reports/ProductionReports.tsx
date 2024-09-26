@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Form } from "@/components/ui/form";
 import DatePickerForForm from "@/components/common/DatePickerForForm";
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
@@ -253,15 +252,17 @@ export default function ProductionReports() {
                     name="departments"
                     label=""
                     control={form.control}
-                    fieldComponent={SelectFieldForForm}
+                    fieldComponent={MultiSelectForField}
                     fieldProps={{
-                      placeholder: "Departments Category",
                       items: [
                         { label: t("CUTTING"), value: "1" },
                         { label: t("TAILORING"), value: "2" },
                         { label: t("PRINTING"), value: "3" },
                         { label: t("BOXING"), value: "4" },
                       ],
+                      form: form,
+                      name: "departments",
+                      selectText: "departments",
                     }}
                     isEnabled={isDepartmentsEnabled}
                     onCheckedChange={() =>
@@ -276,10 +277,12 @@ export default function ProductionReports() {
                     name="currentStage"
                     label=""
                     control={form.control}
-                    fieldComponent={SelectFieldForForm}
+                    fieldComponent={MultiSelectForField}
                     fieldProps={{
-                      placeholder: "Departments Names",
                       items: departmentsNamesMenu,
+                      form: form,
+                      name: "currentStage",
+                      selectText: "currentStage",
                     }}
                     isEnabled={isDepartmentsNamesEnabled}
                     onCheckedChange={() =>
@@ -299,10 +302,12 @@ export default function ProductionReports() {
                       name="productCatalogue"
                       label=""
                       control={form.control}
-                      fieldComponent={SelectFieldForForm}
+                      fieldComponent={MultiSelectForField}
                       fieldProps={{
-                        placeholder: "Product",
                         items: productCatalogueMenu,
+                        form: form,
+                        name: "productCatalogue",
+                        selectText: "product",
                       }}
                       isEnabled={isProductCatalogueEnabled}
                       onCheckedChange={() =>
@@ -317,10 +322,12 @@ export default function ProductionReports() {
                     name="productCategoryOne"
                     label=""
                     control={form.control}
-                    fieldComponent={SelectFieldForForm}
+                    fieldComponent={MultiSelectForField}
                     fieldProps={{
-                      placeholder: "Product Category One",
                       items: productCategoryOneMenu,
+                      form: form,
+                      name: "productCategoryOne",
+                      selectText: "productCategoryOne",
                     }}
                     isEnabled={isProductCategoryOneEnabled}
                     onCheckedChange={() =>
@@ -335,10 +342,12 @@ export default function ProductionReports() {
                     name="productCategoryTwo"
                     label=""
                     control={form.control}
-                    fieldComponent={SelectFieldForForm}
+                    fieldComponent={MultiSelectForField}
                     fieldProps={{
-                      placeholder: "Product Category Two",
                       items: productCategoryTwoMenu,
+                      form: form,
+                      name: "productCategoryTwo",
+                      selectText: "productCategoryTwo",
                     }}
                     isEnabled={isProductCategoryTwoEnabled}
                     onCheckedChange={() =>
@@ -358,10 +367,13 @@ export default function ProductionReports() {
                     name="templateType"
                     label=""
                     control={form.control}
-                    fieldComponent={SelectFieldForForm}
+                    fieldComponent={MultiSelectForField}
                     fieldProps={{
-                      placeholder: "Template Type",
                       items: templateTypeMenu,
+                      form: form,
+                      name: "templateType",
+                      selectText: "templateType",
+
                     }}
                     isEnabled={isTemplateTypeEnabled}
                     onCheckedChange={() =>
@@ -376,10 +388,12 @@ export default function ProductionReports() {
                     name="templatePattern"
                     label=""
                     control={form.control}
-                    fieldComponent={SelectFieldForForm}
+                    fieldComponent={MultiSelectForField}
                     fieldProps={{
-                      placeholder: "Template Pattern",
                       items: templatePatternMenu,
+                      form: form,
+                      name: "templatePattern",
+                      selectText: "templatePattern",
                     }}
                     isEnabled={isTemplatePatternEnabled}
                     onCheckedChange={() =>
