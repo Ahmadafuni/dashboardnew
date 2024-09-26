@@ -22,7 +22,7 @@ const FieldWithCheckbox = <TFieldValues extends FieldValues>({
                                                                  onCheckedChange,
                                                              }: FieldWithCheckboxProps<TFieldValues>) => (
     <div className="flex items-center space-x-2">
-        <Checkbox className="mt-2" checked={isEnabled} onCheckedChange={onCheckedChange} />
+        <Checkbox className="mt-0" checked={isEnabled} onCheckedChange={onCheckedChange} />
         <FormField
             name={name}
             control={control}

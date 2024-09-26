@@ -21,7 +21,6 @@ import {
 } from "@/services/Model.services";
 import FieldWithCheckbox from "@/components/common/CheckboxWIthField";
 import { departmentList } from "@/store/Department";
-import CheckboxWithTextField from "@/components/common/CheckboxWithTextField";
 import { orderList } from "@/store/Orders";
 import { modelList } from "@/store/Models";
 import { ColumnDef } from "@tanstack/react-table";
@@ -29,6 +28,7 @@ import { ModelTypes } from "@/types/Models/Models.types.ts";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useReactToPrint } from "react-to-print";
+import MultiSelectForField from "@/components/common/MultiSelectForField.tsx";
 
 export default function ProductionReports() {
   const { t } = useTranslation();
@@ -52,13 +52,9 @@ export default function ProductionReports() {
     useState(false);
   const [isProductCategoryTwoEnabled, setProductCategoryTwoEnabled] =
     useState(false);
-  const [isTextileEnabled, setTextileEnabled] = useState(false);
+
   const [isTemplateTypeEnabled, setTemplateTypeEnabled] = useState(false);
   const [isTemplatePatternEnabled, setTemplatePatternEnabled] = useState(false);
-  const [isOrderEnabled, setOrderEnabled] = useState(false);
-  const [isModelEnabled, setModelEnabled] = useState(false);
-  const [isBarcodeEnabled, setBarcodeEnabled] = useState(false);
-
   const setDepartmentList = useSetRecoilState(departmentList);
   const setProductCatalogueList = useSetRecoilState(productCatalogueList);
   const setProductCategoryOneList = useSetRecoilState(productCategoryOneList);
@@ -124,9 +120,6 @@ export default function ProductionReports() {
   const productCategoryTwoOptions = useRecoilValue(productCategoryTwoList);
   const templatePatternOptions = useRecoilValue(templatePatternList);
   const templateTypeOptions = useRecoilValue(templateTypeList);
-  const textilesOptions = useRecoilValue(textileList);
-  const ordersOptions = useRecoilValue(orderList);
-  const modelsOptions = useRecoilValue(modelList);
 
   const departmentsNamesMenu = departmentsNamesOptions.map((dept: any) => ({
     value: dept.Id + "",
@@ -163,29 +156,6 @@ export default function ProductionReports() {
     value: type.Id + "",
     label: type.TemplateTypeName,
   }));
-
-  const textilesMenu = textilesOptions.map((textile: any) => ({
-    value: textile.Id + "",
-    label: textile.TextileName,
-  }));
-  const ordersMenu = ordersOptions.map((ord: any) => ({
-    value: ord.OrderNumber,
-    label: ord.OrderNumber,
-  }));
-
-  const barcodesMenu = modelsOptions.map((model: any) => {
-    return {
-      value: model.Barcode,
-      label: model.Barcode,
-    };
-  });
-
-  const demoModelNumbersMenu = modelsOptions.map((model: any) => {
-    return {
-      value: model.DemoModelNumber,
-      label: model.DemoModelNumber,
-    };
-  });
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
@@ -257,26 +227,28 @@ export default function ProductionReports() {
             {!isCardCollapsed && (
               <CardContent className="space-y-4">
                 {/* First Row */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FieldWithCheckbox
-                    name="status"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Status",
-                      items: [
-                        { label: t("AWAITING"), value: "AWAITING" },
-                        { label: t("ON GOING"), value: "ONGOING" },
-                        { label: t("ON CONFIRM"), value: "ONCONFIRM" },
-                        { label: t("COMPLETED"), value: "COMPLETED" },
-                      ],
-                    }}
-                    isEnabled={isStatusEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(setStatusEnabled, "status", "")
-                    }
+                      name="status"
+                      label=""
+                      control={form.control}
+                      fieldComponent={MultiSelectForField}
+                      fieldProps={{
+                        items: [
+                          { label: t("AWAITING"), value: "AWAITING" },
+                          { label: t("ONGOING"), value: "ONGOING" },
+                          { label: t("ON CONFIRM"), value: "ONCONFIRM" },
+                          { label: t("COMPLETED"), value: "COMPLETED" },
+                        ],
+                        form: form,
+                        name: "status",
+                        selectText: "Status",
+                      }}
+                      isEnabled={isStatusEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setStatusEnabled, "status", "")
+                      }
                   />
+
                   <FieldWithCheckbox
                     name="departments"
                     label=""
@@ -318,28 +290,29 @@ export default function ProductionReports() {
                       )
                     }
                   />
-                  <FieldWithCheckbox
-                    name="productCatalogue"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Product",
-                      items: productCatalogueMenu,
-                    }}
-                    isEnabled={isProductCatalogueEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setProductCatalogueEnabled,
-                        "productCatalogue",
-                        ""
-                      )
-                    }
-                  />
+
                 </div>
 
                 {/* Second Row */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <FieldWithCheckbox
+                      name="productCatalogue"
+                      label=""
+                      control={form.control}
+                      fieldComponent={SelectFieldForForm}
+                      fieldProps={{
+                        placeholder: "Product",
+                        items: productCatalogueMenu,
+                      }}
+                      isEnabled={isProductCatalogueEnabled}
+                      onCheckedChange={() =>
+                          handleCheckboxChange(
+                              setProductCatalogueEnabled,
+                              "productCatalogue",
+                              ""
+                          )
+                      }
+                  />
                   <FieldWithCheckbox
                     name="productCategoryOne"
                     label=""
@@ -376,20 +349,7 @@ export default function ProductionReports() {
                       )
                     }
                   />
-                  <FieldWithCheckbox
-                    name="textile"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Textile",
-                      items: textilesMenu,
-                    }}
-                    isEnabled={isTextileEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(setTextileEnabled, "textile", "")
-                    }
-                  />
+
                 </div>
 
                 {/* Third Row */}
@@ -433,46 +393,7 @@ export default function ProductionReports() {
                 </div>
 
                 {/* Fourth Row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <CheckboxWithTextField
-                    name="orderNumber"
-                    placeholder={t("Order Number")}
-                    emptyBox={t("NoOrderFound")}
-                    selectText={t("SelectOrder")}
-                    items={ordersMenu}
-                    control={form.control}
-                    form={form}
-                    isEnabled={isOrderEnabled}
-                    setEnabled={setOrderEnabled}
-                    setSelected={(value) => form.setValue("orderNumber", value)}
-                  />
-                  <CheckboxWithTextField
-                    name="demoModelNumber"
-                    placeholder={t("ModelNo")}
-                    emptyBox={t("NoModelFound")}
-                    selectText={t("SelectModel")}
-                    items={demoModelNumbersMenu}
-                    control={form.control}
-                    form={form}
-                    isEnabled={isModelEnabled}
-                    setEnabled={setModelEnabled}
-                    setSelected={(value) =>
-                      form.setValue("demoModelNumber", value)
-                    }
-                  />
-                  <CheckboxWithTextField
-                    name="barcode"
-                    placeholder={t("Barcode")}
-                    emptyBox={t("NoBarcodeFound")}
-                    selectText={t("SelectBarcode")}
-                    items={barcodesMenu}
-                    control={form.control}
-                    form={form}
-                    isEnabled={isBarcodeEnabled}
-                    setEnabled={setBarcodeEnabled}
-                    setSelected={(value) => form.setValue("barcode", value)}
-                  />
-                </div>
+
 
                 {/* Fifth Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
