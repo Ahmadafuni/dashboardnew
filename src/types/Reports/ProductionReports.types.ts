@@ -4,9 +4,9 @@ interface QuantityDelivered {
 
 interface ModelDetails {
   Color: string;
-  Sizes: string;
+  Sizes: any;
   Quantity: {
-    StageName: string;
+    StageName: any;
     QuantityDelivered: QuantityDelivered;
   };
 }

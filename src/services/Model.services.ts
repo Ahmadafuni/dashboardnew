@@ -206,64 +206,66 @@ export const filterModels = async (
 };
 
 export const filterProductionModels = async (
-  setData: Dispatch<SetStateAction<any>>,
-  searchParams: any,
-  pages: number,
-  sizes: number,
-  setTotalPages?: Dispatch<SetStateAction<any>>,
-  setIsLoading?: Dispatch<SetStateAction<boolean>>
+    setData: Dispatch<SetStateAction<any>>,
+    searchParams: any,
+    pages: number,
+    sizes: number,
+    setTotalPages?: Dispatch<SetStateAction<any>>,
+    setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     if (setIsLoading) setIsLoading(true);
 
     const response = await axios.post(
-      "model/search",
-      { ...searchParams },
-      {
-        params: {
-          page: pages,
-          size: sizes,
-        },
-        headers: {
-          Authorization: `Bearer ${Cookies.get("access_token")}`,
-        },
-      }
+        "reports/productionReport",
+        { ...searchParams },
+        {
+          params: {
+            page: pages,
+            size: sizes,
+          },
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        }
     );
 
     const responseData: ReportsType = response.data;
 
     const reports = Array.isArray(responseData.data)
-      ? responseData.data.flatMap((item) =>
-          item.Details.map((detail) => {
-            return {
-              modelNumber: item.DemoModelNumber,
-              barcode: item.Barcode,
-              name:
-                item.ProductCatalog +
-                "-" +
-                item.CategoryOne +
-                "-" +
-                item.CategoryTwo,
-              textile: item.Textiles,
-              colors: detail.Color,
-              sizes: JSON.parse(detail.Sizes).map(
-                (size: { size: string; value: string }) =>
-                  size.size + " : " + size.value
-              ),
-              currentStage: detail.Quantity.StageName,
-              quantities: detail.Quantity.QuantityDelivered
-                ? // @ts-ignore
-                  detail.Quantity.QuantityDelivered.map(
-                    (size: { size: string; value: string }) =>
-                      `${size.size} : ${size.value}`
-                  ).join(" , ")
-                : [],
+        ? responseData.data.flatMap((item) =>
+            item.Details.map((detail) => {
+              return {
+                modelNumber: item.DemoModelNumber,
+                barcode: item.Barcode,
+                name:
+                    item.ProductCatalog +
+                    "-" +
+                    item.CategoryOne +
+                    "-" +
+                    item.CategoryTwo,
+                textile: item.Textiles,
+                colors: detail.Color,
+                // Directly map over the Sizes array since it's already in the correct format
+                sizes: detail.Sizes.map(
+                    (size: { label: string; value: string }) =>
+                        `${size.label} : ${size.value}`
+                ).join(", "),
+                currentStage: detail.Quantity.StageName.Department.Name, // Adjusting StageName access
+                quantities: detail.Quantity.QuantityDelivered
+                    ? Object.entries(detail.Quantity.QuantityDelivered)
+                        .map(
+                            ([size, value]) =>
+                                `${size} : ${value}`
+                        )
+                        .join(" , ")
+                    : [],
 
-              duration: item.TotalDurationInDays,
-            };
-          })
+                duration: item.TotalDurationInDays,
+              };
+            })
         )
-      : [];
+        : [];
 
     setData(reports);
     if (setTotalPages) setTotalPages(responseData.totalPages);

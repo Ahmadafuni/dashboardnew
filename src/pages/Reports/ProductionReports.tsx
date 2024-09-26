@@ -42,7 +42,6 @@ export default function ProductionReports() {
   const [isStartDateEnabled, setIsStartDateEnabled] = useState(false);
   const [isEndDateEnabled, setIsEndDateEnabled] = useState(false);
   const [isStatusEnabled, setStatusEnabled] = useState(false);
-  const [isDepartmentsEnabled, setDepartmentsEnabled] = useState(false);
   const [isDepartmentsNamesEnabled, setDepartmentsNamesEnabled] =
     useState(false);
   const [isProductCatalogueEnabled, setProductCatalogueEnabled] =
@@ -120,9 +119,9 @@ export default function ProductionReports() {
   const templatePatternOptions = useRecoilValue(templatePatternList);
   const templateTypeOptions = useRecoilValue(templateTypeList);
 
-  const departmentsNamesMenu = departmentsNamesOptions.map((dept: any) => ({
-    value: dept.Id + "",
-    label: dept.StageName,
+  const departmentsNamesMenu = departmentsNamesOptions.map((department: any) => ({
+    value: department.Id + "",
+    label: department.Name,
   }));
 
   const productCatalogueMenu = productCatalogueOptions.map(
@@ -226,7 +225,7 @@ export default function ProductionReports() {
             {!isCardCollapsed && (
               <CardContent className="space-y-4">
                 {/* First Row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FieldWithCheckbox
                       name="status"
                       label=""
@@ -234,9 +233,9 @@ export default function ProductionReports() {
                       fieldComponent={MultiSelectForField}
                       fieldProps={{
                         items: [
-                          { label: t("AWAITING"), value: "AWAITING" },
+                          { label: t("PENDING"), value: "PENDING" },
                           { label: t("ONGOING"), value: "ONGOING" },
-                          { label: t("ON CONFIRM"), value: "ONCONFIRM" },
+                          { label: t("ONHOLD"), value: "ONHOLD" },
                           { label: t("COMPLETED"), value: "COMPLETED" },
                         ],
                         form: form,
@@ -254,41 +253,16 @@ export default function ProductionReports() {
                     control={form.control}
                     fieldComponent={MultiSelectForField}
                     fieldProps={{
-                      items: [
-                        { label: t("CUTTING"), value: "1" },
-                        { label: t("TAILORING"), value: "2" },
-                        { label: t("PRINTING"), value: "3" },
-                        { label: t("BOXING"), value: "4" },
-                      ],
+                      items: departmentsNamesMenu,
                       form: form,
                       name: "departments",
                       selectText: "departments",
-                    }}
-                    isEnabled={isDepartmentsEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setDepartmentsEnabled,
-                        "departments",
-                        ""
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="currentStage"
-                    label=""
-                    control={form.control}
-                    fieldComponent={MultiSelectForField}
-                    fieldProps={{
-                      items: departmentsNamesMenu,
-                      form: form,
-                      name: "currentStage",
-                      selectText: "currentStage",
                     }}
                     isEnabled={isDepartmentsNamesEnabled}
                     onCheckedChange={() =>
                       handleCheckboxChange(
                         setDepartmentsNamesEnabled,
-                        "currentStage",
+                        "departments",
                         ""
                       )
                     }
