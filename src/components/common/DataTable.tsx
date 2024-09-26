@@ -15,28 +15,50 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ArrowUpDown, FileText, Minus, Plus } from "lucide-react";
 import * as XLSX from 'xlsx';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import axios from "axios";
+import { toast } from "sonner";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    tableName: string; 
 }
 
 export default function DataTable<TData, TValue>({
     columns,
     data,
+    tableName
 }: DataTableProps<TData, TValue>) {
     const [filters, setFilters] = useState<{ column: string; value: string }[]>([]);
     const [sorting, setSorting] = useState([]);
     const [pageSize, setPageSize] = useState(10);
+    const [fieldNames, setFieldNames] = useState<string[]>([]);
+    const [filteredData, setFilteredData] = useState<TData[]>(data); // الحالة لتخزين البيانات المفلترة
+
+    const fetchFieldNames = async () => {
+        try {
+            const response = await axios.get(`/datatable/fields/${tableName}`); 
+            const fieldNamesData = response.data;
+            setFieldNames(fieldNamesData.map((field: { column_name: string }) => field.column_name));
+        } catch (error) {
+            console.error('Error fetching field names:', error);
+        }
+    };
+
+    useEffect(() => {
+        setFilteredData(data);
+        fetchFieldNames();
+        console.log("FieldNames", fieldNames);
+    }, []);
 
     const table = useReactTable({
-        data,
+        data: filteredData.length > 0 ? filteredData : data,
         columns,
         state: {
             sorting,
@@ -49,6 +71,30 @@ export default function DataTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
     });
 
+    const clearAllFilters = () => {
+        setFilteredData([]);
+        setFilters([]);
+    };
+
+    const applyFilters = async () => {
+        // Check for empty filter values
+        for (const filter of filters) {
+            if (!filter.column || !filter.value) {
+                toast.error("Please select a column and enter a value for all filters.");
+                return;
+            }
+        }
+
+        try {
+            const response = await axios.post(`/datatable/filter/${tableName}`, { filters });
+            console.log("response", response.data);
+            // تحديث الحالة بالبيانات الجديدة المفلترة
+            setFilteredData(response.data);
+        } catch (error) {
+            console.error('Error applying filters:', error);
+        }
+    };
+
     const handleFilterChange = (index: number, field: string, value: string) => {
         const newFilters = [...filters];
         // @ts-ignore
@@ -57,7 +103,7 @@ export default function DataTable<TData, TValue>({
     };
 
     const exportToExcel = () => {
-        const ws = XLSX.utils.json_to_sheet(data);
+        const ws = XLSX.utils.json_to_sheet(filteredData); // استخدم البيانات المفلترة هنا
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Data');
 
@@ -75,72 +121,77 @@ export default function DataTable<TData, TValue>({
         <div>
             <div className="flex items-center justify-between mb-4">
                 {/* Filter Section */}
-               
                 <div className="flex flex-col gap-4">
-    {filters.length === 0 ? (
-        <Button onClick={() => setFilters([{ column: '', value: '' }])}>
-            Add Filter
-        </Button>
-    ) : (
-        filters.map((filter, index) => (
-            <div key={index} className="flex flex-col md:flex-row items-start md:items-center gap-2">
-                {/* Column Selector */}
-                <Select
-                    onValueChange={(value) => handleFilterChange(index, 'column', value)}
-                >
-                    <SelectTrigger className="w-full md:w-36 bg-white border border-gray-300 rounded-md text-sm focus:ring focus:ring-blue-500 focus:border-blue-500 text-gray-800">
-                        <SelectValue placeholder="Select column" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {columns.map((column) => (
-                            // @ts-ignore
-                            <SelectItem key={column.id} value={column.header}>
-                                {column.id}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                    {filters.length === 0 ? (
+                        <Button onClick={() => setFilters([{ column: '', value: '' }])}>
+                            Add Filter
+                        </Button>
+                    ) : (
+                        filters.map((filter, index) => (
+                            <div key={index} className="flex flex-col md:flex-row items-start md:items-center gap-2">
+                                {/* Column Selector */}
+                                <Select onValueChange={(value) => handleFilterChange(index, 'column', value)}>
+                                    <SelectTrigger className="w-full md:w-36 bg-white border border-gray-300 rounded-md text-sm focus:ring focus:ring-blue-500 focus:border-blue-500 text-gray-800">
+                                        <SelectValue placeholder="Select column" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {fieldNames.map((fieldName) => (
+                                            <SelectItem key={fieldName} value={fieldName}>
+                                                {fieldName}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
 
-                {/* Input Field for Filter Value */}
-                <input
-                    type="text"
-                    value={filter.value}
-                    onChange={(e) => handleFilterChange(index, 'value', e.target.value)}
-                    placeholder="Enter value..."
-                    className="input w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm bg-white text-gray-800 focus:ring focus:ring-blue-500 focus:border-blue-500"
-                />
+                                {/* Input Field for Filter Value */}
+                                <input
+                                    type="text"
+                                    value={filter.value}
+                                    onChange={(e) => handleFilterChange(index, 'value', e.target.value)}
+                                    placeholder="Enter value..."
+                                    className="input w-full md:w-60 border border-gray-300 rounded-md px-3 py-2 text-sm bg-white text-gray-800 focus:ring focus:ring-blue-500 focus:border-blue-500"
+                                />
 
-                {/* Add filter button */}
-                <Button
-                    className="text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md px-4 py-2 flex items-center"
-                    onClick={() => setFilters([...filters, { column: '', value: '' }])}
-                >
-                    <Plus size={20} />
-                </Button>
+                                {/* Add filter button */}
+                                <Button
+                                    className="text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md px-4 py-2 flex items-center"
+                                    onClick={() => setFilters([...filters, { column: '', value: '' }])}
+                                >
+                                    <Plus size={20} />
+                                </Button>
 
-                {/* Remove filter button */}
-                {filters.length > 1 && (
-                    <Button
-                        className="text-sm bg-red-500 text-white hover:bg-red-600 rounded-md px-4 py-2 flex items-center"
-                        onClick={() => {
-                            const updatedFilters = [...filters]; // نسخ قائمة الفلاتر
-                            updatedFilters.splice(index, 1); // حذف الفلتر بناءً على الفهرس المحدد
-                            setFilters(updatedFilters); // تحديث الحالة بعد الحذف
-                        }}
-                    >
-                        <Minus size={20} />
-                    </Button>
-                )}
+                                {/* Remove filter button */}
+                                {filters.length > 1 && (
+                                    <Button
+                                        className="text-sm bg-red-500 text-white hover:bg-red-600 rounded-md px-4 py-2 flex items-center"
+                                        onClick={() => {
+                                            const updatedFilters = [...filters];
+                                            updatedFilters.splice(index, 1);
+                                            setFilters(updatedFilters);
+                                        }}
+                                    >
+                                        <Minus size={20} />
+                                    </Button>
+                                )}
+                            </div>
+                        ))
+                    )}
+
+                    {/* Apply Filters Button */}
+                    {filters.length > 0 && ( // Show the button only if there are filters
+                        <div className="w-20">
+                            <div className="flex space-x-2">
+                                <Button onClick={applyFilters} className="bg-blue-500 text-white hover:bg-blue-600 rounded-md px-4 py-2 mt-4">
+                                    Apply Filters
+                                </Button>
+
+                                <Button onClick={clearAllFilters} className="bg-red-500 text-white hover:bg-red-600 rounded-md px-4 py-2 mt-4">
+                                    clear all Filters
+                                </Button>
+                            </div>
                         </div>
-                    ))
-                )}
-            </div>
-
-
-
-
-
-
+                    )}
+                </div>
 
                 {/* Export to Excel */}
                 <Tooltip.Provider>
@@ -196,47 +247,41 @@ export default function DataTable<TData, TValue>({
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center text-sm">
-                                No results.
+                            <TableCell colSpan={columns.length} className="text-center py-4">
+                                No data available.
                             </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
 
-            {/* Pagination Section */}
-            <div className="flex items-center justify-between mt-4">
-                <div className="flex items-center gap-2">
-                    <Button
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-md px-2 py-1"
-                    >
-                        <ChevronLeft className="w-4 h-4" />
-                    </Button>
-                    <Button
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-md px-2 py-1"
-                    >
-                        <ChevronRight className="w-4 h-4" />
-                    </Button>
-                    <span className="text-sm text-gray-600 mr-2">
-                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-                    </span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">Rows per page:</span>
+            {/* Pagination */}
+            <div className="mt-4">
+                <div className="flex items-center justify-between">
+                    <div className="text-sm text-gray-700">
+                        <span>{table.getFilteredRowModel().rows.length} results</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Button onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
+                            {'<<'}
+                        </Button>
+                        <Button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+                            {'<'}
+                        </Button>
+                        <Button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+                            {'>'}
+                        </Button>
+                        <Button onClick={() => table.setPageIndex(table.getPageCount() - 1)} disabled={!table.getCanNextPage()}>
+                            {'>>'}
+                        </Button>
+                    </div>
                     <Select value={pageSize.toString()} onValueChange={(value) => setPageSize(Number(value))}>
                         <SelectTrigger className="w-20">
-                            <SelectValue placeholder={pageSize.toString()} />
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            {[10, 20, 30, 40, 50].map((size) => (
-                                <SelectItem key={size} value={size.toString()}>
-                                    {size}
-                                </SelectItem>
+                            {[10, 20, 50, 100].map((size) => (
+                                <SelectItem key={size} value={size.toString()}>{size}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
