@@ -34,6 +34,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog";
+import OrderStatusChart from "@/components/ui/charts/OrderStatusChart.tsx";
+
 
 export default function Orders() {
   const setNewOrderModal = useSetRecoilState(newOrderModal);
@@ -185,6 +187,7 @@ export default function Orders() {
       <UpdateOrder getAllOrders={() => getAllOrders(setOrders)} />
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Orders")}</h1>
+        <OrderStatusChart></OrderStatusChart>
         <Separator />
       </div>
       <div className="space-y-2">
