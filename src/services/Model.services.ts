@@ -156,7 +156,6 @@ export const getAllDropdownOptions = async () => {
     throw error;
   }
 };
-
 export const filterModels = async (
   setData: Dispatch<SetStateAction<any>>,
   searchParams: any
@@ -225,49 +224,54 @@ export const filterProductionModels = async (
             size: sizes,
           },
           headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
           },
         }
     );
 
-    const responseData: ReportsType = response.data;
+    const responseData = response.data;
 
+    // Structure the data to match the format where variants are under the model
     const reports = Array.isArray(responseData.data)
-        ? responseData.data.flatMap((item) =>
-            item.Details.map((detail) => {
-              return {
-                modelNumber: item.DemoModelNumber,
-                barcode: item.Barcode,
-                name:
-                    item.ProductCatalog +
-                    "-" +
-                    item.CategoryOne +
-                    "-" +
-                    item.CategoryTwo,
-                textile: item.Textiles,
-                colors: detail.Color,
-                // Directly map over the Sizes array since it's already in the correct format
-                sizes: detail.Sizes.map(
-                    (size: { label: string; value: string }) =>
-                        `${size.label} : ${size.value}`
-                ).join(", "),
-                currentStage: detail.Quantity.StageName.Department.Name, // Adjusting StageName access
-                quantities: detail.Quantity.QuantityDelivered
-                    ? Object.entries(detail.Quantity.QuantityDelivered)
-                        .map(
-                            ([size, value]) =>
-                                `${size} : ${value}`
-                        )
-                        .join(" , ")
-                    : [],
+        ? responseData.data.flatMap((item: any) => {
+          const demoModelNumber = item.DemoModelNumber;
+          const modelName = item.ModelName;
 
-                duration: item.TotalDurationInDays,
-              };
-            })
-        )
+          // Map over each variant, making sure the first variant has the model info,
+          // but subsequent variants have empty values for the model fields.
+          return item.Details.map((detail: any, index: any) => ({
+            modelNumber: index === 0 ? demoModelNumber : "", // Only the first row has the model number
+            name: index === 0 ? modelName : "", // Only the first row has the model name
+            barcode: index === 0 ? item.Barcode : "", // Example: if you have barcode data
+            textile: index === 0 ? item.Textiles : "", // Only the first row has textile
+            colors: detail.Color,
+            sizes: detail.Sizes.map(
+                (size: { label: string; value: string }) =>
+                    `${size.label} : ${size.value}`
+            ).join(", "),
+            currentStage: detail.DepartmentName || "N/A",
+            QuantityDelivered: detail.QuantityDelivered
+                ? Object.entries(detail.QuantityDelivered)
+                    .map(([size, value]) => `${size} : ${value}`)
+                    .join(" , ")
+                : "N/A",
+            QuantityReceived: detail.QuantityReceived
+                ? Object.entries(detail.QuantityReceived)
+                    .map(([size, value]) => `${size} : ${value}`)
+                    .join(" , ")
+                : "N/A",
+            DamagedItem: detail.DamagedItem
+                ? Object.entries(detail.DamagedItem)
+                    .map(([size, value]) => `${size} : ${value}`)
+                    .join(" , ")
+                : "N/A",
+            duration: detail.DurationInHours || "N/A",
+          }));
+        })
         : [];
 
     setData(reports);
+
     if (setTotalPages) setTotalPages(responseData.totalPages);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
@@ -275,6 +279,8 @@ export const filterProductionModels = async (
     if (setIsLoading) setIsLoading(false);
   }
 };
+
+
 
 export const filterOrderModels = async (
   setData: Dispatch<SetStateAction<any>>,

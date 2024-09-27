@@ -196,7 +196,9 @@ export default function ProductionReports() {
     { accessorKey: "textile", header: t("Textiles") },
     { accessorKey: "colors", header: t("Color") },
     { accessorKey: "sizes", header: t("Sizes") },
-    { accessorKey: "quantities", header: t("Delivered Quantity") },
+    { accessorKey: "QuantityReceived", header: t("QuantityReceived") },
+    { accessorKey: "DeliveredQuantity", header: t("DeliveredQuantity") },
+    { accessorKey: "DamagedItem", header: t("DamagedItem") },
     { accessorKey: "currentStage", header: t("CurrentStage") },
     { accessorKey: "duration", header: t("Duration") },
   ];
