@@ -95,7 +95,7 @@ export default function Suppliers() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={supplierColumns} data={suppliers} />
+          <DataTable columns={supplierColumns} data={suppliers} tableName="Suppliers"/>
         </div>
       </div>
     </div>

@@ -95,7 +95,7 @@ export default function TemplatePattern() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={templatePatternColumns} data={templatePatterns} />
+          <DataTable columns={templatePatternColumns} data={templatePatterns} tableName="TemplatePatterns" />
         </div>
       </div>
     </div>

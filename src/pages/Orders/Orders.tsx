@@ -199,7 +199,7 @@ export default function Orders() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={orderColumns} data={orders} />
+          <DataTable columns={orderColumns} data={orders} tableName="Orders" />
         </div>
       </div>
     </div>

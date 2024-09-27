@@ -80,7 +80,7 @@ export default function Sizes() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={sizeColumns} data={sizes} />
+          <DataTable columns={sizeColumns} data={sizes} tableName="Sizes"/>
         </div>
       </div>
     </div>

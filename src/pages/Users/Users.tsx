@@ -115,7 +115,7 @@ export default function Users() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={userColumns} data={users} />
+          <DataTable columns={userColumns} data={users} tableName="Users"/>
         </div>
       </div>
     </div>

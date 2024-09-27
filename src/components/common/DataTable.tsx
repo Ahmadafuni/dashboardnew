@@ -41,38 +41,9 @@ export default function DataTable<TData, TValue>({
     const [fieldNames, setFieldNames] = useState<string[]>([]);
     const [filteredData, setFilteredData] = useState<TData[]>(data); // الحالة لتخزين البيانات المفلترة
 
-    const fetchFieldNames = async () => {
-        try {
-            const response = await axios.get(`/datatable/fields/${tableName}`); 
-            const fieldNamesData = response.data;
-            setFieldNames(fieldNamesData.map((field: { column_name: string }) => field.column_name));
-        } catch (error) {
-            console.error('Error fetching field names:', error);
-        }
-    };
-
-    useEffect(() => {
-        setFilteredData(data);
-        fetchFieldNames();
-        console.log("FieldNames", fieldNames);
-    }, []);
-
-    const table = useReactTable({
-        data: filteredData.length > 0 ? filteredData : data,
-        columns,
-        state: {
-            sorting,
-        },
-        // @ts-ignore
-        onSortingChange: setSorting,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-    });
 
     const clearAllFilters = () => {
-        setFilteredData([]);
+        setFilteredData(data); // إعادة تعيين البيانات الأصلية
         setFilters([]);
     };
 
@@ -88,12 +59,64 @@ export default function DataTable<TData, TValue>({
         try {
             const response = await axios.post(`/datatable/filter/${tableName}`, { filters });
             console.log("response", response.data);
-            // تحديث الحالة بالبيانات الجديدة المفلترة
+            // تحديث البيانات المفلترة
             setFilteredData(response.data);
         } catch (error) {
             console.error('Error applying filters:', error);
         }
     };
+
+    const fetchFieldNames = async () => {
+    try {
+        const response = await axios.get(`/datatable/fields/${tableName}`);
+        const fieldNamesData = response.data;
+
+        // جلب جميع الحقول (من الجدول الرئيسي والجداول المرتبطة)
+        const allFields = fieldNamesData.fields;
+
+        // تحويل الحقول المرتبطة إلى صيغة `relatedTable.field`
+        // @ts-ignore
+        const formattedFields = allFields.map(field => {
+            if (field.relatedTable) {
+                return `${field.relatedTable}.${field.column_name}`;
+            }
+            return field.column_name;
+        });
+
+        // تحديث حالة الحقول
+        setFieldNames(formattedFields);
+
+        console.log("response.data", response.data);
+    } catch (error) {
+        console.error('Error fetching field names:', error);
+    }
+};
+
+    
+    
+
+    useEffect(() => {
+        setFilteredData(data); // تهيئة البيانات المفلترة بالبيانات الأصلية
+        fetchFieldNames();
+        console.log("FieldNames", fieldNames);
+    }, [data]); // تحديث البيانات المفلترة عند تحديث البيانات الأصلية
+
+    const table = useReactTable({
+        data: filteredData, // استخدام البيانات المفلترة هنا
+        columns,
+        state: {
+            sorting,
+        },
+         // @ts-ignore
+        onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+    });
+
+   
+    
 
     const handleFilterChange = (index: number, field: string, value: string) => {
         const newFilters = [...filters];

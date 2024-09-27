@@ -94,7 +94,7 @@ export default function Warehouses() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={warehouseColumns} data={warehouses} />
+          <DataTable columns={warehouseColumns} data={warehouses} tableName="Warehouses" />
         </div>
       </div>
     </div>

@@ -86,6 +86,7 @@ export default function IncomingMovement() {
                     <DataTable
                         columns={materialMovementsColumns}
                         data={materialMovements ?? []}
+                        tableName="ChildMaterials"
                     />
                 </div>
             </div>

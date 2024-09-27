@@ -121,7 +121,7 @@ export default function Collections() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={collectionColumns} data={collections} />
+          <DataTable columns={collectionColumns} data={collections} tableName="Collections" />
         </div>
       </div>
     </div>

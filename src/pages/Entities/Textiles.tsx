@@ -93,7 +93,7 @@ export default function Textiles() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={textileColumns} data={textiles} />
+          <DataTable columns={textileColumns} data={textiles} tableName="ProductCatalogTextiles"/>
         </div>
       </div>
     </div>

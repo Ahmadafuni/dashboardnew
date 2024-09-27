@@ -132,7 +132,7 @@ export default function Templates() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={templateColumns} data={templates} />
+          <DataTable columns={templateColumns} data={templates} tableName="Templates"/>
         </div>
       </div>
     </div>

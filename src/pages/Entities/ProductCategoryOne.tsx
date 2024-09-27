@@ -109,6 +109,7 @@ export default function ProductCategoryOne() {
           <DataTable
             columns={productCategoryOneColumns}
             data={productCategoryOnes}
+            tableName="ProductCatalogCategoryOne"
           />
         </div>
       </div>
