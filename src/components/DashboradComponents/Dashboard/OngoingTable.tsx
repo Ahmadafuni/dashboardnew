@@ -43,6 +43,7 @@ interface Props {
       awaitingPage: number;
       inProgressPage: number;
       completedPage: number;
+      finishedPage: number;
       givingConfirmationPage: number;
     }>
   >;
@@ -52,6 +53,7 @@ interface Props {
       awaitingSize: number;
       inProgressSize: number;
       completedSize: number;
+      finishedSize: number;
       givingConfirmationSize: number;
     }>
   >;
@@ -306,7 +308,7 @@ export default function OngoingTable({
                 )}
               </TableHead>
               <TableHead onClick={() => requestSort("TextileName")}>
-                {t("Textile")}
+                {t("TextileName")}
                 {sortConfig?.key === "TextileName" && (
                   sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
                 )}

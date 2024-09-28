@@ -115,6 +115,18 @@ export default function Sidebar() {
           icon: FileBarChart2,
           userRole: ["FACTORYMANAGER"],
         },
+        {
+          name: t("Production Reports"),
+          link: "/dashboard/productionreports",
+          icon: FileBarChart2,
+          userRole: ["FACTORYMANAGER"],
+        },
+        {
+          name: t("Order Reports"),
+          link: "/dashboard/orderreports",
+          icon: FileBarChart2,
+          userRole: ["FACTORYMANAGER"],
+        },
         /*{
           name: t("Archive"),
           link: "/dashboard/archive",

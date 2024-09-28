@@ -184,6 +184,7 @@
   "DeliveredQuantity": "Delivered Quantity",
   "DamageQuantity": "Damage Quantity",
   "Completed": "Completed",
+  "Finished": "Finished",
   "CompleteVariant": "Complete Variant",
   "QuantityReceived": "Quantity Received",
   "QuantityDelivered": "Quantity Delivered",

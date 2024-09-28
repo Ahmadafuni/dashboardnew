@@ -24,7 +24,7 @@ import Cookies from "js-cookie";
 
 type Props = {
     getAllWorks: any;
-    selectedSizes: { label: string, value: string }[];
+    selectedSizes: {label: string , value:  string}[];
     quantityReceived: any[];
 };
 
@@ -38,9 +38,9 @@ export default function CompleteDialog({
     const trackingId = useRecoilValue(currentTrackingId);
     const { t } = useTranslation();
 
-    const [damagedItemPairs, setDamagedItemPairs] = useState<{ size: string; value: string }[]>([]);
     const [quantityReceivedPairs, setQuantityReceivedPairs] = useState<{ size: string; value: string }[]>([]);
     const [quantityDeliveredPairs, setQuantityDeliveredPairs] = useState<{ size: string; value: string }[]>([]);
+    const [damagedItemPairs, setDamagedItemPairs] = useState<{ size: string; value: string }[]>([]);
 
     const form = useForm<z.infer<typeof othersSendConfirmationSchema>>({
         resolver: zodResolver(othersSendConfirmationSchema),

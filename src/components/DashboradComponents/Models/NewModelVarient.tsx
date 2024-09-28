@@ -44,6 +44,7 @@ export default function NewModelVarient() {
   const [varients, setVarients] = useRecoilState(modelVarientNew);
   const resetVariants = useResetRecoilState(modelVarientNew); // Create reset function
   const [isLoading, setIsLoading] = useState(false);
+  const [tempVarients, setTempVarients] = useState([]); // Temporary storage for variants
 
   const form = useForm<z.infer<typeof ModelVarientSchema>>({
     resolver: zodResolver(ModelVarientSchema),
@@ -54,8 +55,8 @@ export default function NewModelVarient() {
     },
   });
 
-  const handleAddVariant = async (data: z.infer<typeof ModelVarientSchema>) => {
-    if (varients.some((v) => v.Color === data.Color)) {
+  const handleAddVariant = (data: z.infer<typeof ModelVarientSchema>) => {
+    if (tempVarients.some((v) => v.Color === data.Color)) {
       toast.error("Cannot add the same color twice!");
       return;
     }
@@ -73,9 +74,9 @@ export default function NewModelVarient() {
       value: quantityPerSize,
     }));
 
-    // Add new variant to the list
-    setVarients([
-      ...varients,
+    // Temporarily store the variants to be submitted later
+    setTempVarients([
+      ...tempVarients,
       {
         Id: crypto.randomUUID(),
         Color: data.Color,
@@ -89,43 +90,36 @@ export default function NewModelVarient() {
   };
 
   const handleRemoveVariant = (id: string) => {
-    setVarients(varients.filter((variant) => variant.Id !== id));
+    setTempVarients(tempVarients.filter((variant) => variant.Id !== id));
   };
 
   const handleFinalSubmit = async () => {
-    if (varients.length === 0) {
-      toast.error("You have to enter model details before proceeding!");
+    if (tempVarients.length === 0) {
+      toast.error("Please add at least one variant before submitting.");
       return;
     }
+
     setIsLoading(true);
     try {
+      const requests = tempVarients.map((variant) => {
+        return axios.post(`/model/varients/${modelId}`, variant, {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        });
+      });
 
-      for (const variant of varients) {
-        const updatedData = {
-          ...variant,
-          Sizes: variant.Sizes.map((size) => size.label), // Use the transformed sizes array
-        };
-        const newVarients = await axios.post(
-            `/model/varients/${modelId}`,
-            updatedData,
-            {
-              headers: {
-                Authorization: `bearer ${Cookies.get("access_token")}`, // Corrected 'bearer' to 'Bearer' (capitalize first letter)
-              },
-            }
-        );
-
-        if (newVarients.status !== 201) {
-          throw new Error(`Failed to add variant: ${variant.Color}`);
-        }
-      }
+      // Await all API calls
+      await Promise.all(requests);
 
       toast.success("All variants submitted successfully!");
+      resetVariants();
+      setTempVarients([]); // Clear the temporary variant list after submission
+      navigate(`/dashboard/orders/model/varients/${modelId}`);
     } catch (error) {
       toast.error(`An error occurred: ${error.message}`);
     } finally {
       setIsLoading(false);
-      navigate(`/dashboard/orders/model/varients/${modelId}`);
     }
   };
 
@@ -168,7 +162,7 @@ export default function NewModelVarient() {
                         <Button
                             variant="outline"
                             className="mt-8"
-                            onClick={() => setNewColorModal(true)} // This line correctly sets the modal state to open
+                            onClick={() => setNewColorModal(true)} // Open new color modal
                             type="button"
                         >
                           <Plus className="h-4 w-4" />
@@ -208,6 +202,7 @@ export default function NewModelVarient() {
               </div>
             </form>
           </Form>
+
           <Table>
             <TableHeader>
               <TableRow>
@@ -219,7 +214,7 @@ export default function NewModelVarient() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {varients.map((variant) => (
+              {tempVarients.map((variant) => (
                   <TableRow key={variant.Id}>
                     <TableCell>
                       {colorsList.find((item) => item.value === variant.Color)?.label}
@@ -240,11 +235,12 @@ export default function NewModelVarient() {
             </TableBody>
           </Table>
         </div>
+
         <div className="flex justify-end">
           <Button
               type="button"
               disabled={isLoading}
-              onClick={handleFinalSubmit} // Handle final submission
+              onClick={handleFinalSubmit} // Handle final submission for all variants
           >
             {isLoading ? (
                 <>

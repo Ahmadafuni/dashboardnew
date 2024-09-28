@@ -32,6 +32,7 @@ interface Props {
       awaitingPage: number;
       inProgressPage: number;
       completedPage: number;
+      finishedPage: number;
       givingConfirmationPage: number;
     }>
   >;
@@ -41,6 +42,7 @@ interface Props {
       awaitingSize: number;
       inProgressSize: number;
       completedSize: number;
+      finishedSize: number;
       givingConfirmationSize: number;
     }>
   >;
@@ -268,7 +270,7 @@ else {
                 )}
               </TableHead>
               <TableHead onClick={() => requestSort("TextileName")}>
-                {t("Textile")}
+                {t("TextileName")}
                 {sortConfig?.key === "TextileName" && (
                   sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
                 )}
@@ -288,12 +290,6 @@ else {
               <TableHead onClick={() => requestSort("ModelVariant.Quantity")}>
                 {t("Quantity")}
                 {sortConfig?.key === "ModelVariant.Quantity" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("QuantityDelivered")}>
-                {t("QuantityDelivered")}
-                {sortConfig?.key === "QuantityDelivered" && (
                   sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
                 )}
               </TableHead>
@@ -330,6 +326,7 @@ else {
 
           <TableBody>
             {sortedWorks.map((item) => {
+              console.log("item.ModelVariant",item);
            const isPaused = item.ModelVariant.RunningStatus === "ONHOLD";
               return (
                 <TableRow 
@@ -352,8 +349,7 @@ else {
                  </TableCell>
 
                   <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
-                  <TableCell>{item.QuantityDelivered || t("N/A")}</TableCell>
-  
+
                   {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
                     renderAdminRow(item)
                   ) : (

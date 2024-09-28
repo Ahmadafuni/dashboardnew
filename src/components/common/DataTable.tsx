@@ -1,19 +1,19 @@
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    getFilteredRowModel,
-    getSortedRowModel,
-    useReactTable,
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -145,15 +145,20 @@ export default function DataTable<TData, TValue>({
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Data');
 
-        const now = new Date();
-        const currentTimestamp = now.toLocaleString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        }).replace(/, /g, ' ').replace(/:/g, '-').replace(/\s/g, '-').replace(/\/|,/g, '-');
-        const filename = `data-${currentTimestamp}.xlsx`;
-        XLSX.writeFile(wb, filename);
-    };
+    const now = new Date();
+    const currentTimestamp = now
+      .toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+      .replace(/, /g, " ")
+      .replace(/:/g, "-")
+      .replace(/\s/g, "-")
+      .replace(/\/|,/g, "-");
+    const filename = `data-${currentTimestamp}.xlsx`;
+    XLSX.writeFile(wb, filename);
+  };
 
     return (
         <div>

@@ -1,3 +1,4 @@
+import { ReportsType } from "@/types/Reports/ProductionReports.types";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
@@ -169,8 +170,6 @@ export const filterModels = async (
 
     const reports = response.data.data.flatMap((item: any) =>
       item.Details.map((detail: any, index: number) => {
-        console.log(item);
-
         return {
           modelId: item.ModelId,
           collectionId: item.CollectionId,
@@ -185,7 +184,10 @@ export const filterModels = async (
           productCategoryTwo: index === 0 ? item.CategoryTwo : "",
           textiles: index === 0 ? item.Textiles : "",
           detailColor: detail.Color,
-          detailSize: JSON.parse(detail.Sizes),
+          sizes: JSON.parse(detail.Sizes).map(
+            (size: { size: string; value: string }) =>
+              size.size + " : " + size.value
+          ),
           currentStage: detail.Quantity.StageName,
           detailQuantity: Object.entries(detail.Quantity.QuantityDelivered)
             .map(([key, value]) => `${key} : ${value}`)
@@ -197,6 +199,144 @@ export const filterModels = async (
     );
 
     setData(reports);
+  } catch (error) {
+    console.error("Failed to fetch report results:", error);
+    throw error;
+  }
+};
+
+export const filterProductionModels = async (
+  setData: Dispatch<SetStateAction<any>>,
+  searchParams: any,
+  pages: number,
+  sizes: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+) => {
+  try {
+    if (setIsLoading) setIsLoading(true);
+
+    const response = await axios.post(
+      "model/search",
+      { ...searchParams },
+      {
+        params: {
+          page: pages,
+          size: sizes,
+        },
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      }
+    );
+
+    const responseData: ReportsType = response.data;
+
+    const reports = Array.isArray(responseData.data)
+      ? responseData.data.flatMap((item) =>
+          item.Details.map((detail) => {
+            return {
+              modelNumber: item.DemoModelNumber,
+              barcode: item.Barcode,
+              name:
+                item.ProductCatalog +
+                "-" +
+                item.CategoryOne +
+                "-" +
+                item.CategoryTwo,
+              textile: item.Textiles,
+              colors: detail.Color,
+              sizes: JSON.parse(detail.Sizes).map(
+                (size: { size: string; value: string }) =>
+                  size.size + " : " + size.value
+              ),
+              currentStage: detail.Quantity.StageName,
+              quantities: detail.Quantity.QuantityDelivered
+                ? // @ts-ignore
+                  detail.Quantity.QuantityDelivered.map(
+                    (size: { size: string; value: string }) =>
+                      `${size.size} : ${size.value}`
+                  ).join(" , ")
+                : [],
+
+              duration: item.TotalDurationInDays,
+            };
+          })
+        )
+      : [];
+
+    setData(reports);
+    if (setTotalPages) setTotalPages(responseData.totalPages);
+  } catch (error) {
+    console.error("Failed to fetch report results:", error);
+  } finally {
+    if (setIsLoading) setIsLoading(false);
+  }
+};
+
+export const filterOrderModels = async (
+  setData: Dispatch<SetStateAction<any>>,
+  searchParams: any,
+  pages: number,
+  sizes: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+) => {
+  try {
+    setIsLoading && setIsLoading(true);
+
+    const response = await axios.post(
+      "model/search",
+      { ...searchParams },
+      {
+        params: {
+          page: pages,
+          size: sizes,
+        },
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      }
+    );
+
+    const responseData: ReportsType = response.data;
+
+    const reports = responseData.data.flatMap((item) =>
+      item.Details.map((detail) => {
+        return {
+          modelNumber: item.DemoModelNumber,
+          barcode: item.Barcode,
+          collection: item.CollectionName,
+          order: item.OrderName,
+          name:
+            item.ProductCatalog +
+            "-" +
+            item.CategoryOne +
+            "-" +
+            item.CategoryTwo,
+          textile: item.Textiles,
+          colors: detail.Color,
+          sizes: JSON.parse(detail.Sizes).map(
+            (size: { size: string; value: string }) =>
+              size.size + " : " + size.value
+          ),
+          quantities: detail.Quantity.QuantityDelivered
+            ? // @ts-ignore
+              detail.Quantity.QuantityDelivered.map(
+                (size: { size: string; value: string }) =>
+                  `${size.size} : ${size.value}`
+              ).join(" , ")
+            : [],
+          currentStage: detail.Quantity.StageName,
+          modelStatus: item.ModelStatus,
+        };
+      })
+    );
+
+    console.log(reports);
+    setData(reports);
+    setTotalPages && setTotalPages(responseData.totalPages);
+    setIsLoading && setIsLoading(false);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
     throw error;
