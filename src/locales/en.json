@@ -363,5 +363,7 @@
   "NoValidMeasurements": "Excel not valid: no valid measurements found.",
   "ImportFromExcel": "Import from Excel",
   "Archive": "Archive",
-  "DragMessage": "Drag 'n' drop some images here, or click to select files"
+  "DragMessage": "Drag 'n' drop some images here, or click to select files",
+  "Apply Filters": "Apply Filters",
+  "clear all Filters": "clear all Filters"
 }

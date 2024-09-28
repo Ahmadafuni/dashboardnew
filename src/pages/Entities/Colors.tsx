@@ -102,7 +102,18 @@ export default function Colors() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={colorColumns} data={colors} tableName="Colors" />
+          <DataTable 
+            columns={colorColumns} 
+            data={colors} 
+            tableName="Colors"
+            fieldFilter={
+              {
+                'ColorName': 'ColorName',
+                'ColorCode': 'ColorCode',
+                "Description": 'Description'
+              }
+            }
+            />
         </div>
       </div>
     </div>
