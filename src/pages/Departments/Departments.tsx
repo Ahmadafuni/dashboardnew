@@ -69,7 +69,13 @@ export default function Departments() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={departmentColumns} data={departments} tableName="Departments"/>
+          <DataTable columns={departmentColumns} data={departments} tableName="Departments"
+          fieldFilter={{
+            "Name" : "Name" , 
+            "Location" : "Location" , 
+            "Description" : "Description"
+          }}
+          />
         </div>
       </div>
     </div>

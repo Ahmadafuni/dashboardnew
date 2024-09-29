@@ -36,8 +36,8 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
     const variantId = useRecoilValue(currentVariantId);
     const { t } = useTranslation();
 
-    const [damagedItemPairs, setDamagedItemPairs] = useState<{ size: string; value: string }[]>([]);
-    const [quantityInNumPairs, setQuantityInNumPairs] = useState<{ size: string; value: string }[]>([]);
+    const [damagedItemPairs, setDamagedItemPairs] = useState<{ label: string; value: string }[]>([]);
+    const [quantityInNumPairs, setQuantityInNumPairs] = useState<{ label: string; value: string }[]>([]);
 
     const form = useForm<z.infer<typeof cuttingSendConfirmationSchema>>({
         resolver: zodResolver(cuttingSendConfirmationSchema),
@@ -56,19 +56,32 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
 
     useEffect(() => {
         if (selectedSizes && selectedSizes.length > 0) {
-            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label, value: "" })));
-            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label, value: "" })));
+            setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label, value: "" })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ label: size.label, value: "" })));
         }
+        
     }, [selectedSizes]);
 
     const handleSubmit = async (data: z.infer<typeof cuttingSendConfirmationSchema>) => {
         setIsLoading(true);
         try {
+
+            
+            
             const payload = {
                 ...data,
                 DamagedItem: JSON.stringify(damagedItemPairs),
                 QuantityInNum: JSON.stringify(quantityInNumPairs),
             };
+
+            // test
+            //  console.log("quantityInNumPairs" , quantityInNumPairs);
+            //  console.log("quantityInNumPairs" , quantityInNumPairs);
+            //  console.log("selectedSizes" , selectedSizes);
+
+            //  console.log("payload" , payload);
+            //  setIsLoading(false);
+            //  return ;
 
             const newNote = await axios.post(
                 `trackingmodels/sent/cutting/checking/variant/${variantId}`,
@@ -81,8 +94,8 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
             );
             toast.success(newNote.data.message);
             form.reset();
-            setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
-            setQuantityInNumPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
+            setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label , value: "" })));
+            setQuantityInNumPairs(selectedSizes.map(size => ({ label: size.label , value: "" })));
             getAllWorks();
             setIsLoading(false);
             setOpen(false);
@@ -94,7 +107,7 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
         }
     };
 
-    const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>) => {
+    const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{ label: string; value: string }[]>>) => {
         setPairs((prev) => {
             const updatedPairs = [...prev];
             updatedPairs[index].value = value;
@@ -102,14 +115,14 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
         });
     };
 
-    const renderTable = (pairs: { size: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>, label: string) => (
+    const renderTable = (pairs: { label: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ label: string; value: string }[]>>, label: string) => (
         <div className="space-y-2">
             <label className="block font-medium text-sm">{label}</label>
             {pairs.map((pair, index) => (
                 <div key={index} className="flex items-center space-x-2">
                     <Input
                         type="text"
-                        value={pair.size}
+                        value={pair.label}
                         readOnly
                         className="w-full border p-1"
                         placeholder="Size"

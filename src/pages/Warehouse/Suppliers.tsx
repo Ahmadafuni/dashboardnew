@@ -95,7 +95,14 @@ export default function Suppliers() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={supplierColumns} data={suppliers} tableName="Suppliers"/>
+          <DataTable columns={supplierColumns} data={suppliers} tableName="Suppliers"
+          fieldFilter={{
+            "Name" : "Name" , 
+            "Address" : "Address" , 
+            "PhoneNumber" : "PhoneNumber" , 
+            "Description" : "Description"
+          }}
+          />
         </div>
       </div>
     </div>

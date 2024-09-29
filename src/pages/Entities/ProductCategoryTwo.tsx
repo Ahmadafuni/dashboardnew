@@ -116,6 +116,10 @@ export default function ProductCategoryTwo() {
             columns={productCategoryTwoColumns}
             data={productCategoryTwos}
             tableName="ProductCatalogCategoryTwo"
+            fieldFilter={{
+              "CategoryName" : "CategoryName",
+              "Description" : "CategoryDescription"
+            }}
           />
         </div>
       </div>

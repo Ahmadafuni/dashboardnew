@@ -94,7 +94,14 @@ export default function Warehouses() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={warehouseColumns} data={warehouses} tableName="Warehouses" />
+          <DataTable columns={warehouseColumns} data={warehouses} tableName="Warehouses" 
+          fieldFilter={{
+            "WarehouseName" : "WarehouseName" , 
+            "Location" : "Location" ,
+            "Capacity" : "Capacity", 
+            "Description" : "Description"
+          }}
+          />
         </div>
       </div>
     </div>

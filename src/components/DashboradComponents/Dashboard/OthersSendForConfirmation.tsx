@@ -34,9 +34,9 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
   const variantId = useRecoilValue(currentVariantId);
   const { t } = useTranslation();
 
-  const [damagedItemPairs, setDamagedItemPairs] = useState<{ size: string; value: string }[]>([]);
-  const [quantityReceivedPairs, setQuantityReceivedPairs] = useState<{ size: string; value: string }[]>([]);
-  const [quantityDeliveredPairs, setQuantityDeliveredPairs] = useState<{ size: string; value: string }[]>([]);
+  const [damagedItemPairs, setDamagedItemPairs] = useState<{ label: string; value: string }[]>([]);
+  const [quantityReceivedPairs, setQuantityReceivedPairs] = useState<{ label: string; value: string }[]>([]);
+  const [quantityDeliveredPairs, setQuantityDeliveredPairs] = useState<{ label: string; value: string }[]>([]);
 
   const form = useForm<z.infer<typeof othersSendConfirmationSchema>>({
     resolver: zodResolver(othersSendConfirmationSchema),
@@ -50,12 +50,12 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
 
   useEffect(() => {
     if (open) {
-      setQuantityReceivedPairs(quantityReceived.map(size => ({ size: size.label, value: size.value })));
-      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
-      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: ""})));
+      setQuantityReceivedPairs(quantityReceived.map(size => ({ label: size.label, value: "" })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ label: size.label , value: "" })));
+      setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label , value: ""})));
 
       form.reset({
-        QuantityReceived: quantityReceived.map(item => ({ size: item.size, value: item.value })),
+        QuantityReceived: quantityReceived.map(item => ({ label: item.label, value: item.value })),
         QuantityDelivered: [],
         DamagedItem: [],
         Notes: "",
@@ -73,6 +73,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
         QuantityDelivered: JSON.stringify(quantityDeliveredPairs)
       };
 
+
       const newNote = await axios.post(
           `trackingmodels/sent/others/checking/variant/${variantId}`,
           payload,
@@ -84,9 +85,9 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
       );
       toast.success(newNote.data.message);
       form.reset();
-      setQuantityReceivedPairs(selectedSizes.map(size => ({size: size.label , value: "" })));
-      setQuantityDeliveredPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
-      setDamagedItemPairs(selectedSizes.map(size => ({ size: size.label , value: "" })));
+      setQuantityReceivedPairs(selectedSizes.map(size => ({label: size.label , value: "" })));
+      setQuantityDeliveredPairs(selectedSizes.map(size => ({ label: size.label , value: "" })));
+      setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label , value: "" })));
       getAllWorks();
       setIsLoading(false);
       setOpen(false);
@@ -98,7 +99,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
     }
   };
 
-  const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>) => {
+  const updatePair = (index: number, value: string, setPairs: React.Dispatch<React.SetStateAction<{ label: string; value: string }[]>>) => {
     setPairs((prev) => {
       const updatedPairs = [...prev];
       updatedPairs[index].value = value;
@@ -106,14 +107,14 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
     });
   };
 
-  const renderTable = (pairs: { size: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ size: string; value: string }[]>>, label: string) => (
+  const renderTable = (pairs: { label: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ label: string; value: string }[]>>, label: string) => (
       <div className="space-y-2">
         <label className="block font-medium text-sm">{label}</label>
         {pairs.map((pair, index) => (
             <div key={index} className="flex items-center space-x-2">
               <Input
                   type="text"
-                  value={pair.size}
+                  value={pair.label}
                   readOnly
                   className="w-full border p-1"
                   placeholder="Size"
@@ -166,6 +167,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
                 type="submit"
                 disabled={isLoading}
                 form="sent-confirmation-others"
+                
             >
               {isLoading ? (
                   <>

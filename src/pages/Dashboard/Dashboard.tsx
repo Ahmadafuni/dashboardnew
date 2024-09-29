@@ -93,11 +93,15 @@ export default function Dashboard() {
       getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading);
       getModelDetailsDepartment(setModelDetails , setIsLoading);
     }
+
   }, [user, pages, sizes]);
 
   
   const hasNullNextStage = (workList: any) => {
-    return workList.some((item: { NextStage: null }) => item.NextStage === null);
+
+    if(workList)
+      return workList.some((item: { NextStage: null }) => item.NextStage === null);
+    
   };
 
   const hideConfirmationTable = !(
@@ -105,7 +109,7 @@ export default function Dashboard() {
     (!hasNullNextStage(works.awaiting) &&
       !hasNullNextStage(works.inProgress) &&
       !hasNullNextStage(works.completed) &&
-      !hasNullNextStage(works.finished) &&
+      // !hasNullNextStage(works.finished) &&
       !hasNullNextStage(works.givingConfirmation))
   );
 

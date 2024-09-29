@@ -32,13 +32,15 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
     tableName: string;
     fieldFilter?: { [key: string]: string }; 
+    isDashboard?: boolean;
 }
 
 export default function DataTable<TData, TValue>({
     columns,
     data,
     tableName,
-    fieldFilter
+    fieldFilter,
+    isDashboard
 }: DataTableProps<TData, TValue>) {
     const [filters, setFilters] = useState<{ column: string; value: string }[]>([]);
     const [sorting, setSorting] = useState([]);
@@ -186,15 +188,14 @@ export default function DataTable<TData, TValue>({
             <div className="flex items-center justify-between mb-4">
              
             
-            
-                <div className="flex flex-col gap-4">
+            {!isDashboard && (<div className="flex flex-col gap-4">
                     {
                     filters.length === 0 ? (
                         <Button onClick={() => {
-                            if(fieldFilter)
+
+
                                 setFilters([{ column: '', value: '' }])
-                            else 
-                            toast.error("لم يتم تفعيل الفلتر بعد");
+                           
                         }}>
                             {t("Add Filter")}
                         </Button>
@@ -260,7 +261,8 @@ export default function DataTable<TData, TValue>({
                             </div>
                         </div>
                     )}
-                </div>
+                </div>)}
+                
                
 
                 <Tooltip.Provider>
@@ -325,72 +327,74 @@ export default function DataTable<TData, TValue>({
             </Table>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between mt-4">
-          
-                     <div className="flex items-center gap-2">
-                    <Button
-                    onClick={() => {
-                        // if (page && page > 1) {
-                        //   setPage && setPage((prev) => prev - 1);
-                        // }
-                    }}
-                    //disabled={page == 1}
-                    className="mr-2"
+            { isDashboard != true && (
+                                <div className="flex items-center justify-between mt-4">
+                        
+                        <div className="flex items-center gap-2">
+                        <Button
+                        onClick={() => {
+                            // if (page && page > 1) {
+                            //   setPage && setPage((prev) => prev - 1);
+                            // }
+                        }}
+                        //disabled={page == 1}
+                        className="mr-2"
+                        >
+                        <ChevronLeft className="w-4 h-4" />
+                        </Button>
+                        <Button
+                        onClick={() => {
+                            // if (page && totalPages && page < totalPages) {
+                            //   setPage && setPage((prev) => prev + 1);
+                            // }
+                        }}
+                        //disabled={page == totalPages}
+                        className="mr-2"
+                        >
+                        <ChevronRight className="w-4 h-4" />
+                        </Button>
+                        <span className="text-sm text-gray-600 mr-2">
+                        10 {/* Page {page} of {totalPages} */}
+                        </span>
+                    </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Rows per page:</span>
+                    <Select
+                    //  value={size ? size.toString() : "10"}
+                    //  onValueChange={(value) => setSize && setSize(Number(value))}
                     >
-                    <ChevronLeft className="w-4 h-4" />
-                    </Button>
-                    <Button
-                    onClick={() => {
-                        // if (page && totalPages && page < totalPages) {
-                        //   setPage && setPage((prev) => prev + 1);
-                        // }
-                    }}
-                    //disabled={page == totalPages}
-                    className="mr-2"
-                    >
-                    <ChevronRight className="w-4 h-4" />
-                    </Button>
-                    <span className="text-sm text-gray-600 mr-2">
-                    10 {/* Page {page} of {totalPages} */}
+                    <SelectTrigger className="w-20">
+                        <SelectValue placeholder={1
+                        // size && size.toString()
+                        } />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectScrollUpButton />
+                        {[10, 20, 30, 40, 50].map((s) => (
+                        <SelectItem key={s} value={s.toString()}>
+                            {s}
+                        </SelectItem>
+                        ))}
+                        <SelectScrollDownButton />
+                    </SelectContent>
+                    </Select>
+                    <span className="text-sm text-gray-600">
+                    Showing{" "}
+                    {table.getState().pagination.pageIndex *
+                        table.getState().pagination.pageSize +
+                        1}
+                    -
+                    {Math.min(
+                        (table.getState().pagination.pageIndex + 1) *
+                        table.getState().pagination.pageSize,
+                        table.getFilteredRowModel().rows.length
+                    )}{" "}
+                    of {table.getFilteredRowModel().rows.length}
                     </span>
-                  </div>
-            <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Rows per page:</span>
-                <Select
-                //  value={size ? size.toString() : "10"}
-                //  onValueChange={(value) => setSize && setSize(Number(value))}
-                >
-                <SelectTrigger className="w-20">
-                    <SelectValue placeholder={1
-                    // size && size.toString()
-                    } />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectScrollUpButton />
-                    {[10, 20, 30, 40, 50].map((s) => (
-                    <SelectItem key={s} value={s.toString()}>
-                        {s}
-                    </SelectItem>
-                    ))}
-                    <SelectScrollDownButton />
-                </SelectContent>
-                </Select>
-                <span className="text-sm text-gray-600">
-                Showing{" "}
-                {table.getState().pagination.pageIndex *
-                    table.getState().pagination.pageSize +
-                    1}
-                -
-                {Math.min(
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getState().pagination.pageSize,
-                    table.getFilteredRowModel().rows.length
-                )}{" "}
-                of {table.getFilteredRowModel().rows.length}
-                </span>
-            </div>
-           </div>
+                </div>
+                </div>
 
+        )}
          
             </div>
     );

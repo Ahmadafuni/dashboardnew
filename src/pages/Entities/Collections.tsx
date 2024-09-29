@@ -121,7 +121,12 @@ export default function Collections() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={collectionColumns} data={collections} tableName="Collections" />
+          <DataTable columns={collectionColumns} data={collections} tableName="Collections" 
+            fieldFilter={{
+              "CollectionName" : "CollectionName" ,
+              "Description" : "Description"
+            }}
+          />
         </div>
       </div>
     </div>

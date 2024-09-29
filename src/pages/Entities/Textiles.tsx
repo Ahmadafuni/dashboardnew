@@ -93,7 +93,15 @@ export default function Textiles() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={textileColumns} data={textiles} tableName="ProductCatalogTextiles"/>
+          <DataTable columns={textileColumns} data={textiles} tableName="ProductCatalogTextiles"
+            fieldFilter={{
+              "TextileName" : "TextileName" ,
+              "TextileType" : "TextileType" ,
+              "Composition" : "Composition" , 
+              "Description" : "Description"
+
+            }}
+          />
         </div>
       </div>
     </div>

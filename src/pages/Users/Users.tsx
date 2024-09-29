@@ -115,7 +115,16 @@ export default function Users() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={userColumns} data={users} tableName="Users"/>
+          <DataTable columns={userColumns} data={users} tableName="Users" 
+          fieldFilter={{
+            "Firstname" : "Firstname" , 
+            "Lastname" : "Lastname" , 
+            "Username" : "Username" , 
+            "Email" : "Email" , 
+            "PhoneNumber" : "PhoneNumber" , 
+            "Department" : "DepartmentId.Name"
+          }}
+          />
         </div>
       </div>
     </div>

@@ -66,7 +66,7 @@ export default function AwaitingTable({
 
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
-      return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
+      return quantity.map((q) => `${q.label}: ${q.value}`).join(", ");
     }
     return quantity;
   };
@@ -127,11 +127,6 @@ export default function AwaitingTable({
         }</p>;
       },
     },
-    {
-      accessorKey: "QuantityDelivered",
-      header: t("QuantityDelivered"),
-    },
-    
   ];
 
 
@@ -225,7 +220,7 @@ else {
 
 
   return (
-    <div>
+    <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Awaiting")}</h2>
       <div className="overflow-x-auto">
       
@@ -233,134 +228,8 @@ else {
       columns={templateColumns} 
       data={works.awaiting}
       tableName="TrakingModels"
+      isDashboard={true}
       />
-
-      
-        {/* <Table className="min-w-full">
-          <TableHeader>
-            <TableRow>
-              <TableHead onClick={() => requestSort("ModelVariant.Model.DemoModelNumber")}>
-                {t("ModelNumber")}
-                {sortConfig?.key === "ModelVariant.Model.DemoModelNumber" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("Barcode")}>
-                {t("Barcode")}
-                {sortConfig?.key === "Barcode" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("name")}>
-                {t("Name")}
-                {sortConfig?.key === "name" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("CollectionName")}>
-                {t("Collections")}
-                {sortConfig?.key === "CollectionName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("OrderNumber")}>
-                {t("OrderNumber")}
-                {sortConfig?.key === "OrderNumber" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("TextileName")}>
-                {t("TextileName")}
-                {sortConfig?.key === "TextileName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("ModelVariant.Color.ColorName")}>
-                {t("Color")}
-                {sortConfig?.key === "ModelVariant.Color.ColorName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("ModelVariant.Sizes")}>
-                {t("Sizes")}
-                {sortConfig?.key === "ModelVariant.Sizes" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("ModelVariant.Quantity")}>
-                {t("Quantity")}
-                {sortConfig?.key === "ModelVariant.Quantity" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
-                <>
-              
-                  <TableHead onClick={() => requestSort("CurrentStage.Department.Name")}>
-                    {t("CurrentStage")}
-                    {sortConfig?.key === "CurrentStage.Department.Name" && (
-                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                    )}
-                  </TableHead>
-
-                  <TableHead onClick={() => requestSort("NextStage.Department.Name")}>
-                    {t("NextStage")}
-                    {sortConfig?.key === "NextStage.Department.Name" && (
-                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                    )}
-                  </TableHead>
-
-                  <TableHead onClick={() => requestSort("StartTime")}>
-                    {t("StartTime")}
-                    {sortConfig?.key === "StartTime" && (
-                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                    )}
-                  </TableHead>
-                  <TableHead>{t("Action")}</TableHead>
-                </>
-              ) : (
-                <TableHead>{t("Action")}</TableHead>
-              )}
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {sortedWorks.map((item) => {
-              console.log("item.ModelVariant",item);
-           const isPaused = item.ModelVariant.RunningStatus === "ONHOLD";
-              return (
-                <TableRow 
-                key={item.Id} 
-                style={isPaused ? { backgroundColor: "orange" } : {}}
-                >
-                  <TableCell>{item.ModelVariant?.Model?.DemoModelNumber || t("N/A")}</TableCell>
-                  <TableCell>{item.Barcode || t("N/A")}</TableCell>
-                  <TableCell>{item.name || t("N/A")}</TableCell>
-                  <TableCell>{item.CollectionName || t("N/A")}</TableCell>
-                  <TableCell>{item.OrderName || t("N/A")}</TableCell>
-                  <TableCell>{item.TextileName || t("N/A")}</TableCell>
-                  <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
-                  <TableCell>
-                  {item.ModelVariant.Sizes
-                    ? item.ModelVariant.Sizes
-                        .map((e: any) => e.label)
-                        .join(", ")
-                    : t("N/A")}
-                 </TableCell>
-
-                  <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
-
-                  {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
-                    renderAdminRow(item)
-                  ) : (
-                    renderUserRow(item)
-                  )}
-                </TableRow>
-              );
-
-            } )}
-          </TableBody>
-        </Table> */}
 
 
       </div>

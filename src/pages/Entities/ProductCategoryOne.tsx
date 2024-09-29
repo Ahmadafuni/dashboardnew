@@ -110,6 +110,10 @@ export default function ProductCategoryOne() {
             columns={productCategoryOneColumns}
             data={productCategoryOnes}
             tableName="ProductCatalogCategoryOne"
+            fieldFilter={{
+              "CategoryName" : "CategoryName" , 
+              "Description" : "CategoryDescription"
+            }}
           />
         </div>
       </div>

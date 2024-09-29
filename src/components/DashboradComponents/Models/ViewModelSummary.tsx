@@ -30,6 +30,8 @@ export default function ViewModelSummary() {
 
   useEffect(() => {
     getModelSummary(setSummary, id);
+
+    console.log("summary" , summary);
   }, []);
   return (
     <div className="p-4" ref={printRef}>
@@ -79,6 +81,37 @@ export default function ViewModelSummary() {
           <img key={i} src={`${BASE_URL}${i}`} />
         ))}
       </div>
+      {summary?.stages?.length > 0 && (
+  <div className="grid grid-cols-1 gap-2 mt-2">
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Stages")}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>{t("StageNumber")}</TableHead>
+              <TableHead>{t("DepartmentName")}</TableHead>
+              <TableHead>{t("WorkDescription")}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {summary?.stages.map((stage: any, index: number) => (
+              <TableRow key={index}>
+                <TableCell>{stage.StageNumber}</TableCell>
+                <TableCell>{stage.DepartmentName}</TableCell>
+                <TableCell>{stage.WorkDescription}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  </div>
+)}
+
+
       {summary?.cutting?.length > 0 && (
         <div className="grid grid-cols-1 gap-2 mt-2">
           <Card>

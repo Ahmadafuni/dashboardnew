@@ -91,7 +91,12 @@ export default function TemplateType() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={templateTypeColumns} data={templateTypes} tableName="TemplateTypes"/>
+          <DataTable columns={templateTypeColumns} data={templateTypes} tableName="TemplateTypes"
+          fieldFilter={{
+            "TemplateTypeName" : "TemplateTypeName",
+            "Description" : "Description"
+          }}
+          />
         </div>
       </div>
     </div>
