@@ -13,22 +13,17 @@ import { productCatalogueList } from "@/store/ProductCatalogue";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
 import { templatePatternList } from "@/store/TemplatePattern";
-import { templateTypeList } from "@/store/TemplateType";
-import { textileList } from "@/store/Textiles";
-import {
-  filterOrderModels,
-  getAllDropdownOptions,
-} from "@/services/Model.services";
+import {filterOrderReport, getAllDropdownOptions,} from "@/services/Model.services";
 import FieldWithCheckbox from "@/components/common/CheckboxWIthField";
 import { departmentList } from "@/store/Department";
-import CheckboxWithTextField from "@/components/common/CheckboxWithTextField";
 import { orderList } from "@/store/Orders";
-import { modelList } from "@/store/Models";
 import { ColumnDef } from "@tanstack/react-table";
 import { ModelTypes } from "@/types/Models/Models.types.ts";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useReactToPrint } from "react-to-print";
+import {CollectionList} from "@/store/Collection.ts";
+import MultiSelectForField from "@/components/common/MultiSelectForField.tsx";
 
 export default function OrderReports() {
   const { t } = useTranslation();
@@ -40,34 +35,35 @@ export default function OrderReports() {
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
+
+  const [isCollectionEnabled, setCollectionEnabled] = useState(false);
+  const [isOrderEnabled, setOrderEnabled] = useState(false);
+
+
+  const [isStatusEnabled, setStatusEnabled] = useState(false);
+  const [isDepartmentsNamesEnabled, setDepartmentsNamesEnabled] = useState(false);
+
+  const [isProductCatalogueEnabled, setProductCatalogueEnabled] = useState(false);
+  const [isProductCategoryOneEnabled, setProductCategoryOneEnabled] = useState(false);
+  const [isProductCategoryTwoEnabled, setProductCategoryTwoEnabled] = useState(false);
+
+  const [isTemplatePatternEnabled, setTemplatePatternEnabled] = useState(false);
+
   const [isStartDateEnabled, setIsStartDateEnabled] = useState(false);
   const [isEndDateEnabled, setIsEndDateEnabled] = useState(false);
-  const [isStatusEnabled, setStatusEnabled] = useState(false);
-  const [isDepartmentsEnabled, setDepartmentsEnabled] = useState(false);
-  const [isDepartmentsNamesEnabled, setDepartmentsNamesEnabled] =
-    useState(false);
-  const [isProductCatalogueEnabled, setProductCatalogueEnabled] =
-    useState(false);
-  const [isProductCategoryOneEnabled, setProductCategoryOneEnabled] =
-    useState(false);
-  const [isProductCategoryTwoEnabled, setProductCategoryTwoEnabled] =
-    useState(false);
-  const [isTextileEnabled, setTextileEnabled] = useState(false);
-  const [isTemplateTypeEnabled, setTemplateTypeEnabled] = useState(false);
-  const [isTemplatePatternEnabled, setTemplatePatternEnabled] = useState(false);
-  const [isOrderEnabled, setOrderEnabled] = useState(false);
-  const [isModelEnabled, setModelEnabled] = useState(false);
-  const [isBarcodeEnabled, setBarcodeEnabled] = useState(false);
 
+
+  const setCollectiontList = useSetRecoilState(CollectionList);
+  const setOrderList = useSetRecoilState(orderList);
+  // Status Model List
   const setDepartmentList = useSetRecoilState(departmentList);
+
   const setProductCatalogueList = useSetRecoilState(productCatalogueList);
   const setProductCategoryOneList = useSetRecoilState(productCategoryOneList);
   const setProductCategoryTwoList = useSetRecoilState(productCategoryTwoList);
   const setTemplatePatternList = useSetRecoilState(templatePatternList);
-  const setTemplateTypeList = useSetRecoilState(templateTypeList);
-  const setTextileList = useSetRecoilState(textileList);
-  const setOrderList = useSetRecoilState(orderList);
-  const setModelList = useSetRecoilState(modelList);
+
+
   const printRef = useRef<HTMLDivElement | null>(null);
 
   const handlePrint = useReactToPrint({
@@ -79,7 +75,7 @@ export default function OrderReports() {
   async function fetchData(withModels: boolean) {
     try {
       withModels &&
-        (await filterOrderModels(
+        (await filterOrderReport(
           setReports,
           {},
           pages,
@@ -88,16 +84,16 @@ export default function OrderReports() {
           setIsLoading
         ));
       const data = await getAllDropdownOptions();
+
+      setCollectiontList(data.collections);
       setDepartmentList(data.departments);
       setProductCatalogueList(data.productCatalogues);
       setProductCategoryOneList(data.productCategoryOne);
       setProductCategoryTwoList(data.productCategoryTwo);
       setTemplatePatternList(data.templatePattern);
-      setTemplateTypeList(data.templateType);
-      setTextileList(data.textiles);
       setOrderList(data.orders);
-      setModelList(data.models);
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Failed to fetch data:", error);
     }
   }
@@ -107,7 +103,7 @@ export default function OrderReports() {
   }, []);
 
   useEffect(() => {
-    filterOrderModels(
+    filterOrderReport(
       setReports,
       {},
       pages,
@@ -117,19 +113,28 @@ export default function OrderReports() {
     );
   }, [pages, sizes]);
 
+  const collectionsOptions = useRecoilValue(CollectionList);
+  const ordersOptions = useRecoilValue(orderList);
+
   const departmentsNamesOptions = useRecoilValue(departmentList);
   const productCatalogueOptions = useRecoilValue(productCatalogueList);
   const productCategoryOneOptions = useRecoilValue(productCategoryOneList);
   const productCategoryTwoOptions = useRecoilValue(productCategoryTwoList);
   const templatePatternOptions = useRecoilValue(templatePatternList);
-  const templateTypeOptions = useRecoilValue(templateTypeList);
-  const textilesOptions = useRecoilValue(textileList);
-  const ordersOptions = useRecoilValue(orderList);
-  const modelsOptions = useRecoilValue(modelList);
+
+  const collectionsNamesMenu = collectionsOptions.map((col: any) => ({
+    value: col.Id + "",
+    label: col.CollectionName,
+  }));
+
+  const ordersMenu = ordersOptions.map((ord: any) => ({
+    value: ord.Id+ "",
+    label: ord.OrderName,
+  }));
 
   const departmentsNamesMenu = departmentsNamesOptions.map((dept: any) => ({
     value: dept.Id + "",
-    label: dept.StageName,
+    label: dept.Name,
   }));
 
   const productCatalogueMenu = productCatalogueOptions.map(
@@ -158,37 +163,9 @@ export default function OrderReports() {
     label: pattern.TemplatePatternName,
   }));
 
-  const templateTypeMenu = templateTypeOptions.map((type: any) => ({
-    value: type.Id + "",
-    label: type.TemplateTypeName,
-  }));
-
-  const textilesMenu = textilesOptions.map((textile: any) => ({
-    value: textile.Id + "",
-    label: textile.TextileName,
-  }));
-  const ordersMenu = ordersOptions.map((ord: any) => ({
-    value: ord.OrderNumber,
-    label: ord.OrderNumber,
-  }));
-
-  const barcodesMenu = modelsOptions.map((model: any) => {
-    return {
-      value: model.Barcode,
-      label: model.Barcode,
-    };
-  });
-
-  const demoModelNumbersMenu = modelsOptions.map((model: any) => {
-    return {
-      value: model.DemoModelNumber,
-      label: model.DemoModelNumber,
-    };
-  });
-
   const onSubmit = async (data: any) => {
     try {
-      await filterOrderModels(
+      await filterOrderReport(
         setReports,
         data,
         pages,
@@ -242,7 +219,7 @@ export default function OrderReports() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Card className="bg-[var(--card-background)]">
             <CardHeader className="flex-row justify-between">
-              <div className="w-fit">Advanced Search Production Reports</div>
+              <div className="w-fit">Advanced Search Order Reports</div>
               <Button
                 type="button"
                 variant="ghost"
@@ -256,224 +233,134 @@ export default function OrderReports() {
             {!isCardCollapsed && (
               <CardContent className="space-y-4">
                 {/* First Row */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <FieldWithCheckbox
-                    name="status"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Status",
-                      items: [
-                        { label: t("AWAITING"), value: "AWAITING" },
-                        { label: t("ON GOING"), value: "ONGOING" },
-                        { label: t("ON CONFIRM"), value: "ONCONFIRM" },
-                        { label: t("COMPLETED"), value: "COMPLETED" },
-                      ],
-                    }}
-                    isEnabled={isStatusEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(setStatusEnabled, "status", "")
-                    }
+                      name="collections"
+                      label=""
+                      control={form.control}
+                      fieldComponent={MultiSelectForField}
+                      fieldProps={{
+                        items: collectionsNamesMenu,
+                        form: form,
+                        name: "collections",
+                        selectText: "collections",
+                      }}
+                      isEnabled={isCollectionEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setCollectionEnabled, "collections", "")}
+                  />
+
+                  <FieldWithCheckbox
+                      name="orders"
+                      label=""
+                      control={form.control}
+                      fieldComponent={MultiSelectForField}
+                      fieldProps={{
+                        items: ordersMenu,
+                        form: form,
+                        name: "orders",
+                        selectText: "orders",
+                      }}
+                      isEnabled={isOrderEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setOrderEnabled, "orders", "")
+                      }
                   />
                   <FieldWithCheckbox
-                    name="departments"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Departments Category",
-                      items: [
-                        { label: t("CUTTING"), value: "1" },
-                        { label: t("TAILORING"), value: "2" },
-                        { label: t("PRINTING"), value: "3" },
-                        { label: t("BOXING"), value: "4" },
-                      ],
-                    }}
-                    isEnabled={isDepartmentsEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setDepartmentsEnabled,
-                        "departments",
-                        ""
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="currentStage"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Departments Names",
-                      items: departmentsNamesMenu,
-                    }}
-                    isEnabled={isDepartmentsNamesEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setDepartmentsNamesEnabled,
-                        "currentStage",
-                        ""
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="productCatalogue"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Product",
-                      items: productCatalogueMenu,
-                    }}
-                    isEnabled={isProductCatalogueEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setProductCatalogueEnabled,
-                        "productCatalogue",
-                        ""
-                      )
-                    }
+                      name="status"
+                      label=""
+                      control={form.control}
+                      fieldComponent={MultiSelectForField}
+                      fieldProps={{
+                        items: [
+                          { label: t("PENDING"), value: "PENDING" },
+                          { label: t("ONGOING"), value: "ONGOING" },
+                          { label: t("ONHOLD"), value: "ONHOLD" },
+                          { label: t("COMPLETED"), value: "COMPLETED" },
+                        ],
+                        form: form,
+                        name: "status",
+                        selectText: "Status",
+                      }}
+                      isEnabled={isStatusEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setStatusEnabled, "status", "")}
                   />
                 </div>
 
                 {/* Second Row */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FieldWithCheckbox
-                    name="productCategoryOne"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Product Category One",
-                      items: productCategoryOneMenu,
-                    }}
-                    isEnabled={isProductCategoryOneEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setProductCategoryOneEnabled,
-                        "productCategoryOne",
-                        ""
-                      )
-                    }
+                      name="departments"
+                      label=""
+                      control={form.control}
+                      fieldComponent={MultiSelectForField}
+                      fieldProps={{
+                        placeholder: "Departments Names",
+                        items: departmentsNamesMenu,
+                        form: form,
+                        name: "departments",
+                        selectText: "departments",
+                      }}
+                      isEnabled={isDepartmentsNamesEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setDepartmentsNamesEnabled, "currentStage", "")}
                   />
+
                   <FieldWithCheckbox
-                    name="productCategoryTwo"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Product Category Two",
-                      items: productCategoryTwoMenu,
-                    }}
-                    isEnabled={isProductCategoryTwoEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setProductCategoryTwoEnabled,
-                        "productCategoryTwo",
-                        ""
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="textile"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Textile",
-                      items: textilesMenu,
-                    }}
-                    isEnabled={isTextileEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(setTextileEnabled, "textile", "")
-                    }
+                      name="templatePattern"
+                      label=""
+                      control={form.control}
+                      fieldComponent={MultiSelectForField}
+                      fieldProps={{
+                        placeholder: "Template Pattern",
+                        items: templatePatternMenu,
+                        form: form,
+                        name: "templatePattern",
+                        selectText: "templatePattern",
+                      }}
+                      isEnabled={isTemplatePatternEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setTemplatePatternEnabled, "templatePattern", "")}
                   />
                 </div>
-
                 {/* Third Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FieldWithCheckbox
-                    name="templateType"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Template Type",
-                      items: templateTypeMenu,
-                    }}
-                    isEnabled={isTemplateTypeEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setTemplateTypeEnabled,
-                        "templateType",
-                        ""
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="templatePattern"
-                    label=""
-                    control={form.control}
-                    fieldComponent={SelectFieldForForm}
-                    fieldProps={{
-                      placeholder: "Template Pattern",
-                      items: templatePatternMenu,
-                    }}
-                    isEnabled={isTemplatePatternEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setTemplatePatternEnabled,
-                        "templatePattern",
-                        ""
-                      )
-                    }
-                  />
-                </div>
-
-                {/* Fourth Row */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <CheckboxWithTextField
-                    name="orderNumber"
-                    placeholder={t("Order Number")}
-                    emptyBox={t("NoOrderFound")}
-                    selectText={t("SelectOrder")}
-                    items={ordersMenu}
-                    control={form.control}
-                    form={form}
-                    isEnabled={isOrderEnabled}
-                    setEnabled={setOrderEnabled}
-                    setSelected={(value) => form.setValue("orderNumber", value)}
+                  <FieldWithCheckbox
+                      name="productCatalogue"
+                      label=""
+                      control={form.control}
+                      fieldComponent={SelectFieldForForm}
+                      fieldProps={{
+                        placeholder: "Product",
+                        items: productCatalogueMenu,
+                      }}
+                      isEnabled={isProductCatalogueEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setProductCatalogueEnabled, "productCatalogue", "")}
                   />
-                  <CheckboxWithTextField
-                    name="demoModelNumber"
-                    placeholder={t("ModelNo")}
-                    emptyBox={t("NoModelFound")}
-                    selectText={t("SelectModel")}
-                    items={demoModelNumbersMenu}
-                    control={form.control}
-                    form={form}
-                    isEnabled={isModelEnabled}
-                    setEnabled={setModelEnabled}
-                    setSelected={(value) =>
-                      form.setValue("demoModelNumber", value)
-                    }
+                  <FieldWithCheckbox
+                      name="productCategoryOne"
+                      label=""
+                      control={form.control}
+                      fieldComponent={SelectFieldForForm}
+                      fieldProps={{
+                        placeholder: "Product Category One",
+                        items: productCategoryOneMenu,
+                      }}
+                      isEnabled={isProductCategoryOneEnabled}
+                      onCheckedChange={() => handleCheckboxChange(setProductCategoryOneEnabled, "productCategoryOne", "")}
                   />
-                  <CheckboxWithTextField
-                    name="barcode"
-                    placeholder={t("Barcode")}
-                    emptyBox={t("NoBarcodeFound")}
-                    selectText={t("SelectBarcode")}
-                    items={barcodesMenu}
-                    control={form.control}
-                    form={form}
-                    isEnabled={isBarcodeEnabled}
-                    setEnabled={setBarcodeEnabled}
-                    setSelected={(value) => form.setValue("barcode", value)}
+                  <FieldWithCheckbox
+                      name="productCategoryTwo"
+                      label=""
+                      control={form.control}
+                      fieldComponent={SelectFieldForForm}
+                      fieldProps={{
+                        placeholder: "Product Category Two",
+                        items: productCategoryTwoMenu,
+                      }}
+                      isEnabled={isProductCategoryTwoEnabled}
+                      onCheckedChange={() =>
+                          handleCheckboxChange(setProductCategoryTwoEnabled, "productCategoryTwo", "")}
                   />
-                </div>
 
-                {/* Fifth Row */}
+                </div>
+                {/* Fourth Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FieldWithCheckbox
                     name="startDate"
@@ -486,12 +373,7 @@ export default function OrderReports() {
                     }}
                     isEnabled={isStartDateEnabled}
                     onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setIsStartDateEnabled,
-                        "startDate",
-                        null
-                      )
-                    }
+                      handleCheckboxChange(setIsStartDateEnabled, "startDate", null)}
                   />
                   <FieldWithCheckbox
                     name="endDate"

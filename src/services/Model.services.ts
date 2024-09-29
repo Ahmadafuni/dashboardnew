@@ -1,4 +1,3 @@
-import { ReportsType } from "@/types/Reports/ProductionReports.types";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
@@ -280,76 +279,85 @@ export const filterProductionModels = async (
   }
 };
 
-
-
-export const filterOrderModels = async (
-  setData: Dispatch<SetStateAction<any>>,
-  searchParams: any,
-  pages: number,
-  sizes: number,
-  setTotalPages?: Dispatch<SetStateAction<any>>,
-  setIsLoading?: Dispatch<SetStateAction<boolean>>
+export const filterOrderReport = async (
+    setData: Dispatch<SetStateAction<any>>,
+    searchParams: any,
+    pages: number,
+    sizes: number,
+    setTotalPages?: Dispatch<SetStateAction<any>>,
+    setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
-    setIsLoading && setIsLoading(true);
+    if (setIsLoading) setIsLoading(true);
 
+    // Make POST request to orderReport endpoint
     const response = await axios.post(
-      "model/search",
-      { ...searchParams },
-      {
-        params: {
-          page: pages,
-          size: sizes,
-        },
-        headers: {
-          Authorization: `Bearer ${Cookies.get("access_token")}`,
-        },
-      }
+        "reports/orderReport",
+        { ...searchParams },
+        {
+          params: {
+            page: pages,
+            size: sizes,
+          },
+          headers: {
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
+          },
+        }
     );
 
-    const responseData: ReportsType = response.data;
+    const responseData = response.data;
 
-    const reports = responseData.data.flatMap((item) =>
-      item.Details.map((detail) => {
-        return {
-          modelNumber: item.DemoModelNumber,
-          barcode: item.Barcode,
-          collection: item.CollectionName,
-          order: item.OrderName,
-          name:
-            item.ProductCatalog +
-            "-" +
-            item.CategoryOne +
-            "-" +
-            item.CategoryTwo,
-          textile: item.Textiles,
-          colors: detail.Color,
-          sizes: JSON.parse(detail.Sizes).map(
-            (size: { size: string; value: string }) =>
-              size.size + " : " + size.value
-          ),
-          quantities: detail.Quantity.QuantityDelivered
-            ? // @ts-ignore
-              detail.Quantity.QuantityDelivered.map(
-                (size: { size: string; value: string }) =>
-                  `${size.size} : ${size.value}`
-              ).join(" , ")
-            : [],
-          currentStage: detail.Quantity.StageName,
-          modelStatus: item.ModelStatus,
-        };
-      })
-    );
+    // Structure the data to match the format where variants are under the model
+    const reports = Array.isArray(responseData.data)
+        ? responseData.data.flatMap((item: any) => {
+          const demoModelNumber = item.DemoModelNumber;
+          const modelName = item.ModelName;
 
-    console.log(reports);
+          // Map over each variant, ensuring the first variant has model info
+          return item.Details.map((detail: any, index: any) => ({
+            modelNumber: index === 0 ? demoModelNumber : "", // First row gets the model number
+            name: index === 0 ? modelName : "", // First row gets the model name
+            barcode: index === 0 ? item.Barcode : "", // Example: barcode data if present
+            textile: index === 0 ? item.Textiles : "", // Only the first row has textile
+            colors: detail.Color,
+            sizes: detail.Sizes.map(
+                (size: { label: string; value: string }) =>
+                    `${size.label} : ${size.value}`
+            ).join(", "),
+            currentStage: detail.DepartmentName || "N/A",
+            QuantityDelivered: detail.QuantityDelivered
+                ? Object.entries(detail.QuantityDelivered)
+                    .map(([size, value]) => `${size} : ${value}`)
+                    .join(" , ")
+                : "N/A",
+            QuantityReceived: detail.QuantityReceived
+                ? Object.entries(detail.QuantityReceived)
+                    .map(([size, value]) => `${size} : ${value}`)
+                    .join(" , ")
+                : "N/A",
+            DamagedItem: detail.DamagedItem
+                ? Object.entries(detail.DamagedItem)
+                    .map(([size, value]) => `${size} : ${value}`)
+                    .join(" , ")
+                : "N/A",
+            duration: detail.DurationInHours || "N/A",
+          }));
+        })
+        : [];
+
+    // Set the data for the UI
     setData(reports);
-    setTotalPages && setTotalPages(responseData.totalPages);
-    setIsLoading && setIsLoading(false);
+
+    // Set total pages for pagination
+    if (setTotalPages) setTotalPages(responseData.totalPages);
   } catch (error) {
-    console.error("Failed to fetch report results:", error);
-    throw error;
+    console.error("Failed to fetch order report results:", error);
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
+
+
 
 export const getModelsStats = async (
   setData: Dispatch<SetStateAction<any>>,
