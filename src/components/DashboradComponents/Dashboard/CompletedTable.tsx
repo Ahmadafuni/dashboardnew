@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { WorkType } from "@/types/Dashboard/Dashboard.types";
+import { Tracking, WorkType } from "@/types/Dashboard/Dashboard.types";
 import { useRecoilValue } from "recoil";
 import { userInfo } from "@/store/authentication.ts";
 import { differenceInDays, differenceInHours } from "date-fns";
@@ -21,10 +21,12 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "@/components/ui/select";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
-import { Dispatch, SetStateAction, useEffect , useState } from "react";
+import {  ChevronLeft, ChevronRight } from "lucide-react";
+import { Dispatch, SetStateAction , useState } from "react";
 import axios from "axios";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import { ColumnDef } from "@tanstack/react-table";
+import DataTable from "@/components/common/DataTable";
 
 interface Props {
   page: number;
@@ -66,8 +68,6 @@ export default function CompletedTable({
 
   const [summaryData, setSummaryData] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
 
 
   const fetchSummary = async (modelVariantId: number) => {
@@ -81,57 +81,13 @@ export default function CompletedTable({
     }
   };
 
-  const sortedWorks = [...works.completed].sort((a, b) => {
-    if (sortConfig !== null) {
-      const keyParts = sortConfig.key.split('.'); 
-      const getValue = (obj: any, keyParts: string[]) => {
-        return keyParts.reduce((nestedObj, key) => {
-          return nestedObj && nestedObj[key] !== undefined ? nestedObj[key] : null;
-        }, obj);
-      };
-  
-      const aValue = getValue(a, keyParts);
-      const bValue = getValue(b, keyParts);
-  
-      if (aValue !== null && bValue !== null) {
-        if (typeof aValue === 'string' && typeof bValue === 'string') {
-          return sortConfig.direction === 'ascending'
-            ? aValue.toLowerCase().localeCompare(bValue.toLowerCase())
-            : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
-        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
-          return sortConfig.direction === 'ascending' ? aValue - bValue : bValue - aValue;
-        } else {
-          return 0;
-        }
-      }
-  
-      if (aValue === null && bValue !== null) {
-        return sortConfig.direction === 'ascending' ? -1 : 1;
-      }
-      if (aValue !== null && bValue === null) {
-        return sortConfig.direction === 'ascending' ? 1 : -1;
-      }
-    }
-    return 0;
-  });
-  
-  const requestSort = (key: string) => {
-    let direction = "ascending";
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-
-
-
+ 
   // @ts-ignore
   const [pageSize, setPageSize] = useState(10);
 
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
-      return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
+      return quantity.map((q) => `${q.label}: ${q.value}`).join(", ");
     }
     return quantity;
   };
@@ -141,20 +97,96 @@ export default function CompletedTable({
     const hours = differenceInHours(end, start) % 24;
     return `${days}d ${hours}h`;
   };
-  const renderAdminRow = (item: any) => (
-    <>
-      <TableCell>{item.CurrentStage?.Department?.Name || t("NA")}</TableCell>
-      <TableCell>
-        {item.StartTime && item.EndTime
-          ? calculateDuration(new Date(item.StartTime), new Date(item.EndTime))
-          : t("NA")}
-      </TableCell>
-      <TableCell>
-            <div className="flex space-x-2">
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSummaryData(null);
+  };
+
+  const templateColumns: ColumnDef<Tracking>[] = [
+    {
+      header: t("ModelNumber"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Model.DemoModelNumber}</p>;
+      },
+    },
+    {
+      accessorKey: "Barcode",
+      header: t("Barcode"),
+    },
+    {
+      accessorKey: "name",
+      header: t("Name"),
+    },
+
+    {
+      accessorKey: "CollectionName",
+      header: t("Collections"),
+    },
+    {
+      accessorKey: "OrderName",
+      header: t("OrderNumber"),
+    },
+    {
+      accessorKey: "TextileName",
+      header: t("Textile"),
+    },
+    {
+      header: t("Color"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Color.ColorName?
+          row.original.ModelVariant.Color.ColorName:t("N/A")
+        }</p>;
+      },
+    },
+    {
+      header: t("Sizes"),
+      cell: ({ row }) => {
+        return <p>{
+          row.original.ModelVariant.Sizes?
+          row.original.ModelVariant.Sizes.map((e: any) => e.label)
+          .join(", "):t("N/A")}</p>;
+      },
+    },
+    {
+      header:  t("TargetQuantity"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Quantity?
+          row.original.ModelVariant.Quantity:t("N/A")
+        }</p>;
+      },
+    },
+    
+  ];
+
+
+  if (userRole === "FACTORYMANAGER" || userRole === "ENGINEERING") {
+    templateColumns.push(
+        {
+            header: t("CurrentStage"),
+            cell: ({ row }) => {
+                // @ts-ignore
+                return <p>{row.original.CurrentStage?.Department?.Name}</p>; 
+            },
+        },
+        {
+          header: t("Duration") ,
+          cell: ({row}) => {
+            
+            if(row.original.StartTime && row.original.EndTime)
+            return calculateDuration(new Date(row.original.StartTime), new Date(row.original.EndTime));
+          else t("NA") ;
+
+          },
+        },
+        {
+          header: t("Action") ,
+          cell: ({row}) => {
+            return  <div className="flex space-x-2">
               <Button
                 variant="secondary"
                 onClick={() =>
-                  window.open(`/models/viewdetails/${item.ModelVariant.Model.Id}`, "_blank")
+                  window.open(`/models/viewdetails/${row.original.ModelVariant.Model.Id}`, "_blank")
                 }
               >
                 {t("Details")}
@@ -162,199 +194,94 @@ export default function CompletedTable({
 
               <Button
                 variant="secondary"
-                onClick={() => fetchSummary(item.ModelVariant.Id)}
+                onClick={() => fetchSummary(row.original.ModelVariant.Id)}
               >
                 {t("Summary")}
               </Button>
-           </div>
-      </TableCell>
-    </>
+            </div>
+          },
+        }
+    );
+}
+else {
+
+  if(user?.category === "CUTTING"){
+    templateColumns.push(
+      {
+         header: t("ReceivedQuantity"),
+        cell: ({row}) => {
+          return  renderQuantity(row.original.QuantityInKg);
+        },
+      },
+      {
+         header: t("DeliveredQuantity"),
+        cell: ({row}) => {
+          return  renderQuantity(row.original.QuantityInNum);
+        },
+      }
+    );
+
+  }else {
+    templateColumns.push(
+      {
+         header: t("ReceivedQuantity"),
+        cell: ({row}) => {
+          return  renderQuantity(row.original.QuantityReceived);
+        },
+      },
+      {
+         header: t("DeliveredQuantity"),
+        cell: ({row}) => {
+          return  renderQuantity(row.original.QuantityDelivered);
+        },
+      }
+    );
+
+  }
+
+  templateColumns.push(
+    {
+       header: t("DamageQuantity"),
+      cell: ({row}) => {
+        return  renderQuantity(row.original.DamagedItem);
+      },
+    },
+    {
+      header: t("Action") ,
+      cell: ({row}) => {
+        return  <Button
+        variant="secondary"
+        onClick={() =>
+          window.open(
+            `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+            "_blank"
+          )
+        }
+      >
+        {t("Details")}
+      </Button>
+      },
+    }
   );
 
-  const renderUserRow = (item: any) => (
-    <>
-      {user?.category === "CUTTING" ? (
-        <TableCell>{renderQuantity(item.QuantityInKg)} Kg</TableCell>
-      ) : (
-        <TableCell>{renderQuantity(item.QuantityReceived)}</TableCell>
-      )}
-      <TableCell>
-        {item?.QuantityInKg != null ? (
-          <TableCell>{renderQuantity(item.QuantityInNum)}</TableCell>
-        ) : (
-          <TableCell>{renderQuantity(item.QuantityDelivered)}</TableCell>
-        )}
-      </TableCell>
-      <TableCell>{renderQuantity(item.DamagedItem)}</TableCell>
-      <TableCell>
-        <Button
-          variant="secondary"
-          onClick={() =>
-            window.open(
-              `/models/viewdetails/${item.ModelVariant.Model.Id}`,
-              "_blank"
-            )
-          }
-        >
-          {t("Details")}
-        </Button>
-      </TableCell>
-    </>
-  );
-  useEffect(() => {
 
-  }, [works]);
+}
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSummaryData(null);
-  };
 
   return (
-    <div>
+    <div className="space-y-2">
+      
       <h2 className="text-2xl font-bold">{t("Completed")}</h2>
       <div className="overflow-x-auto">
-        <Table className="min-w-full">
-          {/* <TableCaption>{t("VariantsCompleted")}</TableCaption> */}
-          <TableHeader>
-            <TableRow>
-            <TableHead onClick={() => requestSort("ModelVariant.Model.DemoModelNumber")}>
-                {t("ModelNumber")}
-                {sortConfig?.key === "ModelVariant.Model.DemoModelNumber" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("Barcode")}>
-                {t("Barcode")}
-                {sortConfig?.key === "Barcode" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("name")}>
-                {t("Name")}
-                {sortConfig?.key === "name" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("CollectionName")}>
-                {t("Collections")}
-                {sortConfig?.key === "CollectionName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("OrderNumber")}>
-                {t("OrderNumber")}
-                {sortConfig?.key === "OrderNumber" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("TextileName")}>
-                {t("TextileName")}
-                {sortConfig?.key === "TextileName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("ModelVariant.Color.ColorName")}>
-                {t("Color")}
-                {sortConfig?.key === "ModelVariant.Color.ColorName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
+       
 
-              <TableHead onClick={() => requestSort("ModelVariant.Sizes")}>
-                {t("Sizes")}
-                {sortConfig?.key === "ModelVariant.Sizes" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
+      <DataTable 
+        columns={templateColumns} 
+        data={works.completed}
+        tableName="TrakingModels"
+        isDashboard={true}
+      />
 
-              <TableHead onClick={() => requestSort("ModelVariant.Quantity")}>
-                {t("TargetQuantity")}
-                {sortConfig?.key === "ModelVariant.Quantity" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
-                <>
-                    <TableHead onClick={() => requestSort("CurrentStage.Department.Name")}>
-                    {t("CurrentStage")}
-                    {sortConfig?.key === "CurrentStage.Department.Name" && (
-                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                    )}
-                  </TableHead>
-                  <TableHead onClick={() => requestSort("StartTime")}>
-                  {t("Duration")}
-                  {sortConfig?.key === "StartTime" && (
-                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                  )}
-                </TableHead>
-                  
-                  <TableHead>{t("Action")}</TableHead>
-                </>
-              ) : (
-                <>
-                <TableHead onClick={() => requestSort("QuantityReceived")}>
-                  {t("ReceivedQuantity")}
-                  {sortConfig?.key === "QuantityReceived" && (
-                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                  )}
-                </TableHead>
-                  <TableHead>{t("DeliveredQuantity")}</TableHead>
-                  <TableHead>{t("DamageQuantity")}</TableHead>
-                  <TableHead>{t("Action")}</TableHead>
-                </>
-              )}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {works && sortedWorks.length <= 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={
-                    userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                      ? 12
-                      : 8
-                  }
-                  className="h-24 text-center"
-                >
-                  {t("NoResults")}
-                </TableCell>
-              </TableRow>
-            )}
-            {works &&
-              sortedWorks.map((item) => (
-                <TableRow key={item.Id}>
-                  <TableCell className="font-medium">
-                    {item.ModelVariant.Model.DemoModelNumber}
-                  </TableCell>
-                  <TableCell className="font-medium">{item.Barcode}</TableCell>
-                  <TableCell className="font-medium">{item.name}</TableCell>
-                  <TableCell className="font-medium">
-                    {item.CollectionName}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.OrderName}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {item.TextileName}
-                  </TableCell>
-
-                  <TableCell>{item.ModelVariant.Color.ColorName}</TableCell>
-                  <TableCell>
-                  {item.ModelVariant.Sizes
-                    ? item.ModelVariant.Sizes
-                        .map((e: any) => e.label)
-                        .join(", ")
-                    : t("N/A")}
-                 </TableCell>
-                  <TableCell>{item.ModelVariant.Quantity}</TableCell>
-                  {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                    ? renderAdminRow(item)
-                    : renderUserRow(item)}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
 
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-[600px] bg-gray-800">

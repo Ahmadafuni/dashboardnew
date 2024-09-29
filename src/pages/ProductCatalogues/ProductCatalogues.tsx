@@ -121,7 +121,7 @@ export default function ProductCatalogues() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={catalogueColumns} data={catalogues} />
+          <DataTable columns={catalogueColumns} data={catalogues} tableName="ProductCatalogs"/>
         </div>
       </div>
     </div>

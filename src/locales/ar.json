@@ -363,5 +363,14 @@
   "MissingSizes": "يرجى التأكد من توفر جميع المقاسات في قائمة الاختيارات. المقاسات المفقودة: {{sizes}}",
   "NoValidMeasurements": "الملف غير صالح: لم يتم العثور على قياسات صالحة.",
   "ImportFromExcel": "استيراد من اكسل",
-  "DragMessage": "اسحب بعض الصور هنا أو انقر لتحديد الصور"
+  "DragMessage": "اسحب بعض الصور هنا أو انقر لتحديد الصور",
+  "Apply Filters": "تطبيق الفلتر",
+  "clear all Filters": "حذف جميع الفلاتر",
+  "Enter value..." : "أدخل قيمة..." ,
+  "Select column": "اختر حقل",
+  "Add Filter" : "إضافة فلتر",
+  "Applying filters..." : "جاري تطبيق الفلاتر...",
+  "Please wait, your request is being processed now." : "الرجاء الانتظار، يتم معالجة طلبك الآن",
+  "Loading...": "جاري التحميل..."
+
 }

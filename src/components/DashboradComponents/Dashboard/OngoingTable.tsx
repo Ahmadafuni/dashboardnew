@@ -1,13 +1,5 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { userInfo } from "@/store/authentication";
 import {
   completeModal,
@@ -16,7 +8,7 @@ import {
   cuttingSendConfirmationModal,
   othersSendConfirmationModal,
 } from "@/store/dashboard";
-import { WorkType } from "@/types/Dashboard/Dashboard.types";
+import { Tracking, WorkType } from "@/types/Dashboard/Dashboard.types";
 import { format } from "date-fns";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
@@ -34,7 +26,9 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "@/components/ui/select";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
+import {  ChevronLeft, ChevronRight } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
+import DataTable from "@/components/common/DataTable";
 
 interface Props {
   page: number;
@@ -61,7 +55,7 @@ interface Props {
   totalPages: number;
   works: WorkType;
   setWorks: (data: any) => void;
-  setSelectedSizes: (sizes: {label: string , value:  string}[]) => void;
+  setSelectedSizes: Dispatch<SetStateAction<{ label: string; value: string; }[]>>;
   setQuantityReceived: (quantity: any[]) => void;
 }
 
@@ -78,56 +72,12 @@ export default function OngoingTable({
 }: Props) {
   const { t } = useTranslation();
 
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
-
-  const sortedWorks = [...works.inProgress].sort((a, b) => {
-    if (sortConfig !== null) {
-      const keyParts = sortConfig.key.split('.'); 
-      const getValue = (obj: any, keyParts: string[]) => {
-        return keyParts.reduce((nestedObj, key) => {
-          return nestedObj && nestedObj[key] !== undefined ? nestedObj[key] : null;
-        }, obj);
-      };
-  
-      const aValue = getValue(a, keyParts);
-      const bValue = getValue(b, keyParts);
-  
-      if (aValue !== null && bValue !== null) {
-        if (typeof aValue === 'string' && typeof bValue === 'string') {
-          return sortConfig.direction === 'ascending'
-            ? aValue.toLowerCase().localeCompare(bValue.toLowerCase())
-            : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
-        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
-          return sortConfig.direction === 'ascending' ? aValue - bValue : bValue - aValue;
-        } else {
-          return 0;
-        }
-      }
-  
-      if (aValue === null && bValue !== null) {
-        return sortConfig.direction === 'ascending' ? -1 : 1;
-      }
-      if (aValue !== null && bValue === null) {
-        return sortConfig.direction === 'ascending' ? 1 : -1;
-      }
-    }
-    return 0;
-  });
-  
-  const requestSort = (key: string) => {
-    let direction = "ascending";
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
 
   const renderQuantity = (quantity: any) => {
     console.log("quantity : ", quantity);
 
     if (Array.isArray(quantity)) {
-      return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
+      return quantity.map((q) => `${q.label}: ${q.value}`).join(", ");
     }
     return quantity;
   };
@@ -156,12 +106,16 @@ export default function OngoingTable({
     await getAllWork(user?.userDepartmentId,{}, {}, setWorks);
   };
 
+
   const handleSendConfirmation = (item: any, type: string) => {
+    console.log("item" , item);
     console.log("Sizes for confirmation are : ", item.ModelVariant.Sizes);
     const sizes = item.ModelVariant.Sizes ;
     const quantityReceived = item.QuantityReceived || [];
+    // @ts-ignore
     setSelectedSizes(sizes);
     setQuantityReceived(quantityReceived);
+    
     setCurrentVariant(item.ModelVariant.Id);
     if (type === "CONFIRMATION") setConfirmationOthers(true);
     else if (type === "COMPLETE") {
@@ -171,7 +125,9 @@ export default function OngoingTable({
   };
 
   const handleSendCuttingConfirmation = (item: any) => {
-    const sizes = item.ModelVariant.Sizes
+    const sizes = item.ModelVariant.Sizes;
+    console.log("size" , sizes);
+        // @ts-ignore
     setSelectedSizes(sizes);
     setCurrentVariant(item.ModelVariant.Id);
     setCuttingConfirmation(true);
@@ -200,248 +156,185 @@ export default function OngoingTable({
     }
   };
 
-  const renderAdminRow = (item: any) => (
-    <>
-      <TableCell>{item.CurrentStage?.Department?.Name || t("N/A")}</TableCell>
-      <TableCell>{item.NextStage?.Department?.Name || t("N/A")}</TableCell>
-      <TableCell>
-        {item.StartTime
-          ? format(new Date(item.StartTime), "yyyy-MM-dd HH:mm:ss")
-          : t("N/A")}
-      </TableCell>
-      <TableCell>
-        <Button
-          variant="secondary"
-          onClick={() =>
-            window.open(
-              `/models/viewdetails/${item.ModelVariant.Model.Id}`,
-              "_blank"
-            )
-          }
-        >
-          {t("Details")}
-        </Button>
-      </TableCell>
-    </>
-  );
+  const templateColumns: ColumnDef<Tracking>[] = [
+    {
+      header: t("ModelNumber"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Model.DemoModelNumber}</p>;
+      },
+    },
+    {
+      accessorKey: "Barcode",
+      header: t("Barcode"),
+    },
+    {
+      accessorKey: "name",
+      header: t("Name"),
+    },
+    {
+      accessorKey: "CollectionName",
+      header: t("Collections"),
+    },
+    {
+      accessorKey: "OrderName",
+      header: t("OrderNumber"),
+    },
+    {
+      accessorKey: "TextileName",
+      header: t("Textile"),
+    },
+    {
+      header: t("Color"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Color.ColorName?
+          row.original.ModelVariant.Color.ColorName:t("N/A")
+        }</p>;
+      },
+    },
+    {
+      header: t("Sizes"),
+      cell: ({ row }) => {
+        return <p>{
+          row.original.ModelVariant.Sizes?
+          row.original.ModelVariant.Sizes.map((e: any) => e.label)
+          .join(", "):t("N/A")}</p>;
+      },
+    },
+    {
+      header:  t("TargetQuantity"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Quantity?
+          row.original.ModelVariant.Quantity:t("N/A")
+        }</p>;
+      },
+    },
+    {
+      accessorKey: "QuantityReceived",
+      header: t("ReceivedQuantity"),
+      cell: ({row}) => {
+        return  renderQuantity(row.original.QuantityReceived);
+      },
+    },
+    
+  ];
 
-  const renderUserRow = (item: any) => (
-    <>
-      <TableCell>
-        {item.StartTime && format(new Date(item.StartTime), "dd/MM/yyyy HH:mm")}
-      </TableCell>
-      <TableCell className="space-x-1 space-y-1">
-        {item.ModelVariant.RunningStatus === "ONGOING" ? (
-          <BasicConfirmationDialog
-            key={`pause-${item.Id}`}
-            btnText={t("Pause")}
-            takeAction={async (reason: string) => {
-              await handlePause(item, reason);
-              setActionInProgress(true); // Ensure dialog resets after action
-            }}
-            className="bg-orange-500 hover:bg-orange-600"
-            showInput={true}
-          />
-        ) : (
-          <BasicConfirmationDialog
-            key={`restart-${item.Id}`}
-            btnText={t("Restart")}
-            takeAction={async () => {
-              await handleRestart(item);
-              setActionInProgress(true); // Ensure dialog resets after action
-            }}
-            className="bg-green-500 hover:bg-green-600"
-          />
-        )}
-        {user?.category === "CUTTING" ? (
-          <Button onClick={() => handleSendCuttingConfirmation(item)}>
-            {t("SendForConfirmation")}
+  if (userRole === "FACTORYMANAGER" || userRole === "ENGINEERING") {
+    templateColumns.push(
+        {
+            header: t("CurrentStage"),
+            cell: ({ row }) => {
+                // @ts-ignore
+                return <p>{row.original.CurrentStage?.Department?.Name}</p>; 
+            },
+        },
+        {
+            header: t("NextStage"),
+            cell: ({ row }) => {
+              // @ts-ignore
+                return <p>{row.original.NextStage?.Department?.Name}</p>;
+            },
+        },
+        {
+          header: t("StartTime") ,
+          cell: ({row}) => {
+            return <p>{row.original.StartTime
+              ? format(new Date(row.original.StartTime), "yyyy-MM-dd HH:mm:ss"):t("N/A")}</p>
+          },
+        },
+        {
+          header: t("Action") ,
+          cell: ({row}) => {
+            return  <Button
+            variant="secondary"
+            onClick={() =>
+              window.open(
+                `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+                "_blank"
+              )
+            }
+          >
+            {t("Details")}
           </Button>
-        ) : user?.category !== "QUALITYASSURANCE" ? (
-          <Button onClick={() => handleSendConfirmation(item, "CONFIRMATION")}>
-            {t("SendForConfirmation")}
-          </Button>
-        ) : (
-          <Button onClick={() => handleSendConfirmation(item, "COMPLETE")}>
-            {t("Complete")}
-          </Button>
-        )}
-      </TableCell>
-    </>
-  );
+          },
+        }
+    );
+}
+else { // user
+  templateColumns.push(
+    {
+      header: t("StartTime") ,
+          cell: ({row}) => {
+            return <p>{row.original.StartTime
+              ? format(new Date(row.original.StartTime), "yyyy-MM-dd HH:mm:ss"):t("N/A")}</p>
+          },
+    },
+    {
+      header: t("Action"),
+      cell: ({ row }) => {
+        const item = row.original;
+        return (
+          <div className="flex space-x-1">
+                  {item.ModelVariant.RunningStatus === "ONGOING" ? (
+                <BasicConfirmationDialog
+                  key={`pause-${item.Id}`}
+                  btnText={t("Pause")}
+                  takeAction={async (reason: string) => {
+                    await handlePause(item, reason);
+                    setActionInProgress(true); // Ensure dialog resets after action
+                  }}
+                  className="bg-orange-500 hover:bg-orange-600"
+                  showInput={true}
+                />
+              ) : (
+                <BasicConfirmationDialog
+                  key={`restart-${item.Id}`}
+                  btnText={t("Restart")}
+                  takeAction={async () => {
+                    await handleRestart(item);
+                    setActionInProgress(true); // Ensure dialog resets after action
+                  }}
+                  className="bg-green-500 hover:bg-green-600"
+                />
+              )}
+              {user?.category === "CUTTING" ? (
+                <Button onClick={() => {
+                    
+                  return handleSendCuttingConfirmation(item) ;
+                }}>
+                  {t("SendForConfirmation")}
+                </Button>
+              ) : user?.category !== "QUALITYASSURANCE" ? (
+                <Button onClick={() => handleSendConfirmation(item, "CONFIRMATION")}>
+                  {t("SendForConfirmation")}
+                </Button>
+              ) : (
+                <Button onClick={() => handleSendConfirmation(item, "COMPLETE")}>
+                  {t("Complete")}
+                </Button>
+              )}
+          </div>
+        );
+      },
+    }
+    
+);
+
+
+}
 
   return (
-    <div>
+    <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Ongoing")}</h2>
       <div className="overflow-x-auto">
-        <Table className="min-w-full">
-          <TableHeader>
-            <TableRow>
-            <TableHead onClick={() => requestSort("ModelVariant.Model.DemoModelNumber")}>
-                {t("ModelNumber")}
-                {sortConfig?.key === "ModelVariant.Model.DemoModelNumber" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("Barcode")}>
-                {t("Barcode")}
-                {sortConfig?.key === "Barcode" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("name")}>
-                {t("Name")}
-                {sortConfig?.key === "name" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("CollectionName")}>
-                {t("Collections")}
-                {sortConfig?.key === "CollectionName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("OrderNumber")}>
-                {t("OrderNumber")}
-                {sortConfig?.key === "OrderNumber" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("TextileName")}>
-                {t("TextileName")}
-                {sortConfig?.key === "TextileName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-              <TableHead onClick={() => requestSort("ModelVariant.Color.ColorName")}>
-                {t("Color")}
-                {sortConfig?.key === "ModelVariant.Color.ColorName" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
+       
+      <DataTable 
+      columns={templateColumns} 
+      data={works.inProgress}
+      tableName="TrakingModels"
+      isDashboard={true}
+      />
 
-              <TableHead onClick={() => requestSort("ModelVariant.Sizes")}>
-                {t("Sizes")}
-                {sortConfig?.key === "ModelVariant.Sizes" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
 
-              <TableHead onClick={() => requestSort("ModelVariant.Quantity")}>
-                {t("TargetQuantity")}
-                {sortConfig?.key === "ModelVariant.Quantity" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-
-              <TableHead onClick={() => requestSort("QuantityReceived")}>
-                {t("ReceivedQuantity")}
-                {sortConfig?.key === "QuantityReceived" && (
-                  sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                )}
-              </TableHead>
-
-              
-              {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING" ? (
-                <>
-                  <TableHead onClick={() => requestSort("CurrentStage.Department.Name")}>
-                  {t("CurrentStage")}
-                  {sortConfig?.key === "CurrentStage.Department.Name" && (
-                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                  )}
-                </TableHead>
-
-                <TableHead onClick={() => requestSort("NextStage.Department.Name")}>
-                  {t("NextStage")}
-                  {sortConfig?.key === "NextStage.Department.Name" && (
-                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                  )}
-                </TableHead>
-
-                <TableHead onClick={() => requestSort("StartTime")}>
-                  {t("StartTime")}
-                  {sortConfig?.key === "StartTime" && (
-                    sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                  )}
-                </TableHead>
-
-                  <TableHead>{t("Action")}</TableHead>
-                </>
-              ) : (
-                <>
-                  <TableHead onClick={() => requestSort("StartTime")}>
-                    {t("StartTime")}
-                    {sortConfig?.key === "StartTime" && (
-                      sortConfig.direction === "ascending" ? <ChevronUp /> : <ChevronDown />
-                    )}
-                  </TableHead>
-                  <TableHead>{t("Action")}</TableHead>
-                </>
-              )}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-
-            
-            {works.inProgress.length <= 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={
-                    userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                      ? 10
-                      : 8
-                  }
-                  className="h-24 text-center"
-                >
-                  {t("NoResults")}
-                </TableCell>
-              </TableRow>
-            )}
-            {sortedWorks?.length > 0 &&
-              sortedWorks?.map((item) => {
-                const isPaused = item.ModelVariant.RunningStatus === "PAUSED";
-                return (
-                  <TableRow
-                    key={item.Id}
-                    style={isPaused ? { backgroundColor: "orange" } : {}}
-                  >
-                    <TableCell className="font-medium">
-                      {item.ModelVariant.Model.DemoModelNumber || t("N/A")} 
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.Barcode || t("N/A")}
-                    </TableCell>
-                    <TableCell className="font-medium">{item.name || t("N/A")}</TableCell>
-                    <TableCell className="font-medium">
-                      {item.CollectionName || t("N/A")}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.OrderName || t("N/A")}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.TextileName || t("N/A")}
-                    </TableCell>
-
-                    <TableCell>{item.ModelVariant.Color.ColorName || t("N/A")}</TableCell>
-                    <TableCell>
-                  {item.ModelVariant.Sizes
-                    ? item.ModelVariant.Sizes
-                        .map((e: any) => e.label)
-                        .join(", ")
-                    : t("N/A")}
-                 </TableCell>
-                    <TableCell>{item.ModelVariant.Quantity || t("N/A")}</TableCell>
-                    <TableCell>
-                      {renderQuantity(item.QuantityReceived)}
-                    </TableCell>
-                    {userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                      ? renderAdminRow(item)
-                      : renderUserRow(item)}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-2">
             <Button

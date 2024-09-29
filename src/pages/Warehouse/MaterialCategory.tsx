@@ -108,6 +108,7 @@ export default function MaterialCategories() {
                     <DataTable
                         columns={materialCategoryColumns}
                         data={materialCategories}
+                        tableName="MaterialCategories"
                     />
                 </div>
             </div>

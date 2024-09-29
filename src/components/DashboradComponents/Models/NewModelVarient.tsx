@@ -70,7 +70,7 @@ export default function NewModelVarient() {
 
     const quantityPerSize = +data.Quantity / data.Sizes.length;
     const sizesWithQuantities = data.Sizes.map((size) => ({
-      label: size.label,
+      label: size.label ,
       value: quantityPerSize,
     }));
 

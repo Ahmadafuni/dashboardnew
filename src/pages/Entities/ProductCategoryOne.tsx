@@ -109,6 +109,11 @@ export default function ProductCategoryOne() {
           <DataTable
             columns={productCategoryOneColumns}
             data={productCategoryOnes}
+            tableName="ProductCatalogCategoryOne"
+            fieldFilter={{
+              "CategoryName" : "CategoryName" , 
+              "Description" : "CategoryDescription"
+            }}
           />
         </div>
       </div>

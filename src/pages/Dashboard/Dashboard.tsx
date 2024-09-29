@@ -14,11 +14,13 @@ import AwaitingTable from "@/components/DashboradComponents/Dashboard/AwaitingTa
 import CompleteDialog from "@/components/DashboradComponents/Dashboard/CompleteDialog.tsx";
 import { useRecoilValue } from "recoil";
 import { userInfo } from "@/store/authentication.ts";
-import Spinner from "@/components/common/Spinner";
+import * as Dialog from '@radix-ui/react-dialog';
 
-import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+
+import { Dialog as DialogSec , DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Loader } from "lucide-react";
 import FinishedTable from "@/components/DashboradComponents/Dashboard/FinishedTable.tsx";
 
 export default function Dashboard() {
@@ -59,8 +61,7 @@ export default function Dashboard() {
     setIsModalOpen(false);
   };
 
-  // @ts-ignore
-  const [selectedSizes, setSelectedSizes] = useState<{ label: string; value: string }[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<{ label: string, value: string }[]>([]);
   const [quantityReceived, setQuantityReceived] = useState<any[]>([]);
   const [pages, setPages] = useState({
     awaitingPage: 1,
@@ -92,11 +93,15 @@ export default function Dashboard() {
       getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading);
       getModelDetailsDepartment(setModelDetails , setIsLoading);
     }
+
   }, [user, pages, sizes]);
 
   
   const hasNullNextStage = (workList: any) => {
-    return workList.some((item: { NextStage: null }) => item.NextStage === null);
+
+    if(workList)
+      return workList.some((item: { NextStage: null }) => item.NextStage === null);
+    
   };
 
   const hideConfirmationTable = !(
@@ -104,7 +109,7 @@ export default function Dashboard() {
     (!hasNullNextStage(works.awaiting) &&
       !hasNullNextStage(works.inProgress) &&
       !hasNullNextStage(works.completed) &&
-      !hasNullNextStage(works.finished) &&
+      // !hasNullNextStage(works.finished) &&
       !hasNullNextStage(works.givingConfirmation))
   );
 
@@ -148,7 +153,7 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogSec open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-[600px] bg-gray-800">
             <DialogHeader>
               <h2 className="text-2xl font-semibold text-gray-100 mb-4">{t("ModelDetails")}</h2>
@@ -195,13 +200,30 @@ export default function Dashboard() {
               </Button>
             </DialogFooter>
           </DialogContent>
-        </Dialog>
+        </DialogSec>
       </div>
 
       <Separator />
 
       <div id="datatable" className="mt-10" style={{ position: "relative", top: "50%" }}>
-        {isLoading && <Spinner />}
+        {isLoading && 
+            <Dialog.Root open={isLoading}>
+                    <Dialog.Overlay className="fixed inset-0 bg-gradient-to-r from-blue-950 via-blue-900 to-blue-700 opacity-40 animate-pulse z-50" />
+                    
+                    <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg border-t-4 border-blue-500 animate-fade-in z-50">
+                        <div className="flex flex-col items-center">
+                            <Loader className="w-16 h-16 animate-spin text-blue-600" />
+                            
+                            <p className="text-lg font-semibold mt-4 text-gray-700">
+                                {t("Loading...")}
+                            </p>
+
+                            <p className="text-sm mt-2 text-gray-500">
+                                {t("Please wait, your request is being processed now.")}
+                            </p>
+                        </div>
+                    </Dialog.Content>
+                </Dialog.Root>}
       </div>
 
       <AwaitingTable

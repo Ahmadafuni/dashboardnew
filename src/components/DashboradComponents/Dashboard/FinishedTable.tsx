@@ -6,9 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { WorkType } from "@/types/Dashboard/Dashboard.types";
-import { useRecoilValue } from "recoil";
-import { userInfo } from "@/store/authentication.ts";
+import { Tracking, WorkType } from "@/types/Dashboard/Dashboard.types";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import {
@@ -23,6 +21,8 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect , useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import { ColumnDef } from "@tanstack/react-table";
+import DataTable from "@/components/common/DataTable";
 
 interface Props {
   page: number;
@@ -58,65 +58,21 @@ export default function FinishedTable({
   totalPages,
   works,
 }: Props) {
-  const user = useRecoilValue(userInfo);
-  const userRole = user?.userRole;
+
   const { t } = useTranslation();
 
   const [summaryData, setSummaryData] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(null);
 
 
-  const sortedWorks = Array.isArray(works?.finished) ? [...works.finished].sort((a, b) => {
 
-    if (sortConfig !== null) {
-      const keyParts = sortConfig.key.split('.');
-      const getValue = (obj: any, keyParts: string[]) => {
-        return keyParts.reduce((nestedObj, key) => {
-          return nestedObj && nestedObj[key] !== undefined ? nestedObj[key] : null;
-        }, obj);
-      };
-
-      const aValue = getValue(a, keyParts);
-      const bValue = getValue(b, keyParts);
-
-      if (aValue !== null && bValue !== null) {
-        if (typeof aValue === 'string' && typeof bValue === 'string') {
-          return sortConfig.direction === 'ascending'
-            ? aValue.toLowerCase().localeCompare(bValue.toLowerCase())
-            : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
-        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
-          return sortConfig.direction === 'ascending' ? aValue - bValue : bValue - aValue;
-        } else {
-          return 0;
-        }
-      }
-
-      if (aValue === null && bValue !== null) {
-        return sortConfig.direction === 'ascending' ? -1 : 1;
-      }
-      if (aValue !== null && bValue === null) {
-        return sortConfig.direction === 'ascending' ? 1 : -1;
-      }
-    }
-    return 0;
-
-  }) : [];
-
-  const requestSort = (key: string) => {
-    let direction = "ascending";
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
+  
   // @ts-ignore
   const [pageSize, setPageSize] = useState(10);
 
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
-      return quantity.map((q) => `${q.size}: ${q.value}`).join(", ");
+      return quantity.map((q) => `${q.label}: ${q.value}`).join(", ");
     }
     return quantity;
   };
@@ -130,59 +86,103 @@ export default function FinishedTable({
     setSummaryData(null);
   };
 
+  const templateColumns: ColumnDef<Tracking>[] = [
+    {
+      header: t("ModelNumber"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Model.DemoModelNumber}</p>;
+      },
+    },
+    {
+      accessorKey: "Barcode",
+      header: t("Barcode"),
+    },
+    {
+      accessorKey: "name",
+      header: t("Name"),
+    },
+
+    {
+      accessorKey: "CollectionName",
+      header: t("Collections"),
+    },
+    {
+      accessorKey: "OrderName",
+      header: t("OrderNumber"),
+    },
+    {
+      accessorKey: "TextileName",
+      header: t("Textile"),
+    },
+    {
+      header: t("Color"),
+      cell: ({ row }) => {
+        return <p>{row.original.ModelVariant.Color.ColorName?
+          row.original.ModelVariant.Color.ColorName:t("N/A")
+        }</p>;
+      },
+    },
+    {
+      header: t("Sizes"),
+      cell: ({ row }) => {
+        return <p>{
+          row.original.ModelVariant.Sizes?
+          row.original.ModelVariant.Sizes.map((e: any) => e.label)
+          .join(", "):t("N/A")}</p>;
+      },
+    },
+    {
+      header:  t("ReceivedQuantity"),
+      cell: ({ row }) => {
+        return <p>{row.original.QuantityReceived?
+          row.original.QuantityReceived:t("N/A")
+        }</p>;
+      },
+    },
+    {
+      header:  t("DeliveredQuantity"),
+      cell: ({ row }) => {
+        return <p>{row.original.QuantityDelivered?
+          row.original.QuantityDelivered:t("N/A")
+        }</p>;
+      },
+    },
+    {
+      header:  t("Duration"),
+      cell: ({ row }) => {
+        // @ts-ignore
+        return <p>{row.original.duration?row.original.duration:t("N/A")
+        }</p>;
+      },
+    },
+
+    {
+      header: t("Action") ,
+      cell: ({row}) => {
+        return  <Button
+            variant="secondary"
+            onClick={() =>
+              window.open(`/models/viewdetails/${row.original.ModelVariant.Model.Id}`, "_blank")
+            }
+          >
+            {t("Summary")}
+          </Button>
+      },
+    }
+  ];
+  
+  
   return (
-    <div>
+    <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Finished")}</h2>
       <div className="overflow-x-auto">
-        <Table className="min-w-full">
-          <TableHeader>
-            <TableRow>
-              <TableHead onClick={() => requestSort('modelDemoNumber')}>{t('ModelNumber')}</TableHead>
-              <TableHead onClick={() => requestSort('modelBarcode')}>{t('Barcode')}</TableHead>
-              <TableHead onClick={() => requestSort('modelName')}>{t('Name')}</TableHead>
-              <TableHead onClick={() => requestSort('collectionName')}>{t('Collections')}</TableHead>
-              <TableHead onClick={() => requestSort('orderName')}>{t('OrderNumber')}</TableHead>
-              <TableHead onClick={() => requestSort('textileName')}>{t('TextileName')}</TableHead>
-              <TableHead onClick={() => requestSort('colors')}>{t('Color')}</TableHead>
-              <TableHead onClick={() => requestSort('sizes')}>{t('Sizes')}</TableHead>
-              <TableHead onClick={() => requestSort('QuantityReceived')}>{t('ReceivedQuantity')}</TableHead>
-              <TableHead onClick={() => requestSort('QuantityDelivered')}>{t('DeliveredQuantity')}</TableHead>
-              <TableHead onClick={() => requestSort('duration')}>{t('Duration')}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {works && sortedWorks.length <= 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={
-                    userRole === "FACTORYMANAGER" || userRole === "ENGINEERING"
-                      ? 12
-                      : 8
-                  }
-                  className="h-24 text-center"
-                >
-                  {t("NoResults")}
-                </TableCell>
-              </TableRow>
-            )}
-            {works &&
-              sortedWorks.map((item: any) => (
-                  <TableRow key={item.modelId}>
-                    <TableCell className="font-medium">{item.modelDemoNumber}</TableCell>
-                    <TableCell className="font-medium">{item.modelBarcode || t('N/A')}</TableCell>
-                    <TableCell className="font-medium">{item.modelName}</TableCell>
-                    <TableCell className="font-medium">{item.collectionName}</TableCell>
-                    <TableCell className="font-medium">{item.orderName}</TableCell>
-                    <TableCell className="font-medium">{item.textileName}</TableCell>
-                    <TableCell className="font-medium">{item.colors}</TableCell>
-                    <TableCell className="font-medium">{item.sizes}</TableCell>
-                    <TableCell className="font-medium">{item.QuantityReceived}</TableCell>
-                    <TableCell className="font-medium">{item.QuantityDelivered}</TableCell>
-                    <TableCell className="font-medium">{item.duration}</TableCell>
-                  </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+      
+      <DataTable 
+        columns={templateColumns} 
+        data={works.finished}
+        tableName="TrakingModels"
+        isDashboard={true}
+      />
 
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-[600px] bg-gray-800">

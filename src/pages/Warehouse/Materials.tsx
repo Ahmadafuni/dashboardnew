@@ -131,7 +131,7 @@ export default function Materials() {
             </Button>
           </div>
           <div className="rounded-md border overflow-x-scroll">
-            <DataTable columns={materialColumns} data={materials} />
+            <DataTable columns={materialColumns} data={materials} tableName="ParentMaterials"/>
           </div>
         </div>
       </div>

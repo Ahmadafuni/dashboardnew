@@ -202,7 +202,17 @@ export default function Orders() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={orderColumns} data={orders} />
+          <DataTable columns={orderColumns} data={orders} tableName="Orders"
+            fieldFilter={{
+              "OrderNumber" : "OrderNumber" ,
+              "OrderName" : "OrderName" ,
+              "CollectionName" : "CollectionId.CollectionName" ,
+              "Quantity" : "Quantity" ,
+              "DeadlineDate" : "DeadlineDate" ,
+              "Description" : "Description"
+
+            }}
+          />
         </div>
       </div>
     </div>

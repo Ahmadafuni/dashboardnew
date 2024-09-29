@@ -132,7 +132,17 @@ export default function Templates() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={templateColumns} data={templates} />
+          <DataTable columns={templateColumns} data={templates} tableName="Templates"
+            fieldFilter={{
+              "TemplateName" : "TemplateName",
+              "ProductCatalogueName":"ProductCatalogId.ProductCatalogName",
+              "ProductCategoryOne" : "CategoryOneId.CategoryName",
+              "ProductCategoryTwo" : "CategoryTwoId.CategoryName" ,
+              "TemplateTypeName" : "TemplateTypeId.TemplateTypeName" ,
+              "TemplatePatternName" : "TemplatePatternId.TemplatePatternName" ,
+              "Description" : "Description",
+            }}
+          />
         </div>
       </div>
     </div>
