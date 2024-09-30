@@ -33,7 +33,7 @@ interface DataTableProps<TData, TValue> {
     
 
 
-    tableName: string;
+    tableName?: string;
     fieldFilter?: { [key: string]: string }; 
     isDashboard?: boolean;
     page?: number;

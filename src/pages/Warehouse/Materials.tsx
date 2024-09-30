@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import NewChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/NewChildMaterial.tsx";
 import { childMaterialList, newChildMaterialModal} from "@/store/ChildMaterial.ts";
-import { size } from "@/store/Sizes";
 import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Materials() {
