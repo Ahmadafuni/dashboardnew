@@ -371,6 +371,9 @@
   "Add Filter" : "إضافة فلتر",
   "Applying filters..." : "جاري تطبيق الفلاتر...",
   "Please wait, your request is being processed now." : "الرجاء الانتظار، يتم معالجة طلبك الآن",
-  "Loading...": "جاري التحميل..."
-
+  "Loading...": "جاري التحميل...",
+  "CollectionStatistics": "إحصائيات المجموعة",
+  "ModelStatistics": "إحصائيات الموديلات",
+  "OrderStatistics": "إحصائيات الطلبيات",
+  "TaskStatistics": "إحصائيات المهام"
 }

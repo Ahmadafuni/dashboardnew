@@ -366,5 +366,10 @@
   "Archive": "Archive",
   "DragMessage": "Drag 'n' drop some images here, or click to select files",
   "Apply Filters": "Apply Filters",
-  "clear all Filters": "clear all Filters"
+  "clear all Filters": "clear all Filters",
+  "CollectionStatistics": "Collection Statistics",
+  "ModelStatistics": "Model Statistics",
+  "OrderStatistics": "Order Statistics",
+  "TaskStatistics": "Task Statistics"
+
 }

@@ -35,19 +35,32 @@ export const getAllTasks = async (setData: Dispatch<SetStateAction<any>> ,
   }
 };
 export const getCurrentTasks = async (
-  setData: Dispatch<SetStateAction<any>>
+  setData: Dispatch<SetStateAction<any>>,
+    pages?: number,
+    sizes?: number,
+    setTotalPages?: Dispatch<SetStateAction<any>>,
+    setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     const { data } = await axios.get(`task/current/task`, {
+      params: {
+        page: pages,
+        size: sizes,
+      },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    if (setTotalPages) setTotalPages(data.totalPages);
+
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  }
+  finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 
