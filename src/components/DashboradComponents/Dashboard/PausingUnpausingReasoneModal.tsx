@@ -34,7 +34,7 @@ export default function PausingUnpausingReasoneModal({ getAllWorks }: Props) {
   const form = useForm<z.infer<typeof pauseUnpuaseReasoneSchema>>({
     resolver: zodResolver(pauseUnpuaseReasoneSchema),
     defaultValues: {
-      Reasone: "",
+      StopData: "",
     },
   });
 
@@ -77,11 +77,11 @@ export default function PausingUnpausingReasoneModal({ getAllWorks }: Props) {
             >
               <FormField
                   control={form.control}
-                  name="Reasone"
+                  name="StopData"
                   render={({ field }) => (
                       <TextInputFieldForForm
                           placeholder=""
-                          label={t("Reasone")}
+                          label={t("Reason")}
                           field={field}
                       />
                   )}

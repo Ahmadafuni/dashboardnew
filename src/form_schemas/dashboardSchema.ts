@@ -11,7 +11,7 @@ export const rejectVariantSchema = z.object({
 });
 
 export const pauseUnpuaseReasoneSchema = z.object({
-  Reasone: z.string().min(1, { message: "Please write a reasone!" }),
+  StopData: z.any(),
 });
 export const cuttingSendConfirmationSchema = z.object({
     ClothCount: z.string().nonempty("ClothCount is required."),

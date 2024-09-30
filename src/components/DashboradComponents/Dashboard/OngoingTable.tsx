@@ -29,6 +29,7 @@ import {
 import {  ChevronLeft, ChevronRight } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/common/DataTable";
+import {getAllWork} from "@/services/Dashboard.services.ts";
 
 interface Props {
   page: number;
@@ -102,8 +103,17 @@ export default function OngoingTable({
   }, [actionInProgress]);
 
   const fetchWorks = async () => {
-    // @ts-ignore
-    await getAllWork(user?.userDepartmentId,{}, {}, setWorks);
+    await getAllWork({
+      awaitingPage: 0,
+      inProgressPage: 0,
+      completedPage: 0,
+      givingConfirmationPage: 0
+    }, {
+      awaitingSize: 0,
+      inProgressSize: 0,
+      completedSize: 0,
+      givingConfirmationSize: 0
+    },setWorks);
   };
 
 
