@@ -3,18 +3,33 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export const getAllColors = async (setData: Dispatch<SetStateAction<any>>) => {
+export const getAllColors = async (
+  setData: Dispatch<SetStateAction<any>>,
+  pages?: number,
+  sizes?: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
+) => {
   try {
+    if(setIsLoading)setIsLoading(true);
     const { data } = await axios.get("color/all", {
+      params: {
+        page: pages,
+        size: sizes,
+      },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    if (setTotalPages) setTotalPages(data.totalPages);
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 

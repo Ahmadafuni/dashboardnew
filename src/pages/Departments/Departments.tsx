@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getAllDepartments } from "@/services/Departments.services";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Departments() {
   // Translation
@@ -16,6 +17,12 @@ export default function Departments() {
   const navigate = useNavigate();
   // Departments
   const [departments, setDepartments] = useState([]);
+
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
   // Columns
   const departmentColumns: ColumnDef<DepartmentType>[] = [
     {
@@ -53,10 +60,17 @@ export default function Departments() {
   ];
   // Page on load
   useEffect(() => {
-    getAllDepartments(setDepartments);
-  }, []);
+    getAllDepartments(setDepartments , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
   return (
     <div className="w-full space-y-2">
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}
+          
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full"> {t("Departments")}</h1>
         <Separator />
@@ -70,6 +84,11 @@ export default function Departments() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={departmentColumns} data={departments} tableName="Departments"
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
           fieldFilter={{
             "Name" : "Name" , 
             "Location" : "Location" , 

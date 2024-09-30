@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog";
 import OrderStatusChart from "@/components/ui/charts/OrderStatusChart.tsx";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 
 export default function Orders() {
@@ -44,6 +45,10 @@ export default function Orders() {
   const setOrder = useSetRecoilState(order);
   const [orders, setOrders] = useState<OrderType[]>([]);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Navigate
   const navigate = useNavigate();
@@ -179,10 +184,19 @@ export default function Orders() {
   ];
 
   useEffect(() => {
-    getAllOrders(setOrders);
-  }, []);
+    getAllOrders(setOrders , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
+  
   return (
     <div className="w-full space-y-2">
+
+             {isLoading && 
+                  <LoadingDialog 
+                  isOpen={isLoading} 
+                  message="Loading..." 
+                  subMessage="Please wait, your request is being processed now." 
+                />}
+
       <NewOrder getAllOrders={() => getAllOrders(setOrders)} />
       <UpdateOrder getAllOrders={() => getAllOrders(setOrders)} />
       <div className="w-full space-y-1">
@@ -203,6 +217,11 @@ export default function Orders() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={orderColumns} data={orders} tableName="Orders"
+           page={pages}
+           setPage={setPages}
+           size={sizes}
+           setSize={setSizes}
+           totalPages={totalPages}
             fieldFilter={{
               "OrderNumber" : "OrderNumber" ,
               "OrderName" : "OrderName" ,

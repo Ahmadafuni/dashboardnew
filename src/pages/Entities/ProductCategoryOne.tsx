@@ -21,6 +21,7 @@ import { ProductCategoryOneType } from "@/types/Entities/ProductCategoryOne.type
 import UpdateProductCategoryOne from "@/components/DashboradComponents/Entities/ProductCategoryOne/UpdateProductCategoryOne.tsx";
 import NewProductCategoryOne from "@/components/DashboradComponents/Entities/ProductCategoryOne/NewProductCategoryOne.tsx";
 import { useTranslation } from "react-i18next";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function ProductCategoryOne() {
   const setNewProductCategoryOneModal = useSetRecoilState(
@@ -35,6 +36,11 @@ export default function ProductCategoryOne() {
     ProductCategoryOneType[]
   >([]);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
   const productCategoryOneColumns: ColumnDef<ProductCategoryOneType>[] = [
     {
       accessorKey: "CategoryName",
@@ -76,10 +82,16 @@ export default function ProductCategoryOne() {
   ];
   // Page on load
   useEffect(() => {
-    getAllProductCategoryOne(setProductCategoryOnes);
-  }, []);
+    getAllProductCategoryOne(setProductCategoryOnes , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
   return (
     <div className="w-full space-y-2">
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
       <NewProductCategoryOne
         getProductCategoriesOne={() =>
           getAllProductCategoryOne(setProductCategoryOnes)
@@ -110,6 +122,11 @@ export default function ProductCategoryOne() {
             columns={productCategoryOneColumns}
             data={productCategoryOnes}
             tableName="ProductCatalogCategoryOne"
+            page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
             fieldFilter={{
               "CategoryName" : "CategoryName" , 
               "Description" : "CategoryDescription"

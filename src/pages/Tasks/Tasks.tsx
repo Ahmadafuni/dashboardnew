@@ -27,6 +27,7 @@ import UpdateTask from "@/components/DashboradComponents/Tasks/UpdateTask.tsx";
 import { downLoadFile } from "@/services/Commons.services";
 import { Badge } from "@/components/ui/badge";
 import CheckSubmittedTask from "@/components/DashboradComponents/Tasks/CheckSubmittedTask";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Tasks() {
   const { t } = useTranslation();
@@ -39,6 +40,11 @@ export default function Tasks() {
   const setCurrentTask = useSetRecoilState(taskData);
   // Feedback
   const setCurrentFeedback = useSetRecoilState(feedbackData);
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const taskColumns: ColumnDef<TaskType>[] = [
     { accessorKey: "TaskName", header: t("TaskName") },
@@ -125,11 +131,17 @@ export default function Tasks() {
   ];
 
   useEffect(() => {
-    getAllTasks(setTasks);
-  }, []);
+    getAllTasks(setTasks , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
 
   return (
     <div className="w-full space-y-2">
+       {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}
       <NewTask getTasks={() => getAllTasks(setTasks)} />
       <UpdateTask getTasks={() => getAllTasks(setTasks)} />
       <CheckSubmittedTask />
@@ -149,7 +161,13 @@ export default function Tasks() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={taskColumns} data={tasks} />
+          <DataTable columns={taskColumns} data={tasks} tableName={"Tasks"} 
+            page={pages}
+            setPage={setPages}
+            size={sizes}
+            setSize={setSizes}
+            totalPages={totalPages} 
+          />
         </div>
       </div>
     </div>

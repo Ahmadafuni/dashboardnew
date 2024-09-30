@@ -12,7 +12,7 @@ export type ModelTypes = {
   CategoryOne: ProductCategoryOneType;
   categoryTwo: ProductCategoryOneType;
   Textile: TextilesType;
-  Template: TemplateType; //Template Id not Template Type Id
+  Template?: TemplateType; //Template Id not Template Type Id
   // Size: SizeType; // can select many sizes
   // Color: ColorType; // can select many colors
 

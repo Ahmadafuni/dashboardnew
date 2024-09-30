@@ -457,6 +457,7 @@ export default function ProductionReports() {
         <DataTable
           columns={reportsColumns}
           data={reports}
+          tableName="Models"
           page={pages}
           setPage={setPages}
           size={sizes}

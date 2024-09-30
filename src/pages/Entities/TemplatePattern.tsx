@@ -21,6 +21,7 @@ import { TemplatePatternType } from "@/types/Entities/TemplatePattern.types.ts";
 import NewTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/NewTemplatePattern.tsx";
 import UpdateTemplatePattern from "@/components/DashboradComponents/Entities/TemplatePattern/UpdateTemplatePattern.tsx";
 import { useTranslation } from "react-i18next";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function TemplatePattern() {
   const setNewTemplatePatternModal = useSetRecoilState(newTemplatePatternModal);
@@ -33,6 +34,10 @@ export default function TemplatePattern() {
     TemplatePatternType[]
   >([]);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const templatePatternColumns: ColumnDef<TemplatePatternType>[] = [
     {
@@ -69,10 +74,16 @@ export default function TemplatePattern() {
   ];
   // Page on load
   useEffect(() => {
-    getAllTemplatePatterns(setTemplatePatterns);
-  }, []);
+    getAllTemplatePatterns(setTemplatePatterns , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
   return (
     <div className="w-full space-y-2">
+       {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />} 
       <NewTemplatePattern
         getTemplatePatterns={() => getAllTemplatePatterns(setTemplatePatterns)}
       />
@@ -96,7 +107,12 @@ export default function TemplatePattern() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={templatePatternColumns} data={templatePatterns} tableName="TemplatePatterns" 
-          fieldFilter={{
+         page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
+         fieldFilter={{
             "TemplatePatternName": "TemplatePatternName" ,
             "Description" : "Description"
           }}

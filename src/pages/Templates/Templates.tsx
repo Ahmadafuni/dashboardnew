@@ -1,6 +1,7 @@
 import DataTable from "@/components/common/DataTable";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 import { Button } from "@/components/ui/button";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 import { Separator } from "@/components/ui/separator";
 import { downLoadFile } from "@/services/Commons.services";
 import { deleteTemplate, getAllTemplates } from "@/services/Templates.services";
@@ -18,6 +19,10 @@ export default function Templates() {
   const navigate = useNavigate();
   // Departments
   const [templates, setTemplates] = useState([]);
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Columns
   const templateColumns: ColumnDef<TemplateType>[] = [
@@ -116,10 +121,18 @@ export default function Templates() {
   ];
   // Page on load
   useEffect(() => {
-    getAllTemplates(setTemplates);
-  }, []);
+    getAllTemplates(setTemplates , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
+
   return (
     <div className="w-full space-y-2">
+ 
+        {isLoading && <LoadingDialog 
+                    isOpen={isLoading} 
+                    message="Loading..." 
+                    subMessage="Please wait, your request is being processed now." 
+                  />} 
+
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">{t("Templates")}</h1>
         <Separator />
@@ -133,6 +146,11 @@ export default function Templates() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={templateColumns} data={templates} tableName="Templates"
+            page={pages}
+            setPage={setPages}
+            size={sizes}
+            setSize={setSizes}
+            totalPages={totalPages}
             fieldFilter={{
               "TemplateName" : "TemplateName",
               "ProductCatalogueName":"ProductCatalogId.ProductCatalogName",
