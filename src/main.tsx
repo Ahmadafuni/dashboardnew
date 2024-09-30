@@ -18,7 +18,6 @@ import MainLayout from "./layouts/MainLayout.tsx";
 // Pages
 import Login from "./pages/Login/Login.tsx";
 import Users from "./pages/Users/Users.tsx";
-import Reports from "@/pages/Reports/Reports.tsx";
 import ProductCatalogues from "@/pages/ProductCatalogues/ProductCatalogues.tsx";
 import Statistics from "@/pages/Statistics/Statistics.tsx";
 import Templates from "@/pages/Templates/Templates.tsx";
@@ -109,7 +108,6 @@ const router = createBrowserRouter([
       },
 
       { path: "/dashboard/home", element: <Home /> },
-      { path: "/dashboard/reports", element: <Reports /> },
       { path: "/dashboard/productionreports", element: <ProductionReports /> },
       { path: "/dashboard/orderreports", element: <OrderReports /> },
       { path: "/dashboard/statistics", element: <Statistics /> },

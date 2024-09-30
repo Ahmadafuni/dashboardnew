@@ -370,6 +370,10 @@
   "CollectionStatistics": "Collection Statistics",
   "ModelStatistics": "Model Statistics",
   "OrderStatistics": "Order Statistics",
-  "TaskStatistics": "Task Statistics"
+  "TaskStatistics": "Task Statistics",
+  "ProductionReports": "Production Reports",
+  "OrderReports": "Order Reports",
+  "AdvancedSearchOrderReports": "Advanced Search Order Reports",
+  "AdvancedSearchProductionReports": "Advanced Search Production Reports"
 
 }

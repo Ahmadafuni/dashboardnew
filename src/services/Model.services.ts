@@ -243,7 +243,7 @@ export const filterProductionModels = async (
             name: index === 0 ? modelName : "", // Only the first row has the model name
             barcode: index === 0 ? item.Barcode : "", // Example: if you have barcode data
             textile: index === 0 ? item.Textiles : "", // Only the first row has textile
-            colors: detail.Color,
+            colors:  detail.Color ? detail.Color.ColorName :"",
             sizes: detail.Sizes.map(
                 (size: { label: string; value: string }) =>
                     `${size.label} : ${size.value}`
@@ -319,7 +319,7 @@ export const filterOrderReport = async (
             name: index === 0 ? modelName : "", // First row gets the model name
             barcode: index === 0 ? item.Barcode : "", // Example: barcode data if present
             textile: index === 0 ? item.Textiles : "", // Only the first row has textile
-            colors: detail.Color,
+            colors:  detail.Color ? detail.Color.ColorName :"",
             sizes: detail.Sizes.map(
                 (size: { label: string; value: string }) =>
                     `${size.label} : ${size.value}`
@@ -356,7 +356,6 @@ export const filterOrderReport = async (
     if (setIsLoading) setIsLoading(false);
   }
 };
-
 
 
 export const getModelsStats = async (

@@ -213,7 +213,7 @@ export default function ProductionReports() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Card className="bg-[var(--card-background)]">
             <CardHeader className="flex-row justify-between">
-              <div className="w-fit">Advanced Search Production Reports</div>
+              <div className="w-fit">{t("AdvancedSearchProductionReports")}</div>
               <Button
                 type="button"
                 variant="ghost"

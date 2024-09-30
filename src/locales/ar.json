@@ -375,5 +375,9 @@
   "CollectionStatistics": "إحصائيات المجموعة",
   "ModelStatistics": "إحصائيات الموديلات",
   "OrderStatistics": "إحصائيات الطلبيات",
-  "TaskStatistics": "إحصائيات المهام"
+  "TaskStatistics": "إحصائيات المهام",
+  "ProductionReports": "تقارير الإنتاج",
+  "OrderReports": "تقارير الطلبات",
+  "AdvancedSearchOrderReports": "تقارير الطلبات",
+  "AdvancedSearchProductionReports": "تقارير الإنتاج"
 }

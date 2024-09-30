@@ -219,7 +219,7 @@ export default function OrderReports() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Card className="bg-[var(--card-background)]">
             <CardHeader className="flex-row justify-between">
-              <div className="w-fit">Advanced Search Order Reports</div>
+              <div className="w-fit">{t("AdvancedSearchOrderReports")}</div>
               <Button
                 type="button"
                 variant="ghost"
@@ -397,7 +397,7 @@ export default function OrderReports() {
                     onClick={handleReset}
                     className="text-white-600 bg-[#ff0000]"
                   >
-                    {t("RESET")}
+                    {t("Reset")}
                   </Button>
 
                   <Button
@@ -411,7 +411,7 @@ export default function OrderReports() {
                         {t("PleaseWait")}
                       </>
                     ) : (
-                      t("SEARCH")
+                      t("Search")
                     )}
                   </Button>
                 </div>

@@ -9,6 +9,7 @@ import {
   UsersRound,
   LayoutPanelTop,
   FileBarChart2,
+  FileBarChart,
   AlignJustify,
   Palette,
   Ruler,
@@ -110,21 +111,15 @@ export default function Sidebar() {
           ],
         },
         {
-          name: t("Reports"),
-          link: "/dashboard/reports",
-          icon: FileBarChart2,
-          userRole: ["FACTORYMANAGER"],
-        },
-        {
-          name: t("Production Reports"),
+          name: t("ProductionReports"),
           link: "/dashboard/productionreports",
           icon: FileBarChart2,
           userRole: ["FACTORYMANAGER"],
         },
         {
-          name: t("Order Reports"),
+          name: t("OrderReports"),
           link: "/dashboard/orderreports",
-          icon: FileBarChart2,
+          icon: FileBarChart,
           userRole: ["FACTORYMANAGER"],
         },
         /*{
