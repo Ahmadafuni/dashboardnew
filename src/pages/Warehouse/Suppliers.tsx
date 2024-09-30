@@ -21,6 +21,7 @@ import { SupplierType } from "@/types/Warehouses/Suppliers.type.ts";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import NewSupplier from "@/components/DashboradComponents/Warehouse/Suppliers/NewSupplier.tsx";
 import UpdateSupplier from "@/components/DashboradComponents/Warehouse/Suppliers/UpdateSupplier.tsx";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Suppliers() {
   const { t } = useTranslation();
@@ -29,6 +30,10 @@ export default function Suppliers() {
   const setNewSupplierModal = useSetRecoilState(newSupplierModal);
   const setUpdateSupplierModal = useSetRecoilState(updateSupplierModal);
   const setSupplierId = useSetRecoilState(supplierId);
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const supplierColumns: ColumnDef<SupplierType>[] = [
     {
@@ -72,11 +77,17 @@ export default function Suppliers() {
 
   // Page on load
   useEffect(() => {
-    getAllSuppliers(setSuppliers);
-  }, []);
+    getAllSuppliers(setSuppliers , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
 
   return (
     <div className="w-full space-y-2">
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}
       <NewSupplier getSuppliers={() => getAllSuppliers(setSuppliers)} />
       <UpdateSupplier getSuppliers={() => getAllSuppliers(setSuppliers)} />
       <div className="w-full space-y-1">
@@ -96,6 +107,11 @@ export default function Suppliers() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={supplierColumns} data={suppliers} tableName="Suppliers"
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
           fieldFilter={{
             "Name" : "Name" , 
             "Address" : "Address" , 

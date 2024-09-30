@@ -94,8 +94,9 @@ export default function Dashboard() {
       getModelDetailsDepartment(setModelDetails , setIsLoading);
     }
 
-  }, [user, pages, sizes]);
+    console.log("works" , works);
 
+  }, [user, pages, sizes ]);
   
   const hasNullNextStage = (workList: any) => {
 

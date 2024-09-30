@@ -64,78 +64,88 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const textilesList = useRecoilValue(textileList);
   const templatesList = useRecoilValue(templateList);
 
-  const renameFields = (data: any[]) => {
-    const fieldNamesMap: { [key: string]: string } = {
-      "رقم الموديل": "ModelNumber",
-      "الصنف": "CategoryOne",
-      "الفئة": "CategoryTwo",
-      "الزمرة": "ProductName",
-      "القماش": "Textiles",
-      "رقم القالب": "templateId",
-      "مراحل العمل": "Stages",
-      "القياس": "scale",
-    };
-
-    return data.map((record: any) => {
-      let renamedRecord: any = {};
-      Object.keys(record).forEach((key) => {
-        const newKey = fieldNamesMap[key]?.replace(/\s+/g, "") || key.replace(/\s+/g, "");
-
-        renamedRecord[newKey] = record[key];
-      });
-      return renamedRecord;
-    });
-  };
-
-
-  type Model = {
-    ModelNumber: string;
-    CategoryOne: string;
-    CategoryTwo: string;
-    ProductName: string;
-    Textiles: string;
-    templateId: string;
-   
-  };
+  // const renameFields = (data: any[]) => {
+  //   const fieldNamesMap: { [key: string]: string } = {
+  //     "رقم الموديل": "ModelNumber",
+  //     "الصنف": "CategoryOne",
+  //     "الفئة": "CategoryTwo",
+  //     "الزمرة": "ProductName",
+  //     "القماش": "Textiles",
+  //     "القالب": "template",
+  //     "المراحل": "Stages",
+  //     "القياس": "scale",
+  //   };
+  
+  //   console.log("data", data);
+  
+  //   return data.map((record: any) => {
+  //     let renamedRecord: any = {};
+  
+  //     Object.keys(record).forEach((key) => {
+  //       // نستخدم trim على المفتاح لإزالة أي مسافات إضافية
+  //       const trimmedKey = key.trim();
+  
+  //       // نتحقق إذا كان المفتاح موجودًا في fieldNamesMap
+  //       const newKey = fieldNamesMap[trimmedKey] || trimmedKey;
+  
+  //       // نضيف القيمة إلى الحقل الجديد أو الأصلي (المعالجة مع trim)
+  //       renamedRecord[newKey] = record[key];
+  //     });
+  
+  //     console.log("renamedRecord", renamedRecord);
+  //     return renamedRecord;
+  //   });
+  // };
+  
 
   const replaceNamesWithIds = (
-    models: Model[],
+    models: any,
     categoryOneList: { value: string; label: string }[],
     categoryTwoList: { value: string; label: string }[],
     textilesList: { value: string; label: string }[],
-    // @ts-ignore
     templatesList: { value: string; label: string }[],
     CatalogueList: { value: string; label: string }[]
-  ): Model[] | null => {
+  ): any => {
     const errors: string[] = [];
 
-    const updatedModels = models.map((model) => {
-      const categoryOne = categoryOneList.find((item) => item.label === model.CategoryOne);
+    const updatedModels = models.map((model:any) => {
+
+      const categoryOne = categoryOneList.find((item) => item.label === model['الصنف']);
       if (categoryOne) {
-        model.CategoryOne = categoryOne.value;
+        model['الصنف'] = categoryOne.value;
       } else {
-        errors.push(`الصنف  غير موجود لـ ${model.CategoryOne} للموديل '${model.ModelNumber}'....`);
+        if(model['الصنف'] != null)
+        errors.push(`الصنف  غير موجود لـ ${model['الصنف']} للموديل '${model['رقم الموديل']}'....`);
       }
 
-      const categoryTwo = categoryTwoList.find((item) => item.label === model.CategoryTwo);
+      const categoryTwo = categoryTwoList.find((item) => item.label === model['الفئة']);
       if (categoryTwo) {
-        model.CategoryTwo = categoryTwo.value;
+        model['الفئة'] = categoryTwo.value;
       } else {
-        errors.push(`الفئة غير موجود لـ ${model.CategoryTwo} للموديل '${model.ModelNumber}'....`);
+        if(model['الفئة'] != null)
+        errors.push(`الفئة غير موجود لـ ${model['الفئة']} للموديل '${model['رقم الموديل']}'....`);
       }
 
-      const product = CatalogueList.find((item) => item.label === model.ProductName);
+      const product = CatalogueList.find((item) => item.label === model['الزمرة']);
       if (product) {
-        model.ProductName = product.value;
+        model['الزمرة'] = product.value;
       } else {
-        errors.push(`الزمرة غير موجود لـ ${model.ProductName} للموديل '${model.ModelNumber}'....`);
+        if(model['الزمرة'] != null)
+          errors.push(`الزمرة غير موجود لـ ${model['الزمرة']} للموديل '${model['رقم الموديل']}'....`);
       }
 
-      const textile = textilesList.find((item) => item.label === model.Textiles);
+      const textile = textilesList.find((item) => item.label === model['القماش']);
       if (textile) {
-        model.Textiles = textile.value;
+        model['القماش'] = textile.value;
       } else {
-        errors.push(`القماش غير موجود لـ ${model.Textiles} للموديل '${model.ModelNumber}'....`);
+        if(model['القماش'] != null)
+        errors.push(`القماش غير موجود لـ ${model['القماش']} للموديل '${model['رقم الموديل']}'....`);
+      }
+
+      
+      const tmplate = templatesList.find((item) => item.label == model['القالب']);
+      if (tmplate) {
+        model['القالب'] = tmplate.value;
       }
 
       return model;
@@ -150,7 +160,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
   };
 
 
-  const handleXSLUpload = (e: any) => {
+  const handleXSLUpload = (e: any) => { 
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (event: any) => {
@@ -158,9 +168,9 @@ const NewOrder = ({ getAllOrders }: Props) => {
       const workbook = XLSX.read(data, { type: "array" });
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
-      let jsonData = XLSX.utils.sheet_to_json<Model>(worksheet);
-
-      jsonData = renameFields(jsonData);
+      let jsonData = XLSX.utils.sheet_to_json<any>(worksheet);
+            
+      console.log("jsonData" , jsonData);
 
       const updatedJsonData = replaceNamesWithIds(
         jsonData,
@@ -170,10 +180,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
         templatesList,
         CatalogueList
       );
-
-      if (updatedJsonData === null) {
-        return;
-      }
 
       setXslModels(updatedJsonData);
 
@@ -187,7 +193,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
     let isValid = true;
     const errors: string[] = [];
     models.forEach((model) => {
-      const scales = model.scale ? model.scale.split('-') : [];
+      const scales = model['القياس'] ? model['القياس'].split('-') : [];
   
       const arrColors = colors.map((colorObj) => colorObj.ColorName);
   
@@ -198,7 +204,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
             const quantityPerScale = quantity / scales.length;
             if (!Number.isInteger(quantityPerScale)) {
               errors.push(
-                `عدد الموديلات (${quantity}) للون "${color}" لا يمكن تقسيمه على عدد القياسات (${scales.length}) للموديل "${model.ModelNumber}" .... \n`
+                `عدد الموديلات (${quantity}) للون "${color}" لا يمكن تقسيمه على عدد القياسات (${scales.length}) للموديل "${model['رقم الموديل']}" .... \n`
               );
               isValid = false;
             }
@@ -239,19 +245,23 @@ const NewOrder = ({ getAllOrders }: Props) => {
           errors.push(...distributionErrors);
         }
 
-        const allKeys = new Set<string>();
-
+        const allKeys: string[] = [];
         xslModels.forEach((model) => {
-          Object.keys(model).forEach((key) => allKeys.add(key));
+          Object.keys(model).forEach((key) => {
+            if (!allKeys.includes(key)) {
+              allKeys.push(key);
+              console.log("allKey" , allKeys);
+            }
+          });
         });
         
-        const keys = Array.from(allKeys);
-
+        const keys = allKeys;
 
       const firstColorIndex = keys.findIndex((key) => key === "أسود");
 
       if (firstColorIndex !== -1) {
         const colorFields = keys.slice(firstColorIndex);
+
 
         const arrColors = colors.map((colorObj) => colorObj.ColorName);
 
@@ -264,26 +274,27 @@ const NewOrder = ({ getAllOrders }: Props) => {
         errors.push("لم يتم العثور على حقل اللون 'أسود' في البيانات.");
       }
       
-        const invalidModels = xslModels.filter((model) => !model.ModelNumber);
+        const invalidModels = xslModels.filter((model) => !model['رقم الموديل']);
 
         if (invalidModels.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون رقم موديل.");
         }
 
-        const invalidProductName = xslModels.filter((model) => !model.ProductName);
+        const invalidProductName = xslModels.filter((model) => !model['الصنف']);
         if (invalidProductName.length > 0) {
           errors.push(`يرجى التحقق من البيانات هناك سجلات بدون صنف للموديل`);
         }
 
-        const invalidCategoryOne = xslModels.filter((model) => !model.CategoryOne);
+        const invalidCategoryOne = xslModels.filter((model) => !model['الفئة']);
         if (invalidCategoryOne.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون فئة.");
         }
 
-        const invalidCategoryTwo = xslModels.filter((model) => !model.CategoryTwo);
+        const invalidCategoryTwo = xslModels.filter((model) => !model['الزمرة']);
         if (invalidCategoryTwo.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون زمرة.");
         }
+        
 
         if (errors.length > 0) {
           const errorMessage = errors.join("\n");

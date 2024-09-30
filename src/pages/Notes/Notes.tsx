@@ -21,6 +21,7 @@ import {
 import NewNote from "@/components/DashboradComponents/Notes/NewNote.tsx";
 import UpdateNote from "@/components/DashboradComponents/Notes/UpdateNote.tsx";
 import { NoteType } from "@/types/Notes/Notes.types.ts";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Notes() {
   const { t } = useTranslation();
@@ -29,6 +30,11 @@ export default function Notes() {
   const setNewNoteModal = useSetRecoilState(newNoteModal);
   const setUpdateNoteModal = useSetRecoilState(updateNoteModal);
   const setNoteId = useSetRecoilState(noteId);
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const noteColumns: ColumnDef<NoteType>[] = [
     {
@@ -69,11 +75,19 @@ export default function Notes() {
   ];
 
   useEffect(() => {
-    getAllNotes(setNotes);
-  }, []);
+    getAllNotes(setNotes , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
 
   return (
     <div className="w-full space-y-2">
+      
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
+
       <NewNote getNotes={() => getAllNotes(setNotes)} />
       <UpdateNote getNotes={() => getAllNotes(setNotes)} />
       <div className="w-full space-y-1">
@@ -92,7 +106,13 @@ export default function Notes() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={noteColumns} data={notes} />
+          <DataTable columns={noteColumns} data={notes} tableName="Notes" 
+           page={pages}
+           setPage={setPages}
+           size={sizes}
+           setSize={setSizes}
+           totalPages={totalPages}
+          />
         </div>
       </div>
     </div>

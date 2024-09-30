@@ -21,6 +21,7 @@ import { TextilesType } from "@/types/Entities/Textiles.types.ts";
 import NewTextiles from "@/components/DashboradComponents/Entities/Textiles/NewTextiles.tsx";
 import UpdateTextiles from "@/components/DashboradComponents/Entities/Textiles/UpdateTextiles.tsx";
 import { useTranslation } from "react-i18next";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Textiles() {
   const setNewTextileModal = useSetRecoilState(newTextileModal);
@@ -29,6 +30,10 @@ export default function Textiles() {
   const setTextile = useSetRecoilState(textile);
   const [textiles, setTextiles] = useState<TextilesType[]>([]);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const textileColumns: ColumnDef<TextilesType>[] = [
     {
@@ -71,10 +76,16 @@ export default function Textiles() {
   ];
   // Page on load
   useEffect(() => {
-    getAllTextiles(setTextiles);
-  }, []);
+    getAllTextiles(setTextiles , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages ,sizes]);
   return (
     <div className="w-full space-y-2">
+        {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
       <NewTextiles getTextiles={() => getAllTextiles(setTextiles)} />
       <UpdateTextiles getTextiles={() => getAllTextiles(setTextiles)} />
       <div className="w-full space-y-1">
@@ -94,6 +105,12 @@ export default function Textiles() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={textileColumns} data={textiles} tableName="ProductCatalogTextiles"
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
+        
             fieldFilter={{
               "TextileName" : "TextileName" ,
               "TextileType" : "TextileType" ,

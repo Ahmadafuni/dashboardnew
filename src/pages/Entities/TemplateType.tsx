@@ -21,6 +21,7 @@ import { TemplateTypeType } from "@/types/Entities/TemplateType.types.ts";
 import NewTemplateType from "@/components/DashboradComponents/Entities/TemplateType/NewTemplateType.tsx";
 import UpdateTemplateType from "@/components/DashboradComponents/Entities/TemplateType/UpdateTemplateType.tsx";
 import { useTranslation } from "react-i18next";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function TemplateType() {
   const setNewTemplateTypeModal = useSetRecoilState(newTemplateTypeModal);
@@ -29,6 +30,10 @@ export default function TemplateType() {
   const setTemplateType = useSetRecoilState(templateType);
   const [templateTypes, setTemplateTypes] = useState<TemplateTypeType[]>([]);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const templateTypeColumns: ColumnDef<TemplateTypeType>[] = [
     {
@@ -65,10 +70,17 @@ export default function TemplateType() {
   ];
   // Page on load
   useEffect(() => {
-    getAllTemplateTypes(setTemplateTypes);
-  }, []);
+    getAllTemplateTypes(setTemplateTypes , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
   return (
     <div className="w-full space-y-2">
+        {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
+          
       <NewTemplateType
         getTemplateTypes={() => getAllTemplateTypes(setTemplateTypes)}
       />
@@ -92,7 +104,12 @@ export default function TemplateType() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={templateTypeColumns} data={templateTypes} tableName="TemplateTypes"
-          fieldFilter={{
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
+         fieldFilter={{
             "TemplateTypeName" : "TemplateTypeName",
             "Description" : "Description"
           }}

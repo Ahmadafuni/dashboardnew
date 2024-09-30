@@ -16,6 +16,7 @@ import { SizeType } from "@/types/Entities/Size.types.ts";
 import NewSize from "@/components/DashboradComponents/Entities/Sizes/NewSize.tsx";
 import UpdateSize from "@/components/DashboradComponents/Entities/Sizes/UpdateSize.tsx";
 import { useTranslation } from "react-i18next";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Sizes() {
   const setNewSizeModal = useSetRecoilState(newSizeModal);
@@ -24,7 +25,11 @@ export default function Sizes() {
   const setSize = useSetRecoilState(size);
   const [sizes, setSizes] = useState<SizeType[]>([]);
   const { t } = useTranslation();
-
+  const [pages, setPages] = useState(1);
+  const [sizesP, setSizesP] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  
   const sizeColumns: ColumnDef<SizeType>[] = [
     {
       accessorKey: "SizeName",
@@ -58,10 +63,17 @@ export default function Sizes() {
   ];
   // Page on load
   useEffect(() => {
-    getAllSizes(setSizes);
-  }, []);
+    getAllSizes(setSizes , pages , sizesP , setTotalPages , setIsLoading);
+  }, [pages , sizesP]);
   return (
     <div className="w-full space-y-2">
+
+          {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
       <NewSize getSizes={() => getAllSizes(setSizes)} />
       <UpdateSize getSizes={() => getAllSizes(setSizes)} />
       <div className="w-full space-y-1">
@@ -81,6 +93,11 @@ export default function Sizes() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={sizeColumns} data={sizes} tableName="Sizes" 
+           page={pages}
+           setPage={setPages}
+           size={sizesP}
+           setSize={setSizesP}
+           totalPages={totalPages}
           fieldFilter={{
             "SizeName" : "SizeName",
             "Description" : "Description"

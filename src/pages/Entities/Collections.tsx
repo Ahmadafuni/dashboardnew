@@ -28,6 +28,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Collections() {
   const setNewCollectionModal = useSetRecoilState(newCollectionModal);
@@ -36,6 +37,11 @@ export default function Collections() {
   const setCollection = useSetRecoilState(Collection);
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleRemoveModelFromArchive = async (collectionId: number) => {
     console.log(collectionId);
@@ -95,10 +101,18 @@ export default function Collections() {
   ];
 
   useEffect(() => {
-    getAllCollections(false, setCollections);
-  }, []);
+    getAllCollections(false, setCollections , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
+  
   return (
     <div className="w-full space-y-2">
+
+          {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
       <NewCollection
         getAllCollections={() => getAllCollections(false, setCollections)}
       />
@@ -121,7 +135,12 @@ export default function Collections() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={collectionColumns} data={collections} tableName="Collections" 
+          <DataTable columns={collectionColumns} data={collections} tableName="Collections"
+            page={pages}
+            setPage={setPages}
+            size={sizes}
+            setSize={setSizes}
+            totalPages={totalPages} 
             fieldFilter={{
               "CollectionName" : "CollectionName" ,
               "Description" : "Description"

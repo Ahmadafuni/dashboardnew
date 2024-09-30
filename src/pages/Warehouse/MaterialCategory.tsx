@@ -21,6 +21,7 @@ import {
     getAllMaterialCategories,
     getMaterialCategoryById,
 } from "@/services/MaterialCategory.services.ts";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function MaterialCategories() {
     const { t } = useTranslation();
@@ -35,6 +36,10 @@ export default function MaterialCategories() {
         updateMaterialCategoryModal
     );
     const setMaterialCategoryId = useSetRecoilState(materialCategoryId);
+    const [pages, setPages] = useState(1);
+    const [sizes, setSizes] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
 
     const materialCategoryColumns: ColumnDef<MaterialCategoryType>[] = [
         {
@@ -72,13 +77,18 @@ export default function MaterialCategories() {
             },
         },
     ];
-
     useEffect(() => {
-        getAllMaterialCategories(setMaterialCategories);
-    }, []);
+        getAllMaterialCategories(setMaterialCategories , pages , sizes , setTotalPages , setIsLoading);
+    }, [pages , sizes]);
 
     return (
         <div className="w-full space-y-2">
+            {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}
             <NewMaterialCategory
                 getMaterialCategories={() =>
                     getAllMaterialCategories(setMaterialCategories)
@@ -109,6 +119,12 @@ export default function MaterialCategories() {
                         columns={materialCategoryColumns}
                         data={materialCategories}
                         tableName="MaterialCategories"
+                        page={pages}
+                        setPage={setPages}
+                        size={sizes}
+                        setSize={setSizes}
+                        totalPages={totalPages}
+                        
                     />
                 </div>
             </div>

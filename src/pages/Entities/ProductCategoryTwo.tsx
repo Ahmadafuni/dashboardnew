@@ -21,6 +21,7 @@ import UpdateProductCategoryTwo from "@/components/DashboradComponents/Entities/
 import NewProductCategoryTwo from "@/components/DashboradComponents/Entities/ProductCategoryTwo/NewProductCategoryTwo.tsx";
 import { useTranslation } from "react-i18next";
 import { ProductCategoryOneType } from "@/types/Entities/ProductCategoryOne.types";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function ProductCategoryTwo() {
   // Modal State
@@ -36,6 +37,11 @@ export default function ProductCategoryTwo() {
     ProductCategoryOneType[]
   >([]);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const productCategoryTwoColumns: ColumnDef<ProductCategoryOneType>[] = [
     {
@@ -78,11 +84,18 @@ export default function ProductCategoryTwo() {
   ];
   // Page on load
   useEffect(() => {
-    getAllProductCategoryTwo(setProductCategoryTwos);
-  }, []);
+    getAllProductCategoryTwo(setProductCategoryTwos , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
 
   return (
     <div className="w-full space-y-2">
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
+          
       <NewProductCategoryTwo
         getProductCategoriesTwo={() =>
           getAllProductCategoryTwo(setProductCategoryTwos)
@@ -116,6 +129,11 @@ export default function ProductCategoryTwo() {
             columns={productCategoryTwoColumns}
             data={productCategoryTwos}
             tableName="ProductCatalogCategoryTwo"
+            page={pages}
+            setPage={setPages}
+            size={sizes}
+            setSize={setSizes}
+            totalPages={totalPages}
             fieldFilter={{
               "CategoryName" : "CategoryName",
               "Description" : "CategoryDescription"

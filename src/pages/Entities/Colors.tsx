@@ -21,12 +21,17 @@ import { ColorType } from "@/types/Entities/Color.types.ts";
 import NewColor from "@/components/DashboradComponents/Entities/Colors/NewColor.tsx";
 import UpdateColor from "@/components/DashboradComponents/Entities/Colors/UpdateColor.tsx";
 import { useTranslation } from "react-i18next";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Colors() {
   const setNewColorModal = useSetRecoilState(newColorModal);
   const setUpdateColorModal = useSetRecoilState(updateColorModal);
   const setColorId = useSetRecoilState(colorId);
   const { t } = useTranslation();
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const setColor = useSetRecoilState(color);
   const [colors, setColors] = useState<ColorType[]>([]); // Assuming ColorType is a type for color objects
@@ -80,10 +85,16 @@ export default function Colors() {
   ];
   // Page on load
   useEffect(() => {
-    getAllColors(setColors);
-  }, []);
+    getAllColors(setColors , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
   return (
     <div className="w-full space-y-2">
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />}  
       <NewColor getColors={() => getAllColors(setColors)} />
       <UpdateColor getColors={() => getAllColors(setColors)} />
       <div className="w-full space-y-1">
@@ -106,6 +117,11 @@ export default function Colors() {
             columns={colorColumns} 
             data={colors} 
             tableName="Colors"
+            page={pages}
+            setPage={setPages}
+            size={sizes}
+            setSize={setSizes}
+            totalPages={totalPages}
             fieldFilter={
               {
                 'ColorName': 'ColorName',

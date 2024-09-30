@@ -4,19 +4,34 @@ import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const getAllTemplateTypes = async (
-  setData: Dispatch<SetStateAction<any>>
+  setData: Dispatch<SetStateAction<any>> ,
+  pages?: number,
+  sizes?: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if(setIsLoading)setIsLoading(true);
+
     const { data } = await axios.get("templatetype/all", {
+      params: {
+        page: pages,
+        size: sizes,
+      },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    if (setTotalPages) setTotalPages(data.totalPages);
+
     setData(data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 

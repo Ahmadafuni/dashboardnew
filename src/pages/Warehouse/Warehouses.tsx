@@ -17,6 +17,7 @@ import { newWarehouseModal, warehouse } from "@/store/Warehouse.ts";
 import UpdateWarehouse from "@/components/DashboradComponents/Warehouse/Warehouses/UpdateWarehouse.tsx";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog.tsx";
 import { updateWarehouseModal, warehouseId } from "@/store/Warehouse.ts";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Warehouses() {
   const { t } = useTranslation();
@@ -26,6 +27,10 @@ export default function Warehouses() {
   const setNewWareHouseModal = useSetRecoilState(newWarehouseModal);
   const setUpdateWareHouseModal = useSetRecoilState(updateWarehouseModal);
   const setWareHouseId = useSetRecoilState(warehouseId);
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const warehouseColumns: ColumnDef<WarehouseType>[] = [
     {
@@ -72,10 +77,17 @@ export default function Warehouses() {
   ];
   // Page on load
   useEffect(() => {
-    getAllWarehouses(setWarehouses);
-  }, []);
+    getAllWarehouses(setWarehouses , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
   return (
     <div className="w-full space-y-2">
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />} 
+          
       <NewWarehouse getWarehouse={() => getAllWarehouses(setWarehouses)} />
       <UpdateWarehouse getWarehouse={() => getAllWarehouses(setWarehouses)} />
       <div className="w-full space-y-1">
@@ -95,7 +107,12 @@ export default function Warehouses() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={warehouseColumns} data={warehouses} tableName="Warehouses" 
-          fieldFilter={{
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
+         fieldFilter={{
             "WarehouseName" : "WarehouseName" , 
             "Location" : "Location" ,
             "Capacity" : "Capacity", 

@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import NewChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/NewChildMaterial.tsx";
 import { childMaterialList, newChildMaterialModal} from "@/store/ChildMaterial.ts";
+import { size } from "@/store/Sizes";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Materials() {
   const { t } = useTranslation();
@@ -31,6 +33,11 @@ export default function Materials() {
 
 
   const setChildMaterialList = useSetRecoilState(childMaterialList);
+
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const materialColumns: ColumnDef<MaterialType>[] = [
     { accessorKey: "Name", header: t("Name") },
@@ -113,11 +120,17 @@ export default function Materials() {
   ];
 
   useEffect(() => {
-    getAllMaterials(setMaterials);
-  }, []);
+    getAllMaterials(setMaterials , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
 
   return (
       <div className="w-full space-y-2">
+        {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />} 
         <NewChildMaterial getChildMaterialByParentId={() => getAllMaterials(setMaterials)} />
         <div className="w-full space-y-1">
           <h1 className="text-3xl font-bold w-full">Materials</h1>
@@ -131,7 +144,13 @@ export default function Materials() {
             </Button>
           </div>
           <div className="rounded-md border overflow-x-scroll">
-            <DataTable columns={materialColumns} data={materials} tableName="ParentMaterials"/>
+            <DataTable columns={materialColumns} data={materials} tableName="ParentMaterials" 
+            page={pages}
+            setPage={setPages}
+            size={sizes}
+            setSize={setSizes}
+            totalPages={totalPages}
+            />
           </div>
         </div>
       </div>

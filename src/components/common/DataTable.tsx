@@ -15,7 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue, SelectScrollDownButton, SelectScrollUpButton } from "@/components/ui/select";
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ArrowUpDown, FileText, Minus, Plus } from "lucide-react";
@@ -30,9 +30,17 @@ import * as Dialog from '@radix-ui/react-dialog';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    
+
+
     tableName: string;
     fieldFilter?: { [key: string]: string }; 
     isDashboard?: boolean;
+    page?: number;
+    setPage?: Dispatch<SetStateAction<number>>;
+    size?: number;
+    setSize?: Dispatch<SetStateAction<number>>;
+    totalPages?: number;
 }
 
 export default function DataTable<TData, TValue>({
@@ -40,7 +48,12 @@ export default function DataTable<TData, TValue>({
     data,
     tableName,
     fieldFilter,
-    isDashboard
+    isDashboard,
+    page,
+    setPage,
+    size,
+    setSize,
+    totalPages,
 }: DataTableProps<TData, TValue>) {
     const [filters, setFilters] = useState<{ column: string; value: string }[]>([]);
     const [sorting, setSorting] = useState([]);
@@ -333,44 +346,44 @@ export default function DataTable<TData, TValue>({
                         <div className="flex items-center gap-2">
                         <Button
                         onClick={() => {
-                            // if (page && page > 1) {
-                            //   setPage && setPage((prev) => prev - 1);
-                            // }
+                            if (page && page > 1) {
+                              setPage && setPage((prev) => prev - 1);
+                            }
                         }}
-                        //disabled={page == 1}
+                        disabled={page == 1}
                         className="mr-2"
                         >
                         <ChevronLeft className="w-4 h-4" />
                         </Button>
                         <Button
                         onClick={() => {
-                            // if (page && totalPages && page < totalPages) {
-                            //   setPage && setPage((prev) => prev + 1);
-                            // }
+                            if (page && totalPages && page < totalPages) {
+                              setPage && setPage((prev) => prev + 1);
+                            }
                         }}
-                        //disabled={page == totalPages}
+                        disabled={page == totalPages}
                         className="mr-2"
                         >
                         <ChevronRight className="w-4 h-4" />
                         </Button>
                         <span className="text-sm text-gray-600 mr-2">
-                        10 {/* Page {page} of {totalPages} */}
+                        10 Page {page} of {totalPages}
                         </span>
                     </div>
                 <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">Rows per page:</span>
                     <Select
-                    //  value={size ? size.toString() : "10"}
-                    //  onValueChange={(value) => setSize && setSize(Number(value))}
+                     value={size ? size.toString() : "10"}
+                     onValueChange={(value) => setSize && setSize(Number(value))}
                     >
                     <SelectTrigger className="w-20">
-                        <SelectValue placeholder={1
-                        // size && size.toString()
+                        <SelectValue placeholder={
+                        size && size.toString()
                         } />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectScrollUpButton />
-                        {[10, 20, 30, 40, 50].map((s) => (
+                        {[2, 5, 10, 20, 30, 40, 50].map((s) => (
                         <SelectItem key={s} value={s.toString()}>
                             {s}
                         </SelectItem>

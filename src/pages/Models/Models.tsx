@@ -58,14 +58,19 @@ export default function Models() {
     {
       header: t("Template"),
       cell: ({ row }) => {
-        return <p>{row.original.Template.TemplateName}</p>;
+        if(row.original.Template?.TemplateName)
+         return <p>{row.original.Template.TemplateName}</p>;
+        
       },
     },
     {
       // accessorKey: "ModelName",
       header: t("ModelName"),
       cell: ({ row }) => {
-        return <p>{`${row.original.ProductCatalog.ProductCatalogName} - ${row.original.CategoryOne.CategoryName} - ${row.original.categoryTwo.CategoryName} - ${row.original.Template.TemplateName}`}</p>;
+        if(row.original.Template?.TemplateName)
+         return <p>{`${row.original.ProductCatalog.ProductCatalogName} - ${row.original.CategoryOne.CategoryName} - ${row.original.categoryTwo.CategoryName} - ${row.original.Template.TemplateName}`}</p>;
+        else
+          return <p>{`${row.original.ProductCatalog.ProductCatalogName} - ${row.original.CategoryOne.CategoryName} - ${row.original.categoryTwo.CategoryName}`}</p>;
       },
     },
     {
@@ -185,7 +190,7 @@ export default function Models() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={modelColumns} data={models} />
+          <DataTable columns={modelColumns} data={models} tableName="Models"/>
         </div>
       </div>
     </div>
