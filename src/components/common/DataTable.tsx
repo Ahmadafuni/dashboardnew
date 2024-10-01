@@ -10,8 +10,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
-  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -131,6 +129,7 @@ export default function DataTable<TData, TValue>({
         setFilteredData(data); 
         fetchFieldNames();
         console.log("FieldNames", fieldNames);
+        console.log("data", data);
     }, [data]); 
 
     const table = useReactTable({
@@ -142,8 +141,8 @@ export default function DataTable<TData, TValue>({
          // @ts-ignore
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
+        // getPaginationRowModel: getPaginationRowModel(),
+        // getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
     });
  
@@ -177,7 +176,6 @@ export default function DataTable<TData, TValue>({
 
     return (
         <div>
-
             {isLoading && (
                 <Dialog.Root open={isLoading}>
                     <Dialog.Overlay className="fixed inset-0 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 opacity-40 animate-pulse z-50" />
@@ -294,6 +292,7 @@ export default function DataTable<TData, TValue>({
             <Table className="min-w-full divide-y divide-gray-200">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
+                        
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (
                                 <TableHead
@@ -383,7 +382,7 @@ export default function DataTable<TData, TValue>({
                     </SelectTrigger>
                     <SelectContent>
                         <SelectScrollUpButton />
-                        {[2, 5, 10, 20, 30, 40, 50].map((s) => (
+                        {[2, 5, 10, 20, 30, 40, 50, 100 , 200].map((s) => (
                         <SelectItem key={s} value={s.toString()}>
                             {s}
                         </SelectItem>

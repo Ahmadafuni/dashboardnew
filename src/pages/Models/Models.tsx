@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import BackButton from "@/components/common/BackButton";
 import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog.tsx";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function Models() {
   const navigate = useNavigate();
@@ -25,6 +26,11 @@ export default function Models() {
 
   const [models, setModels] = useState<ModelTypes[]>([]);
   const { t } = useTranslation();
+
+  const [pages, setPages] = useState(1);
+  const [sizes, setSizes] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const modelColumns: ColumnDef<ModelTypes>[] = [
      {
@@ -165,10 +171,18 @@ export default function Models() {
   ];
 
   useEffect(() => {
-    getModelsByOrderId(setModels, id);
-  }, []);
+    getModelsByOrderId(setModels, id , pages , sizes , setTotalPages , setIsLoading);
+  }, [pages , sizes]);
+
   return (
     <div className="w-full space-y-2">
+      {isLoading && 
+            <LoadingDialog 
+            isOpen={isLoading} 
+            message="Loading..." 
+            subMessage="Please wait, your request is being processed now." 
+          />} 
+          
       <div className="w-full space-y-1 flex items-center">
         <BackButton />
         {models.length > 0 && (
@@ -190,7 +204,22 @@ export default function Models() {
           </Button>
         </div>
         <div className="rounded-md border overflow-x-scroll">
-          <DataTable columns={modelColumns} data={models} tableName="Models"/>
+          <DataTable columns={modelColumns} data={models} tableName="Models" 
+          page={pages}
+          setPage={setPages}
+          size={sizes}
+          setSize={setSizes}
+          totalPages={totalPages}
+          fieldFilter={{
+            "ModelNumber" : "ModelNumber" ,
+            "ProductCatalogName" : "ProductCatalogId.ProductCatalogName" ,
+            "ProductCategoryOne" : "CategoryOneId.CategoryName" ,
+            "ProductCategoryTwo" : "CategoryTwoId.CategoryName" ,
+            "TextileName" : "TextileId.TextileName" ,
+            "TemplateName"  : "TemplateId.TemplateName" ,
+            "Barcode" : "Barcode"
+          }}
+          />
         </div>
       </div>
     </div>
