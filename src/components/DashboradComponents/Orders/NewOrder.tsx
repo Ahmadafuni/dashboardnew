@@ -35,8 +35,7 @@ import { getAllTextilesList } from "@/services/Textiles.services";
 
 import * as XLSX from "xlsx";
 import { getAllTemplatesList } from "@/services/Templates.services.ts";
-import { getAllColors } from "@/services/Colors.services.ts";
-import { ColorType } from "@/types/Entities/Color.types.ts";
+import { getAllColorsList} from "@/services/Colors.services.ts";
 
 type Props = {
   getAllOrders: any;
@@ -48,7 +47,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const { t } = useTranslation();
   const setCollectionList = useSetRecoilState(CollectionList);
   const [xslModels, setXslModels] = useState<any[]>([]);
-  const [colors , setColors] = useState<ColorType[]>([]);
+  const [colors , setColors] = useState<any>([]);
 
   // lists
   const setTemplates = useSetRecoilState(templateList);
@@ -63,41 +62,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const categoryTwoList = useRecoilValue(productCategoryTwoList);
   const textilesList = useRecoilValue(textileList);
   const templatesList = useRecoilValue(templateList);
-
-  // const renameFields = (data: any[]) => {
-  //   const fieldNamesMap: { [key: string]: string } = {
-  //     "رقم الموديل": "ModelNumber",
-  //     "الصنف": "CategoryOne",
-  //     "الفئة": "CategoryTwo",
-  //     "الزمرة": "ProductName",
-  //     "القماش": "Textiles",
-  //     "القالب": "template",
-  //     "المراحل": "Stages",
-  //     "القياس": "scale",
-  //   };
-  
-  //   console.log("data", data);
-  
-  //   return data.map((record: any) => {
-  //     let renamedRecord: any = {};
-  
-  //     Object.keys(record).forEach((key) => {
-  //       // نستخدم trim على المفتاح لإزالة أي مسافات إضافية
-  //       const trimmedKey = key.trim();
-  
-  //       // نتحقق إذا كان المفتاح موجودًا في fieldNamesMap
-  //       const newKey = fieldNamesMap[trimmedKey] || trimmedKey;
-  
-  //       // نضيف القيمة إلى الحقل الجديد أو الأصلي (المعالجة مع trim)
-  //       renamedRecord[newKey] = record[key];
-  //     });
-  
-  //     console.log("renamedRecord", renamedRecord);
-  //     return renamedRecord;
-  //   });
-  // };
-  
-
   const replaceNamesWithIds = (
     models: any,
     categoryOneList: { value: string; label: string }[],
@@ -195,9 +159,9 @@ const NewOrder = ({ getAllOrders }: Props) => {
     models.forEach((model) => {
       const scales = model['القياس'] ? model['القياس'].split('-') : [];
   
-      const arrColors = colors.map((colorObj) => colorObj.ColorName);
+      const arrColors = colors.map((colorObj: any) => colorObj.label);
   
-      arrColors?.forEach((color) => {
+      arrColors?.forEach((color: any) => {
         if (model[color]) {
           const quantity = model[color];
           if (scales.length > 0) {
@@ -263,9 +227,9 @@ const NewOrder = ({ getAllOrders }: Props) => {
         const colorFields = keys.slice(firstColorIndex);
 
 
-        const arrColors = colors.map((colorObj) => colorObj.ColorName);
+        const arrColors = colors.map((colorObj :any) => colorObj.label);
 
-        colorFields.forEach((color) => {
+        colorFields.forEach((color: any) => {
           if (!arrColors.includes(color)) {
             errors.push(`اللون "${color}" الموجود في ملف الاكسل غير موجود في النظام.`);
           }
@@ -354,7 +318,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
     getAllProductCategoryTwoList(setCategoryTwo);
     getAllTextilesList(setTextile);
     getAllTemplatesList(setTemplates);
-    getAllColors(setColors);
+    getAllColorsList(setColors);
   }, []);
 
   return (
