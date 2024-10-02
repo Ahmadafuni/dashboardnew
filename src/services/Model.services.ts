@@ -6,19 +6,34 @@ import { toast } from "sonner";
 
 export const getModelsByOrderId = async (
   setData: Dispatch<SetStateAction<any>>,
-  id?: string | undefined
+  id?: string | undefined ,
+  pages?: number,
+  sizes?: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if(setIsLoading)setIsLoading(true);
+
     const response = await axios.get(`model/all/${id}`, {
+      params: {
+        page: pages,
+        size: sizes,
+      },
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    if (setTotalPages) setTotalPages(response.data.totalPages);
+
     setData(response.data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  }finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 
