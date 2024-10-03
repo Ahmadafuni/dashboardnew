@@ -182,6 +182,10 @@ export default function FinishedTable({
         data={works.finished}
         tableName="TrakingModels"
         isDashboard={true}
+        fieldFilter={{
+          "ModelNumber" : "ModelNumber"
+        }}
+        stage="5"
       />
 
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

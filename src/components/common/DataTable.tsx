@@ -28,12 +28,11 @@ import * as Dialog from '@radix-ui/react-dialog';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    
-
 
     tableName?: string;
     fieldFilter?: { [key: string]: string }; 
     isDashboard?: boolean;
+    stage?: string;
     page?: number;
     setPage?: Dispatch<SetStateAction<number>>;
     size?: number;
@@ -52,6 +51,7 @@ export default function DataTable<TData, TValue>({
     size,
     setSize,
     totalPages,
+    stage
 }: DataTableProps<TData, TValue>) {
     const [filters, setFilters] = useState<{ column: string; value: string }[]>([]);
     const [sorting, setSorting] = useState([]);
@@ -69,30 +69,45 @@ export default function DataTable<TData, TValue>({
         if(fieldFilter && tableName){
 
         setIsLoading(true);
-        for (const filter of filters) {
-            if (!filter.column || !filter.value) {
-                toast.error("Please select a column and enter a value for all filters.");
+        if(tableName == "TrakingModels"){
+            try {
+                const modelDemoNumber = filters[0].value;
+                const response = await axios.get(`/datatable/filter/dashboard/${modelDemoNumber}/${stage}`);
+                console.log("response", response.data);
+                setFilteredData(response.data.data);
+            } catch (error) {
+                console.error('Error applying filters:', error);
+            } finally {
                 setIsLoading(false);
-                return;
+            }
+        }else {
+            
+            for (const filter of filters) {
+                if (!filter.column || !filter.value) {
+                    toast.error("Please select a column and enter a value for all filters.");
+                    setIsLoading(false);
+                    return;
+                }
+            }
+    
+            // تحويل أسماء الحقول من الأسماء المعروضة إلى الأسماء الفعلية
+            const formattedFilters = filters.map(filter => ({
+                // @ts-ignore
+                column: fieldFilter[filter.column] || filter.column,
+                value: filter.value,
+            }));
+    
+            try {
+                const response = await axios.post(`/datatable/filter/${tableName}`, { filters: formattedFilters });
+                console.log("response", response.data);
+                setFilteredData(response.data);
+            } catch (error) {
+                console.error('Error applying filters:', error);
+            } finally {
+                setIsLoading(false);
             }
         }
-
-        // تحويل أسماء الحقول من الأسماء المعروضة إلى الأسماء الفعلية
-        const formattedFilters = filters.map(filter => ({
-            // @ts-ignore
-            column: fieldFilter[filter.column] || filter.column,
-            value: filter.value,
-        }));
-
-        try {
-            const response = await axios.post(`/datatable/filter/${tableName}`, { filters: formattedFilters });
-            console.log("response", response.data);
-            setFilteredData(response.data);
-        } catch (error) {
-            console.error('Error applying filters:', error);
-        } finally {
-            setIsLoading(false);
-        }
+        
 
     }
 };
@@ -100,10 +115,14 @@ export default function DataTable<TData, TValue>({
     const fetchFieldNames = async () => {
         if(fieldFilter && tableName){
             try {
+                
                 const response = await axios.get(`/datatable/fields/${tableName}`);
                 const fieldNamesData = response.data;
-    
                 const allFields = fieldNamesData.fields;
+
+                if (isDashboard) {
+                    allFields.push({ column_name: 'ModelNumber' });
+                }
     
                 // @ts-ignore
                 const formattedFields = allFields.map(field => {
@@ -199,7 +218,7 @@ export default function DataTable<TData, TValue>({
             <div className="flex items-center justify-between mb-4">
              
             
-            {!isDashboard && (<div className="flex flex-col gap-4">
+           <div className="flex flex-col gap-4">
                     {
                     filters.length === 0 ? (
                         <Button onClick={() => {
@@ -272,7 +291,7 @@ export default function DataTable<TData, TValue>({
                             </div>
                         </div>
                     )}
-                </div>)}
+                </div>
                 
                
 

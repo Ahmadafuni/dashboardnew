@@ -342,6 +342,10 @@ else { // user
       data={works.inProgress}
       tableName="TrakingModels"
       isDashboard={true}
+      fieldFilter={{
+        "ModelNumber" : "ModelNumber"
+      }}
+      stage="2"
       />
 
 

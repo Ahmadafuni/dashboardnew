@@ -229,9 +229,11 @@ else {
       data={works.awaiting}
       tableName="TrakingModels"
       isDashboard={true}
+      fieldFilter={{
+        "ModelNumber" : "ModelNumber"
+      }}
+      stage="1"
       />
-
-
       </div>
 
       {/* pagination */}
@@ -274,7 +276,7 @@ else {
             </SelectTrigger>
             <SelectContent>
             <SelectScrollUpButton />
-                {[2, 5, 10, 20, 40, 50, 100].map((s) => (
+                {[2, 5, 10, 20, 40, 50, 100, 200].map((s) => (
                   <SelectItem key={s} value={s.toString()}>
                     {s}
                   </SelectItem>

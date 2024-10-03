@@ -243,6 +243,10 @@ else {
         data={works.givingConfirmation}
         tableName="TrakingModels"
         isDashboard={true}
+        fieldFilter={{
+          "ModelNumber" : "ModelNumber"
+        }}
+        stage="3"
       />
       
 

@@ -280,6 +280,10 @@ else {
         data={works.completed}
         tableName="TrakingModels"
         isDashboard={true}
+        fieldFilter={{
+          "ModelNumber" : "ModelNumber"
+        }}
+        stage="4"
       />
 
 
