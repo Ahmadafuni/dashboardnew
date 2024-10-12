@@ -63,6 +63,7 @@ import UpdateModelBlock from "@/components/DashboradComponents/Models/UpdateMode
 import { BASE_URL } from "@/config/index.ts";
 import ProductionReports from "./pages/Reports/ProductionReports.tsx";
 import OrderReports from "./pages/Reports/OrderReports.tsx";
+import ViewModelDetails from "./components/DashboradComponents/Models/ViewModelDetails.tsx";
 
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.common = {
@@ -180,7 +181,10 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/templates/viewdetails/:id", element: <TemplateViewDetails /> },
-  { path: "/models/viewdetails/:id", element: <ViewModelSummary /> },
+  { path: "/models/viewdetails/:id", element: <ViewModelDetails /> },
+  { path: "/models/viewsummary/:id", element: <ViewModelSummary /> },
+
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
