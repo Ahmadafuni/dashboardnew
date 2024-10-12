@@ -164,7 +164,9 @@ export default function DataTable<TData, TValue>({
         // getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
     });
- 
+
+    
+     
 
     const handleFilterChange = (index: number, field: string, value: string) => {
         const newFilters = [...filters];
@@ -343,7 +345,14 @@ export default function DataTable<TData, TValue>({
                         table.getRowModel().rows.map((row) => (
                             <TableRow key={row.id}>
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                                    <TableCell
+                                
+                                    className={
+                                        // @ts-ignore
+                                        isDashboard && row.original.RunningStatus === 'ONHOLD' ? "bg-orange-500" : ""}
+                                    key={cell.id}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
                                 ))}
                             </TableRow>
                         ))
