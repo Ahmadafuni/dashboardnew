@@ -54,11 +54,11 @@ export default function CompleteDialog({
 
     useEffect(() => {
         if (open) {
-            setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label, value: size.value })));
-            setQuantityDeliveredPairs(selectedSizes.map(size => ({ label: size.label, value: size.value })));
-            setQuantityReceivedPairs(quantityReceived.map(item => ({ label: item.label, value: item.value })));
+            setQuantityReceivedPairs(quantityReceived.map(size => ({ label: size.label, value: size.value })));
+            setQuantityDeliveredPairs(selectedSizes.map(size => ({ label: size.label, value: "" })));
+            setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label, value: "" })));
             form.reset({
-                QuantityReceived: quantityReceived.map(item => ({ size: item.size, value: item.value })),
+                QuantityReceived: quantityReceived.map(item => ({ label: item.label, value: item.value })),
                 QuantityDelivered: [],
                 DamagedItem: [],
                 Notes: "",
@@ -89,7 +89,7 @@ export default function CompleteDialog({
             form.reset();
             setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label, value: "" })));
             setQuantityDeliveredPairs(selectedSizes.map(size => ({ label: size.label, value: "" })));
-            setQuantityReceivedPairs(selectedSizes.map(size => ({ label: size.label, value: "" })));
+            setQuantityReceivedPairs(selectedSizes.map(size => ({ label: size.label, value: size.value })));
             getAllWorks();
             setIsLoading(false);
             setOpen(false);
