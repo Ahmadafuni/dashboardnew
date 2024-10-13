@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Form } from "@/components/ui/form";
 import DatePickerForForm from "@/components/common/DatePickerForForm";
-import SelectFieldForForm from "@/components/common/SelectFieldForForm";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import DataTable from "@/components/common/DataTable";
@@ -24,14 +23,39 @@ import { AxiosError } from "axios";
 import { useReactToPrint } from "react-to-print";
 import {CollectionList} from "@/store/Collection.ts";
 import MultiSelectForField from "@/components/common/MultiSelectForField.tsx";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function OrderReports() {
   const { t } = useTranslation();
   const form = useForm();
-  const [isLoading, setIsLoading] = useState(false);
   const [pages, setPages] = useState(1);
   const [sizes, setSizes] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  interface summary {
+    totalModels: number,
+    modelsInProgress: number,
+    completedModels: number,
+    totalRequiredQuantity: number,
+    totalDeliveredQuantity: number,
+    completionPercentage: string
+  }
+  const [showSummary, setShowSummary] = useState(false);
+  const [summaryData, setSummaryData] = useState<summary>({
+    totalModels: 0,
+    modelsInProgress: 0,
+    completedModels: 0,
+    totalRequiredQuantity: 0,
+    totalDeliveredQuantity: 0,
+    completionPercentage: '0 %'
+  });
+
+
+  const [lastData, setLastData] = useState();
+
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
@@ -80,9 +104,11 @@ export default function OrderReports() {
           {},
           pages,
           sizes,
+          setSummaryData,
           setTotalPages,
-          setIsLoading
+          setIsLoading,
         ));
+
       const data = await getAllDropdownOptions();
 
       setCollectiontList(data.collections);
@@ -102,16 +128,20 @@ export default function OrderReports() {
     fetchData(false);
   }, []);
 
+
   useEffect(() => {
-    filterOrderReport(
-      setReports,
-      {},
-      pages,
-      sizes,
-      setTotalPages,
-      setIsLoading
-    );
-  }, [pages, sizes]);
+    if(lastData)
+      filterOrderReport(
+        setReports,
+        lastData,
+        pages,
+        sizes,
+        setSummaryData,
+        setTotalPages,
+        setIsLoading,
+      );
+  }, [sizes , pages]);
+
 
   const collectionsOptions = useRecoilValue(CollectionList);
   const ordersOptions = useRecoilValue(orderList);
@@ -164,15 +194,21 @@ export default function OrderReports() {
   }));
 
   const onSubmit = async (data: any) => {
+
+    setLastData(data);
+
     try {
       await filterOrderReport(
         setReports,
         data,
         pages,
         sizes,
+        setSummaryData,
         setTotalPages,
-        setIsLoading
+        setIsLoading,
       );
+      setShowSummary(true);
+
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -184,6 +220,9 @@ export default function OrderReports() {
   const handleReset = () => {
     form.reset();
     setReports([]);
+
+    setShowSummary(false);
+
   };
 
   const handleCheckboxChange = (setter: any, name: string, resetValue: any) => {
@@ -196,25 +235,33 @@ export default function OrderReports() {
   };
 
   const reportsColumns: ColumnDef<any>[] = [
-    { accessorKey: "modelNumber", header: t("Model Number") },
+    { accessorKey: "modelNumber", header: t("ModelNumber") },
     { accessorKey: "barcode", header: t("Barcode") },
-    { accessorKey: "collection", header: t("Collection") },
-    { accessorKey: "order", header: t("Order") },
+    { accessorKey: "collection", header: t("Collections") },
+    { accessorKey: "order", header: t("Orders") },
     { accessorKey: "name", header: t("Name") },
     { accessorKey: "textile", header: t("Textiles") },
     { accessorKey: "colors", header: t("Color") },
     { accessorKey: "sizes", header: t("Sizes") },
-    { accessorKey: "quantities", header: t("Delivered Quantity") },
+    { accessorKey: "quantities", header: t("DeliveredQuantity") },
     { accessorKey: "currentStage", header: t("CurrentStage") },
-    { accessorKey: "modelStatus", header: t("Model Status") },
+    { accessorKey: "modelStatus", header: t("Status") },
   ];
 
   useEffect(() => {
-    console.log(reports);
-  }, [reports]);
+    console.log("reports" , reports);
+    console.log("summaryData" , summaryData);
+
+  }, [reports , summaryData]);
 
   return (
     <div>
+
+        {isLoading && <LoadingDialog 
+                            isOpen={isLoading} 
+                            message="Loading..." 
+                            subMessage="Please wait, your request is being processed now." 
+                          />} 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Card className="bg-[var(--card-background)]">
@@ -243,7 +290,8 @@ export default function OrderReports() {
                         items: collectionsNamesMenu,
                         form: form,
                         name: "collections",
-                        selectText: "collections",
+                        selectText: t("Collections"),
+
                       }}
                       isEnabled={isCollectionEnabled}
                       onCheckedChange={() => handleCheckboxChange(setCollectionEnabled, "collections", "")}
@@ -258,7 +306,8 @@ export default function OrderReports() {
                         items: ordersMenu,
                         form: form,
                         name: "orders",
-                        selectText: "orders",
+                        selectText: t("Orders"),
+
                       }}
                       isEnabled={isOrderEnabled}
                       onCheckedChange={() => handleCheckboxChange(setOrderEnabled, "orders", "")
@@ -278,7 +327,7 @@ export default function OrderReports() {
                         ],
                         form: form,
                         name: "status",
-                        selectText: "Status",
+                        selectText: t("Status"),
                       }}
                       isEnabled={isStatusEnabled}
                       onCheckedChange={() => handleCheckboxChange(setStatusEnabled, "status", "")}
@@ -297,7 +346,7 @@ export default function OrderReports() {
                         items: departmentsNamesMenu,
                         form: form,
                         name: "departments",
-                        selectText: "departments",
+                        selectText: t("Departments"),
                       }}
                       isEnabled={isDepartmentsNamesEnabled}
                       onCheckedChange={() => handleCheckboxChange(setDepartmentsNamesEnabled, "currentStage", "")}
@@ -313,7 +362,7 @@ export default function OrderReports() {
                         items: templatePatternMenu,
                         form: form,
                         name: "templatePattern",
-                        selectText: "templatePattern",
+                        selectText: t("TemplatePatternName"),
                       }}
                       isEnabled={isTemplatePatternEnabled}
                       onCheckedChange={() => handleCheckboxChange(setTemplatePatternEnabled, "templatePattern", "")}
@@ -325,10 +374,13 @@ export default function OrderReports() {
                       name="productCatalogue"
                       label=""
                       control={form.control}
-                      fieldComponent={SelectFieldForForm}
+                      fieldComponent={MultiSelectForField}
                       fieldProps={{
                         placeholder: "Product",
+                        form: form,
+                        name: "productCatalogue",
                         items: productCatalogueMenu,
+                        selectText:t("ProductCatalogues"),
                       }}
                       isEnabled={isProductCatalogueEnabled}
                       onCheckedChange={() => handleCheckboxChange(setProductCatalogueEnabled, "productCatalogue", "")}
@@ -337,10 +389,12 @@ export default function OrderReports() {
                       name="productCategoryOne"
                       label=""
                       control={form.control}
-                      fieldComponent={SelectFieldForForm}
+                      fieldComponent={MultiSelectForField}
                       fieldProps={{
-                        placeholder: "Product Category One",
                         items: productCategoryOneMenu,
+                        form: form,
+                        name: "productCategoryOne",
+                        selectText: t("ProductCategoryOne"),
                       }}
                       isEnabled={isProductCategoryOneEnabled}
                       onCheckedChange={() => handleCheckboxChange(setProductCategoryOneEnabled, "productCategoryOne", "")}
@@ -349,10 +403,12 @@ export default function OrderReports() {
                       name="productCategoryTwo"
                       label=""
                       control={form.control}
-                      fieldComponent={SelectFieldForForm}
+                      fieldComponent={MultiSelectForField}
                       fieldProps={{
-                        placeholder: "Product Category Two",
                         items: productCategoryTwoMenu,
+                        form: form,
+                        name: "productCategoryTwo",
+                        selectText: t("ProductCategoryTwo"),
                       }}
                       isEnabled={isProductCategoryTwoEnabled}
                       onCheckedChange={() =>
@@ -364,7 +420,7 @@ export default function OrderReports() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FieldWithCheckbox
                     name="startDate"
-                    label={t("From")}
+                    label={t("StartDate")}
                     control={form.control}
                     fieldComponent={DatePickerForForm}
                     fieldProps={{
@@ -377,7 +433,7 @@ export default function OrderReports() {
                   />
                   <FieldWithCheckbox
                     name="endDate"
-                    label={t("To")}
+                    label={t("EndDate")}
                     control={form.control}
                     fieldComponent={DatePickerForForm}
                     fieldProps={{
@@ -423,6 +479,53 @@ export default function OrderReports() {
           </div>
         </form>
       </Form>
+
+      {showSummary && summaryData != null && (
+      <div className="mt-10">
+        <Card className="bg-[var(--card-background)] mt-10">
+          <CardHeader>
+            <CardTitle>{t("Report Summary")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>الحقل</TableHead>
+                  <TableHead>القيمة</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>عدد الموديلات</TableCell>
+                  <TableCell>{summaryData.totalModels}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>الكمية المطلوبة</TableCell>
+                  <TableCell>{summaryData.totalRequiredQuantity} قطعة</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>عدد الموديلات قيد العمل</TableCell>
+                  <TableCell>{summaryData.modelsInProgress}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>الكمية المنجزة</TableCell>
+                  <TableCell>{summaryData.totalDeliveredQuantity}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>عدد الموديلات المنجزة</TableCell>
+                  <TableCell>{summaryData.completedModels}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>نسبة الإنجاز</TableCell>
+                  <TableCell>{summaryData.completionPercentage}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    )}
+      
       <div id="datatable" className="mt-10" ref={printRef}>
         <DataTable
           columns={reportsColumns}
@@ -432,6 +535,10 @@ export default function OrderReports() {
           size={sizes}
           setSize={setSizes}
           totalPages={totalPages}
+          tableName="Models"
+          fieldFilter={{
+            "ModelNumber" : "ModelNumber"
+          }}
         />
       </div>
     </div>

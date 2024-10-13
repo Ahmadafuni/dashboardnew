@@ -223,6 +223,7 @@ export const filterProductionModels = async (
     searchParams: any,
     pages: number,
     sizes: number,
+    setSummary: Dispatch<SetStateAction<any>>,
     setTotalPages?: Dispatch<SetStateAction<any>>,
     setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
@@ -243,7 +244,9 @@ export const filterProductionModels = async (
         }
     );
 
-    const responseData = response.data;
+    const responseData = response.data.data;
+    const responseSummary = response.data.data.summary;
+
 
     // Structure the data to match the format where variants are under the model
     const reports = Array.isArray(responseData.data)
@@ -285,8 +288,9 @@ export const filterProductionModels = async (
         : [];
 
     setData(reports);
+    setSummary(responseSummary);
 
-    if (setTotalPages) setTotalPages(responseData.totalPages);
+    if (setTotalPages) setTotalPages(response.data.totalPages);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
   } finally {
@@ -299,8 +303,9 @@ export const filterOrderReport = async (
     searchParams: any,
     pages: number,
     sizes: number,
+    setSummary: Dispatch<SetStateAction<any>>,
     setTotalPages?: Dispatch<SetStateAction<any>>,
-    setIsLoading?: Dispatch<SetStateAction<boolean>>
+    setIsLoading?: Dispatch<SetStateAction<boolean>>,
 ) => {
   try {
     if (setIsLoading) setIsLoading(true);
@@ -320,8 +325,9 @@ export const filterOrderReport = async (
         }
     );
 
-    const responseData = response.data;
-
+    const responseData = response.data.data;
+    const responseSummary = response.data.data.summary;
+    
     // Structure the data to match the format where variants are under the model
     const reports = Array.isArray(responseData.data)
         ? responseData.data.flatMap((item: any) => {
@@ -360,11 +366,14 @@ export const filterOrderReport = async (
         })
         : [];
 
+
+    // 
     // Set the data for the UI
     setData(reports);
+    setSummary(responseSummary);
 
     // Set total pages for pagination
-    if (setTotalPages) setTotalPages(responseData.totalPages);
+    if (setTotalPages) setTotalPages(response.data.totalPages);
   } catch (error) {
     console.error("Failed to fetch order report results:", error);
   } finally {

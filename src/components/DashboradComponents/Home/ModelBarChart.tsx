@@ -43,7 +43,7 @@ export default function ModelBarChart(props: any) {
         borderColor: "rgba(75, 192, 192, 1)",
       },
       {
-        label: t("ModelsOnHold"), // Add label for On Hold
+        label: t("ModelsOnHold"),
         data: Array(props.labels[props.type]?.length).fill(props.data.ONHOLD || 0), // Fill data array with ONHOLD value
         backgroundColor: "rgba(153, 102, 255, 0.5)",
         borderColor: "rgba(153, 102, 255, 1)",
