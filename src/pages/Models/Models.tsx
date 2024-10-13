@@ -104,7 +104,7 @@ export default function Models() {
                   />
               ) : (
                   <BasicConfirmationDialog
-                      btnText={t("Restart")}
+                      btnText={t("StartModel")}
                       takeAction={() => restartModel(setModels, row.original.Id)}
                       className="bg-green-500 hover:bg-green-600"
                   />
