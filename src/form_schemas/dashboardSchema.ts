@@ -26,8 +26,8 @@ export const cuttingSendConfirmationSchema = z.object({
 
 });
 export const othersSendConfirmationSchema = z.object({
-    QuantityReceived: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
-    QuantityDelivered: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
-    DamagedItem: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
+    QuantityReceived: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
+    QuantityDelivered: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
+    DamagedItem: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
     Notes: z.string(),
 });

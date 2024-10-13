@@ -50,7 +50,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
 
   useEffect(() => {
     if (open) {
-      setQuantityReceivedPairs(quantityReceived.map(size => ({ label: size.label, value: "" })));
+      setQuantityReceivedPairs(quantityReceived.map(size => ({ label: size.label, value: size.value })));
       setQuantityDeliveredPairs(selectedSizes.map(size => ({ label: size.label , value: "" })));
       setDamagedItemPairs(selectedSizes.map(size => ({ label: size.label , value: ""})));
 
