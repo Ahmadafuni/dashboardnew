@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Form } from "@/components/ui/form";
 import DatePickerForForm from "@/components/common/DatePickerForForm";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import DataTable from "@/components/common/DataTable";
@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useReactToPrint } from "react-to-print";
 import MultiSelectForField from "@/components/common/MultiSelectForField.tsx";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default function ProductionReports() {
   const { t } = useTranslation();
@@ -36,6 +37,23 @@ export default function ProductionReports() {
   const [sizes, setSizes] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
+  interface summary {
+    totalModels: number,
+    totalVariants: number,
+    totalQuantityDelivered: number,
+    totalQuantityReceived: number,
+    totalDamagedItems: number,
+  }
+  const [showSummary, setShowSummary] = useState(false);
+  const [summaryData, setSummaryData] = useState<summary>({
+    totalModels: 0,
+    totalVariants: 0,
+    totalQuantityDelivered: 0,
+    totalQuantityReceived: 0,
+    totalDamagedItems: 0,
+  });
+
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
@@ -79,6 +97,7 @@ export default function ProductionReports() {
           {},
           pages,
           sizes,
+          setSummaryData,
           setTotalPages,
           setIsLoading
         ));
@@ -100,17 +119,6 @@ export default function ProductionReports() {
   useEffect(() => {
     fetchData(false);
   }, []);
-
-  useEffect(() => {
-    filterProductionModels(
-      setReports,
-      {},
-      pages,
-      sizes,
-      setTotalPages,
-      setIsLoading
-    );
-  }, [pages, sizes]);
 
   const departmentsNamesOptions = useRecoilValue(departmentList);
   const productCatalogueOptions = useRecoilValue(productCatalogueList);
@@ -163,9 +171,12 @@ export default function ProductionReports() {
         data,
         pages,
         sizes,
+        setSummaryData,
         setTotalPages,
         setIsLoading
       );
+
+      setShowSummary(true);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -178,6 +189,8 @@ export default function ProductionReports() {
   const handleReset = () => {
     form.reset();
     setReports([]);
+    setShowSummary(false);
+
   };
 
   const handleCheckboxChange = (setter: any, name: string, resetValue: any) => {
@@ -205,7 +218,8 @@ export default function ProductionReports() {
 
   useEffect(() => {
     console.log(reports);
-  }, [reports]);
+    console.log(summaryData);
+  }, [reports , summaryData]);
 
   return (
     <div>
@@ -382,9 +396,6 @@ export default function ProductionReports() {
                   />
                 </div>
 
-                {/* Fourth Row */}
-
-
                 {/* Fifth Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FieldWithCheckbox
@@ -453,6 +464,51 @@ export default function ProductionReports() {
           </div>
         </form>
       </Form>
+
+
+      {showSummary && summaryData != null && (
+      <div className="mt-10">
+        <Card className="bg-[var(--card-background)] mt-10">
+          <CardHeader>
+            <CardTitle>{t("Report Summary")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>الحقل</TableHead>
+                  <TableHead>القيمة</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>عدد الموديلات</TableCell>
+                  <TableCell>{summaryData.totalModels}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>الكمية</TableCell>
+                  <TableCell>{summaryData.totalVariants} قطعة</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>الكمية المستلمة</TableCell>
+                  <TableCell>{summaryData.totalQuantityReceived} قطعة</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>الكمية المسلمة</TableCell>
+                  <TableCell>{summaryData.totalQuantityDelivered} قطعة</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>الكمية التالفة</TableCell>
+                  <TableCell>{summaryData.totalDamagedItems} قطعة</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    )}
+
+
       <div id="datatable" className="mt-10" ref={printRef}>
         <DataTable
           columns={reportsColumns}
