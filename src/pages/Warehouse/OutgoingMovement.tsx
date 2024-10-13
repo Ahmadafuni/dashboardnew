@@ -77,7 +77,6 @@ export default function OutgoingMovement() {
         fetchData();
     }, [setMaterialMovements]);
 
-    console.log("materialMovements", materialMovements);
 
     return (
         <div className="w-full space-y-2">

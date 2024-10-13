@@ -48,7 +48,6 @@ export default function OrderStatusChart() {
         const normalizedTimePeriod = timePeriod.toLowerCase(); // Normalize time period to lowercase
 
         const normalizeDate = (date: Date) => {
-            console.log("date",new Date(date.getFullYear(), date.getMonth(), date.getDate()));
             return new Date(date.getFullYear(), date.getMonth(), date.getDate());
         };
 

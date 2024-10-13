@@ -75,7 +75,6 @@ export default function UpdateTemplate() {
       formData.append("templatePattern", data.templatePattern);
       formData.append("templateType", data.templateType);
       formData.append("productCatalog", data.productCatalog);
-      console.log(formData.get("name"));
 
       const response = await axios.put(`template/${templateId}`, formData, {
         headers: {

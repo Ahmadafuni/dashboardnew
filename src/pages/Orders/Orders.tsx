@@ -86,7 +86,6 @@ export default function Orders() {
     {
       header: t("Status"),
       cell: ({ row }) => {
-        console.log("row",row);
         return (
           <div className="space-x-1">
             {row.original.RunningStatus === "PENDING" ? (

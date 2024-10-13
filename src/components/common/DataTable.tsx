@@ -73,7 +73,6 @@ export default function DataTable<TData, TValue>({
             try {
                 const modelDemoNumber = filters[0].value;
                 const response = await axios.get(`/datatable/filter/dashboard/${modelDemoNumber}/${stage}`);
-                console.log("response", response.data);
                 setFilteredData(response.data.data);
             } catch (error) {
                 console.error('Error applying filters:', error);
@@ -99,7 +98,6 @@ export default function DataTable<TData, TValue>({
     
             try {
                 const response = await axios.post(`/datatable/filter/${tableName}`, { filters: formattedFilters });
-                console.log("response", response.data);
                 setFilteredData(response.data);
             } catch (error) {
                 console.error('Error applying filters:', error);
@@ -135,8 +133,6 @@ export default function DataTable<TData, TValue>({
     
     
                 setFieldNames(formattedFields);
-    
-                console.log("response.data", response.data);
             } catch (error) {
                 console.error('Error fetching field names:', error);
             }
@@ -147,9 +143,7 @@ export default function DataTable<TData, TValue>({
     useEffect(() => {
         setFilteredData(data); 
         fetchFieldNames();
-        console.log("FieldNames", fieldNames);
-        console.log("data", data);
-    }, [data]); 
+    }, [data]);
 
     const table = useReactTable({
         data: filteredData, 
@@ -165,8 +159,8 @@ export default function DataTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
     });
 
-    
-     
+
+
 
     const handleFilterChange = (index: number, field: string, value: string) => {
         const newFilters = [...filters];

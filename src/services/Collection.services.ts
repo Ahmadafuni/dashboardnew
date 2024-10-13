@@ -38,7 +38,6 @@ export const toggleArchivedCollectionById = async (
   id: number,
   toggle: boolean
 ) => {
-  console.log("clicked");
 
   try {
     const response = await axios.get("collections/update-archived", {

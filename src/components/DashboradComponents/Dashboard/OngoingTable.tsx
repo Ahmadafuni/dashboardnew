@@ -75,8 +75,6 @@ export default function OngoingTable({
 
 
   const renderQuantity = (quantity: any) => {
-    console.log("quantity : ", quantity);
-
     if (Array.isArray(quantity)) {
       return quantity.map((q) => `${q.label}: ${q.value}`).join(", ");
     }
@@ -118,8 +116,6 @@ export default function OngoingTable({
 
 
   const handleSendConfirmation = (item: any, type: string) => {
-    console.log("item" , item);
-    console.log("Sizes for confirmation are : ", item.ModelVariant.Sizes);
     const sizes = item.ModelVariant.Sizes ;
     const quantityReceived = item.QuantityReceived || [];
     // @ts-ignore
@@ -136,7 +132,6 @@ export default function OngoingTable({
 
   const handleSendCuttingConfirmation = (item: any) => {
     const sizes = item.ModelVariant.Sizes;
-    console.log("size" , sizes);
         // @ts-ignore
     setSelectedSizes(sizes);
     setCurrentVariant(item.ModelVariant.Id);

@@ -133,8 +133,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
       let jsonData = XLSX.utils.sheet_to_json<any>(worksheet);
-            
-      console.log("jsonData" , jsonData);
 
       const updatedJsonData = replaceNamesWithIds(
         jsonData,
@@ -146,8 +144,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
       );
 
       setXslModels(updatedJsonData);
-
-      console.log("xslModels" , xslModels);
     };
 
     reader.readAsArrayBuffer(file);
@@ -214,7 +210,6 @@ const NewOrder = ({ getAllOrders }: Props) => {
           Object.keys(model).forEach((key) => {
             if (!allKeys.includes(key)) {
               allKeys.push(key);
-              console.log("allKey" , allKeys);
             }
           });
         });

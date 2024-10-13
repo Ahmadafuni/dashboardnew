@@ -384,9 +384,6 @@ export const getModelsStats = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-
-    console.log("Models Stats Are : ", response.data);
-
     setData(response.data);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -406,8 +403,6 @@ export const getOrdersStats = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log("Orders Stats Are : ", response.data);
-
     setData(response.data);
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -427,7 +422,6 @@ export const getCollectionsStats = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log("Collections Stats Are : ", response.data);
 
     setData(response.data);
   } catch (error) {
@@ -448,7 +442,6 @@ export const getTasksStats = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    console.log("Tasks Stats Are : ", response.data);
 
     setData(response.data);
   } catch (error) {

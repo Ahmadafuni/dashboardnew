@@ -74,15 +74,6 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
                 QuantityInNum: JSON.stringify(quantityInNumPairs),
             };
 
-            // test
-            //  console.log("quantityInNumPairs" , quantityInNumPairs);
-            //  console.log("quantityInNumPairs" , quantityInNumPairs);
-            //  console.log("selectedSizes" , selectedSizes);
-
-            //  console.log("payload" , payload);
-            //  setIsLoading(false);
-            //  return ;
-
             const newNote = await axios.post(
                 `trackingmodels/sent/cutting/checking/variant/${variantId}`,
                 payload,

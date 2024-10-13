@@ -30,9 +30,7 @@ export default function ViewModelDetails() {
 
   useEffect(() => {
     getModelSummary(setSummary, id);
-
-    console.log("summary" , summary);
-  }, []);
+    }, []);
   return (
     <div className="p-4" ref={printRef}>
       <div>
