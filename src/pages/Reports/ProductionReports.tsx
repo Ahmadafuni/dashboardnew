@@ -29,6 +29,7 @@ import { AxiosError } from "axios";
 import { useReactToPrint } from "react-to-print";
 import MultiSelectForField from "@/components/common/MultiSelectForField.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function ProductionReports() {
   const { t } = useTranslation();
@@ -37,6 +38,8 @@ export default function ProductionReports() {
   const [sizes, setSizes] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [lastData, setLastData] = useState();
 
   interface summary {
     totalModels: number,
@@ -53,7 +56,6 @@ export default function ProductionReports() {
     totalQuantityReceived: 0,
     totalDamagedItems: 0,
   });
-
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
@@ -120,6 +122,20 @@ export default function ProductionReports() {
     fetchData(false);
   }, []);
 
+  useEffect(() => {
+    if(lastData)
+      filterProductionModels(
+        setReports,
+        lastData,
+        pages,
+        sizes,
+        setSummaryData,
+        setTotalPages,
+        setIsLoading
+      );
+
+  }, [sizes , pages]);
+
   const departmentsNamesOptions = useRecoilValue(departmentList);
   const productCatalogueOptions = useRecoilValue(productCatalogueList);
   const productCategoryOneOptions = useRecoilValue(productCategoryOneList);
@@ -165,6 +181,8 @@ export default function ProductionReports() {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
+
+    setLastData(data);
     try {
       await filterProductionModels(
         setReports,
@@ -223,6 +241,12 @@ export default function ProductionReports() {
 
   return (
     <div>
+      {isLoading && <LoadingDialog 
+                            isOpen={isLoading} 
+                            message="Loading..." 
+                            subMessage="Please wait, your request is being processed now." 
+                          />} 
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Card className="bg-[var(--card-background)]">
@@ -519,6 +543,9 @@ export default function ProductionReports() {
           size={sizes}
           setSize={setSizes}
           totalPages={totalPages}
+          fieldFilter={{
+            "ModelNumber" : "ModelNumber"
+          }}
         />
       </div>
     </div>

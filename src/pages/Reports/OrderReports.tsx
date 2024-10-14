@@ -25,15 +25,15 @@ import { useReactToPrint } from "react-to-print";
 import {CollectionList} from "@/store/Collection.ts";
 import MultiSelectForField from "@/components/common/MultiSelectForField.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import LoadingDialog from "@/components/ui/LoadingDialog";
 
 export default function OrderReports() {
   const { t } = useTranslation();
   const form = useForm();
-  const [isLoading, setIsLoading] = useState(false);
   const [pages, setPages] = useState(1);
   const [sizes, setSizes] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [isLoading, setIsLoading] = useState(false);
 
 
   interface summary {
@@ -55,7 +55,7 @@ export default function OrderReports() {
   });
 
 
-  
+  const [lastData, setLastData] = useState();
 
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
@@ -109,6 +109,7 @@ export default function OrderReports() {
           setTotalPages,
           setIsLoading,
         ));
+
       const data = await getAllDropdownOptions();
 
       setCollectiontList(data.collections);
@@ -127,6 +128,20 @@ export default function OrderReports() {
   useEffect(() => {
     fetchData(false);
   }, []);
+
+
+  useEffect(() => {
+    if(lastData)
+      filterOrderReport(
+        setReports,
+        lastData,
+        pages,
+        sizes,
+        setSummaryData,
+        setTotalPages,
+        setIsLoading,
+      );
+  }, [sizes , pages]);
 
 
   const collectionsOptions = useRecoilValue(CollectionList);
@@ -180,6 +195,8 @@ export default function OrderReports() {
   }));
 
   const onSubmit = async (data: any) => {
+
+    setLastData(data);
 
     try {
       await filterOrderReport(
@@ -240,6 +257,12 @@ export default function OrderReports() {
 
   return (
     <div>
+
+        {isLoading && <LoadingDialog 
+                            isOpen={isLoading} 
+                            message="Loading..." 
+                            subMessage="Please wait, your request is being processed now." 
+                          />} 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Card className="bg-[var(--card-background)]">
@@ -495,7 +518,6 @@ export default function OrderReports() {
       </div>
     )}
       
-
       <div id="datatable" className="mt-10" ref={printRef}>
         <DataTable
           columns={reportsColumns}

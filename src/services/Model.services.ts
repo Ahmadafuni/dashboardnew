@@ -290,7 +290,7 @@ export const filterProductionModels = async (
     setData(reports);
     setSummary(responseSummary);
 
-    if (setTotalPages) setTotalPages(responseData.totalPages);
+    if (setTotalPages) setTotalPages(response.data.totalPages);
   } catch (error) {
     console.error("Failed to fetch report results:", error);
   } finally {
@@ -328,8 +328,6 @@ export const filterOrderReport = async (
     const responseData = response.data.data;
     const responseSummary = response.data.data.summary;
     
-    
-
     // Structure the data to match the format where variants are under the model
     const reports = Array.isArray(responseData.data)
         ? responseData.data.flatMap((item: any) => {
@@ -368,20 +366,14 @@ export const filterOrderReport = async (
         })
         : [];
 
+
+    // 
     // Set the data for the UI
     setData(reports);
     setSummary(responseSummary);
-    // setSummary({
-    //   totalModels: responseSummary.totalModels,
-    //   modelsInProgress: responseSummary.modelsInProgress,
-    //   completedModels: responseSummary.completedModels,
-    //   totalRequiredQuantity: responseSummary.totalRequiredQuantity,
-    //   totalDeliveredQuantity: responseSummary.totalDeliveredQuantity,
-    //   completionPercentage: responseSummary.completionPercentage
-    // });
 
     // Set total pages for pagination
-    if (setTotalPages) setTotalPages(responseData.totalPages);
+    if (setTotalPages) setTotalPages(response.data.totalPages);
   } catch (error) {
     console.error("Failed to fetch order report results:", error);
   } finally {
