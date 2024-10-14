@@ -244,50 +244,10 @@ export const filterProductionModels = async (
         }
     );
 
-    const responseData = response.data.data;
+    const responseData = response.data.data.data;
     const responseSummary = response.data.data.summary;
 
-
-    // Structure the data to match the format where variants are under the model
-    const reports = Array.isArray(responseData.data)
-        ? responseData.data.flatMap((item: any) => {
-          const demoModelNumber = item.DemoModelNumber;
-          const modelName = item.ModelName;
-
-          // Map over each variant, making sure the first variant has the model info,
-          // but subsequent variants have empty values for the model fields.
-          return item.Details.map((detail: any, index: any) => ({
-            modelNumber: index === 0 ? demoModelNumber : "", // Only the first row has the model number
-            name: index === 0 ? modelName : "", // Only the first row has the model name
-            barcode: index === 0 ? item.Barcode : "", // Example: if you have barcode data
-            textile: index === 0 ? item.Textiles : "", // Only the first row has textile
-            colors:  detail.Color ? detail.Color.ColorName :"",
-            sizes: detail.Sizes.map(
-                (size: { label: string; value: string }) =>
-                    `${size.label} : ${size.value}`
-            ).join(", "),
-            currentStage: detail.DepartmentName || "N/A",
-            QuantityDelivered: detail.QuantityDelivered
-                ? Object.entries(detail.QuantityDelivered)
-                    .map(([size, value]) => `${size} : ${value}`)
-                    .join(" , ")
-                : "N/A",
-            QuantityReceived: detail.QuantityReceived
-                ? Object.entries(detail.QuantityReceived)
-                    .map(([size, value]) => `${size} : ${value}`)
-                    .join(" , ")
-                : "N/A",
-            DamagedItem: detail.DamagedItem
-                ? Object.entries(detail.DamagedItem)
-                    .map(([size, value]) => `${size} : ${value}`)
-                    .join(" , ")
-                : "N/A",
-            duration: detail.DurationInHours || "N/A",
-          }));
-        })
-        : [];
-
-    setData(reports);
+    setData(responseData);
     setSummary(responseSummary);
 
     if (setTotalPages) setTotalPages(response.data.totalPages);
@@ -325,51 +285,13 @@ export const filterOrderReport = async (
         }
     );
 
-    const responseData = response.data.data;
+    const responseData = response.data.data.data;
     const responseSummary = response.data.data.summary;
-    
-    // Structure the data to match the format where variants are under the model
-    const reports = Array.isArray(responseData.data)
-        ? responseData.data.flatMap((item: any) => {
-          const demoModelNumber = item.DemoModelNumber;
-          const modelName = item.ModelName;
-
-          // Map over each variant, ensuring the first variant has model info
-          return item.Details.map((detail: any, index: any) => ({
-            modelNumber: index === 0 ? demoModelNumber : "", // First row gets the model number
-            name: index === 0 ? modelName : "", // First row gets the model name
-            barcode: index === 0 ? item.Barcode : "", // Example: barcode data if present
-            textile: index === 0 ? item.Textiles : "", // Only the first row has textile
-            colors:  detail.Color ? detail.Color.ColorName :"",
-            sizes: detail.Sizes.map(
-                (size: { label: string; value: string }) =>
-                    `${size.label} : ${size.value}`
-            ).join(", "),
-            currentStage: detail.DepartmentName || "N/A",
-            QuantityDelivered: detail.QuantityDelivered
-                ? Object.entries(detail.QuantityDelivered)
-                    .map(([size, value]) => `${size} : ${value}`)
-                    .join(" , ")
-                : "N/A",
-            QuantityReceived: detail.QuantityReceived
-                ? Object.entries(detail.QuantityReceived)
-                    .map(([size, value]) => `${size} : ${value}`)
-                    .join(" , ")
-                : "N/A",
-            DamagedItem: detail.DamagedItem
-                ? Object.entries(detail.DamagedItem)
-                    .map(([size, value]) => `${size} : ${value}`)
-                    .join(" , ")
-                : "N/A",
-            duration: detail.DurationInHours || "N/A",
-          }));
-        })
-        : [];
-
+  
 
     // 
     // Set the data for the UI
-    setData(reports);
+    setData(responseData);
     setSummary(responseSummary);
 
     // Set total pages for pagination
