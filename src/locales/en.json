@@ -312,7 +312,9 @@
   "AssignedBy": "Assigned By",
   "CreatedByDepartment": "Created By Department",
   "ActionConfirmation": "Action Confirmation!",
+  "ActionConfirmationTask": "Execution confirmation!",
   "AreYouSure": "Are you sure you want to take this action!",
+  "AreYouSureTask ": "Are you sure you want to start this Task!",
   "BesharaFactoryManagement": "Beshara Factory Management",
   "LoginToBesharaDashboard": "Login to Beshara dashboard.",
   "Password": "Password",
@@ -386,5 +388,10 @@
   "TotalModels": "Total Models",
   "TotalVariants": "Total Variants",
   "LateOrders": "Late Orders",
-  "OnTimeOrders": "On-Time Orders"
+  "OnTimeOrders": "On-Time Orders",
+  "TaskFeedback": "Task Feedback",
+  "Feedback": "Feedback",
+  "CheckTask": "Check Feedback",
+  "SendFeedBack": "Send FeedBack"
+
 }

@@ -75,7 +75,7 @@ export default function SubmitTask({ getTasks }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Submit Task</DialogTitle>
+          <DialogTitle> {t("TaskFeedback")}</DialogTitle>
         </DialogHeader>
         <SubmitTaskForm
           form={form}

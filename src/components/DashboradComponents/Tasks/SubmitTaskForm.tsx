@@ -33,7 +33,7 @@ export default function SubmitTaskForm({
           )}
         />
         <FormItem>
-          <FormLabel>Task File</FormLabel>
+          <FormLabel>{t("TaskFile")}</FormLabel>
           <Input
             type="file"
             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, application/pdf"

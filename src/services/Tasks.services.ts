@@ -74,7 +74,7 @@ export const startTask = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-    getAllTasks(setData);
+    getCurrentTasks(setData);
     toast.success(data.message);
   } catch (error) {
     if (error instanceof AxiosError) {

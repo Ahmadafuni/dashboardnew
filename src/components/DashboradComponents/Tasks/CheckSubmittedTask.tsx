@@ -10,6 +10,7 @@ import { downLoadFile } from "@/services/Commons.services";
 import { checkSubmittedTaskModal, feedbackData } from "@/store/Tasks";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
+import {BASE_URL} from "@/config";
 
 export default function CheckSubmittedTask() {
   const { t } = useTranslation();
@@ -31,11 +32,8 @@ export default function CheckSubmittedTask() {
           <Button
             disabled={!currentFeedback.FeedbackFile}
             onClick={() =>
-              downLoadFile(
-                "https://dashboardbackendnew.onrender.com" +
-                  currentFeedback.FeedbackFile
-              )
-            }
+              downLoadFile(BASE_URL + currentFeedback.FeedbackFile)
+          }
           >
             {t("Download")}
           </Button>

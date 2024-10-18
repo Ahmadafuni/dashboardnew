@@ -8,17 +8,6 @@ import OrderBarChart from "@/components/DashboradComponents/Home/OrderBarChart";
 import TaskDoughnutChart from "@/components/DashboradComponents/Home/TaskDoughnutChart";
 import SubmitTask from "@/components/DashboradComponents/Tasks/SubmitTask";
 import DataTable from "@/components/common/DataTable";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
@@ -34,9 +23,11 @@ import {NoteType} from "@/types/Notes/Notes.types";
 import {TaskType} from "@/types/Tasks/Tasks.types";
 import {ColumnDef} from "@tanstack/react-table";
 import {Download, Send} from "lucide-react";
-import { BASE_URL } from "@/config/index.ts";
+import {BASE_URL} from "@/config/index.ts";
 import axios from "axios";
 import LoadingDialog from "@/components/ui/LoadingDialog.tsx";
+import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
+import ConfirmationDialog from "@/components/common/ConfirmationDialog.tsx";
 
 export default function Home() {
     const {t} = useTranslation();
@@ -46,6 +37,11 @@ export default function Home() {
     const setCurrentFeedback = useSetRecoilState(feedbackData);
     const setSubmitTaskModal = useSetRecoilState(submitTaskModal);
     const user = useRecoilValue(userInfo);
+
+    const isDueDatePassed = (dueDate: Date) => {
+        const currentDate = new Date();
+        return new Date(dueDate) < currentDate;
+    };
 
     const noteColumns: ColumnDef<NoteType>[] = [
         {
@@ -69,7 +65,33 @@ export default function Home() {
         {
             header: t("DueDate"),
             cell: ({row}) => {
-                return <p>{new Date(row.original.DueAt).toLocaleDateString()}</p>;
+                const dueDatePassed = isDueDatePassed(row.original.DueAt);
+                const flashStyle = {
+                    animation: dueDatePassed ? "flash 1s infinite" : "none", // Apply flashing only if the due date has passed
+                    backgroundColor: dueDatePassed ? "rgba(255, 0, 0, 0.2)" : "transparent", // Light red if due date passed, otherwise transparent
+                    padding: "10px", // Some padding to make the row look better
+                    borderRadius: "5px", // Add slight rounding to the corners
+                };
+
+                // Define the keyframes animation inline
+                const flashKeyframes = `
+                    @keyframes flash {
+                      0%, 100% { background-color: rgba(255, 0, 0, 0.2); } 
+                      50% { background-color: rgba(255, 0, 0, 0.6); }
+                    }
+                  `;
+                return (
+                    <div className="flex items-center space-x-2">
+                        <style>
+                            {flashKeyframes}
+                        </style>
+                        <div style={flashStyle} className="flex items-center space-x-2">
+                            <p>{new Date(row.original.DueAt).toLocaleDateString()}</p>
+                            <p>{row.original.Description}</p>
+                        </div>
+                        <p>{new Date(row.original.DueAt).toLocaleDateString()}</p>
+                    </div>
+                );
             },
         },
         {
@@ -81,49 +103,28 @@ export default function Home() {
         {
             header: t("Status"),
             cell: ({row}) => {
+                const task = row.original;
                 return (
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className={
-                                    row.original.Status === "PENDING"
-                                        ? "pointer-events-auto"
-                                        : "pointer-events-none"
-                                }
-                            >
+                    <ConfirmationDialog
+                        triggerButton={
+                            <Button variant="ghost" disabled={(task.Status !== "PENDING")}>
                                 <Badge
-                                    variant={
-                                        row.original.Status === "PENDING"
-                                            ? "destructive"
-                                            : row.original.Status === "ONGOING"
-                                                ? "secondary"
-                                                : "default"
+                                    className={
+                                        task.Status === "PENDING"
+                                            ? "bg-orange-500 text-white"
+                                            : task.Status === "ONGOING"
+                                                ? "bg-green-500 text-white"
+                                                : task.Status === "COMPLETED"
+                                                    ? "bg-blue-500 text-white"
+                                                    : "bg-gray-300 text-black"
                                     }
                                 >
-                                    {row.original.Status}
+                                    {t(task.Status)}
                                 </Badge>
                             </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>{t("ActionConfirmation")}</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    {t("AreYouSure")}
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
-                                <AlertDialogAction
-                                    onClick={() => {
-                                        startTask(setTasks, row.original.Id);
-                                    }}
-                                >
-                                    {t("Confirm")}
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                        }
+                        onConfirm={() => startTask(setTasks, row.original.Id)}
+                    />
                 );
             },
         },
@@ -149,15 +150,17 @@ export default function Home() {
             cell: ({row}) => {
                 return (
                     <div className="flex gap-1">
-                        <Button
-                            onClick={() => {
-                                setFeedbackId(row.original.Id);
-                                getFeedbackById(setCurrentFeedback, row.original.Id);
-                                setSubmitTaskModal(true);
-                            }}
-                        >
-                            <Send className="h-4 w-4"/>
-                        </Button>
+                        <ButtonTooltipStructure description={t("SendFeedBack")}>
+                            <Button
+                                onClick={() => {
+                                    setFeedbackId(row.original.Id);
+                                    getFeedbackById(setCurrentFeedback, row.original.Id);
+                                    setSubmitTaskModal(true);
+                                }}
+                            >
+                                <Send className="h-4 w-4"/>
+                            </Button>
+                        </ButtonTooltipStructure>
                     </div>
                 );
             },
