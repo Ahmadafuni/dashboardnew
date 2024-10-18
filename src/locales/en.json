@@ -39,6 +39,10 @@
   "ENGINEERING": "ENGINEERING",
   "FACTORYMANAGER": "FACTORYMANAGER",
   "WAREHOUSEMANAGER": "WAREHOUSEMANAGER",
+  "HUMANRESOURCE": "Human Resource",
+  "MOTHERCOMPANY": "Mother Company",
+  "ACCOUNTING": "Accounting",
+  "DRAWING": "Drawing",
   "ColorName": "Color Name",
   "ColorCode": "Color Code",
   "ProductCatalogCategoryOne": "Product Category One",
@@ -327,6 +331,7 @@
   "Monthly": "Monthly",
   "Weekly": "Weekly",
   "Daily": "Daily",
+  "Yearly": "Yearly",
   "CollectionsStatus": "Collections Status",
   "OrdersDone": "Orders Done",
   "OrdersInProgress": "Orders In Progress",
@@ -379,5 +384,7 @@
   "ModelsOnHold": "Models On Hold",
   "OrdersOnHold": "Orders On Hold",
   "TotalModels": "Total Models",
-  "TotalVariants": "Total Variants"
+  "TotalVariants": "Total Variants",
+  "LateOrders": "Late Orders",
+  "OnTimeOrders": "On-Time Orders"
 }

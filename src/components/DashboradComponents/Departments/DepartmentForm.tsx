@@ -11,15 +11,20 @@ export default function DepartmentForm({ form, onSubmit }: Props) {
   // Translation
   const { t } = useTranslation();
   // Categories
-  const categories = [
-    { label: t("CUTTING"), value: "CUTTING" },
-    { label: t("TAILORING"), value: "TAILORING" },
-    { label: t("PRINTING"), value: "PRINTING" },
-    { label: t("QUALITYASSURANCE"), value: "QUALITYASSURANCE" },
-    { label: t("ENGINEERING"), value: "ENGINEERING" },
-    { label: t("FACTORYMANAGER"), value: "FACTORYMANAGER" },
-    { label: t("WAREHOUSEMANAGER"), value: "WAREHOUSEMANAGER" },
-  ];
+    const categories = [
+        { label: t("CUTTING"), value: "CUTTING" },
+        { label: t("TAILORING"), value: "TAILORING" },
+        { label: t("PRINTING"), value: "PRINTING" },
+        { label: t("QUALITYASSURANCE"), value: "QUALITYASSURANCE" },
+        { label: t("ENGINEERING"), value: "ENGINEERING" },
+        { label: t("FACTORYMANAGER"), value: "FACTORYMANAGER" },
+        { label: t("WAREHOUSEMANAGER"), value: "WAREHOUSEMANAGER" },
+        { label: t("HUMANRESOURCE"), value: "HumanResource" },
+        { label: t("MOTHERCOMPANY"), value: "MotherCompany" },
+        { label: t("ACCOUNTING"), value: "Accounting" },
+        { label: t("DRAWING"), value: "DRAWING" },
+    ];
+
   return (
     <Form {...form}>
       <form

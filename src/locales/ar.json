@@ -38,6 +38,10 @@
   "ENGINEERING": "الهندسة",
   "FACTORYMANAGER": "مدير المصنع",
   "WAREHOUSEMANAGER": "مدير المستودع",
+  "HUMANRESOURCE": "الموارد البشرية",
+  "MOTHERCOMPANY": "الشركة الأم",
+  "ACCOUNTING": "المحاسبة",
+  "DRAWING": "الرسم",
   "ColorName": "اسم اللون",
   "ColorCode": "كود اللون",
   "SizeName": "اسم المقاس",
@@ -328,6 +332,7 @@
   "Monthly": "شهرياً",
   "Weekly": "أسبوعياً",
   "Daily": "يومياً",
+  "Yearly": "سنويا",
   "CollectionsStatus": "حالة المجموعات",
   "OrdersDone": "منتهية",
   "OrdersInProgress": "يتم العمل عليها",
@@ -385,5 +390,7 @@
   "ModelsOnHold": "الموديلات المعلقة",
   "OrdersOnHold": "الطلبات المعلقة",
   "TotalModels": "إجمالي الموديلات",
-  "TotalVariants": "إجمالي تفاصيل الموديلات"
+  "TotalVariants": "إجمالي تفاصيل الموديلات",
+  "LateOrders": "طلبات متأخرة",
+  "OnTimeOrders": "طلبات في الوقت المحدد"
 }
