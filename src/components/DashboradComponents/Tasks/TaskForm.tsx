@@ -61,6 +61,7 @@ export default function TaskForm({ form, onSubmit, handleFileChange }: Props) {
               placeholder=""
               label={t("Description")}
               field={field}
+              rows={3}
             />
           )}
         />

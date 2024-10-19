@@ -22,7 +22,7 @@ import {feedbackData, feedbackId, submitTaskModal} from "@/store/Tasks";
 import {NoteType} from "@/types/Notes/Notes.types";
 import {TaskType} from "@/types/Tasks/Tasks.types";
 import {ColumnDef} from "@tanstack/react-table";
-import {Download, Send} from "lucide-react";
+import {AlertTriangle, Bell, Clipboard, Download, Send} from "lucide-react";
 import {BASE_URL} from "@/config/index.ts";
 import axios from "axios";
 import LoadingDialog from "@/components/ui/LoadingDialog.tsx";
@@ -47,6 +47,34 @@ export default function Home() {
         {
             accessorKey: "NoteType",
             header: t("NoteType"),
+            cell: ({ row }) => {
+                const noteType = row.original.NoteType;
+                const renderIcon = (type: string) => {
+                    switch (type) {
+                        case "GENERAL":
+                            return <Clipboard className="h-5 w-5 text-blue-500" />;
+                        case "REMINDER":
+                            return <Bell className="h-5 w-5 text-green-500" />;
+                        case "ATTENTION":
+                            return <AlertTriangle className="h-5 w-5 text-red-600" />;
+                        default:
+                            return null;
+                    }
+                };
+
+                const style = {
+                    GENERAL: "text-blue-500",
+                    REMINDER: "text-green-500",
+                    ATTENTION: "font-bold text-red-600",
+                }[noteType];
+
+                return (
+                    <div className="flex items-center gap-2">
+                        {renderIcon(noteType)}
+                        <span className={style}>{t(noteType)}</span>
+                    </div>
+                );
+            },
         },
         {
             header: t("AssignedBy"),
@@ -57,6 +85,16 @@ export default function Home() {
         {
             accessorKey: "Description",
             header: t("Description"),
+            cell: ({ row }) => {
+                const description = row.original.Description;
+                const formattedDescription = description.replace(/\n/g, "<br />");
+
+                return (
+                    <div
+                        dangerouslySetInnerHTML={{ __html: formattedDescription }}
+                    />
+                );
+            },
         },
     ];
 
@@ -66,9 +104,11 @@ export default function Home() {
             header: t("DueDate"),
             cell: ({row}) => {
                 const dueDatePassed = isDueDatePassed(row.original.DueAt);
+                const taskCompleted = row.original.Status === "COMPLETED";
+
                 const flashStyle = {
-                    animation: dueDatePassed ? "flash 1s infinite" : "none", // Apply flashing only if the due date has passed
-                    backgroundColor: dueDatePassed ? "rgba(255, 0, 0, 0.2)" : "transparent", // Light red if due date passed, otherwise transparent
+                    animation: dueDatePassed && !taskCompleted ? "flash 1s infinite" : "none", // Apply flashing only if the due date has passed and task is not completed
+                    backgroundColor: dueDatePassed && !taskCompleted ? "rgba(255, 0, 0, 0.2)" : "transparent", // Light red if due date passed, otherwise transparent
                     padding: "10px", // Some padding to make the row look better
                     borderRadius: "5px", // Add slight rounding to the corners
                 };
@@ -87,9 +127,7 @@ export default function Home() {
                         </style>
                         <div style={flashStyle} className="flex items-center space-x-2">
                             <p>{new Date(row.original.DueAt).toLocaleDateString()}</p>
-                            <p>{row.original.Description}</p>
                         </div>
-                        <p>{new Date(row.original.DueAt).toLocaleDateString()}</p>
                     </div>
                 );
             },
@@ -128,7 +166,20 @@ export default function Home() {
                 );
             },
         },
-        {accessorKey: "Description", header: t("Description")},
+        {
+            accessorKey: "Description",
+            header: t("Description"),
+            cell: ({ row }) => {
+                const description = row.original.Description;
+                const formattedDescription = description.replace(/\n/g, "<br />");
+
+                return (
+                    <div
+                        dangerouslySetInnerHTML={{ __html: formattedDescription }}
+                    />
+                );
+            },
+        },
         {
             header: t("TaskFile"),
             cell: ({row}) => {

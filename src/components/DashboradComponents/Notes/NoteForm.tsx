@@ -57,6 +57,7 @@ export default function NoteForm({ form, onSubmit }: Props) {
               placeholder="Note description"
               label={t("Description")}
               field={field}
+              rows={3}
             />
           )}
         />

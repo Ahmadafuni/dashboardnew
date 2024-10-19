@@ -61,9 +61,10 @@ export default function Tasks() {
             header: t("DueDate"),
             cell: ({row}) => {
                 const dueDatePassed = isDueDatePassed(row.original.DueAt);
+                const taskCompleted = row.original.Status === "COMPLETED";
                 const flashStyle = {
-                    animation: dueDatePassed ? "flash 1s infinite" : "none", // Apply flashing only if the due date has passed
-                    backgroundColor: dueDatePassed ? "rgba(255, 0, 0, 0.2)" : "transparent", // Light red if due date passed, otherwise transparent
+                    animation: dueDatePassed && !taskCompleted ? "flash 1s infinite" : "none", // Apply flashing only if the due date has passed and task is not completed
+                    backgroundColor: dueDatePassed && !taskCompleted ? "rgba(255, 0, 0, 0.2)" : "transparent", // Light red if due date passed, otherwise transparent
                     padding: "10px", // Some padding to make the row look better
                     borderRadius: "5px", // Add slight rounding to the corners
                 };
@@ -82,9 +83,7 @@ export default function Tasks() {
                         </style>
                         <div style={flashStyle} className="flex items-center space-x-2">
                             <p>{new Date(row.original.DueAt).toLocaleDateString()}</p>
-                            <p>{row.original.Description}</p>
                         </div>
-                        <p>{new Date(row.original.DueAt).toLocaleDateString()}</p>
                     </div>
                 );
             },
@@ -116,7 +115,20 @@ export default function Tasks() {
                 );
             },
         },
-        {accessorKey: "Description", header: t("Description")},
+        {
+            accessorKey: "Description",
+            header: t("Description"),
+            cell: ({ row }) => {
+                const description = row.original.Description;
+                const formattedDescription = description.replace(/\n/g, "<br />");
+
+                return (
+                    <div
+                        dangerouslySetInnerHTML={{ __html: formattedDescription }}
+                    />
+                );
+            },
+        },
         {
             header: t("StartTime"),
             cell: ({row}) => {
