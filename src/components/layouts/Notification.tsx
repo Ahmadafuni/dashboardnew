@@ -133,9 +133,9 @@ export default function Notification({ user }: Props) {
                         {notes.map((n) => (
                             <div key={n.Id} className="flex flex-col p-2 border rounded-md text-sm">
                                 <div className="flex justify-between items-center mb-1">
-                                    <div className="font-bold">{n.Title}</div>
+                                    <div  dir="rtl" className="font-bold">{n.Title}</div>
                                 </div>
-                                <div className="flex-grow">{n.Description}</div>
+                                <div dir="rtl" className="flex-grow">{n.Description}</div>
                                 <div className="flex justify-end mt-2">
                                     <Button
                                         onClick={() => markAsRead(n.Id)}
