@@ -133,7 +133,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
 
   return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[425px]"> {/* Scroll if the content exceeds 90vh */}
           <DialogHeader>
             <DialogTitle>{t("Confirmation")}</DialogTitle>
           </DialogHeader>
