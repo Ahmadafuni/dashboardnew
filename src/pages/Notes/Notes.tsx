@@ -22,6 +22,7 @@ import NewNote from "@/components/DashboradComponents/Notes/NewNote.tsx";
 import UpdateNote from "@/components/DashboradComponents/Notes/UpdateNote.tsx";
 import { NoteType } from "@/types/Notes/Notes.types.ts";
 import LoadingDialog from "@/components/ui/LoadingDialog";
+import AttentionNotesChart from "@/components/DashboradComponents/Home/AttentionNotesChart.tsx";
 
 export default function Notes() {
   const { t } = useTranslation();
@@ -118,6 +119,10 @@ export default function Notes() {
 
   return (
       <div className="w-full space-y-2">
+        <div>
+          <h1>Notes Dashboard</h1>
+          <AttentionNotesChart/>
+        </div>
         {isLoading && (
             <LoadingDialog
                 isOpen={isLoading}
@@ -126,16 +131,16 @@ export default function Notes() {
             />
         )}
 
-        <NewNote getNotes={() => getAllNotes(setNotes)} />
-        <UpdateNote getNotes={() => getAllNotes(setNotes)} />
+        <NewNote getNotes={() => getAllNotes(setNotes)}/>
+        <UpdateNote getNotes={() => getAllNotes(setNotes)}/>
         <div className="w-full space-y-1">
           <h1 className="text-3xl font-bold w-full">{t("Notes")}</h1>
-          <Separator />
+          <Separator/>
         </div>
         <div className="space-y-2">
           <div className="flex justify-end">
             <Button onClick={() => setNewNoteModal(true)}>
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="mr-2 h-4 w-4"/>
               {t("AddNote")}
             </Button>
           </div>

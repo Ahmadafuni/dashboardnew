@@ -32,7 +32,7 @@ import {BASE_URL} from "@/config";
 import ButtonTooltipStructure from "@/components/common/ButtonTooltipStructure.tsx";
 import {format, intervalToDuration} from 'date-fns';
 import {Clock} from 'lucide-react';
-import TaskChart from "@/components/DashboradComponents/Home/TaskChart.tsx";
+import TaskPolarAreaChart from "@/components/DashboradComponents/Home/TaskChart.tsx";
 
 export default function Tasks() {
     const {t} = useTranslation();
@@ -238,7 +238,7 @@ export default function Tasks() {
                     </Button>
                 </div>
                 <div>
-                    <TaskChart tasks={tasks}/>
+                    <TaskPolarAreaChart/>
                 </div>
                 <div className="rounded-md border overflow-x-scroll">
                     <DataTable columns={taskColumns} data={tasks} tableName={"Tasks"}
