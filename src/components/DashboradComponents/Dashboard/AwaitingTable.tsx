@@ -71,9 +71,6 @@ export default function AwaitingTable({
     return quantity;
   };
 
- 
-
-
   const templateColumns: ColumnDef<Tracking>[] = [
     {
       header: t("ModelNumber"),
@@ -128,7 +125,6 @@ export default function AwaitingTable({
       },
     },
   ];
-
 
   if (userRole === "FACTORYMANAGER" || userRole === "ENGINEERING") {
     templateColumns.push(
@@ -215,15 +211,13 @@ else {
     
 );
 
-
 }
-
 
   return (
     <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Awaiting")}</h2>
       <div className="overflow-x-auto">
-      
+
       <DataTable 
       columns={templateColumns} 
       data={works.awaiting}
@@ -270,7 +264,6 @@ else {
               setSize((prev) => ({ ...prev, awaitingSize: +value })) 
             }
           >
-
             <SelectTrigger className="w-[100px]">
               <SelectValue placeholder={t("Rows per page")} />
             </SelectTrigger>
@@ -286,8 +279,6 @@ else {
           </Select>
         </div>
       </div>
-
-
     </div>
   );
 }

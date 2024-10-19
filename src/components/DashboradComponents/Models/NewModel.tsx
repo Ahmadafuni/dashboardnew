@@ -92,8 +92,6 @@ export default function NewModel({ setNext }: Props) {
       formData.append("PrintLocation", data.PrintLocation);
       formData.append("Description", data.Description);
 
-      console.log("formData are : ", data);
-
       const newModel = await axios.post(`model/${id}`, formData, {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,

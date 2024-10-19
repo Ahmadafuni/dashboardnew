@@ -44,8 +44,6 @@ export default function Collections() {
 
 
   const handleRemoveModelFromArchive = async (collectionId: number) => {
-    console.log(collectionId);
-
     await toggleArchivedCollectionById(collectionId, true);
     await getAllCollections(false, setCollections);
   };

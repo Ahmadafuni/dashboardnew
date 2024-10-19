@@ -72,7 +72,6 @@ export const getAllTracking= async (
       },
     });
   
-    console.log("works" , data.data);
     setData(data.data);
     setTotalPages && setTotalPages(data.totalPages);
     setIsLoading && setIsLoading(false);
@@ -99,7 +98,6 @@ export const getModelDetailsDepartment = async (
     });
     setData(data.data);
     setIsLoading && setIsLoading(false);
-    console.log("ModelDetailsDept" , data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
@@ -124,7 +122,6 @@ try {
   });
   setData(data.data);
   setIsLoading && setIsLoading(false);
-  console.log("ModelDetailsMang" , data.data);
 } catch (error) {
   if (error instanceof AxiosError) {
     toast.error(error.response?.data.message);

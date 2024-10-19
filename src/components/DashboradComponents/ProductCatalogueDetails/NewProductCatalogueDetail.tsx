@@ -102,7 +102,6 @@ export default function NewProductCatalogueDetail() {
     getAllTemplateTypesList(setTemplateTypeList);
     getAllTextilesList(setTextilesList);
   }, []);
-  console.log(pCatalogue);
 
   return (
     <div className="w-full space-y-2">

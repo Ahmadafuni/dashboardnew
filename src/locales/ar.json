@@ -43,7 +43,8 @@
   "SizeName": "اسم المقاس",
   "TemplatePatternName": "رمز القالب",
   "TemplateTypeName": "نوع القالب",
-  "TextileName": "القماش",
+  "TextileName": "اسم القماش",
+  "Textile": "القماش",
   "TextileType": "نوع القماش",
   "Composition": "التركيبة",
   "NewColor": "لون جديد",
@@ -110,6 +111,7 @@
   "Measurements": "القياسات",
   "UpdateMeasurement": "تحديث القياس",
   "StageName": "اسم المرحلة",
+  "AddStage": "إضافة المرحلة",
   "Duration": "المدة",
   "WorkDescription": "وصف العمل",
   "StageNumber": "رقم المرحلة",
@@ -188,7 +190,7 @@
   "CompleteVariant": "اكتمال الموديل",
   "QuantityReceived": "الكمية المستلمة",
   "QuantityDelivered": "الكمية المسلمة",
-  "DamagedItems": "الموديل السقط",
+  "DamagedItems": "كمية السقط",
   "Confirm": "تأكيد",
   "ConfirmVariant": "تأكيد الموديل؟",
   "WillYouConfirmQuantities": "هل ستؤكد الكميات التالية؟",
@@ -379,5 +381,9 @@
   "ProductionReports": "تقارير الإنتاج",
   "OrderReports": "تقارير الطلبات",
   "AdvancedSearchOrderReports": "تقارير الطلبات",
-  "AdvancedSearchProductionReports": "تقارير الإنتاج"
+  "AdvancedSearchProductionReports": "تقارير الإنتاج",
+  "ModelsOnHold": "الموديلات المعلقة",
+  "OrdersOnHold": "الطلبات المعلقة",
+  "TotalModels": "إجمالي الموديلات",
+  "TotalVariants": "إجمالي تفاصيل الموديلات"
 }

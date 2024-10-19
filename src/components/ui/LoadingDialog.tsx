@@ -16,7 +16,10 @@ const LoadingDialog = ({ isOpen , message = "Loading...", subMessage = "Please w
         <Dialog.Root open={isOpen}>
           <Dialog.Overlay className="fixed inset-0 bg-gradient-to-r from-blue-950 via-blue-900 to-blue-700 opacity-40 animate-pulse z-50" />
           
-          <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg border-t-4 border-blue-500 animate-fade-in z-50">
+          <Dialog.Content  className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg border-t-4 border-blue-500 animate-fade-in z-50">
+           <Dialog.DialogTitle >
+           </Dialog.DialogTitle>
+           
             <div className="flex flex-col items-center">
               <Loader className={`w-16 h-16 animate-spin text-blue-600`} />
               

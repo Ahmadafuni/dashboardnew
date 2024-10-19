@@ -124,7 +124,7 @@ export default function ProductCatalogueDetails() {
     <div className="w-full space-y-2">
       <div className="w-full space-y-1">
         <h1 className="text-3xl font-bold w-full">
-          Product Catalogue Details for {details?.ProductCatalogName}
+           {details?.ProductCatalogName}
         </h1>
         <Separator />
       </div>

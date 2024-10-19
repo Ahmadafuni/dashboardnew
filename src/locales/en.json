@@ -101,6 +101,7 @@
   "Cutting": "Cutting",
   "Dressup": "Dressup",
   "Stages": "Stages",
+  "AddStage": "Add Stage",
   "TemplatePDF": "Upload File",
   "DownloadPDF": "Download PDF",
   "Next": "Next",
@@ -374,6 +375,9 @@
   "ProductionReports": "Production Reports",
   "OrderReports": "Order Reports",
   "AdvancedSearchOrderReports": "Advanced Search Order Reports",
-  "AdvancedSearchProductionReports": "Advanced Search Production Reports"
-
+  "AdvancedSearchProductionReports": "Advanced Search Production Reports",
+  "ModelsOnHold": "Models On Hold",
+  "OrdersOnHold": "Orders On Hold",
+  "TotalModels": "Total Models",
+  "TotalVariants": "Total Variants"
 }

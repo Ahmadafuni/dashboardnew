@@ -62,7 +62,6 @@ export default function UpdateModelForm({
 
     // Load old images when component mounts
     useEffect(() => {
-        console.log(oldImage);
         if (oldImage) {
             const oldImageFile = {
                 name: "old-image.jpg", 

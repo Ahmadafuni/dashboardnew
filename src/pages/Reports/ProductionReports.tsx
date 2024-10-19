@@ -28,6 +28,8 @@ import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useReactToPrint } from "react-to-print";
 import MultiSelectForField from "@/components/common/MultiSelectForField.tsx";
+import LoadingDialog from "@/components/ui/LoadingDialog";
+import DashboardCard from "@/components/ui/dashboardcard.tsx";
 
 export default function ProductionReports() {
   const { t } = useTranslation();
@@ -36,6 +38,24 @@ export default function ProductionReports() {
   const [sizes, setSizes] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [lastData, setLastData] = useState();
+
+  interface summary {
+    totalModels: number,
+    totalVariants: number,
+    totalQuantityDelivered: number,
+    totalQuantityReceived: number,
+    totalDamagedItems: number,
+  }
+  const [showSummary, setShowSummary] = useState(false);
+  const [summaryData, setSummaryData] = useState<summary>({
+    totalModels: 0,
+    totalVariants: 0,
+    totalQuantityDelivered: 0,
+    totalQuantityReceived: 0,
+    totalDamagedItems: 0,
+  });
 
   const [reports, setReports] = useState<ModelTypes[]>([]);
   const [isCardCollapsed, setIsCardCollapsed] = useState(false);
@@ -79,6 +99,7 @@ export default function ProductionReports() {
           {},
           pages,
           sizes,
+          setSummaryData,
           setTotalPages,
           setIsLoading
         ));
@@ -102,15 +123,18 @@ export default function ProductionReports() {
   }, []);
 
   useEffect(() => {
-    filterProductionModels(
-      setReports,
-      {},
-      pages,
-      sizes,
-      setTotalPages,
-      setIsLoading
-    );
-  }, [pages, sizes]);
+    if(lastData)
+      filterProductionModels(
+        setReports,
+        lastData,
+        pages,
+        sizes,
+        setSummaryData,
+        setTotalPages,
+        setIsLoading
+      );
+
+  }, [sizes , pages]);
 
   const departmentsNamesOptions = useRecoilValue(departmentList);
   const productCatalogueOptions = useRecoilValue(productCatalogueList);
@@ -157,15 +181,20 @@ export default function ProductionReports() {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
+
+    setLastData(data);
     try {
       await filterProductionModels(
         setReports,
         data,
         pages,
         sizes,
+        setSummaryData,
         setTotalPages,
         setIsLoading
       );
+
+      setShowSummary(true);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
@@ -178,6 +207,8 @@ export default function ProductionReports() {
   const handleReset = () => {
     form.reset();
     setReports([]);
+    setShowSummary(false);
+
   };
 
   const handleCheckboxChange = (setter: any, name: string, resetValue: any) => {
@@ -190,7 +221,7 @@ export default function ProductionReports() {
   };
 
   const reportsColumns: ColumnDef<any>[] = [
-    { accessorKey: "modelNumber", header: t("Model Number") },
+    { accessorKey: "modelNumber", header: t("ModelNumber") },
     { accessorKey: "barcode", header: t("Barcode") },
     { accessorKey: "name", header: t("Name") },
     { accessorKey: "textile", header: t("Textiles") },
@@ -205,266 +236,287 @@ export default function ProductionReports() {
 
   useEffect(() => {
     console.log(reports);
-  }, [reports]);
+    console.log(summaryData);
+  }, [reports , summaryData]);
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <Card className="bg-[var(--card-background)]">
-            <CardHeader className="flex-row justify-between">
-              <div className="w-fit">{t("AdvancedSearchProductionReports")}</div>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setIsCardCollapsed(!isCardCollapsed)}
-                className="w-fit"
-              >
-                {isCardCollapsed ? <ChevronDown /> : <ChevronUp />}
-              </Button>
-            </CardHeader>
+      <div>
+        {isLoading && <LoadingDialog
+            isOpen={isLoading}
+            message="Loading..."
+            subMessage="Please wait, your request is being processed now."
+        />}
 
-            {!isCardCollapsed && (
-              <CardContent className="space-y-4">
-                {/* First Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FieldWithCheckbox
-                      name="status"
-                      label=""
-                      control={form.control}
-                      fieldComponent={MultiSelectForField}
-                      fieldProps={{
-                        items: [
-                          { label: t("PENDING"), value: "PENDING" },
-                          { label: t("ONGOING"), value: "ONGOING" },
-                          { label: t("ONHOLD"), value: "ONHOLD" },
-                          { label: t("COMPLETED"), value: "COMPLETED" },
-                        ],
-                        form: form,
-                        name: "status",
-                        selectText: "Status",
-                      }}
-                      isEnabled={isStatusEnabled}
-                      onCheckedChange={() => handleCheckboxChange(setStatusEnabled, "status", "")
-                      }
-                  />
-
-                  <FieldWithCheckbox
-                    name="departments"
-                    label=""
-                    control={form.control}
-                    fieldComponent={MultiSelectForField}
-                    fieldProps={{
-                      items: departmentsNamesMenu,
-                      form: form,
-                      name: "departments",
-                      selectText: "departments",
-                    }}
-                    isEnabled={isDepartmentsNamesEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setDepartmentsNamesEnabled,
-                        "departments",
-                        ""
-                      )
-                    }
-                  />
-
-                </div>
-
-                {/* Second Row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <FieldWithCheckbox
-                      name="productCatalogue"
-                      label=""
-                      control={form.control}
-                      fieldComponent={MultiSelectForField}
-                      fieldProps={{
-                        items: productCatalogueMenu,
-                        form: form,
-                        name: "productCatalogue",
-                        selectText: "product",
-                      }}
-                      isEnabled={isProductCatalogueEnabled}
-                      onCheckedChange={() =>
-                          handleCheckboxChange(
-                              setProductCatalogueEnabled,
-                              "productCatalogue",
-                              ""
-                          )
-                      }
-                  />
-                  <FieldWithCheckbox
-                    name="productCategoryOne"
-                    label=""
-                    control={form.control}
-                    fieldComponent={MultiSelectForField}
-                    fieldProps={{
-                      items: productCategoryOneMenu,
-                      form: form,
-                      name: "productCategoryOne",
-                      selectText: "productCategoryOne",
-                    }}
-                    isEnabled={isProductCategoryOneEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setProductCategoryOneEnabled,
-                        "productCategoryOne",
-                        ""
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="productCategoryTwo"
-                    label=""
-                    control={form.control}
-                    fieldComponent={MultiSelectForField}
-                    fieldProps={{
-                      items: productCategoryTwoMenu,
-                      form: form,
-                      name: "productCategoryTwo",
-                      selectText: "productCategoryTwo",
-                    }}
-                    isEnabled={isProductCategoryTwoEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setProductCategoryTwoEnabled,
-                        "productCategoryTwo",
-                        ""
-                      )
-                    }
-                  />
-
-                </div>
-
-                {/* Third Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FieldWithCheckbox
-                    name="templateType"
-                    label=""
-                    control={form.control}
-                    fieldComponent={MultiSelectForField}
-                    fieldProps={{
-                      items: templateTypeMenu,
-                      form: form,
-                      name: "templateType",
-                      selectText: "templateType",
-
-                    }}
-                    isEnabled={isTemplateTypeEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setTemplateTypeEnabled,
-                        "templateType",
-                        ""
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="templatePattern"
-                    label=""
-                    control={form.control}
-                    fieldComponent={MultiSelectForField}
-                    fieldProps={{
-                      items: templatePatternMenu,
-                      form: form,
-                      name: "templatePattern",
-                      selectText: "templatePattern",
-                    }}
-                    isEnabled={isTemplatePatternEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setTemplatePatternEnabled,
-                        "templatePattern",
-                        ""
-                      )
-                    }
-                  />
-                </div>
-
-                {/* Fourth Row */}
-
-
-                {/* Fifth Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FieldWithCheckbox
-                    name="startDate"
-                    label={t("From")}
-                    control={form.control}
-                    fieldComponent={DatePickerForForm}
-                    fieldProps={{
-                      isDisabled: !isStartDateEnabled,
-                      allowPastDates: true,
-                    }}
-                    isEnabled={isStartDateEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(
-                        setIsStartDateEnabled,
-                        "startDate",
-                        null
-                      )
-                    }
-                  />
-                  <FieldWithCheckbox
-                    name="endDate"
-                    label={t("To")}
-                    control={form.control}
-                    fieldComponent={DatePickerForForm}
-                    fieldProps={{
-                      isDisabled: !isEndDateEnabled,
-                      allowPastDates: true,
-                    }}
-                    isEnabled={isEndDateEnabled}
-                    onCheckedChange={() =>
-                      handleCheckboxChange(setIsEndDateEnabled, "endDate", null)
-                    }
-                  />
-                </div>
-
-                <div className="flex justify-end space-x-2 mt-4">
-                  <Button
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <Card className="bg-[var(--card-background)]">
+              <CardHeader className="flex-row justify-between">
+                <div className="w-fit">{t("AdvancedSearchProductionReports")}</div>
+                <Button
                     type="button"
-                    onClick={handleReset}
-                    className="text-white-600 bg-[#ff0000]"
-                  >
-                    {t("RESET")}
-                  </Button>
+                    variant="ghost"
+                    onClick={() => setIsCardCollapsed(!isCardCollapsed)}
+                    className="w-fit"
+                >
+                  {isCardCollapsed ? <ChevronDown/> : <ChevronUp/>}
+                </Button>
+              </CardHeader>
 
-                  <Button
-                    type="submit"
-                    className="text-white-600"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        {t("PleaseWait")}
-                      </>
-                    ) : (
-                      t("SEARCH")
-                    )}
-                  </Button>
-                </div>
-              </CardContent>
-            )}
-          </Card>
-          <div className="flex justify-end mt-4 print:hidden ">
-            <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
-          </div>
-        </form>
-      </Form>
-      <div id="datatable" className="mt-10" ref={printRef}>
-        <DataTable
-          columns={reportsColumns}
-          data={reports}
-          tableName="Models"
-          page={pages}
-          setPage={setPages}
-          size={sizes}
-          setSize={setSizes}
-          totalPages={totalPages}
-        />
+              {!isCardCollapsed && (
+                  <CardContent className="space-y-4">
+                    {/* First Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FieldWithCheckbox
+                          name="status"
+                          label=""
+                          control={form.control}
+                          fieldComponent={MultiSelectForField}
+                          fieldProps={{
+                            items: [
+                              {label: t("PENDING"), value: "PENDING"},
+                              {label: t("ONGOING"), value: "ONGOING"},
+                              {label: t("ONHOLD"), value: "ONHOLD"},
+                              {label: t("COMPLETED"), value: "COMPLETED"},
+                            ],
+                            form: form,
+                            name: "status",
+                            selectText: t("Status"),
+                          }}
+                          isEnabled={isStatusEnabled}
+                          onCheckedChange={() => handleCheckboxChange(setStatusEnabled, "status", "")
+                          }
+                      />
+
+                      <FieldWithCheckbox
+                          name="departments"
+                          label=""
+                          control={form.control}
+                          fieldComponent={MultiSelectForField}
+                          fieldProps={{
+                            items: departmentsNamesMenu,
+                            form: form,
+                            name: "departments",
+                            selectText: t("Departments"),
+                          }}
+                          isEnabled={isDepartmentsNamesEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(
+                                  setDepartmentsNamesEnabled,
+                                  "departments",
+                                  ""
+                              )
+                          }
+                      />
+
+                    </div>
+
+                    {/* Second Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <FieldWithCheckbox
+                          name="productCatalogue"
+                          label=""
+                          control={form.control}
+                          fieldComponent={MultiSelectForField}
+                          fieldProps={{
+                            items: productCatalogueMenu,
+                            form: form,
+                            name: "productCatalogue",
+                            selectText:t("ProductCatalogues"),
+                          }}
+                          isEnabled={isProductCatalogueEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(
+                                  setProductCatalogueEnabled,
+                                  "productCatalogue",
+                                  ""
+                              )
+                          }
+                      />
+                      <FieldWithCheckbox
+                          name="productCategoryOne"
+                          label=""
+                          control={form.control}
+                          fieldComponent={MultiSelectForField}
+                          fieldProps={{
+                            items: productCategoryOneMenu,
+                            form: form,
+                            name: "productCategoryOne",
+                            selectText: t("ProductCategoryOne"),
+                          }}
+                          isEnabled={isProductCategoryOneEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(
+                                  setProductCategoryOneEnabled,
+                                  "productCategoryOne",
+                                  ""
+                              )
+                          }
+                      />
+                      <FieldWithCheckbox
+                          name="productCategoryTwo"
+                          label=""
+                          control={form.control}
+                          fieldComponent={MultiSelectForField}
+                          fieldProps={{
+                            items: productCategoryTwoMenu,
+                            form: form,
+                            name: "productCategoryTwo",
+                            selectText: t("ProductCategoryTwo"),
+                          }}
+                          isEnabled={isProductCategoryTwoEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(
+                                  setProductCategoryTwoEnabled,
+                                  "productCategoryTwo",
+                                  ""
+                              )
+                          }
+                      />
+
+                    </div>
+
+                    {/* Third Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FieldWithCheckbox
+                          name="templateType"
+                          label=""
+                          control={form.control}
+                          fieldComponent={MultiSelectForField}
+                          fieldProps={{
+                            items: templateTypeMenu,
+                            form: form,
+                            name: "templateType",
+                            selectText: t("TemplateTypeName"),
+
+                          }}
+                          isEnabled={isTemplateTypeEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(
+                                  setTemplateTypeEnabled,
+                                  "templateType",
+                                  ""
+                              )
+                          }
+                      />
+                      <FieldWithCheckbox
+                          name="templatePattern"
+                          label=""
+                          control={form.control}
+                          fieldComponent={MultiSelectForField}
+                          fieldProps={{
+                            items: templatePatternMenu,
+                            form: form,
+                            name: "templatePattern",
+                            selectText: t("TemplatePatternName"),
+                          }}
+                          isEnabled={isTemplatePatternEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(
+                                  setTemplatePatternEnabled,
+                                  "templatePattern",
+                                  ""
+                              )
+                          }
+                      />
+                    </div>
+
+                    {/* Fifth Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FieldWithCheckbox
+                          name="startDate"
+                          label={t("StartDate")}
+                          control={form.control}
+                          fieldComponent={DatePickerForForm}
+                          fieldProps={{
+                            isDisabled: !isStartDateEnabled,
+                            allowPastDates: true,
+                            label: t("StartDate"),
+                          }}
+                          isEnabled={isStartDateEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(
+                                  setIsStartDateEnabled,
+                                  "startDate",
+                                  null
+                              )
+                          }
+                      />
+                      <FieldWithCheckbox
+                          name="endDate"
+                          label={t("EndDate")}
+                          control={form.control}
+                          fieldComponent={DatePickerForForm}
+                          fieldProps={{
+                            isDisabled: !isEndDateEnabled,
+                            allowPastDates: true,
+                          }}
+                          isEnabled={isEndDateEnabled}
+                          onCheckedChange={() =>
+                              handleCheckboxChange(setIsEndDateEnabled, "endDate", null)
+                          }
+                      />
+                    </div>
+
+                    <div className="flex justify-end space-x-2 mt-4">
+                      <Button
+                          type="button"
+                          onClick={handleReset}
+                          className="text-white-600 bg-[#ff0000]"
+                      >
+                        {t("Reset")}
+                      </Button>
+
+                      <Button
+                          type="submit"
+                          className="text-white-600"
+                          disabled={isLoading}
+                      >
+                        {isLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+                              {t("PleaseWait")}
+                            </>
+                        ) : (
+                            t("Search")
+                        )}
+                      </Button>
+                    </div>
+                  </CardContent>
+              )}
+            </Card>
+            <div className="flex justify-end mt-4 print:hidden ">
+              <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
+            </div>
+          </form>
+        </Form>
+
+        {showSummary && summaryData != null && (
+            <div className="mt-10">
+              <div className="flex gap-4 overflow-x-auto whitespace-nowrap"> {/* Flex container for single row layout */}
+                <DashboardCard title={t("TotalModels")} value={summaryData.totalModels} unit="Models" color="#4fc3f7"/>
+                <DashboardCard title={t("TotalVariants")} value={summaryData.totalVariants} unit="Variants" color="#ffb74d"/>
+                <DashboardCard title={t("QuantityDelivered")} value={summaryData.totalQuantityReceived} unit="Items" color="#64b5f6"/>
+                <DashboardCard title={t("QuantityReceived")} value={summaryData.totalQuantityDelivered} unit="Items" color="#90caf9"/>
+                <DashboardCard title= {t("DamagedItems")} value={summaryData.totalDamagedItems} unit="Items" color="#ef5350"/>
+              </div>
+            </div>
+        )}
+
+        <div id="datatable" className="mt-10" ref={printRef}>
+          <DataTable
+              columns={reportsColumns}
+              data={reports}
+              tableName="Models"
+              page={pages}
+              setPage={setPages}
+              size={sizes}
+              setSize={setSizes}
+              totalPages={totalPages}
+              fieldFilter={{
+                "ModelNumber": "ModelNumber"
+              }}
+          />
+        </div>
       </div>
-    </div>
   );
 }

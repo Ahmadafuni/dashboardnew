@@ -18,11 +18,18 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, EllipsisVertical, Eye } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect , useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/common/DataTable";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Props {
   page: number;
@@ -159,14 +166,42 @@ export default function FinishedTable({
     {
       header: t("Action") ,
       cell: ({row}) => {
-        return  <Button
-            variant="secondary"
-            onClick={() =>
-              window.open(`/models/viewdetails/${row.original.ModelVariant.Model.Id}`, "_blank")
-            }
-          >
-            {t("Summary")}
-          </Button>
+        return  <div className="flex gap-1">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">
+              <EllipsisVertical className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-52">
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() =>  window.open(
+                  `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+                  "_blank"
+                )
+                
+                }
+              >
+                <Eye className="mr-2 h-4 w-4" />
+                <span>{t("Details")}</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() =>  window.open(
+                  `/models/viewsummary/${row.original.ModelVariant.Model.Id}`,
+                  "_blank"
+                )
+                }
+              >
+                <Eye className="mr-2 h-4 w-4" />
+                <span>{t("Summary")}</span>
+              </DropdownMenuItem>
+                    
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       },
     }
   ];

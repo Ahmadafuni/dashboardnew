@@ -73,14 +73,65 @@ export default function DataTable<TData, TValue>({
             try {
                 const modelDemoNumber = filters[0].value;
                 const response = await axios.get(`/datatable/filter/dashboard/${modelDemoNumber}/${stage}`);
-                console.log("response", response.data);
                 setFilteredData(response.data.data);
             } catch (error) {
                 console.error('Error applying filters:', error);
             } finally {
                 setIsLoading(false);
             }
-        }else {
+        } else if(tableName == "Models"){
+            try {
+                const modelDemoNumber = filters[0].value;
+                const response = await axios.get(`/datatable/filter/report/${modelDemoNumber}`);
+                const reports = Array.isArray(response.data.data)
+                    ? response.data.data.flatMap((item: any) => {
+                    const demoModelNumber = item.DemoModelNumber;
+                    const modelName = item.ModelName;
+
+                    // Map over each variant, ensuring the first variant has model info
+                    return item.Details.map((detail: any, index: any) => ({
+                        modelNumber: index === 0 ? demoModelNumber : "", // First row gets the model number
+                        name: index === 0 ? modelName : "", // First row gets the model name
+                        barcode: index === 0 ? item.Barcode : "", // Example: barcode data if present
+                        textile: index === 0 ? item.Textiles : "", // Only the first row has textile
+                        colors:  detail.Color ? detail.Color.ColorName :"",
+                        sizes: detail.Sizes.map(
+                            (size: { label: string; value: string }) =>
+                                `${size.label} : ${size.value}`
+                        ).join(", "),
+                        currentStage: detail.DepartmentName || "N/A",
+                        QuantityDelivered: detail.QuantityDelivered
+                            ? Object.entries(detail.QuantityDelivered)
+                                .map(([size, value]) => `${size} : ${value}`)
+                                .join(" , ")
+                            : "N/A",
+                        QuantityReceived: detail.QuantityReceived
+                            ? Object.entries(detail.QuantityReceived)
+                                .map(([size, value]) => `${size} : ${value}`)
+                                .join(" , ")
+                            : "N/A",
+                        DamagedItem: detail.DamagedItem
+                            ? Object.entries(detail.DamagedItem)
+                                .map(([size, value]) => `${size} : ${value}`)
+                                .join(" , ")
+                            : "N/A",
+                        duration: detail.DurationInHours || "N/A",
+                    }));
+                    })
+                    : [];
+
+
+                console.log("response", response.data.data[0]);
+                setFilteredData(reports);
+
+            } catch (error) {
+                console.error('Error applying filters:', error);
+            } finally {
+                setIsLoading(false);
+            }
+
+        }
+        else {
             
             for (const filter of filters) {
                 if (!filter.column || !filter.value) {
@@ -99,7 +150,6 @@ export default function DataTable<TData, TValue>({
     
             try {
                 const response = await axios.post(`/datatable/filter/${tableName}`, { filters: formattedFilters });
-                console.log("response", response.data);
                 setFilteredData(response.data);
             } catch (error) {
                 console.error('Error applying filters:', error);
@@ -135,21 +185,17 @@ export default function DataTable<TData, TValue>({
     
     
                 setFieldNames(formattedFields);
-    
-                console.log("response.data", response.data);
             } catch (error) {
                 console.error('Error fetching field names:', error);
             }
         }
     };
 
-
     useEffect(() => {
         setFilteredData(data); 
         fetchFieldNames();
-        console.log("FieldNames", fieldNames);
-        console.log("data", data);
-    }, [data]); 
+    }, [data]);
+
 
     const table = useReactTable({
         data: filteredData, 
@@ -164,7 +210,9 @@ export default function DataTable<TData, TValue>({
         // getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
     });
- 
+
+
+
 
     const handleFilterChange = (index: number, field: string, value: string) => {
         const newFilters = [...filters];
@@ -222,7 +270,6 @@ export default function DataTable<TData, TValue>({
                     {
                     filters.length === 0 ? (
                         <Button onClick={() => {
-
 
                                 setFilters([{ column: '', value: '' }])
                            
@@ -343,7 +390,14 @@ export default function DataTable<TData, TValue>({
                         table.getRowModel().rows.map((row) => (
                             <TableRow key={row.id}>
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                                    <TableCell
+
+                                    className={
+                                        // @ts-ignore
+                                        isDashboard && row.original.RunningStatus === 'ONHOLD' ? "bg-orange-500" : ""}
+                                    key={cell.id}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
                                 ))}
                             </TableRow>
                         ))

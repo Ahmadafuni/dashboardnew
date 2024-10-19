@@ -17,7 +17,7 @@ import { userInfo } from "@/store/authentication.ts";
 import * as Dialog from '@radix-ui/react-dialog';
 
 
-import { Dialog as DialogSec , DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import { Dialog as DialogSec , DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Loader } from "lucide-react";
@@ -94,8 +94,6 @@ export default function Dashboard() {
       getModelDetailsDepartment(setModelDetails , setIsLoading);
     }
 
-    console.log("works" , works);
-
   }, [user, pages, sizes ]);
   
   const hasNullNextStage = (workList: any) => {
@@ -157,7 +155,7 @@ export default function Dashboard() {
         <DialogSec open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-[600px] bg-gray-800">
             <DialogHeader>
-              <h2 className="text-2xl font-semibold text-gray-100 mb-4">{t("ModelDetails")}</h2>
+              <DialogTitle>{t("ModelDetails")}</DialogTitle>
             </DialogHeader>
             <div className="overflow-x-auto">
               <Table className="min-w-full border border-gray-600">

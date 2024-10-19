@@ -74,15 +74,6 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
                 QuantityInNum: JSON.stringify(quantityInNumPairs),
             };
 
-            // test
-            //  console.log("quantityInNumPairs" , quantityInNumPairs);
-            //  console.log("quantityInNumPairs" , quantityInNumPairs);
-            //  console.log("selectedSizes" , selectedSizes);
-
-            //  console.log("payload" , payload);
-            //  setIsLoading(false);
-            //  return ;
-
             const newNote = await axios.post(
                 `trackingmodels/sent/cutting/checking/variant/${variantId}`,
                 payload,
@@ -141,16 +132,20 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="sm:max-w-[425px]">
+            {/* Ensure max height and scroll when necessary */}
+            <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[425px]"> {/* Scroll if the content exceeds 90vh */}
                 <DialogHeader>
                     <DialogTitle>{t("CuttingConfirmation")}</DialogTitle>
                 </DialogHeader>
+
+                {/* Form structure */}
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(handleSubmit)}
-                        className="grid grid-cols-1 gap-2"
+                        className="grid grid-cols-1 gap-4"  // Use minimal gap for better spacing
                         id="sent-confirmation"
                     >
+                        {/* Single Column for better small screen experience */}
                         <FormField
                             control={form.control}
                             name="QuantityInKg"
@@ -162,7 +157,11 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
                                 />
                             )}
                         />
+
+                        {/* Render QuantityInNumber Table */}
                         {renderTable(quantityInNumPairs, setQuantityInNumPairs, t("QuantityInNumber"))}
+
+                        {/* Cloth fields in a single column on small screens */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             <FormField
                                 control={form.control}
@@ -209,7 +208,10 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
                                 )}
                             />
                         </div>
+
+                        {/* Render Damaged Item Table */}
                         {renderTable(damagedItemPairs, setDamagedItemPairs, t("DamagedItem"))}
+
                         <FormField
                             control={form.control}
                             name="ReplacedItemInKG"
@@ -234,6 +236,8 @@ export default function CuttingSendForConfirmationModal({ getAllWorks, selectedS
                         />
                     </form>
                 </Form>
+
+                {/* Footer with Buttons */}
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)}>
                         {t("Close")}
