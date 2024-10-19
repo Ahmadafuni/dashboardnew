@@ -45,7 +45,7 @@ export default function ViewModelSummary() {
     ClothCount: string | null;
     ClothLength:string | null ;
     ClothWidth: string | null ;
-    DamagedItem: number ;
+    DamagedItem: [] ;
     QuantityReceived: number ;
     QuantityDelivered: number;
 
@@ -303,29 +303,30 @@ export default function ViewModelSummary() {
         {
   summary?.modelVarients?.cuttingDepartment?.map((variant: Variant, index: number) => (
     <TableRow key={index}>
+      
       <TableCell>{variant.Id}</TableCell>
       <TableCell>{variant.ColorName}</TableCell>
       <TableCell>{variant.Quantity}</TableCell>
+
 
       <TableCell>{variant.Sizes.find((size: Size) => size.label === "S")?.value || '-'}</TableCell>
       <TableCell>{variant.Sizes.find((size: Size) => size.label === "M")?.value || '-'}</TableCell>
       <TableCell>{variant.Sizes.find((size: Size) => size.label === "L")?.value || '-'}</TableCell>
       <TableCell>{variant.Sizes.find((size: Size) => size.label === "XL")?.value || '-'}</TableCell>
       <TableCell>{variant.Sizes.find((size: Size) => size.label === "XXL")?.value || '-'}</TableCell>
-      
 
       <TableCell>{variant.TrakingModels[0]?.ClothWidth} {variant.TrakingModels[0]?.ClothWidth ? '*' : '-'} {variant.TrakingModels[0]?.ClothLength}</TableCell>
       <TableCell>{variant.TrakingModels[0]?.ClothCount || 'غير متوفر'}</TableCell>
       <TableCell>{variant.TrakingModels[0]?.ClothWeight || 'غير متوفر'}</TableCell>
       <TableCell>{variant.TrakingModels[0]?.ReplacedItemInKG || '-'}</TableCell>
-      <TableCell>{variant.TrakingModels[0]?.DamagedItem || 'غير متوفر'}</TableCell>
+      <TableCell>{variant.TrakingModels[0]?.DamagedItem?.map((e:any) => e.label + ":" + (e.value? e.value : "0")).join(" , ") || 'غير متوفر'}</TableCell>
     </TableRow>
   ))
 }
 
-
         </TableBody>
       </Table>
+      
     </CardContent>
   </Card>
 </div>

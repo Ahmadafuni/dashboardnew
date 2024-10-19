@@ -97,35 +97,36 @@ export default function FinishedTable({
     {
       header: t("ModelNumber"),
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Model.DemoModelNumber}</p>;
+        // @ts-ignore
+        return <p>{row.original.modelDemoNumber}</p>;
       },
     },
     {
-      accessorKey: "Barcode",
+      accessorKey: "modelBarcode",
       header: t("Barcode"),
     },
     {
-      accessorKey: "name",
+      accessorKey: "modelName",
       header: t("Name"),
     },
 
     {
-      accessorKey: "CollectionName",
+      accessorKey: "collectionName",
       header: t("Collections"),
     },
     {
-      accessorKey: "OrderName",
+      accessorKey: "orderName",
       header: t("OrderNumber"),
     },
     {
-      accessorKey: "TextileName",
+      accessorKey: "textileName",
       header: t("Textile"),
     },
     {
       header: t("Color"),
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Color.ColorName?
-          row.original.ModelVariant.Color.ColorName:t("N/A")
+        // @ts-ignore
+        return <p>{row.original.colors?row.original.colors:t("N/A")
         }</p>;
       },
     },
@@ -133,36 +134,11 @@ export default function FinishedTable({
       header: t("Sizes"),
       cell: ({ row }) => {
         return <p>{
-          row.original.ModelVariant.Sizes?
-          row.original.ModelVariant.Sizes.map((e: any) => e.label)
+          // @ts-ignore
+          row.original.sizes ? row.original.sizes.map((e: any) => e)
           .join(", "):t("N/A")}</p>;
       },
     },
-    {
-      header:  t("ReceivedQuantity"),
-      cell: ({ row }) => {
-        return <p>{row.original.QuantityReceived?
-          row.original.QuantityReceived:t("N/A")
-        }</p>;
-      },
-    },
-    {
-      header:  t("DeliveredQuantity"),
-      cell: ({ row }) => {
-        return <p>{row.original.QuantityDelivered?
-          row.original.QuantityDelivered:t("N/A")
-        }</p>;
-      },
-    },
-    {
-      header:  t("Duration"),
-      cell: ({ row }) => {
-        // @ts-ignore
-        return <p>{row.original.duration?row.original.duration:t("N/A")
-        }</p>;
-      },
-    },
-
     {
       header: t("Action") ,
       cell: ({row}) => {
@@ -176,8 +152,8 @@ export default function FinishedTable({
           <DropdownMenuContent className="w-52">
             <DropdownMenuGroup>
               <DropdownMenuItem
-                onClick={() =>  window.open(
-                  `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+               // @ts-ignore
+                onClick={() =>  window.open(`/models/viewdetails/${row.original.modelId}`,
                   "_blank"
                 )
                 
@@ -189,7 +165,8 @@ export default function FinishedTable({
 
               <DropdownMenuItem
                 onClick={() =>  window.open(
-                  `/models/viewsummary/${row.original.ModelVariant.Model.Id}`,
+                                 // @ts-ignore
+                  `/models/viewsummary/${row.original.modelId}`,
                   "_blank"
                 )
                 }
