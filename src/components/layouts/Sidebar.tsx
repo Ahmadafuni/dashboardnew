@@ -23,8 +23,6 @@ import {
   Container,
   SquareStack,
   Shell,
-  PackagePlusIcon,
-  PackageMinusIcon,
   Clipboard,
   Package,
 } from "lucide-react";
@@ -122,7 +120,7 @@ export default function Sidebar() {
           name: t("OrderReports"),
           link: "/dashboard/orderreports",
           icon: FileBarChart,
-          userRole: ["FACTORYMANAGER","MotherCompany"],
+          userRole: ["FACTORYMANAGER", "MotherCompany"],
         },
         /*{
           name: t("Archive"),
@@ -151,7 +149,7 @@ export default function Sidebar() {
           name: t("Orders"),
           link: "/dashboard/orders",
           icon: ListOrdered,
-          userRole: ["FACTORYMANAGER", "ENGINEERING","MotherCompany"],
+          userRole: ["FACTORYMANAGER", "ENGINEERING", "MotherCompany"],
         },
         {
           name: t("Collections"),
@@ -269,13 +267,13 @@ export default function Sidebar() {
           name: t("Tasks"),
           link: "/dashboard/tasks",
           icon: ListChecks,
-          userRole: ["FACTORYMANAGER", "ENGINEERING","MotherCompany","HumanResource"],
+          userRole: ["FACTORYMANAGER", "ENGINEERING", "MotherCompany", "HumanResource"],
         },
         {
           name: t("Notes"),
           link: "/dashboard/notes",
           icon: NotebookPen,
-          userRole: ["FACTORYMANAGER", "ENGINEERING","MotherCompany","HumanResource"],
+          userRole: ["FACTORYMANAGER", "ENGINEERING", "MotherCompany", "HumanResource"],
         },
       ],
     },
@@ -336,10 +334,9 @@ export default function Sidebar() {
                       <NavLink
                         to={child.link}
                         className={({ isActive }) =>
-                          `flex items-center text-sm px-2 py-[6px] rounded-sm cursor-pointer ${
-                            isActive
-                              ? "bg-primary-foreground text-primary"
-                              : "text-secondary hover:text-primary hover:bg-primary-foreground"
+                          `flex items-center text-sm px-2 py-[6px] rounded-sm cursor-pointer ${isActive
+                            ? "bg-primary-foreground text-primary"
+                            : "text-secondary hover:text-primary hover:bg-primary-foreground"
                           }`
                         }
                       >
