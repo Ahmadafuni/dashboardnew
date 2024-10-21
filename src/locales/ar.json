@@ -375,11 +375,11 @@
   "DragMessage": "اسحب بعض الصور هنا أو انقر لتحديد الصور",
   "Apply Filters": "تطبيق الفلتر",
   "clear all Filters": "حذف جميع الفلاتر",
-  "Enter value..." : "أدخل قيمة..." ,
+  "Enter value...": "أدخل قيمة...",
   "Select column": "اختر حقل",
-  "Add Filter" : "إضافة فلتر",
-  "Applying filters..." : "جاري تطبيق الفلاتر...",
-  "Please wait, your request is being processed now." : "الرجاء الانتظار، يتم معالجة طلبك الآن",
+  "Add Filter": "إضافة فلتر",
+  "Applying filters...": "جاري تطبيق الفلاتر...",
+  "Please wait, your request is being processed now.": "الرجاء الانتظار، يتم معالجة طلبك الآن",
   "Loading...": "جاري التحميل...",
   "CollectionStatistics": "إحصائيات المجموعة",
   "ModelStatistics": "إحصائيات الموديلات",
@@ -398,8 +398,6 @@
   "TaskFeedback": "تنفيذ المهمة",
   "Feedback": "ملاحظات",
   "CheckTask": "تحقق من الرد",
-  "SendFeedBack": "تنفيذ المهمة"
-
-  "TotalVariants": "إجمالي تفاصيل الموديلات",
-  "MaterialMovements" : "حركة المواد" 
+  "SendFeedBack": "تنفيذ المهمة",
+  "MaterialMovements": "حركة المواد"
 }

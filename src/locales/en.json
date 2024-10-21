@@ -392,8 +392,6 @@
   "TaskFeedback": "Task Feedback",
   "Feedback": "Feedback",
   "CheckTask": "Check Feedback",
-  "SendFeedBack": "Send FeedBack"
-
-  "TotalVariants": "Total Variants",
-  "MaterialMovements" : "Material Movements"
+  "SendFeedBack": "Send FeedBack",
+  "MaterialMovements": "Material Movements"
 }
