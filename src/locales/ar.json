@@ -38,6 +38,10 @@
   "ENGINEERING": "الهندسة",
   "FACTORYMANAGER": "مدير المصنع",
   "WAREHOUSEMANAGER": "مدير المستودع",
+  "HUMANRESOURCE": "الموارد البشرية",
+  "MOTHERCOMPANY": "الشركة الأم",
+  "ACCOUNTING": "المحاسبة",
+  "DRAWING": "الرسم",
   "ColorName": "اسم اللون",
   "ColorCode": "كود اللون",
   "SizeName": "اسم المقاس",
@@ -309,7 +313,9 @@
   "AssignedBy": "تم التعيين بواسطة",
   "CreatedByDepartment": "تم الإنشاء بواسطة القسم",
   "ActionConfirmation": "تأكيد الإجراء!",
+  "ActionConfirmationTask": "تأكيد التنفيذ",
   "AreYouSure": "هل أنت متأكد أنك تريد اتخاذ هذا الإجراء!",
+  "AreYouSureTask": "هل أنت متأكد أنك تريد بدء هذه المهمة",
   "BesharaFactoryManagement": "إدارة مصنع بشارة",
   "LoginToBesharaDashboard": "تسجيل الدخول إلى لوحة تحكم بشارة",
   "Password": "كلمة المرور",
@@ -328,6 +334,7 @@
   "Monthly": "شهرياً",
   "Weekly": "أسبوعياً",
   "Daily": "يومياً",
+  "Yearly": "سنويا",
   "CollectionsStatus": "حالة المجموعات",
   "OrdersDone": "منتهية",
   "OrdersInProgress": "يتم العمل عليها",
@@ -385,6 +392,14 @@
   "ModelsOnHold": "الموديلات المعلقة",
   "OrdersOnHold": "الطلبات المعلقة",
   "TotalModels": "إجمالي الموديلات",
+  "TotalVariants": "إجمالي تفاصيل الموديلات",
+  "LateOrders": "طلبات متأخرة",
+  "OnTimeOrders": "طلبات في الوقت المحدد",
+  "TaskFeedback": "تنفيذ المهمة",
+  "Feedback": "ملاحظات",
+  "CheckTask": "تحقق من الرد",
+  "SendFeedBack": "تنفيذ المهمة"
+
   "TotalVariants": "إجمالي تفاصيل الموديلات",
   "MaterialMovements" : "حركة المواد" 
 }

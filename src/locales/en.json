@@ -39,6 +39,10 @@
   "ENGINEERING": "ENGINEERING",
   "FACTORYMANAGER": "FACTORYMANAGER",
   "WAREHOUSEMANAGER": "WAREHOUSEMANAGER",
+  "HUMANRESOURCE": "Human Resource",
+  "MOTHERCOMPANY": "Mother Company",
+  "ACCOUNTING": "Accounting",
+  "DRAWING": "Drawing",
   "ColorName": "Color Name",
   "ColorCode": "Color Code",
   "ProductCatalogCategoryOne": "Product Category One",
@@ -308,7 +312,9 @@
   "AssignedBy": "Assigned By",
   "CreatedByDepartment": "Created By Department",
   "ActionConfirmation": "Action Confirmation!",
+  "ActionConfirmationTask": "Execution confirmation!",
   "AreYouSure": "Are you sure you want to take this action!",
+  "AreYouSureTask ": "Are you sure you want to start this Task!",
   "BesharaFactoryManagement": "Beshara Factory Management",
   "LoginToBesharaDashboard": "Login to Beshara dashboard.",
   "Password": "Password",
@@ -327,6 +333,7 @@
   "Monthly": "Monthly",
   "Weekly": "Weekly",
   "Daily": "Daily",
+  "Yearly": "Yearly",
   "CollectionsStatus": "Collections Status",
   "OrdersDone": "Orders Done",
   "OrdersInProgress": "Orders In Progress",
@@ -379,6 +386,14 @@
   "ModelsOnHold": "Models On Hold",
   "OrdersOnHold": "Orders On Hold",
   "TotalModels": "Total Models",
+  "TotalVariants": "Total Variants",
+  "LateOrders": "Late Orders",
+  "OnTimeOrders": "On-Time Orders",
+  "TaskFeedback": "Task Feedback",
+  "Feedback": "Feedback",
+  "CheckTask": "Check Feedback",
+  "SendFeedBack": "Send FeedBack"
+
   "TotalVariants": "Total Variants",
   "MaterialMovements" : "Material Movements"
 }

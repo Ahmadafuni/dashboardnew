@@ -6,4 +6,7 @@ export type NoteType = {
   AssignedToDepartment: DepartmentType;
   CreatedDepartment: DepartmentType;
   Description: string;
+  Audit:{
+    CreatedAt: Date;
+  }
 };

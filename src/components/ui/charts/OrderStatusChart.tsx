@@ -10,8 +10,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { t } from "i18next";
 import axios from "axios";
+import {useTranslation} from "react-i18next";
 
 // Register necessary components in ChartJS
 ChartJS.register(ArcElement, Tooltip, Legend, Title, PointElement, LinearScale);
@@ -25,6 +25,7 @@ interface OrderStatus {
 }
 
 export default function OrderStatusChart() {
+    const { t } = useTranslation();
     const [orders, setOrders] = useState<OrderStatus[]>([]);
     const [timePeriod, setTimePeriod] = useState<string>("all");
 
@@ -94,7 +95,6 @@ export default function OrderStatusChart() {
     };
 
     const filteredOrders = getFilteredOrders();
-
 
     // Calculate days past deadline or days remaining
     const now = new Date();
@@ -229,7 +229,7 @@ export default function OrderStatusChart() {
                     <SelectTrigger className="w-[200px] bg-white border-gray-400 text-black shadow-md hover:bg-gray-100">
                         <SelectValue placeholder="Select Time Period" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white">
+                    <SelectContent>
                         <SelectGroup>
                             <SelectItem value="daily">{t("Daily")}</SelectItem>
                             <SelectItem value="weekly">{t("Weekly")}</SelectItem>
@@ -243,8 +243,8 @@ export default function OrderStatusChart() {
 
             {/* Display the counts of orders */}
             <div className="text-center space-y-2">
-                <p className="text-xl font-bold">Late Orders: {lateOrders.length}</p>
-                <p className="text-xl font-bold">On-Time Orders: {onTimeOrders.length}</p>
+                <p className="text-xl font-bold">{t("LateOrders")}: {lateOrders.length}</p>
+                <p className="text-xl font-bold">{t("OnTimeOrders")}: {onTimeOrders.length}</p>
             </div>
 
             {/* Chart Container - Side by Side Layout */}

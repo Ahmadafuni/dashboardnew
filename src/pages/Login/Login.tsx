@@ -40,11 +40,16 @@ export default function Login() {
     setIsLoading(true);
     try {
       const result = await axios.post("auth/login", data);
-      setUser(result.data.data.user);
+      const user = result.data.data.user;
+      setUser(user);
       await Cookies.set("access_token", result.data.data.access_token);
       toast.success(result.data.message);
       setIsLoading(false);
-      navigate("/dashboard/home");
+      if (user.userRole === "MotherCompany") {
+        navigate("/dashboard/orders");
+      } else {
+        navigate("/dashboard/home");
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);

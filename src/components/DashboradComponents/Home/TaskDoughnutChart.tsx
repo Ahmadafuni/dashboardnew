@@ -29,7 +29,7 @@ ChartJS.register(
 
 export default function TaskDoughnutChart(props: any) {
   const data = {
-    labels: [t("Pending"), t("OnGoing"), t("Completed"), t("OnHold")], // Added "OnHold" label
+    labels: [t("Pending"), t("OnGoing"), t("Done")],
     datasets: [
       {
         label: t("TaskStatus"),
@@ -37,15 +37,14 @@ export default function TaskDoughnutChart(props: any) {
           props.statsData.PENDING,
           props.statsData.ONGOING,
           props.statsData.COMPLETED,
-          props.statsData.ONHOLD, // Added "OnHold" data
         ],
+
         backgroundColor: [
           "rgb(255, 99, 132)",   // Pending color
-          "rgb(54, 162, 235)",   // OnGoing color
-          "rgb(255, 205, 86)",   // Completed color
-          "rgb(153, 102, 255)",  // OnHold color
+          "rgb(50, 150, 150)",   // OnGoing color
+          "rgb(54, 162, 235)",   // Completed color
         ],
-        hoverOffset: 4,
+        hoverOffset: 3,
       },
     ],
   };
