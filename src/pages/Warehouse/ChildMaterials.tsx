@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import UpdateChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/UpdateChildMaterial";
 import NewChildMaterial from "@/components/DashboradComponents/Warehouse/ChildMaterials/NewChildMaterial";
 import DataTable from "@/components/common/DataTable";
@@ -32,6 +32,10 @@ export default function ChildMaterials() {
     const setChildMaterialId = useSetRecoilState(childMaterialId);
     const setChildMaterial = useSetRecoilState(childMaterial);
 
+    const location = useLocation();
+     const { materialName } = location.state || {};
+  
+
     const [childmaterials, setChildmaterials] = useState<ChildMaterialType[]>([]);
     const materialColumns: ColumnDef<ChildMaterialType>[] = [
         { accessorKey: "Name", header: t("Name") },
@@ -41,6 +45,14 @@ export default function ChildMaterials() {
         { accessorKey: "Phthalate", header: t("Phthalate") },
         { accessorKey: "GramWeight", header: t("GramWeight") },
         { accessorKey: "Description", header: t("Description") },
+        { accessorKey: "Quantities", header: t("Quantity available"),
+            // @ts-ignore
+            cell: ({ row }) => row.original.Quantities ? row.original.Quantities?.map((e)=> e.unit + " : " + e.quantity).join(" , ") : "",
+         },
+         { accessorKey: "WarehouseQuantities", header: t("Quantity details"),
+            // @ts-ignore
+            cell: ({ row }) => row.original.WarehouseQuantities ? row.original.WarehouseQuantities?.map((e)=> `${e.WarehouseName}: ${e.Quantity} ${e.Unit}` ).join(" , ") : "",
+         },
         {
             header: t("Action"),
             cell: ({ row }) => (
@@ -73,7 +85,7 @@ export default function ChildMaterials() {
             <div className="w-full space-y-1">
                 <div className="w-full space-y-1 flex items-center">
                     <BackButton />
-                    <h1 className="text-3xl font-bold w-full">{t("ChildMaterials")}</h1>
+                    <h1 className="text-3xl font-bold w-full">{materialName}</h1>
                 </div>
                 <Separator />
             </div>

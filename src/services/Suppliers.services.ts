@@ -3,6 +3,32 @@ import Cookies from "js-cookie";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
+
+
+
+export const getWarehouseDetails = async (
+  setData: Dispatch<SetStateAction<any[]>> ,
+  supplierId: number
+) => {
+  try {
+
+    const { data } = await axios.get(`supplier/getMaterialMovementsById/${supplierId}`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    
+  
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+  
+};
+
+
 export const getAllSuppliers = async (
   setData: Dispatch<SetStateAction<any[]>> ,
   pages?: number,

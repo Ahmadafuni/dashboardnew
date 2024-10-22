@@ -71,6 +71,23 @@ export const getWarehouseById = async (
   }
 };
 
+export const getWarehouseDetails = async (
+  setData: Dispatch<SetStateAction<any>>,
+) => {
+  try {
+    const { data } = await axios.get(`warehouse/getWarehouseMaterials`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
+  }
+};
+
 export const deleteWarehouse = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number

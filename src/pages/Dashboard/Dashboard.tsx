@@ -86,7 +86,8 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    if (user?.userRole === "FACTORYMANAGER") {
+    if (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") {
+
       getAllTracking(pages, sizes, setWorks, setTotalPages, setIsLoading);
       getModelDetailsManager(setModelDetails , setIsLoading);
     } else {
@@ -263,7 +264,7 @@ export default function Dashboard() {
         totalPages={totalPages.totalPagesCompleted}
         works={works}
       />
-      {!showFinishTable && (
+      {!showFinishTable && (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") && (
       <FinishedTable
           page={pages.finishedPage}
           setPage={setPages}

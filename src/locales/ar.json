@@ -385,5 +385,6 @@
   "ModelsOnHold": "الموديلات المعلقة",
   "OrdersOnHold": "الطلبات المعلقة",
   "TotalModels": "إجمالي الموديلات",
-  "TotalVariants": "إجمالي تفاصيل الموديلات"
+  "TotalVariants": "إجمالي تفاصيل الموديلات",
+  "MaterialMovements" : "حركة المواد" 
 }

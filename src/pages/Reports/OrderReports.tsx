@@ -324,6 +324,7 @@ export default function OrderReports() {
                           { label: t("ONGOING"), value: "ONGOING" },
                           { label: t("ONHOLD"), value: "ONHOLD" },
                           { label: t("COMPLETED"), value: "COMPLETED" },
+                          {label: t("DONE"), value: "DONE"},
                         ],
                         form: form,
                         name: "status",

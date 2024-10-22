@@ -95,8 +95,20 @@ export default function MovementForm({
 
     const modelsOptions = modelsList.map((model: any) => ({
         value: model?.Id?.toString() || "",
-        label: model?.ModelName?.toString() || "",
+        label: model?.ModelName?.toString() + "-" + model?.DemoModelNumber?.toString() || "",
     }));
+
+    const movmentTypesOptions = [
+        {
+            value: "INCOMING",
+            label: "INCOMING",
+        } ,
+        {
+            value: "OUTGOING",
+            label: "OUTGOING",
+        }
+    ];
+
 
     return (
         <Form {...form}>
@@ -231,6 +243,24 @@ export default function MovementForm({
                                 />
                             )}
                         </div>
+                        <FormField
+                                control={form.control}
+                                name="movementType"
+                                render={({ field }) => (
+                                    <div className="flex gap-x-1">
+                                        <ComboSelectFieldForForm
+                                            field={field}
+                                            label={t("MovmentType")}
+                                            placeholder={t("SelectMovmentType")}
+                                            items={movmentTypesOptions}
+                                            form={form}
+                                            emptyBox={t("NoOptions")}
+                                            name="movementType"
+                                            selectText={t("SelectOption")}
+                                        />
+                                    </div>
+                                )}
+                            />
                     </CardContent>
                 </Card>
                 <Card className="bg-[var(--card-background)]">
@@ -333,6 +363,8 @@ export default function MovementForm({
                                 <TextInputFieldForForm placeholder="" label={t("Description")} field={field} />
                             )}
                         />
+
+                        
                     </CardContent>
                 </Card>
             </form>

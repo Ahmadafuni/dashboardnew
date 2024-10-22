@@ -101,7 +101,10 @@ export default function Materials() {
                                 setMaterialId(row.original.Id);
                                 // @ts-ignore
                                 await getChildMaterialByParentId(setChildMaterialList, row.original.Id);
-                                navigate(`/dashboard/materials/child/${row.original.Id}`);
+                                navigate(`/dashboard/materials/child/${row.original.Id}`, {
+                                  state: { materialName: row.original.Name },
+                                }
+                                );
                               }}
                           >
                             <Eye className="mr-2 h-4 w-4" />

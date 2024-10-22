@@ -18,44 +18,59 @@ interface Props {
     movementFromOptions: any[];
     movementToOptions: any[];
     movementType: string;
+    defaultValues?: any;
+    typeAction?:string
+
 }
 
-export default function NewMovement({ movementFromOptions, movementToOptions, movementType }: Props) {
+export default function NewMovement({ 
+    movementFromOptions, 
+    movementToOptions, 
+    movementType , 
+    defaultValues = {}, 
+    typeAction
+}: Props) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const setMaterialMovement = useSetRecoilState(materialMovementList);
 
     const form = useForm<z.infer<typeof newMaterialMovementSchema>>({
         resolver: zodResolver(newMaterialMovementSchema),
-        defaultValues: {
-            movementType: "",
-            invoiceNumber: "",
-            movementDate: new Date(),
-            parentMaterialId: "",
-            childMaterialId: "",
-            quantity: "",
-            unitOfQuantity: "",
-            description: "",
-            warehouseFromId: "",
-            warehouseToId: "",
-            supplierId: "",
-            departmentFromId: "",
-            departmentToId: "",
-            modelId: "",
-        },
+        defaultValues: defaultValues,
     });
 
     const onSubmit = async (data: z.infer<typeof newMaterialMovementSchema>) => {
-        data.movementType = movementType;
+       // data.movementType = movementType;
         setIsLoading(true);
         try {
-            const newMovement = await axios.post("materialmovement/", data, {
-                headers: {
-                    Authorization: `bearer ${Cookies.get("access_token")}`,
-                },
-            });
-            toast.success(newMovement.data.message);
+
+            if (typeAction === t("Add")) {
+                const newMovement = await axios.post("materialmovement/", data, {
+                    headers: {
+                        Authorization: `bearer ${Cookies.get("access_token")}`,
+                    },
+                });
+                toast.success(newMovement.data.message);
+            } else if (typeAction === t("Edit")) {
+                const updatedMovement = await axios.put(`materialmovement/${defaultValues.id}`, data, {
+                    headers: {
+                        Authorization: `bearer ${Cookies.get("access_token")}`,
+                    },
+                });
+                toast.success(updatedMovement.data.message);
+            }
+            
             getMaterialMovementsByMovementType(setMaterialMovement, movementType);
+
+            form.reset({
+                parentMaterialId: "",
+                childMaterialId: "",
+                quantity: "",
+                unitOfQuantity: "",
+                description: "",
+                modelId: "",
+            });
+
             setIsLoading(false);
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -63,6 +78,8 @@ export default function NewMovement({ movementFromOptions, movementToOptions, mo
             }
             setIsLoading(false);
         }
+
+
     };
 
     return (
@@ -80,7 +97,7 @@ export default function NewMovement({ movementFromOptions, movementToOptions, mo
                                 {t("PleaseWait")}
                             </>
                         ) : (
-                            t("Add")
+                            typeAction
                         )}
                     </Button>
                 </div>

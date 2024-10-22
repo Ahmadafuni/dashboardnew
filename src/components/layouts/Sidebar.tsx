@@ -26,6 +26,7 @@ import {
   PackagePlusIcon,
   PackageMinusIcon,
   Clipboard,
+  Package,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -229,17 +230,17 @@ export default function Sidebar() {
           userRole: ["FACTORYMANAGER", "WAREHOUSEMANAGER", "ENGINEERING"],
         },
         {
-          name: t("Incoming"),
+          name: t("MaterialMovement"),
           link: "/dashboard/incoming",
-          icon: PackagePlusIcon,
+          icon: Package,
           userRole: ["FACTORYMANAGER", "WAREHOUSEMANAGER", "ENGINEERING"],
         },
-        {
-          name: t("Outgoing"),
-          link: "/dashboard/outgoing",
-          icon: PackageMinusIcon,
-          userRole: ["FACTORYMANAGER", "WAREHOUSEMANAGER", "ENGINEERING"],
-        },
+        // {
+        //   name: t("Outgoing"),
+        //   link: "/dashboard/outgoing",
+        //   icon: PackageMinusIcon,
+        //   userRole: ["FACTORYMANAGER", "WAREHOUSEMANAGER", "ENGINEERING"],
+        // },
         {
           name: t("MaterialReport"),
           link: "/dashboard/materialreport",
