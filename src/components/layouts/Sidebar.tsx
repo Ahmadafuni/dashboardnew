@@ -23,8 +23,6 @@ import {
   Container,
   SquareStack,
   Shell,
-  PackagePlusIcon,
-  PackageMinusIcon,
   Clipboard,
   Package,
 } from "lucide-react";

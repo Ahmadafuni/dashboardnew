@@ -79,14 +79,15 @@ export const deleteMaterialMovement = async (
     }
 };
 export const getMaterialReportMovements = async (filters: any) => {
-    const { searchTerm, startDate, endDate, parentMaterialId, childMaterialId, movementType } = filters;
+    const { searchTerm, startDate, endDate, parentMaterialId, childMaterialId, movementType , WarehouseId } = filters;
 
     const queryString = new URLSearchParams({
         startDate: startDate || '',
         endDate: endDate || '',
         parentMaterialId: parentMaterialId || '',
         childMaterialId: childMaterialId || '',
-        movementType: movementType || ''
+        movementType: movementType || '',
+        warehouseId: WarehouseId || ''
     }).toString();
 
     const { data } = await axios.get(`materialmovement/materialreport/${searchTerm}?${queryString}`, {
@@ -96,3 +97,48 @@ export const getMaterialReportMovements = async (filters: any) => {
     });
     return data;
 };
+
+
+// report 
+export const fetchMaterialConsumption = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number,
+    
+  ) => {
+    try {
+      const { data } = await axios.get(`materialmovement/consumptionModel/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      setData(data.data);
+      toast.success(data.message);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    }
+  };
+
+  export const fetchMaterialConsumptionDepartment = async (
+    setData: Dispatch<SetStateAction<any>>,
+    id: number,
+    
+  ) => {
+    try {
+      const { data } = await axios.get(`materialmovement/consumptionDepartment/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      });
+      setData(data.data);
+      toast.success(data.message);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    }
+  };
+
+
+  
