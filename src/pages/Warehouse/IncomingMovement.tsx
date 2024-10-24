@@ -21,7 +21,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical, Eye, Pen } from "lucide-react";
+import { EllipsisVertical, Eye, Pen, Plus } from "lucide-react";
+
 
 export default function IncomingMovement() {
     const { t } = useTranslation();
@@ -125,16 +126,19 @@ export default function IncomingMovement() {
                 <Separator />
             </div>
 
-            <button
-                className="bg-blue-900 dark:bg-blue-900 text-white p-2 rounded transition-colors duration-500 hover:bg-blue-800 dark:hover:bg-blue-900"
-                onClick={() => {
-                    setIsEditing(false); 
-                    setSelectedMovement(null); 
-                    setIsDialogOpen(true); 
-                }}
-            >
-                {t("AddNewMovement")}
-            </button>
+            <div className="flex justify-end">
+                <Button
+                    onClick={() => {
+                        setIsEditing(false);
+                        setSelectedMovement(null);
+                        setIsDialogOpen(true);
+                    }}
+                    className="flex items-center px-4 py-2"
+                >
+                    {t("Add")}
+                    <Plus className="ml-2 w-5 h-5" />
+                </Button>
+            </div>
 
             <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <Dialog.Portal>
@@ -159,7 +163,7 @@ export default function IncomingMovement() {
                             movementToOptions={movementToOptions}
                             movementType="INCOMING"
                             defaultValues={selectedMovement}
-                            typeAction= {isEditing
+                            typeAction={isEditing
                                 ? t("Edit")
                                 : t("Add")}
                         />
@@ -175,7 +179,7 @@ export default function IncomingMovement() {
                 </Dialog.Portal>
             </Dialog.Root>
 
-            {/* جدول الحركات */} 
+            {/* جدول الحركات */}
             <div className="space-y-2">
                 <div className="rounded-md border overflow-x-scroll">
                     <DataTable

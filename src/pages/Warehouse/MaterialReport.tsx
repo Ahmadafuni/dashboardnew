@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { getAllModel } from "@/services/Model.services";
 import { getAllDepartmentList } from "@/services/Departments.services";
 import { getAllWarehouseNames } from "@/services/Warehouse.services";
+import { Shirt, LayoutPanelTop, ArrowRightLeft } from "lucide-react";
 
 export default function MaterialReport() {
     const { t } = useTranslation();
@@ -159,28 +160,34 @@ export default function MaterialReport() {
 
     return (
         <div>
-            <div className="flex space-x-4 mb-4">
-                <Button
-                    variant={reportType === 'movements' ? 'secondary' : 'default'}
-                    onClick={() => setReportType('movements')}
-                >
-                    {t("MaterialMovements")}
-                </Button>
-                <Button
-                    variant={reportType === 'consumptionModels' ? 'secondary' : 'default'}
-                    onClick={() => setReportType('consumptionModels')}
-                >
-                    {t("consumptionModels")}
-                </Button>
-
-                <Button
-                    variant={reportType === 'consumptionDepartments' ? 'secondary' : 'default'}
-                    onClick={() => setReportType('consumptionDepartments')}
-                >
-                    {t("consumptionDepartments")}
-                </Button>
-
+            <div className="flex justify-center mb-4">
+                <div className="inline-flex bg-gray-200 p-2 rounded-full">
+                    <Button
+                        onClick={() => setReportType('movements')}
+                        className={`${reportType === 'movements' ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700'
+                            } flex items-center px-6 py-3 rounded-full transition-colors`}
+                    >
+                        <ArrowRightLeft className="w-5 h-5 mr-2" /> {t("MaterialMovements")}
+                    </Button>
+                    <Button
+                        onClick={() => setReportType('consumptionModels')}
+                        className={`${reportType === 'consumptionModels' ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700'
+                            } flex items-center px-6 py-3 rounded-full transition-colors`}
+                    >
+                        <Shirt className="w-5 h-5 mr-2" /> {t("consumptionModels")}
+                    </Button>
+                    <Button
+                        onClick={() => setReportType('consumptionDepartments')}
+                        className={`${reportType === 'consumptionDepartments' ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700'
+                            } flex items-center px-6 py-3 rounded-full transition-colors`}
+                    >
+                        <LayoutPanelTop className="w-5 h-5 mr-2" /> {t("consumptionDepartments")}
+                    </Button>
+                </div>
             </div>
+
+
+
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

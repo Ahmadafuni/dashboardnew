@@ -393,5 +393,7 @@
   "Feedback": "Feedback",
   "CheckTask": "Check Feedback",
   "SendFeedBack": "Send FeedBack",
-  "MaterialMovements": "Material Movements"
+  "MaterialMovements": "Material Movements",
+  "consumptionModels": "Consumption Models",
+  "consumptionDepartments": "Consumption Departments"
 }

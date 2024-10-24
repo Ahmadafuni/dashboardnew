@@ -229,7 +229,7 @@ export default function Sidebar() {
           userRole: ["FACTORYMANAGER", "WAREHOUSEMANAGER", "ENGINEERING"],
         },
         {
-          name: t("MaterialMovement"),
+          name: t("MaterialMovements"),
           link: "/dashboard/incoming",
           icon: Package,
           userRole: ["FACTORYMANAGER", "WAREHOUSEMANAGER", "ENGINEERING"],
