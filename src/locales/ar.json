@@ -392,12 +392,11 @@
   "ModelsOnHold": "الموديلات المعلقة",
   "OrdersOnHold": "الطلبات المعلقة",
   "TotalModels": "إجمالي الموديلات",
-  "TotalVariants": "إجمالي تفاصيل الموديلات",
   "LateOrders": "طلبات متأخرة",
   "OnTimeOrders": "طلبات في الوقت المحدد",
   "TaskFeedback": "تنفيذ المهمة",
   "Feedback": "ملاحظات",
   "CheckTask": "تحقق من الرد",
-  "SendFeedBack": "تنفيذ المهمة",
+  "SendFeedBack": "تنفيذ المهمة""TotalVariants": "إجمالي تفاصيل الموديلات",
   "MaterialMovements": "حركة المواد"
 }
