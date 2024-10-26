@@ -161,7 +161,7 @@ export default function MaterialReport() {
     return (
         <div>
             <div className="flex justify-center mb-4">
-                <div className="inline-flex bg-gray-200 p-2 rounded-full">
+                <div className="inline-flex bg-gray-200 p-2 rounded-full space-x-2">
                     <Button
                         onClick={() => setReportType('movements')}
                         className={`${reportType === 'movements' ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700'
@@ -465,7 +465,7 @@ export default function MaterialReport() {
                                     </h3>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 space-y-3 overflow-auto max-h-80">
-                                        {/* عرض بيانات الوحدة والاستهلاك في شبكة مع تمرير */}
+
                                         {item.units.map((unit: any, index: number) => (
                                             <div key={index} className="p-4 bg-gray-100 dark:bg-gray-700 rounded-md shadow-md">
                                                 <div className="flex justify-between items-center mb-2">
@@ -518,7 +518,7 @@ export default function MaterialReport() {
                                     </h3>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 space-y-3 overflow-auto max-h-80">
-                                        {/* عرض بيانات الوحدة والاستهلاك في شبكة مع تمرير */}
+
                                         {item.units.map((unit: any, index: number) => (
                                             <div key={index} className="p-4 bg-gray-100 dark:bg-gray-700 rounded-md shadow-md">
                                                 <div className="flex justify-between items-center mb-2">

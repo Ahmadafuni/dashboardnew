@@ -19,7 +19,9 @@ interface Props {
     movementToOptions: any[];
     movementType: string;
     defaultValues?: any;
-    typeAction?:string
+    typeAction?:string;
+    children?:any
+    
 
 }
 
@@ -28,7 +30,8 @@ export default function NewMovement({
     movementToOptions, 
     movementType , 
     defaultValues = {}, 
-    typeAction
+    typeAction,
+    children,
 }: Props) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +90,8 @@ export default function NewMovement({
             <div className="space-y-1">
                 <MovementForm form={form} onSubmit={onSubmit} movementFromOptions={movementFromOptions} movementToOptions={movementToOptions} />
                 <div className="flex justify-end space-x-4">
+                  
+                    {children}
                     <Button type="button" variant="secondary" onClick={() => form.reset()}>
                         {t("Clear")}
                     </Button>
@@ -100,6 +105,8 @@ export default function NewMovement({
                             typeAction
                         )}
                     </Button>
+                    
+
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@ import {
 import { materialMovementList } from "@/store/MaterialMovement";
 import NewMovement from "@/components/DashboradComponents/Warehouse/MaterialMovement/NewMovement.tsx";
 import * as Dialog from "@radix-ui/react-dialog";
-import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DialogDescription , DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -28,10 +28,9 @@ export default function IncomingMovement() {
     const { t } = useTranslation();
     const [materialMovements, setMaterialMovements] = useRecoilState(materialMovementList);
 
-    // حالة التحكم بالتعديل أو الإضافة
     const [selectedMovement, setSelectedMovement] = useState(null);
-    const [isEditing, setIsEditing] = useState(false); // للتحكم بحالة التعديل
-    const [isDialogOpen, setIsDialogOpen] = useState(false); // للتحكم بفتح الـ Dialog سواء للإضافة أو التعديل
+    const [isEditing, setIsEditing] = useState(false); 
+    const [isDialogOpen, setIsDialogOpen] = useState(false); 
 
     const movementFromOptions = [
         { label: t("Department"), value: "Department" },
@@ -83,8 +82,8 @@ export default function IncomingMovement() {
                                 <DropdownMenuItem
                                     onClick={() => {
                                         setSelectedMovement(row.original);
-                                        setIsEditing(true); // تمكين وضع التعديل
-                                        setIsDialogOpen(true); // فتح الـ Dialog
+                                        setIsEditing(true); 
+                                        setIsDialogOpen(true);
                                     }}
                                 >
                                     <Pen className="mr-2 h-4 w-4" />
@@ -166,20 +165,22 @@ export default function IncomingMovement() {
                             typeAction={isEditing
                                 ? t("Edit")
                                 : t("Add")}
-                        />
-
-                        <DialogFooter className="mt-4 flex justify-end space-x-2">
+                        >
                             <Dialog.Close asChild>
-                                <button className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition">
-                                    {t("Cancel")}
-                                </button>
+                                <Button type="button" variant="secondary" className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition">
+                                   {t("Cancel")} 
+                                </Button>
                             </Dialog.Close>
-                        </DialogFooter>
+
+                        </NewMovement>
+
+                        {/* <DialogFooter className="mt-4 flex justify-end space-x-2">
+                        </DialogFooter> */}
+
                     </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root>
 
-            {/* جدول الحركات */}
             <div className="space-y-2">
                 <div className="rounded-md border overflow-x-scroll">
                     <DataTable
