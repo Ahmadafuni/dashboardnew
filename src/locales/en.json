@@ -411,5 +411,9 @@
   "ChooseAModel" : "Choose a model",
   "SelectaModel" : "Select a Model",
   "SelectaDepartment" : "Select a Department",
-  "ChooseAdepartment" : "Choose a department"
+  "ChooseAdepartment" : "Choose a department",
+  "Consumption" : "Consumption",
+  "Unit" : "Unit",
+  "ChooseaModelFirst" : "Choose a model first",
+  "ChooseaDepartmentFirst" : "Choose a department first"
 }

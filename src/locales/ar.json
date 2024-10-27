@@ -417,7 +417,10 @@
   "ChooseAModel" : "اختر موديل",
   "SelectaModel" : "حدد موديل",
   "SelectaDepartment" : "حدد قسم",
-  "ChooseAdepartment" : "اختر قسم"
-
+  "ChooseAdepartment" : "اختر قسم",
+  "Consumption": "استهلاك",
+  "Unit" : "وحدة القياس",
+  "ChooseaModelFirst" : "اختر موديل اولا",
+  "ChooseaDepartmentFirst" : "اختر قسم اولا"
 
 }

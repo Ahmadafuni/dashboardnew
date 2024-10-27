@@ -78,7 +78,7 @@ export const deleteMaterialMovement = async (
         }
     }
 };
-export const getMaterialReportMovements = async (filters: any) => {
+export const getMaterialReportMovements = async (filters: any ,   setIsLoading?: Dispatch<SetStateAction<boolean>>) => {
     const { searchTerm, startDate, endDate, parentMaterialId, childMaterialId, movementType , WarehouseId } = filters;
 
     const queryString = new URLSearchParams({
@@ -90,12 +90,22 @@ export const getMaterialReportMovements = async (filters: any) => {
         warehouseId: WarehouseId || ''
     }).toString();
 
-    const { data } = await axios.get(`materialmovement/materialreport/${searchTerm}?${queryString}`, {
-        headers: {
-            Authorization: `Bearer ${Cookies.get('access_token')}`,
-        },
-    });
-    return data;
+    try{
+        if(setIsLoading)setIsLoading(true);
+        const { data } = await axios.get(`materialmovement/materialreport/${searchTerm}?${queryString}`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('access_token')}`,
+            },
+        });
+        return data;
+    }catch (error) {
+        if (error instanceof AxiosError) {
+          toast.error(error.response?.data.message);
+        }
+      }finally {
+        if (setIsLoading) setIsLoading(false);
+      }
+
 };
 
 
@@ -103,41 +113,46 @@ export const getMaterialReportMovements = async (filters: any) => {
 export const fetchMaterialConsumption = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number,
-    
+    setIsLoading?: Dispatch<SetStateAction<boolean>>
   ) => {
     try {
+        if(setIsLoading)setIsLoading(true);
       const { data } = await axios.get(`materialmovement/consumptionModel/${id}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
       });
       setData(data.data);
-      toast.success(data.message);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       }
-    }
+    }finally {
+        if (setIsLoading) setIsLoading(false);
+      }
   };
 
   export const fetchMaterialConsumptionDepartment = async (
     setData: Dispatch<SetStateAction<any>>,
     id: number,
+    setIsLoading?: Dispatch<SetStateAction<boolean>>
     
   ) => {
     try {
+        if(setIsLoading)setIsLoading(true);
       const { data } = await axios.get(`materialmovement/consumptionDepartment/${id}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
       });
       setData(data.data);
-      toast.success(data.message);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       }
-    }
+    }finally {
+        if (setIsLoading) setIsLoading(false);
+      }
   };
 
 
