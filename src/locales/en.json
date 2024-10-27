@@ -395,5 +395,21 @@
   "SendFeedBack": "Send FeedBack",
   "MaterialMovements": "Material Movements",
   "consumptionModels": "Consumption Models",
-  "consumptionDepartments": "Consumption Departments"
+  "consumptionDepartments": "Consumption Departments",
+  "ItemsCount": "Items Count",
+  "NoQuantities" : "No Quantities",
+  "ParentMaterials" : "Parent Materials",
+  "ViewMaterials" : "View Materials",
+  "WarehouseDetails" : "Warehouse Details",
+  "MaterialName" : "Material Name",
+  "Quantities": "Quantities",
+  "existing" : "existing",
+  "NoResultsFound" : "No Results Found",
+  "TryAgainForOtherModels." : "Try Again For Other Models",
+  "TryAgainForOtherDepartments.": "Try Again For Other Departments",
+  "FetchReport" : "Fetch Report",
+  "ChooseAModel" : "Choose a model",
+  "SelectaModel" : "Select a Model",
+  "SelectaDepartment" : "Select a Department",
+  "ChooseAdepartment" : "Choose a department"
 }

@@ -138,7 +138,7 @@ export default function Warehouses() {
 
                       >
                         <Eye className="mr-2 h-4 w-4" />
-                        <span>{t("view materials")}</span>
+                        <span>{t("ViewMaterials")}</span>
                       </DropdownMenuItem>
 
                     </DropdownMenuGroup>
@@ -205,13 +205,13 @@ export default function Warehouses() {
                               ))}
                           </ul>
                         ) : (
-                          <span>No Quantities</span>
+                          <span>{t("NoQuantities")}</span>
                         )}
                     </TableCell>
                     <TableCell className="text-lg">
-                      Parent Materials: {
+                      {t("ParentMaterials")}: {
                         // @ts-ignore
-                        selectedWarehouse.totalParentMaterials}, Child Materials: {selectedWarehouse.totalChildMaterials}
+                        selectedWarehouse.totalParentMaterials}, {t("ChildMaterials")}: {selectedWarehouse.totalChildMaterials}
                     </TableCell>
                   </TableRow>
                 </TableBody>

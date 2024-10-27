@@ -170,7 +170,7 @@ export default function Suppliers() {
                 <TableHeader>
                     <TableRow className="bg-blue-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                         <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-left text-sm font-semibold">
-                            {t("Material Name")}
+                            {t("MaterialName")}
                         </TableHead>
                         <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-left text-sm font-semibold">
                             {t("Category")}
@@ -193,8 +193,10 @@ export default function Suppliers() {
                                 {
                                 // @ts-ignore
                                 item.quantities.map((q, i) => (
-                                    <div key={i}>
-                                        {`${q.incomingQuantity} ${q.unit} (Incoming) , ${q.outgoingQuantity} ${q.unit} (Outgoing) , ${q.netQuantity} ${q.unit} (existing)`}
+                                    <div key={i} style={{ direction: "rtl", textAlign: "right" }}>
+                                      <span>{q.incomingQuantity} {q.unit} ({t("Incoming")})</span> -&nbsp;
+                                      <span>{q.outgoingQuantity} {q.unit} ({t("Outgoing")})</span> -&nbsp;
+                                      <span>{q.netQuantity} {q.unit} ({t("existing")})</span>
                                     </div>
                                 ))}
                             </TableCell>

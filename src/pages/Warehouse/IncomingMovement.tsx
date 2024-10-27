@@ -11,8 +11,13 @@ import {
 } from "@/services/MaterialMovements.services";
 import { materialMovementList } from "@/store/MaterialMovement";
 import NewMovement from "@/components/DashboradComponents/Warehouse/MaterialMovement/NewMovement.tsx";
-import * as Dialog from "@radix-ui/react-dialog";
-import { DialogDescription , DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+  } from "@/components/ui/dialog.tsx";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -139,48 +144,36 @@ export default function IncomingMovement() {
                 </Button>
             </div>
 
-            <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <Dialog.Portal>
-                    <Dialog.Overlay className="fixed inset-0 bg-black opacity-50 backdrop-blur-sm" />
-                    <Dialog.Content
-                        className="fixed bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                                    text-black dark:text-white max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent
+                    className="fixed bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                                text-black dark:text-white max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+                >
+                    <DialogHeader>
+                    <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-white">
+                        {isEditing ? t("EditMovement") : t("NewMovement")}
+                    </DialogTitle>
+                    <p className="text-gray-600 dark:text-gray-300 mt-2">
+                        {isEditing ? t("EditDetailsForMovement") : t("FillTheDetailsForNewMovement")}
+                    </p>
+                    </DialogHeader>
+
+                    <NewMovement
+                    movementFromOptions={movementFromOptions}
+                    movementToOptions={movementToOptions}
+                    movementType="INCOMING"
+                    defaultValues={selectedMovement}
+                    typeAction={isEditing ? t("Edit") : t("Add")}
                     >
-                        <DialogHeader>
-                            <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-white">
-                                {isEditing ? t("EditMovement") : t("NewMovement")}
-                            </DialogTitle>
-                            <DialogDescription className="text-gray-600 dark:text-gray-300 mt-2">
-                                {isEditing
-                                    ? t("EditDetailsForMovement")
-                                    : t("FillTheDetailsForNewMovement")}
-                            </DialogDescription>
-                        </DialogHeader>
-
-                        <NewMovement
-                            movementFromOptions={movementFromOptions}
-                            movementToOptions={movementToOptions}
-                            movementType="INCOMING"
-                            defaultValues={selectedMovement}
-                            typeAction={isEditing
-                                ? t("Edit")
-                                : t("Add")}
-                        >
-                            <Dialog.Close asChild>
-                                <Button type="button" variant="secondary" className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition">
-                                   {t("Cancel")} 
-                                </Button>
-                            </Dialog.Close>
-
-                        </NewMovement>
-
-                        {/* <DialogFooter className="mt-4 flex justify-end space-x-2">
-                        </DialogFooter> */}
-
-                    </Dialog.Content>
-                </Dialog.Portal>
-            </Dialog.Root>
-
+                        <DialogFooter>
+                            <Button className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition" type="button" variant="secondary" onClick={() => setIsDialogOpen(false) }>
+                                {t("Cancel")}
+                            </Button>
+                        </DialogFooter>
+                    </NewMovement>
+                </DialogContent>
+            </Dialog>
+         
             <div className="space-y-2">
                 <div className="rounded-md border overflow-x-scroll">
                     <DataTable

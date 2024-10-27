@@ -93,7 +93,6 @@ export default function MaterialReport() {
     }, []);
 
     useEffect(() => {
-
         // @ts-ignore
         getAllMaterials(setMaterials);
 
@@ -350,15 +349,15 @@ export default function MaterialReport() {
                                 <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-6">
                                     {/* Select model */}
                                     <div className="flex flex-col md:w-1/2 space-y-2">
-                                        <label htmlFor="model" className="font-semibold text-gray-700 dark:text-gray-200">Select a Model</label>
+                                        <label htmlFor="model" className="font-semibold text-gray-700 dark:text-gray-200">{t("SelectaModel")}</label>
                                         <select
                                             id="model"
                                             name="model"
                                             className="form-select border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out"
-                                            onChange={handleModelChange} // قم بتعريف هذه الدالة لجلب الموديل المختار
+                                            onChange={handleModelChange}
                                         >
                                             <option value="" disabled selected>
-                                                Choose a model
+                                                {t("ChooseAModel")}
                                             </option>
                                             {models.map((model) => (
                                                 // @ts-ignore
@@ -368,23 +367,22 @@ export default function MaterialReport() {
                                         </select>
                                     </div>
 
-                                    {/* Fetch report button */}
                                     <div className="flex justify-center md:w-auto space-x-2">
 
-                                        <button
+                                        <Button
                                             className="bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-700 dark:to-blue-800 hover:from-blue-600 hover:to-blue-700 dark:hover:from-blue-800 dark:hover:to-blue-900 text-white font-semibold py-2 px-6 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition-all duration-200 ease-in-out"
                                             onClick={fetchReportModel}
                                         >
-                                            Fetch Report
-                                        </button>
+                                            {t("FetchReport")}
+                                        </Button>
 
 
-                                        <button
+                                        <Button
                                             className="bg-gradient-to-r from-red-500 to-red-600 dark:from-red-700 dark:to-red-800 hover:from-red-600 hover:to-red-700 dark:hover:from-red-800 dark:hover:to-red-900 text-white font-semibold py-2 px-6 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 dark:focus:ring-red-600 transition-all duration-200 ease-in-out"
                                             onClick={clearReportModel}
                                         >
-                                            Clear
-                                        </button>
+                                            {t("Clear")}
+                                        </Button>
 
 
                                     </div>
@@ -395,9 +393,8 @@ export default function MaterialReport() {
                         {reportType === 'consumptionDepartments' && (
                             <CardContent className="grid grid-cols-1 gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
                                 <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-6">
-                                    {/* Select department */}
                                     <div className="flex flex-col md:w-1/2 space-y-2">
-                                        <label htmlFor="model" className="font-semibold text-gray-700 dark:text-gray-200">Select a Department</label>
+                                        <label htmlFor="model" className="font-semibold text-gray-700 dark:text-gray-200">{t("SelectaDepartment")}</label>
                                         <select
                                             id="model"
                                             name="model"
@@ -405,7 +402,7 @@ export default function MaterialReport() {
                                             onChange={handleDepartmentChange}
                                         >
                                             <option value="" disabled selected>
-                                                Choose a department
+                                                {t("ChooseAdepartment")}
                                             </option>
                                             {departments.map((department) => (
                                                 // @ts-ignore
@@ -415,21 +412,20 @@ export default function MaterialReport() {
                                         </select>
                                     </div>
 
-                                    {/* Fetch report button */}
                                     <div className="flex justify-center md:w-auto space-x-2">
-                                        <button
+                                        <Button
                                             className="bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-700 dark:to-blue-800 hover:from-blue-600 hover:to-blue-700 dark:hover:from-blue-800 dark:hover:to-blue-900 text-white font-semibold py-2 px-6 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition-all duration-200 ease-in-out"
-                                            onClick={fetchReportDepartment} // قم بتعريف هذه الدالة لجلب التقرير
+                                            onClick={fetchReportDepartment}
                                         >
-                                            Fetch Report
-                                        </button>
+                                            {t("FetchReport")}
+                                        </Button>
 
-                                        <button
+                                        <Button
                                             className="bg-gradient-to-r from-red-500 to-red-600 dark:from-red-700 dark:to-red-800 hover:from-red-600 hover:to-red-700 dark:hover:from-red-800 dark:hover:to-red-900 text-white font-semibold py-2 px-6 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 dark:focus:ring-red-600 transition-all duration-200 ease-in-out"
                                             onClick={clearReportDepartment}
                                         >
-                                            Clear
-                                        </button>
+                                            {t("Clear")}
+                                        </Button>
 
                                     </div>
                                 </div>
@@ -498,8 +494,8 @@ export default function MaterialReport() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6" />
                             </svg>
-                            <p className="text-xl text-gray-700 dark:text-gray-200">{t("No Results Found")}</p>
-                            <p className="text-md text-gray-500 dark:text-gray-400 mt-2">{t("Try adjusting your filters or data")}</p>
+                            <p className="text-xl text-gray-700 dark:text-gray-200">{t("NoResultsFound")}</p>
+                            <p className="text-md text-gray-500 dark:text-gray-400 mt-2">{t("TryAgainForOtherModels")}</p>
                         </div>
                     )
                 )
@@ -551,8 +547,8 @@ export default function MaterialReport() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6" />
                             </svg>
-                            <p className="text-xl text-gray-700 dark:text-gray-200">{t("No Results Found")}</p>
-                            <p className="text-md text-gray-500 dark:text-gray-400 mt-2">{t("Try adjusting your filters or data")}</p>
+                            <p className="text-xl text-gray-700 dark:text-gray-200">{t("NoResultsFound")}</p>
+                            <p className="text-md text-gray-500 dark:text-gray-400 mt-2">{t("TryAgainForOtherDepartments")}</p>
                         </div>
                     )
                 )

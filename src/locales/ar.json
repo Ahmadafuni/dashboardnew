@@ -401,5 +401,23 @@
   "TotalVariants": "إجمالي تفاصيل الموديلات",
   "MaterialMovements": "حركة المواد",
   "consumptionModels": "استهلاك الموديلات",
-  "consumptionDepartments": "استهلاك الاقسام"
+  "consumptionDepartments": "استهلاك الاقسام",
+  "ItemsCount": "عدد المواد",
+  "NoQuantities": "لا يوجد كميات",
+  "ParentMaterials": "مواد أساسية",
+  "ViewMaterials" : "عرض المواد",
+  "WarehouseDetails": "تفاصيل المستودع",
+  "MaterialName": "اسم المادة",
+  "Quantities": "الكميات",
+  "existing" : "موجود",
+  "NoResultsFound" : "لم يتم العثور على نتائج",
+  "TryAgainForOtherModels" : "أعد المحاولة من أجل غير موديلات",
+  "TryAgainForOtherDepartments" : "أعد المحاولة من أجل غير أقسام",
+  "FetchReport" : "جلب التقرير",
+  "ChooseAModel" : "اختر موديل",
+  "SelectaModel" : "حدد موديل",
+  "SelectaDepartment" : "حدد قسم",
+  "ChooseAdepartment" : "اختر قسم"
+
+
 }
