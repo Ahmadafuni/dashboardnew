@@ -9,7 +9,7 @@ export const parentMaterialSchema = z.object({
     .max(255, {
       message: "Maximum characters for the material name is 255.",
     }),
-  category: z.string().min(1, { message: "Please select template." }),
+  category: z.string().min(1, { message: "Please select category." }),
   unitOfMeasure: z
     .string()
     .min(1, {
@@ -31,6 +31,7 @@ export const parentMaterialSchema = z.object({
       message: "Please enter a valid decimal point number(e.x 0.1, 12.11, 12)",
     }),
   description: z.string(),
+  color: z.string().min(1, { message: "Please select color." }),
 });
 
 export const childMaterialSchema = z.object({

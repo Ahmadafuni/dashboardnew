@@ -158,7 +158,7 @@ export default function Suppliers() {
       </div>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-    <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border-t-4 border-blue-500 dark:border-gray-500 animate-fade-in z-50">
+    <DialogContent className="sm:max-w-[800px] max-h-[600px] overflow-y-auto">
         <DialogHeader>
             <DialogTitle className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
                 {t("WarehouseDetails")}

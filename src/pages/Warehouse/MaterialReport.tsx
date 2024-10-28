@@ -62,14 +62,12 @@ export default function MaterialReport() {
     const [selectedDepartment, setSelectedDepartment] = useState('');
 
 
-    // @ts-ignore
-    const handleModelChange = (event) => {
-        setSelectedModel(event.target.value);
+    const handleModelChange = (value:any) => {
+        setSelectedModel(value);
     };
 
-    // @ts-ignore
-    const handleDepartmentChange = (event) => {
-        setSelectedDepartment(event.target.value);
+    const handleDepartmentChange = (value:any) => {
+        setSelectedDepartment(value);
     };
 
     const fetchReportModel = () => {
@@ -375,27 +373,34 @@ export default function MaterialReport() {
                         }
 
                         {reportType === 'consumptionModels' && (
-                            <CardContent className="grid grid-cols-1 gap-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-200 ease-in-out">
+                            <CardContent className="grid grid-cols-1 gap-4 p-6 rounded-lg shadow-lg transition-all duration-200 ease-in-out">
                                 <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 md:space-x-8">
                                 <div className="flex flex-col md:w-1/2 space-y-3">
-                                    <label htmlFor="model" className="font-semibold text-gray-800 dark:text-gray-200 tracking-wide">
-                                    {t("SelectaModel")}
-                                    </label>
-                                    <select
-                                    id="model"
-                                    name="model"
-                                    className="form-select border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-4 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-700 transition-all duration-200 ease-in-out"
-                                    onChange={handleModelChange}
-                                    >
-                                    <option value="" disabled selected>
-                                        {t("ChooseAModel")}
-                                    </option>
-                                    {models.map((model) => (
-                                        // @ts-ignore
-                                        <option key={model.Id} value={model.Id}>{model.ModelName} - {model.DemoModelNumber}
-                                        </option>
-                                    ))}
-                                    </select>
+                                   
+                                    <FormField
+                                        name="model"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <ComboSelectFieldForForm
+                                                field={field}
+                                                label={t("SelectaModel")}
+                                                placeholder={t("ChooseAModel")}
+                                                emptyBox={t("NoModelFound")}
+                                                form={form}
+                                                name="model"
+                                                selectText={t("SelectModel")}
+                                                items={models.map((model) => ({
+                                                    // @ts-ignore
+                                                    label: `${model.ModelName} - ${model.DemoModelNumber}`,value: model.Id
+                                                }))}
+                                                onChange={(value) => {
+                                                    field.onChange(value);
+                                                    handleModelChange(value);
+                                                }}
+                                            />
+                                        )}
+                                    />
+
                                 </div>
 
                                 <div className="flex justify-center md:w-auto space-x-3">
@@ -417,27 +422,34 @@ export default function MaterialReport() {
                         )}
 
                         {reportType === 'consumptionDepartments' && (
-                            <CardContent className="grid grid-cols-1 gap-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-200 ease-in-out">
+                            <CardContent className="grid grid-cols-1 gap-4 p-6 rounded-lg shadow-lg transition-all duration-200 ease-in-out">
                                 <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 md:space-x-8">
                                 <div className="flex flex-col md:w-1/2 space-y-3">
-                                    <label htmlFor="model" className="font-semibold text-gray-800 dark:text-gray-200 tracking-wide">
-                                    {t("SelectaDepartment")}
-                                    </label>
-                                    <select
-                                    id="model"
-                                    name="model"
-                                    className="form-select border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg px-4 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-700 transition-all duration-200 ease-in-out"
-                                    onChange={handleDepartmentChange}
-                                    >
-                                    <option value="" disabled selected>
-                                        {t("ChooseAdepartment")}
-                                    </option>
-                                    {
-                                    // @ts-ignore
-                                    departments.map((department) => (<option key={department.value} value={department.value}>{department.label}
-                                        </option>
-                                    ))}
-                                    </select>
+                                   
+                                    <FormField
+                                        name="department"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <ComboSelectFieldForForm
+                                                field={field}
+                                                label={t("SelectaDepartment")}
+                                                placeholder={t("ChooseAdepartment")}
+                                                emptyBox={t("NoDepartmentFound")}
+                                                form={form}
+                                                name="department"
+                                                selectText={t("SelectDepartment")}
+                                                items={departments.map((department) => ({
+                                                    // @ts-ignore
+                                                    label: department.label,value: department.value,
+                                                }))}
+                                                onChange={(value) => {
+                                                    field.onChange(value);
+                                                    handleDepartmentChange(value); 
+                                                }}
+                                            />
+                                        )}
+                                    />
+
                                 </div>
 
                                 <div className="flex justify-center md:w-auto space-x-3">

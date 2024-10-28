@@ -146,8 +146,7 @@ export default function IncomingMovement() {
 
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent
-                    className="fixed bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                                text-black dark:text-white max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+                    className="sm:max-w-[800px] max-h-[600px] overflow-y-auto"
                 >
                     <DialogHeader>
                     <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-white">

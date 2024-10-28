@@ -17,6 +17,8 @@ import BackButton from "@/components/common/BackButton";
 import { getAllMaterialCategoriesList } from "@/services/MaterialCategory.services";
 import { useSetRecoilState } from "recoil";
 import { materialCategoryList } from "@/store/MaterialCategory";
+import { colorList } from "@/store/Color";
+import { getAllColorsList } from "@/services/Colors.services";
 
 export default function UpdateMaterial() {
   const { materialID } = useParams();
@@ -25,6 +27,7 @@ export default function UpdateMaterial() {
   const [material, setMaterial] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
   const setMaterialCategoryList = useSetRecoilState(materialCategoryList);
+  const setColorList = useSetRecoilState(colorList);
 
   const form = useForm<z.infer<typeof parentMaterialSchema>>({
     resolver: zodResolver(parentMaterialSchema),
@@ -38,6 +41,7 @@ export default function UpdateMaterial() {
       minimumLimit: "",
       isRelevantToProduction: false,
       hasChildren: false,
+      color:""
     },
     values: material,
   });
@@ -67,8 +71,10 @@ export default function UpdateMaterial() {
 
   useEffect(() => {
     getAllMaterialCategoriesList(setMaterialCategoryList);
+    getAllColorsList(setColorList);
     getMaterialById(setMaterial, materialID);
-  }, [setMaterialCategoryList, materialID]);
+
+  }, [setMaterialCategoryList, materialID , setColorList]);
 
   return (
       <div className="w-full space-y-2">

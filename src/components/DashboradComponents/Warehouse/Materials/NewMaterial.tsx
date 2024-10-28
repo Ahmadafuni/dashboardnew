@@ -14,16 +14,19 @@ import MaterialForm from "@/components/DashboradComponents/Warehouse/Materials/M
 import Cookies from "js-cookie";
 import NewMaterialCategory from "@/components/DashboradComponents/Warehouse/MaterialCategory/NewMaterialCategory.tsx";
 import { getAllMaterialCategoriesList } from "@/services/MaterialCategory.services.ts";
-import { useSetRecoilState } from "recoil";
+import {  useSetRecoilState } from "recoil";
 import { materialCategoryList } from "@/store/MaterialCategory.ts";
+import { colorList } from "@/store/Color.ts";
 import BackButton from "@/components/common/BackButton";
+import {  getAllColorsList } from "@/services/Colors.services";
 
 export default function NewMaterial() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const setMaterialCategoryList = useSetRecoilState(materialCategoryList);
-
+  const setColorList = useSetRecoilState(colorList);
+  
   const form = useForm<z.infer<typeof parentMaterialSchema>>({
     resolver: zodResolver(parentMaterialSchema),
     defaultValues: {
@@ -36,6 +39,7 @@ export default function NewMaterial() {
       minimumLimit: "",
       isRelevantToProduction: false,
       hasChildren: false,
+      color: ""
     },
   });
 
@@ -61,7 +65,10 @@ export default function NewMaterial() {
 
   useEffect(() => {
     getAllMaterialCategoriesList(setMaterialCategoryList);
-  }, [setMaterialCategoryList]);
+    getAllColorsList(setColorList);
+
+}, [setMaterialCategoryList, setColorList]);
+
 
   return (
       <div className="w-full space-y-2">

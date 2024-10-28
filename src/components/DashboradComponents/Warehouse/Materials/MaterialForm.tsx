@@ -10,6 +10,7 @@ import {
     newMaterialCategoryModal,
 } from "@/store/MaterialCategory.ts";
 import CheckboxForForm from "@/components/common/CheckboxForForm";
+import { colorList } from "@/store/Color";
 
 interface Props {
     form: any;
@@ -20,7 +21,9 @@ export default function MaterialForm({ form, onSubmit }: Props) {
     const { t } = useTranslation();
 
     const categoryList = useRecoilValue(materialCategoryList);
+    const colorsList = useRecoilValue(colorList);
     const setNewMaterialCategoryModal = useSetRecoilState(newMaterialCategoryModal);
+
 
     return (
         <Form {...form}>
@@ -66,6 +69,27 @@ export default function MaterialForm({ form, onSubmit }: Props) {
                         </div>
                     )}
                 />
+
+                <FormField
+                    control={form.control}
+                    name="color"
+                    render={({ field }) => (
+                        <div className="flex gap-x-1">
+                            <ComboSelectFieldForForm
+                                field={field}
+                                label={t("MaterialColor")}
+                                placeholder={t("SearchMaterialColor")}
+                                emptyBox={t("NoColorFound")}
+                                form={form}
+                                name="color"
+                                selectText={t("SelectColor")}
+                                items={colorsList}
+                            />
+                           
+                        </div>
+                    )}
+                />
+
                 <FormField
                     control={form.control}
                     name="unitOfMeasure"
