@@ -167,91 +167,91 @@ export default function Warehouses() {
     <div className="w-full space-y-2">
 
       <Dialog open={isWarehouseDetailsOpen} onOpenChange={setIsWarehouseDetailsOpen}>
-          <DialogContent className="sm:max-w-[800px] max-h-[600px] overflow-y-auto">
-              <DialogHeader>
-                  <DialogTitle className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                      {t("WarehouseDetails")}
-                  </DialogTitle>
-              </DialogHeader>
+        <DialogContent className="sm:max-w-[800px] max-h-[600px] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+              {t("WarehouseDetails")}
+            </DialogTitle>
+          </DialogHeader>
 
-              {selectedWarehouse ? (
-                  <div className="w-full overflow-x-auto">
-                      <Table>
-                          <TableHeader>
-                              <TableRow>
-                                  <TableHead className="text-lg font-semibold">{t("WarehouseName")}</TableHead>
-                                  <TableHead className="text-lg font-semibold">{t("Quantity")}</TableHead>
-                                  <TableHead className="text-lg font-semibold">{t("ItemsCount")}</TableHead>
-                              </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                              <TableRow>
-                                  <TableCell className="text-lg">
-                                      {
-                                      // @ts-ignore  
-                                      selectedWarehouse.warehouseName}
-                                  </TableCell>
-                                  <TableCell className="text-lg">
-                                      {
-                                      // @ts-ignore
-                                      selectedWarehouse?.totalQuantityByUnit ? (
-                                          <ul className="space-y-1">
-                                              {
-                                              // @ts-ignore
-                                              Object.entries(selectedWarehouse.totalQuantityByUnit).map(([unit, quantity], i) => (
-                                                  <li key={i}>
-                                                      {Number(quantity)} {unit}
-                                                  </li>
-                                              ))}
-                                          </ul>
-                                      ) : (
-                                          <span>{t("NoQuantities")}</span>
-                                      )}
-                                  </TableCell>
-                                  <TableCell className="text-lg">
-                                      {
-                                      // @ts-ignore
-                                      t("ParentMaterials")}: {selectedWarehouse.totalParentMaterials}, {t("ChildMaterials")}: {selectedWarehouse.totalChildMaterials}
-                                  </TableCell>
-                              </TableRow>
-                          </TableBody>
-                      </Table>
+          {selectedWarehouse ? (
+            <div className="w-full overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-lg font-semibold">{t("WarehouseName")}</TableHead>
+                    <TableHead className="text-lg font-semibold">{t("Quantity")}</TableHead>
+                    <TableHead className="text-lg font-semibold">{t("ItemsCount")}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="text-lg">
+                      {
+                        // @ts-ignore  
+                        selectedWarehouse.warehouseName}
+                    </TableCell>
+                    <TableCell className="text-lg">
+                      {
+                        // @ts-ignore
+                        selectedWarehouse?.totalQuantityByUnit ? (
+                          <ul className="space-y-1">
+                            {
+                              // @ts-ignore
+                              Object.entries(selectedWarehouse.totalQuantityByUnit).map(([unit, quantity], i) => (
+                                <li key={i}>
+                                  {Number(quantity)} {unit}
+                                </li>
+                              ))}
+                          </ul>
+                        ) : (
+                          <span>{t("NoQuantities")}</span>
+                        )}
+                    </TableCell>
+                    <TableCell className="text-lg">
+                      {
+                        // @ts-ignore
+                        t("ParentMaterials")}: {selectedWarehouse.totalParentMaterials}, {t("ChildMaterials")}: {selectedWarehouse.totalChildMaterials}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
 
-                      <div className="space-y-6 mt-8">
-                          {
+              <div className="space-y-6 mt-8">
+                {
+                  // @ts-ignore
+                  selectedWarehouse?.parentMaterialsData.map((material, index) => (
+                    <div key={index} className="bg-gray-50 dark:bg-gray-700 p-8 rounded-lg shadow-md">
+                      <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+                        {material.parentMaterialName}
+                      </h3>
+                      <ul className="space-y-2">
+                        {
                           // @ts-ignore
-                          selectedWarehouse?.parentMaterialsData.map((material, index) => (
-                              <div key={index} className="bg-gray-50 dark:bg-gray-700 p-8 rounded-lg shadow-md">
-                                  <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-                                      {material.parentMaterialName}
-                                  </h3>
-                                  <ul className="space-y-2">
-                                      {
-                                      // @ts-ignore
-                                      material.childMaterials.map((childMaterial, i) => (
-                                          <li key={i} className="pl-6 text-lg text-gray-700 dark:text-gray-300">
-                                              <span className="font-medium">{childMaterial.childMaterialName}:</span>
-                                              <span className="ml-4">{childMaterial.quantity} {childMaterial.unit}</span>
-                                          </li>
-                                      ))}
-                                  </ul>
-                              </div>
+                          material.childMaterials.map((childMaterial, i) => (
+                            <li key={i} className="pl-6 text-lg text-gray-700 dark:text-gray-300">
+                              <span className="font-medium">{childMaterial.childMaterialName}:</span>
+                              <span className="ml-4">{childMaterial.quantity} {childMaterial.unit}</span>
+                            </li>
                           ))}
-                      </div>
-                  </div>
-              ) : (
-                  <p className="text-xl text-gray-700 dark:text-gray-300">{t("NoWarehouseSelected")}</p>
-              )}
+                      </ul>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-xl text-gray-700 dark:text-gray-300">{t("NoWarehouseSelected")}</p>
+          )}
 
-              <DialogFooter className="mt-10 flex justify-end">
-                  <Button
-                      onClick={() => setIsWarehouseDetailsOpen(false)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-lg rounded-lg transition-colors"
-                  >
-                      {t("Close")}
-                  </Button>
-              </DialogFooter>
-          </DialogContent>
+          <DialogFooter className="mt-10 flex justify-end">
+            <Button
+              onClick={() => setIsWarehouseDetailsOpen(false)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-lg rounded-lg transition-colors"
+            >
+              {t("Close")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
 
 
@@ -288,63 +288,63 @@ export default function Warehouses() {
         </div>
 
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-            <DialogContent className="sm:max-w-[600px]">
-                <DialogHeader>
-                    <DialogTitle>{t("WarehouseDetails")}</DialogTitle>
-                </DialogHeader>
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>{t("WarehouseDetails")}</DialogTitle>
+            </DialogHeader>
 
-                <div className="w-full overflow-x-auto">
-                    <Table className="w-full text-left border-collapse rounded-lg overflow-hidden">
-                        <TableHeader>
-                            <TableRow className="bg-blue-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-                                <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-sm font-semibold">
-                                    {t("WarehouseName")}
-                                </TableHead>
-                                <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-sm font-semibold">
-                                    {t("Quantity")}
-                                </TableHead>
-                                <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-sm font-semibold">
-                                    {t("ItemsCount")}
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {
-                              // @ts-ignore
-                                warehouseDetails?.map((warehouse, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell className="px-6 py-4 border-b dark:border-gray-600">
-                                            {warehouse.warehouseName}
-                                        </TableCell>
-                                        <TableCell className="px-6 py-4 border-b dark:border-gray-600">
-                                            {warehouse?.totalQuantityByUnit ? (
-                                                <ul>
-                                                    {Object.entries(warehouse.totalQuantityByUnit).map(([unit, quantity], i) => (
-                                                        <li key={i}>
-                                                            {Number(quantity)} {String(unit)}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            ) : (
-                                                'No Quantities'
-                                            )}
-                                        </TableCell>
-                                        <TableCell className="px-6 py-4 border-b dark:border-gray-600">
-                                            Parent Materials: {warehouse.totalParentMaterials}, Child Materials: {warehouse.totalChildMaterials}
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            }
-                        </TableBody>
-                    </Table>
-                </div>
+            <div className="w-full overflow-x-auto">
+              <Table className="w-full text-left border-collapse rounded-lg overflow-hidden">
+                <TableHeader>
+                  <TableRow className="bg-blue-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                    <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-sm font-semibold">
+                      {t("WarehouseName")}
+                    </TableHead>
+                    <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-sm font-semibold">
+                      {t("Quantity")}
+                    </TableHead>
+                    <TableHead className="px-6 py-4 border-b dark:border-gray-600 text-sm font-semibold">
+                      {t("ItemsCount")}
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {
+                    // @ts-ignore
+                    warehouseDetails?.map((warehouse, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="px-6 py-4 border-b dark:border-gray-600">
+                          {warehouse.warehouseName}
+                        </TableCell>
+                        <TableCell className="px-6 py-4 border-b dark:border-gray-600">
+                          {warehouse?.totalQuantityByUnit ? (
+                            <ul>
+                              {Object.entries(warehouse.totalQuantityByUnit).map(([unit, quantity], i) => (
+                                <li key={i}>
+                                  {Number(quantity)} {String(unit)}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            'No Quantities'
+                          )}
+                        </TableCell>
+                        <TableCell className="px-6 py-4 border-b dark:border-gray-600">
+                          Parent Materials: {warehouse.totalParentMaterials}, Child Materials: {warehouse.totalChildMaterials}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  }
+                </TableBody>
+              </Table>
+            </div>
 
-                <div className="mt-4 flex justify-end">
-                    <Button onClick={() => setIsDetailsOpen(false)} className="bg-blue-500 text-white dark:bg-gray-700 dark:text-gray-300">
-                        {t("Close")}
-                    </Button>
-                </div>
-            </DialogContent>
+            <div className="mt-4 flex justify-end">
+              <Button onClick={() => setIsDetailsOpen(false)} className="bg-blue-500 text-white dark:bg-gray-700 dark:text-gray-300">
+                {t("Close")}
+              </Button>
+            </div>
+          </DialogContent>
         </Dialog>
 
         <div className="rounded-md border overflow-x-scroll">
