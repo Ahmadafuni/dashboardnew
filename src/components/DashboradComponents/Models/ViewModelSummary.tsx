@@ -46,8 +46,8 @@ export default function ViewModelSummary() {
     ClothLength:string | null ;
     ClothWidth: string | null ;
     DamagedItem: [] ;
-    QuantityReceived: number ;
-    QuantityDelivered: number;
+    QuantityReceived: [] ;
+    QuantityDelivered: [];
 
   }
   
@@ -56,7 +56,7 @@ export default function ViewModelSummary() {
     ColorName: string;
     Quantity: number;
     Sizes: Size[];
-    TrakingModels: TrakingModel[];
+    TrakingModels: TrakingModel;
   }
 
   return (
@@ -79,7 +79,7 @@ export default function ViewModelSummary() {
           <div className="border-2 p-2">{t("ModelName")}</div>
           <div className="border-2 p-2">{summary?.modelInfo?.Barcode}</div>
           <div className="border-2 p-2">{t("Barcode")}</div>
-          <div className="border-2 p-2">{summary?.modelInfo?.Sizes}</div>
+          <div className="border-2 p-2">{summary?.modelInfo?.Sizes?.map((e:any)=> e).join(" , ")}</div>
           <div className="border-2 p-2">{t("Sizes")}</div>
           <div className="border-2 p-2">{summary?.modelInfo?.LabelType}</div>
           <div className="border-2 p-2">{t("LabelType")}</div>
@@ -315,11 +315,11 @@ export default function ViewModelSummary() {
       <TableCell>{variant.Sizes.find((size: Size) => size.label === "XL")?.value || '-'}</TableCell>
       <TableCell>{variant.Sizes.find((size: Size) => size.label === "XXL")?.value || '-'}</TableCell>
 
-      <TableCell>{variant.TrakingModels[0]?.ClothWidth} {variant.TrakingModels[0]?.ClothWidth ? '*' : '-'} {variant.TrakingModels[0]?.ClothLength}</TableCell>
-      <TableCell>{variant.TrakingModels[0]?.ClothCount || 'غير متوفر'}</TableCell>
-      <TableCell>{variant.TrakingModels[0]?.ClothWeight || 'غير متوفر'}</TableCell>
-      <TableCell>{variant.TrakingModels[0]?.ReplacedItemInKG || '-'}</TableCell>
-      <TableCell>{variant.TrakingModels[0]?.DamagedItem?.map((e:any) => e.label + ":" + (e.value? e.value : "0")).join(" , ") || 'غير متوفر'}</TableCell>
+      <TableCell>{variant.TrakingModels?.ClothWidth} {variant.TrakingModels?.ClothWidth ? '*' : '-'} {variant.TrakingModels?.ClothLength}</TableCell>
+      <TableCell>{variant.TrakingModels?.ClothCount || 'غير متوفر'}</TableCell>
+      <TableCell>{variant.TrakingModels?.ClothWeight || 'غير متوفر'}</TableCell>
+      <TableCell>{variant.TrakingModels?.ReplacedItemInKG || '-'}</TableCell>
+      <TableCell>{variant.TrakingModels?.DamagedItem?.map((e:any) => e.label + ":" + (e.value? e.value : "0")).join(" , ") || 'غير متوفر'}</TableCell>
     </TableRow>
   ))
 }
@@ -374,21 +374,21 @@ export default function ViewModelSummary() {
                 <TableCell>{variant.Id}</TableCell>
                 <TableCell>{variant.ColorName}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
                 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
 
 
-                <TableCell>{variant.TrakingModels[0].ReplacedItemInKG || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].DamagedItem || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.DamagedItem || '-'}</TableCell>
               </TableRow>
             ))
           }
@@ -443,21 +443,21 @@ export default function ViewModelSummary() {
                 <TableCell>{variant.Id}</TableCell>
                 <TableCell>{variant.ColorName}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
                 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
 
 
-                <TableCell>{variant.TrakingModels[0].ReplacedItemInKG || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].DamagedItem || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.DamagedItem?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
               </TableRow>
             ))
           }
@@ -466,7 +466,7 @@ export default function ViewModelSummary() {
     </CardContent>
   </Card>
 </div>
-     
+
 
 <div className="grid grid-cols-1 gap-2 mt-2">
   <Card>
@@ -507,17 +507,17 @@ export default function ViewModelSummary() {
                 <TableCell>{variant.Id}</TableCell>
                 <TableCell>{variant.ColorName}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
                 
-                <TableCell>{variant.TrakingModels[0].QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels[0].QuantityReceived || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
 
               </TableRow>
             ))
@@ -603,7 +603,7 @@ export default function ViewModelSummary() {
 </div> */}
 
 
-{/* <div className="grid grid-cols-1 gap-2 mt-2">
+ {/* <div className="grid grid-cols-1 gap-2 mt-2">
   <Card>
     <CardHeader>
       <CardTitle>{t("التقييم الإداري")}</CardTitle>
@@ -639,7 +639,7 @@ export default function ViewModelSummary() {
       </Table>
     </CardContent>
   </Card>
-</div> */}
+</div>  */}
 
       <div className="flex justify-end mt-4 print:hidden">
           <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
