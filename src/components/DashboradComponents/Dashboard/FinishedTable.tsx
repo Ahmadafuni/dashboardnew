@@ -18,8 +18,8 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, EllipsisVertical, Eye } from "lucide-react";
-import { Dispatch, SetStateAction, useEffect , useState } from "react";
+import { ChevronLeft, ChevronRight, EllipsisVertical, Eye, ScanEye } from "lucide-react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/common/DataTable";
@@ -73,7 +73,7 @@ export default function FinishedTable({
 
 
 
-  
+
   // @ts-ignore
   const [pageSize, setPageSize] = useState(10);
 
@@ -126,7 +126,7 @@ export default function FinishedTable({
       header: t("Color"),
       cell: ({ row }) => {
         // @ts-ignore
-        return <p>{row.original.colors?row.original.colors:t("N/A")
+        return <p>{row.original.colors ? row.original.colors : t("N/A")
         }</p>;
       },
     },
@@ -136,69 +136,69 @@ export default function FinishedTable({
         return <p>{
           // @ts-ignore
           row.original.sizes ? row.original.sizes.map((e: any) => e)
-          .join(", "):t("N/A")}</p>;
+            .join(", ") : t("N/A")}</p>;
       },
     },
     {
-      header: t("Action") ,
-      cell: ({row}) => {
-        return  <div className="flex gap-1">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              <EllipsisVertical className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-52">
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-               // @ts-ignore
-                onClick={() =>  window.open(`/models/viewdetails/${row.original.modelId}`,
-                  "_blank"
-                )
-                
-                }
-              >
-                <Eye className="mr-2 h-4 w-4" />
-                <span>{t("Details")}</span>
-              </DropdownMenuItem>
+      header: t("Action"),
+      cell: ({ row }) => {
+        return <div className="flex gap-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <EllipsisVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-52">
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  // @ts-ignore
+                  onClick={() => window.open(`/models/viewdetails/${row.original.modelId}`,
+                    "_blank"
+                  )
 
-              <DropdownMenuItem
-                onClick={() =>  window.open(
-                                 // @ts-ignore
-                  `/models/viewsummary/${row.original.modelId}`,
-                  "_blank"
-                )
-                }
-              >
-                <Eye className="mr-2 h-4 w-4" />
-                <span>{t("Summary")}</span>
-              </DropdownMenuItem>
-                    
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+                  }
+                >
+                  <Eye className="mr-2 h-4 w-4" />
+                  <span>{t("Details")}</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => window.open(
+                    // @ts-ignore
+                    `/models/viewsummary/${row.original.modelId}`,
+                    "_blank"
+                  )
+                  }
+                >
+                  <ScanEye className="mr-2 h-4 w-4" />
+                  <span>{t("ViewSummary")}</span>
+                </DropdownMenuItem>
+
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       },
     }
   ];
-  
-  
+
+
   return (
     <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Finished")}</h2>
       <div className="overflow-x-auto">
-      
-      <DataTable 
-        columns={templateColumns} 
-        data={works.finished}
-        tableName="TrakingModels"
-        isDashboard={true}
-        fieldFilter={{
-          "ModelNumber" : "ModelNumber"
-        }}
-        stage="5"
-      />
+
+        <DataTable
+          columns={templateColumns}
+          data={works.finished}
+          tableName="TrakingModels"
+          isDashboard={true}
+          fieldFilter={{
+            "ModelNumber": "ModelNumber"
+          }}
+          stage="5"
+        />
 
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-[600px] bg-gray-800">
