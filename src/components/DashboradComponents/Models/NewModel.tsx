@@ -72,6 +72,7 @@ export default function NewModel({ setNext }: Props) {
 
   const onSubmit = async (data: z.infer<typeof ModelSchema>) => {
     try {
+      setIsLoading(true);
       const formData = new FormData();
       if (Object.keys(files).length > 0) {
         for (let i = 0; i < Object.keys(files).length; i++) {
@@ -79,6 +80,7 @@ export default function NewModel({ setNext }: Props) {
           formData.append("models", files[i]);
         }
       }
+      
       formData.append("DemoModelNumber", data.DemoModelNumber);
       formData.append("ProductCatalog", data.ProductCatalog);
       formData.append("CategoryOne", data.CategoryOne);
@@ -98,13 +100,14 @@ export default function NewModel({ setNext }: Props) {
         },
       });
       toast.success(newModel.data.message);
-      setIsLoading(false);
+
       setSearchParams({ model: newModel.data.data.Id, tab: "details" });
       setNext("stages");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       }
+    } finally {
       setIsLoading(false);
     }
   };

@@ -48,7 +48,8 @@ export default function ViewModelSummary() {
     DamagedItem: [] ;
     QuantityReceived: [] ;
     QuantityDelivered: [];
-
+    StartTime: string;
+    EndTime: string
   }
   
   interface Variant {
@@ -232,7 +233,7 @@ export default function ViewModelSummary() {
         </div>
       )}
 
-<div className="grid grid-cols-1 gap-2 mt-2">
+{/* <div className="grid grid-cols-1 gap-2 mt-2">
   <Card>
     <CardHeader>
       <CardTitle>{t("بيانات المرسم")}</CardTitle>
@@ -264,7 +265,7 @@ export default function ViewModelSummary() {
       </Table>
     </CardContent>
   </Card>
-</div>
+</div> */}
 
 
 <div className="grid grid-cols-1 gap-2 mt-2">
@@ -274,12 +275,11 @@ export default function ViewModelSummary() {
     </CardHeader>
     <CardContent>
 
-      <div className="flex justify-between items-center border-b pb-2 mb-4">
+      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم القصّة")}: 28/03/2023</span>
-      </div>
+      </div> */}
 
-      
       <Table>
         <TableHeader>
           <TableRow>
@@ -296,6 +296,8 @@ export default function ViewModelSummary() {
             <TableHead>{t("وزن / الفجة")}</TableHead>
             <TableHead>{t("التعويض")}</TableHead>
             <TableHead>{t("السقوط")}</TableHead>
+            <TableHead>{t("تاريخ الاستلام")}</TableHead>
+            <TableHead>{t("تاريخ التسليم")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -320,6 +322,10 @@ export default function ViewModelSummary() {
       <TableCell>{variant.TrakingModels?.ClothWeight || 'غير متوفر'}</TableCell>
       <TableCell>{variant.TrakingModels?.ReplacedItemInKG || '-'}</TableCell>
       <TableCell>{variant.TrakingModels?.DamagedItem?.map((e:any) => e.label + ":" + (e.value? e.value : "0")).join(" , ") || 'غير متوفر'}</TableCell>
+   
+      <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
+      <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
+
     </TableRow>
   ))
 }
@@ -340,10 +346,10 @@ export default function ViewModelSummary() {
     </CardHeader>
     <CardContent>
 
-      <div className="flex justify-between items-center border-b pb-2 mb-4">
+      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم الطباعة")}: 28/03/2023</span>
-      </div>
+      </div> */}
 
       <Table>
         <TableHeader>
@@ -365,6 +371,8 @@ export default function ViewModelSummary() {
         
             <TableHead>{t("التعويض")}</TableHead>
             <TableHead>{t("السقط")}</TableHead>
+            <TableHead>{t("تاريخ الاستلام")}</TableHead>
+            <TableHead>{t("تاريخ التسليم")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -389,6 +397,8 @@ export default function ViewModelSummary() {
 
                 <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
                 <TableCell>{variant.TrakingModels.DamagedItem || '-'}</TableCell>
+                <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
+                 <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
               </TableRow>
             ))
           }
@@ -408,10 +418,10 @@ export default function ViewModelSummary() {
     </CardHeader>
     <CardContent>
 
-      <div className="flex justify-between items-center border-b pb-2 mb-4">
+      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم الموديل")}: 28/03/2023</span>
-      </div>
+      </div> */}
 
       <Table>
         <TableHeader>
@@ -433,6 +443,8 @@ export default function ViewModelSummary() {
         
             <TableHead>{t("التعويض")}</TableHead>
             <TableHead>{t("السقط")}</TableHead>
+            <TableHead>{t("تاريخ الاستلام")}</TableHead>
+            <TableHead>{t("تاريخ التسليم")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -458,6 +470,9 @@ export default function ViewModelSummary() {
 
                 <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
                 <TableCell>{variant.TrakingModels.DamagedItem?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+             
+                <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
+                <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
               </TableRow>
             ))
           }
@@ -475,10 +490,10 @@ export default function ViewModelSummary() {
     </CardHeader>
     <CardContent>
 
-      <div className="flex justify-between items-center border-b pb-2 mb-4">
+      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم الموديل")}: 28/03/2023</span>
-      </div>
+      </div> */}
 
       <Table>
         <TableHeader>
@@ -496,6 +511,8 @@ export default function ViewModelSummary() {
             
             <TableHead>{t("استلام: XL")}</TableHead>
             <TableHead>{t("تسليم: XL")}</TableHead>
+            <TableHead>{t("تاريخ الاستلام")}</TableHead>
+            <TableHead>{t("تاريخ التسليم")}</TableHead>
 
           </TableRow>
         </TableHeader>
@@ -518,6 +535,9 @@ export default function ViewModelSummary() {
                 
                 <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
                 <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+
+                <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
+                <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
 
               </TableRow>
             ))
