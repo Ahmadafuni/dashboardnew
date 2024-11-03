@@ -15,6 +15,7 @@ import {useTranslation} from "react-i18next";
 import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
 import { BASE_URL } from "@/config";
+import { format } from "date-fns";
 
 export default function ViewModelSummary() {
   const { id } = useParams();
@@ -48,8 +49,6 @@ export default function ViewModelSummary() {
     DamagedItem: [] ;
     QuantityReceived: [] ;
     QuantityDelivered: [];
-    StartTime: string;
-    EndTime: string
   }
   
   interface Variant {
@@ -58,6 +57,9 @@ export default function ViewModelSummary() {
     Quantity: number;
     Sizes: Size[];
     TrakingModels: TrakingModel;
+    Duration: String,
+    StartDataTime: string,
+    EndDataTime: string
   }
 
   return (
@@ -298,6 +300,7 @@ export default function ViewModelSummary() {
             <TableHead>{t("السقوط")}</TableHead>
             <TableHead>{t("تاريخ الاستلام")}</TableHead>
             <TableHead>{t("تاريخ التسليم")}</TableHead>
+            <TableHead>{t("المدة الزمنية")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -323,8 +326,9 @@ export default function ViewModelSummary() {
       <TableCell>{variant.TrakingModels?.ReplacedItemInKG || '-'}</TableCell>
       <TableCell>{variant.TrakingModels?.DamagedItem?.map((e:any) => e.label + ":" + (e.value? e.value : "0")).join(" , ") || 'غير متوفر'}</TableCell>
    
-      <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
-      <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
+      <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+      <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+      <TableCell>{variant.Duration}</TableCell>
 
     </TableRow>
   ))
@@ -373,6 +377,8 @@ export default function ViewModelSummary() {
             <TableHead>{t("السقط")}</TableHead>
             <TableHead>{t("تاريخ الاستلام")}</TableHead>
             <TableHead>{t("تاريخ التسليم")}</TableHead>
+            <TableHead>{t("المدة الزمنية")}</TableHead>
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -397,8 +403,10 @@ export default function ViewModelSummary() {
 
                 <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
                 <TableCell>{variant.TrakingModels.DamagedItem || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
-                 <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
+                <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+                <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+                 <TableCell>{variant.Duration}</TableCell>
+
               </TableRow>
             ))
           }
@@ -445,6 +453,8 @@ export default function ViewModelSummary() {
             <TableHead>{t("السقط")}</TableHead>
             <TableHead>{t("تاريخ الاستلام")}</TableHead>
             <TableHead>{t("تاريخ التسليم")}</TableHead>
+            <TableHead>{t("المدة الزمنية")}</TableHead>
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -471,8 +481,10 @@ export default function ViewModelSummary() {
                 <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
                 <TableCell>{variant.TrakingModels.DamagedItem?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
              
-                <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
-                <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
+                <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+                <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+                <TableCell>{variant.Duration}</TableCell>
+
               </TableRow>
             ))
           }
@@ -513,6 +525,8 @@ export default function ViewModelSummary() {
             <TableHead>{t("تسليم: XL")}</TableHead>
             <TableHead>{t("تاريخ الاستلام")}</TableHead>
             <TableHead>{t("تاريخ التسليم")}</TableHead>
+            <TableHead>{t("المدة الزمنية")}</TableHead>
+
 
           </TableRow>
         </TableHeader>
@@ -536,8 +550,9 @@ export default function ViewModelSummary() {
                 <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
                 <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
 
-                <TableCell>{variant.TrakingModels?.StartTime}</TableCell>
-                <TableCell>{variant.TrakingModels?.EndTime}</TableCell>
+                <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+                <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
+                <TableCell>{variant.Duration}</TableCell>
 
               </TableRow>
             ))
