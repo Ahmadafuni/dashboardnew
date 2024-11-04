@@ -154,48 +154,47 @@ export default function Dashboard() {
         </div>
 
         <DialogSec open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent className="sm:max-w-[600px] bg-gray-800">
+          <DialogContent >
             <DialogHeader>
               <DialogTitle>{t("ModelDetails")}</DialogTitle>
             </DialogHeader>
             <div className="overflow-x-auto">
-              <Table className="min-w-full border border-gray-600">
+              <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-gray-300">{"حالة العمل"}</TableHead>
-                    <TableHead className="text-gray-300">{"عدد الموديلات"}</TableHead>
-                    <TableHead className="text-gray-300">{"كمية المنتجات المستلمة"}</TableHead>
-                    <TableHead className="text-gray-300">{"كمية المنتجات المسلمة"}</TableHead>
-
+                    <TableHead>{"حالة العمل"}</TableHead>
+                    <TableHead >{"عدد الموديلات"}</TableHead>
+                    <TableHead >{"كمية المنتجات المستلمة"}</TableHead>
+                    <TableHead >{"كمية المنتجات المسلمة"}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow className="hover:bg-gray-700">
-                    <TableCell className="text-gray-300">{"جاهز للعمل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.awaitingModels} {"موديل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.awaitingReceivedQuantity} {"قطعة"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.awaitingDeliveredQuantity} {"قطعة"}</TableCell>
+                  <TableRow >
+                    <TableCell >{"جاهز للعمل"}</TableCell>
+                    <TableCell >{modelDetails.awaitingModels} {"موديل"}</TableCell>
+                    <TableCell >{modelDetails.awaitingReceivedQuantity} {"قطعة"}</TableCell>
+                    <TableCell >{modelDetails.awaitingDeliveredQuantity} {"قطعة"}</TableCell>
 
                   </TableRow>
-                  <TableRow className="hover:bg-gray-700">
-                    <TableCell className="text-gray-300">{"جار العمل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.inProgressModels} {"موديل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.inProgressReceivedQuantity} {"قطعة"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.inProgressDeliveredQuantity} {"قطعة"}</TableCell>
+                  <TableRow >
+                    <TableCell >{"جار العمل"}</TableCell>
+                    <TableCell >{modelDetails.inProgressModels} {"موديل"}</TableCell>
+                    <TableCell >{modelDetails.inProgressReceivedQuantity} {"قطعة"}</TableCell>
+                    <TableCell >{modelDetails.inProgressDeliveredQuantity} {"قطعة"}</TableCell>
 
                   </TableRow>
-                  <TableRow className="hover:bg-gray-700">
-                    <TableCell className="text-gray-300">{"في انتظار التأكيد"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationModels} {"موديل"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationReceivedQuantity} {"قطعة"}</TableCell>
-                    <TableCell className="text-gray-300">{modelDetails.givingConfirmationDeliveredQuantity} {"قطعة"}</TableCell>
+                  <TableRow>
+                    <TableCell >{"في انتظار التأكيد"}</TableCell>
+                    <TableCell >{modelDetails.givingConfirmationModels} {"موديل"}</TableCell>
+                    <TableCell >{modelDetails.givingConfirmationReceivedQuantity} {"قطعة"}</TableCell>
+                    <TableCell >{modelDetails.givingConfirmationDeliveredQuantity} {"قطعة"}</TableCell>
 
                   </TableRow>
                 </TableBody>
               </Table>
             </div>
             <DialogFooter className="mt-4">
-              <Button variant="outline" onClick={closeModal} className="bg-gray-600 text-gray-200 hover:bg-gray-500">
+              <Button variant="outline" onClick={closeModal}>
                 {t("Close")}
               </Button>
             </DialogFooter>

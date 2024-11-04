@@ -9,11 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getModelSummary } from "@/services/Model.services";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useRef } from "react";
-import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from "react-to-print";
 import { BASE_URL } from "@/config";
 import { format } from "date-fns";
 
@@ -25,41 +25,39 @@ export default function ViewModelSummary() {
   const printRef = useRef<HTMLDivElement | null>(null);
 
   const handlePrint = useReactToPrint({
-        content: () => printRef.current ?? null,
-        documentTitle: `Model_Summary_${summary?.modelInfo?.Barcode}`
+    content: () => printRef.current ?? null,
+    documentTitle: `Model_Summary_${summary?.modelInfo?.Barcode}`,
   });
 
   useEffect(() => {
     getModelSummary(setSummary, id);
-
   }, [summary]);
-
 
   interface Size {
     label: string;
     value: number | string;
   }
-  
+
   interface TrakingModel {
     ClothWeight: string | null;
     ReplacedItemInKG: string | null;
     ClothCount: string | null;
-    ClothLength:string | null ;
-    ClothWidth: string | null ;
-    DamagedItem: [] ;
-    QuantityReceived: [] ;
+    ClothLength: string | null;
+    ClothWidth: string | null;
+    DamagedItem: [];
+    QuantityReceived: [];
     QuantityDelivered: [];
   }
-  
+
   interface Variant {
     Id: number;
     ColorName: string;
     Quantity: number;
     Sizes: Size[];
     TrakingModels: TrakingModel;
-    Duration: String,
-    StartDataTime: string,
-    EndDataTime: string
+    Duration: String;
+    StartDataTime: string;
+    EndDataTime: string;
   }
 
   return (
@@ -82,7 +80,9 @@ export default function ViewModelSummary() {
           <div className="border-2 p-2">{t("ModelName")}</div>
           <div className="border-2 p-2">{summary?.modelInfo?.Barcode}</div>
           <div className="border-2 p-2">{t("Barcode")}</div>
-          <div className="border-2 p-2">{summary?.modelInfo?.Sizes?.map((e:any)=> e).join(" , ")}</div>
+          <div className="border-2 p-2">
+            {summary?.modelInfo?.Sizes?.map((e: any) => e).join(" , ")}
+          </div>
           <div className="border-2 p-2">{t("Sizes")}</div>
           <div className="border-2 p-2">{summary?.modelInfo?.LabelType}</div>
           <div className="border-2 p-2">{t("LabelType")}</div>
@@ -105,41 +105,41 @@ export default function ViewModelSummary() {
         </div>
       </div>
       <div className="grid grid-cols-6 gap-2 mt-2">
-        {summary?.modelInfo?.Images != null && summary?.modelInfo?.Images.split(",").map((i: any) => (
-          // <img key={i} src={`https://dashboardbackendnew.onrender.com${i}`} />
-          <img key={i} src={`${BASE_URL}${i}`} />
-        ))}
+        {summary?.modelInfo?.Images != null &&
+          summary?.modelInfo?.Images.split(",").map((i: any) => (
+            // <img key={i} src={`https://dashboardbackendnew.onrender.com${i}`} />
+            <img key={i} src={`${BASE_URL}${i}`} />
+          ))}
       </div>
       {summary?.stages?.length > 0 && (
-  <div className="grid grid-cols-1 gap-2 mt-2">
-    <Card>
-      <CardHeader>
-        <CardTitle>{t("Stages")}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t("StageNumber")}</TableHead>
-              <TableHead>{t("DepartmentName")}</TableHead>
-              <TableHead>{t("WorkDescription")}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {summary?.stages.map((stage: any, index: number) => (
-              <TableRow key={index}>
-                <TableCell>{stage.StageNumber}</TableCell>
-                <TableCell>{stage.DepartmentName}</TableCell>
-                <TableCell>{stage.WorkDescription}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
-  </div>
-)}
-
+        <div className="grid grid-cols-1 gap-2 mt-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("Stages")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t("StageNumber")}</TableHead>
+                    <TableHead>{t("DepartmentName")}</TableHead>
+                    <TableHead>{t("WorkDescription")}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {summary?.stages.map((stage: any, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell>{stage.StageNumber}</TableCell>
+                      <TableCell>{stage.DepartmentName}</TableCell>
+                      <TableCell>{stage.WorkDescription}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {summary?.cutting?.length > 0 && (
         <div className="grid grid-cols-1 gap-2 mt-2">
@@ -187,7 +187,7 @@ export default function ViewModelSummary() {
               </Table>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>{t("Dressup")}</CardTitle>
@@ -235,7 +235,7 @@ export default function ViewModelSummary() {
         </div>
       )}
 
-{/* <div className="grid grid-cols-1 gap-2 mt-2">
+      {/* <div className="grid grid-cols-1 gap-2 mt-2">
   <Card>
     <CardHeader>
       <CardTitle>{t("بيانات المرسم")}</CardTitle>
@@ -269,302 +269,454 @@ export default function ViewModelSummary() {
   </Card>
 </div> */}
 
+      <div className="grid grid-cols-1 gap-2 mt-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("بيانات المستودع")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("رقم الصبغة")}</TableHead>
+                  <TableHead>{t("لون الصبغة")}</TableHead>
+                  <TableHead>{t("الوزن / كغ")}</TableHead>
+                  <TableHead>{t("العرض / سم")}</TableHead>
+                  <TableHead>{t("طول الكشش")}</TableHead>
+                  <TableHead>{t("عرض الكشش")}</TableHead>
+                  <TableHead>{t("الغراماج")}</TableHead>
+                  <TableHead>{t("الحليل")}</TableHead>
+                  <TableHead>{t("الفتالن")}</TableHead>
+                  <TableHead>{t("االستهالك")}</TableHead>
+                  <TableHead>{t("المرتجع")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {summary?.warehouseSummary?.map((data: any, index: number) => (
+                  <TableRow key={index}>
+                    <TableCell>{data.ChildMaterial?.DyeNumber}</TableCell>
+                    <TableCell>{data.ChildMaterial?.Name}</TableCell>
+                    <TableCell>
+                      {data.ChildMaterial?.ParentMaterial?.MinimumLimit +
+                        data.ChildMaterial?.ParentMaterial?.UnitOfMeasure}
+                    </TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>{data.ChildMaterial?.Kashan}</TableCell>
+                    <TableCell>{data.ChildMaterial?.Kashan}</TableCell>
+                    <TableCell>{data.ChildMaterial?.GramWeight}</TableCell>
+                    <TableCell>{data.ChildMaterial?.Halil}</TableCell>
+                    <TableCell>{data.ChildMaterial?.Phthalate}</TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
 
-<div className="grid grid-cols-1 gap-2 mt-2">
-  <Card>
-    <CardHeader>
-      <CardTitle>{t("بيانات التفصيل")}</CardTitle>
-    </CardHeader>
-    <CardContent>
-
-      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
+      <div className="grid grid-cols-1 gap-2 mt-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("بيانات التفصيل")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم القصّة")}: 28/03/2023</span>
       </div> */}
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("رقم الصبغة")}</TableHead>
-            <TableHead>{t("اللون")}</TableHead>
-            <TableHead>{t("عدد القطع")}</TableHead>
-            <TableHead>{t("S")}</TableHead>
-            <TableHead>{t("M")}</TableHead>
-            <TableHead>{t("L")}</TableHead>
-            <TableHead>{t("XL")}</TableHead>
-            <TableHead>{t("XXL")}</TableHead>
-            <TableHead>{t("الطول * العرض")}</TableHead>
-            <TableHead>{t("عدد / الفجة")}</TableHead>
-            <TableHead>{t("وزن / الفجة")}</TableHead>
-            <TableHead>{t("التعويض")}</TableHead>
-            <TableHead>{t("السقوط")}</TableHead>
-            <TableHead>{t("تاريخ الاستلام")}</TableHead>
-            <TableHead>{t("تاريخ التسليم")}</TableHead>
-            <TableHead>{t("المدة الزمنية")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-        
-        {
-  summary?.modelVarients?.cuttingDepartment?.map((variant: Variant, index: number) => (
-    <TableRow key={index}>
-      
-      <TableCell>{variant.Id}</TableCell>
-      <TableCell>{variant.ColorName}</TableCell>
-      <TableCell>{variant.Quantity}</TableCell>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("رقم الصبغة")}</TableHead>
+                  <TableHead>{t("اللون")}</TableHead>
+                  <TableHead>{t("عدد القطع")}</TableHead>
+                  <TableHead>{t("S")}</TableHead>
+                  <TableHead>{t("M")}</TableHead>
+                  <TableHead>{t("L")}</TableHead>
+                  <TableHead>{t("XL")}</TableHead>
+                  <TableHead>{t("XXL")}</TableHead>
+                  <TableHead>{t("الطول * العرض")}</TableHead>
+                  <TableHead>{t("عدد / الفجة")}</TableHead>
+                  <TableHead>{t("وزن / الفجة")}</TableHead>
+                  <TableHead>{t("التعويض")}</TableHead>
+                  <TableHead>{t("السقوط")}</TableHead>
+                  <TableHead>{t("تاريخ الاستلام")}</TableHead>
+                  <TableHead>{t("تاريخ التسليم")}</TableHead>
+                  <TableHead>{t("المدة الزمنية")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {summary?.modelVarients?.cuttingDepartment?.map(
+                  (variant: Variant, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell>{variant.Id}</TableCell>
+                      <TableCell>{variant.ColorName}</TableCell>
+                      <TableCell>{variant.Quantity}</TableCell>
 
+                      <TableCell>
+                        {variant.Sizes.find((size: Size) => size.label === "S")
+                          ?.value || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.Sizes.find((size: Size) => size.label === "M")
+                          ?.value || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.Sizes.find((size: Size) => size.label === "L")
+                          ?.value || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.Sizes.find((size: Size) => size.label === "XL")
+                          ?.value || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.Sizes.find(
+                          (size: Size) => size.label === "XXL"
+                        )?.value || "-"}
+                      </TableCell>
 
-      <TableCell>{variant.Sizes.find((size: Size) => size.label === "S")?.value || '-'}</TableCell>
-      <TableCell>{variant.Sizes.find((size: Size) => size.label === "M")?.value || '-'}</TableCell>
-      <TableCell>{variant.Sizes.find((size: Size) => size.label === "L")?.value || '-'}</TableCell>
-      <TableCell>{variant.Sizes.find((size: Size) => size.label === "XL")?.value || '-'}</TableCell>
-      <TableCell>{variant.Sizes.find((size: Size) => size.label === "XXL")?.value || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels?.ClothWidth}{" "}
+                        {variant.TrakingModels?.ClothWidth ? "*" : "-"}{" "}
+                        {variant.TrakingModels?.ClothLength}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels?.ClothCount || "غير متوفر"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels?.ClothWeight || "غير متوفر"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels?.ReplacedItemInKG || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels?.DamagedItem?.map(
+                          (e: any) => e.label + ":" + (e.value ? e.value : "0")
+                        ).join(" , ") || "غير متوفر"}
+                      </TableCell>
 
-      <TableCell>{variant.TrakingModels?.ClothWidth} {variant.TrakingModels?.ClothWidth ? '*' : '-'} {variant.TrakingModels?.ClothLength}</TableCell>
-      <TableCell>{variant.TrakingModels?.ClothCount || 'غير متوفر'}</TableCell>
-      <TableCell>{variant.TrakingModels?.ClothWeight || 'غير متوفر'}</TableCell>
-      <TableCell>{variant.TrakingModels?.ReplacedItemInKG || '-'}</TableCell>
-      <TableCell>{variant.TrakingModels?.DamagedItem?.map((e:any) => e.label + ":" + (e.value? e.value : "0")).join(" , ") || 'غير متوفر'}</TableCell>
-   
-      <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-      <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-      <TableCell>{variant.Duration}</TableCell>
+                      <TableCell>
+                        {format(variant.StartDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>
+                        {format(variant.EndDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>{variant.Duration}</TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
 
-    </TableRow>
-  ))
-}
-
-        </TableBody>
-      </Table>
-      
-    </CardContent>
-  </Card>
-</div>
-
-
-
-<div className="grid grid-cols-1 gap-2 mt-2">
-  <Card>
-    <CardHeader>
-      <CardTitle>{t("بيانات الطباعة")}</CardTitle>
-    </CardHeader>
-    <CardContent>
-
-      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
+      <div className="grid grid-cols-1 gap-2 mt-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("بيانات الطباعة")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم الطباعة")}: 28/03/2023</span>
       </div> */}
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("رقم الصبغة")}</TableHead>
-            <TableHead>{t("لون الصبغة")}</TableHead>
-            <TableHead>{t("استلام: S")}</TableHead>
-            <TableHead>{t("تسليم: S")}</TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("رقم الصبغة")}</TableHead>
+                  <TableHead>{t("لون الصبغة")}</TableHead>
+                  <TableHead>{t("استلام: S")}</TableHead>
+                  <TableHead>{t("تسليم: S")}</TableHead>
 
-            <TableHead>{t("استلام: M")}</TableHead>
-            <TableHead>{t("تسليم: M")}</TableHead>
+                  <TableHead>{t("استلام: M")}</TableHead>
+                  <TableHead>{t("تسليم: M")}</TableHead>
 
-            <TableHead>{t("استلام: L")}</TableHead>
-            <TableHead>{t("تسليم: L")}</TableHead>
-            
-            <TableHead>{t("استلام: XL")}</TableHead>
-            <TableHead>{t("تسليم: XL")}</TableHead>
+                  <TableHead>{t("استلام: L")}</TableHead>
+                  <TableHead>{t("تسليم: L")}</TableHead>
 
-        
-            <TableHead>{t("التعويض")}</TableHead>
-            <TableHead>{t("السقط")}</TableHead>
-            <TableHead>{t("تاريخ الاستلام")}</TableHead>
-            <TableHead>{t("تاريخ التسليم")}</TableHead>
-            <TableHead>{t("المدة الزمنية")}</TableHead>
+                  <TableHead>{t("استلام: XL")}</TableHead>
+                  <TableHead>{t("تسليم: XL")}</TableHead>
 
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-        {
-            summary?.modelVarients?.printingDepartment?.map((variant: Variant, index: number) => (
-              <TableRow key={index}>
-                <TableCell>{variant.Id}</TableCell>
-                <TableCell>{variant.ColorName}</TableCell>
+                  <TableHead>{t("التعويض")}</TableHead>
+                  <TableHead>{t("السقط")}</TableHead>
+                  <TableHead>{t("تاريخ الاستلام")}</TableHead>
+                  <TableHead>{t("تاريخ التسليم")}</TableHead>
+                  <TableHead>{t("المدة الزمنية")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {summary?.modelVarients?.printingDepartment?.map(
+                  (variant: Variant, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell>{variant.Id}</TableCell>
+                      <TableCell>{variant.ColorName}</TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
-                
-                <TableCell>{variant.TrakingModels.QuantityDelivered || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived || "-"}
+                      </TableCell>
 
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.DamagedItem || '-'}</TableCell>
-                <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-                <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-                 <TableCell>{variant.Duration}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.ReplacedItemInKG || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.DamagedItem || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {format(variant.StartDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>
+                        {format(variant.EndDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>{variant.Duration}</TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
 
-              </TableRow>
-            ))
-          }
-        
-
-        </TableBody>
-      </Table>
-    </CardContent>
-  </Card>
-</div>
-
-
-<div className="grid grid-cols-1 gap-2 mt-2">
-  <Card>
-    <CardHeader>
-      <CardTitle>{t("بيانات الخياطة")}</CardTitle>
-    </CardHeader>
-    <CardContent>
-
-      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
+      <div className="grid grid-cols-1 gap-2 mt-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("بيانات الخياطة")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم الموديل")}: 28/03/2023</span>
       </div> */}
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("رقم الصبغة")}</TableHead>
-            <TableHead>{t("لون الصبغة")}</TableHead>
-            <TableHead>{t("استلام: S")}</TableHead>
-            <TableHead>{t("تسليم: S")}</TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("رقم الصبغة")}</TableHead>
+                  <TableHead>{t("لون الصبغة")}</TableHead>
+                  <TableHead>{t("استلام: S")}</TableHead>
+                  <TableHead>{t("تسليم: S")}</TableHead>
 
-            <TableHead>{t("استلام: M")}</TableHead>
-            <TableHead>{t("تسليم: M")}</TableHead>
+                  <TableHead>{t("استلام: M")}</TableHead>
+                  <TableHead>{t("تسليم: M")}</TableHead>
 
-            <TableHead>{t("استلام: L")}</TableHead>
-            <TableHead>{t("تسليم: L")}</TableHead>
-            
-            <TableHead>{t("استلام: XL")}</TableHead>
-            <TableHead>{t("تسليم: XL")}</TableHead>
+                  <TableHead>{t("استلام: L")}</TableHead>
+                  <TableHead>{t("تسليم: L")}</TableHead>
 
-        
-            <TableHead>{t("التعويض")}</TableHead>
-            <TableHead>{t("السقط")}</TableHead>
-            <TableHead>{t("تاريخ الاستلام")}</TableHead>
-            <TableHead>{t("تاريخ التسليم")}</TableHead>
-            <TableHead>{t("المدة الزمنية")}</TableHead>
+                  <TableHead>{t("استلام: XL")}</TableHead>
+                  <TableHead>{t("تسليم: XL")}</TableHead>
 
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+                  <TableHead>{t("التعويض")}</TableHead>
+                  <TableHead>{t("السقط")}</TableHead>
+                  <TableHead>{t("تاريخ الاستلام")}</TableHead>
+                  <TableHead>{t("تاريخ التسليم")}</TableHead>
+                  <TableHead>{t("المدة الزمنية")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {summary?.modelVarients?.sewingDepartment?.map(
+                  (variant: Variant, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell>{variant.Id}</TableCell>
+                      <TableCell>{variant.ColorName}</TableCell>
 
-        {
-            summary?.modelVarients?.sewingDepartment?.map((variant: Variant, index: number) => (
-              <TableRow key={index}>
-                <TableCell>{variant.Id}</TableCell>
-                <TableCell>{variant.ColorName}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
+                      <TableCell>
+                        {variant.TrakingModels.ReplacedItemInKG || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.DamagedItem?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.ReplacedItemInKG || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.DamagedItem?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-             
-                <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-                <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-                <TableCell>{variant.Duration}</TableCell>
+                      <TableCell>
+                        {format(variant.StartDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>
+                        {format(variant.EndDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>{variant.Duration}</TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
 
-              </TableRow>
-            ))
-          }
-        </TableBody>
-      </Table>
-    </CardContent>
-  </Card>
-</div>
-
-
-<div className="grid grid-cols-1 gap-2 mt-2">
-  <Card>
-    <CardHeader>
-      <CardTitle>{t("بيانات الأمبلاج")}</CardTitle>
-    </CardHeader>
-    <CardContent>
-
-      {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
+      <div className="grid grid-cols-1 gap-2 mt-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("بيانات الأمبلاج")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* <div className="flex justify-between items-center border-b pb-2 mb-4">
         <span>{t("تاريخ استلام الطلب")}: 26/03/2023</span>
         <span>{t("تاريخ تسليم الموديل")}: 28/03/2023</span>
       </div> */}
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("رقم الصبغة")}</TableHead>
-            <TableHead>{t("لون الصبغة")}</TableHead>
-            <TableHead>{t("استلام: S")}</TableHead>
-            <TableHead>{t("تسليم: S")}</TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("رقم الصبغة")}</TableHead>
+                  <TableHead>{t("لون الصبغة")}</TableHead>
+                  <TableHead>{t("استلام: S")}</TableHead>
+                  <TableHead>{t("تسليم: S")}</TableHead>
 
-            <TableHead>{t("استلام: M")}</TableHead>
-            <TableHead>{t("تسليم: M")}</TableHead>
+                  <TableHead>{t("استلام: M")}</TableHead>
+                  <TableHead>{t("تسليم: M")}</TableHead>
 
-            <TableHead>{t("استلام: L")}</TableHead>
-            <TableHead>{t("تسليم: L")}</TableHead>
-            
-            <TableHead>{t("استلام: XL")}</TableHead>
-            <TableHead>{t("تسليم: XL")}</TableHead>
-            <TableHead>{t("تاريخ الاستلام")}</TableHead>
-            <TableHead>{t("تاريخ التسليم")}</TableHead>
-            <TableHead>{t("المدة الزمنية")}</TableHead>
+                  <TableHead>{t("استلام: L")}</TableHead>
+                  <TableHead>{t("تسليم: L")}</TableHead>
 
+                  <TableHead>{t("استلام: XL")}</TableHead>
+                  <TableHead>{t("تسليم: XL")}</TableHead>
+                  <TableHead>{t("تاريخ الاستلام")}</TableHead>
+                  <TableHead>{t("تاريخ التسليم")}</TableHead>
+                  <TableHead>{t("المدة الزمنية")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {summary?.modelVarients?.emballageDepartment?.map(
+                  (variant: Variant, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell>{variant.Id}</TableCell>
+                      <TableCell>{variant.ColorName}</TableCell>
 
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-        {
-            summary?.modelVarients?.emballageDepartment?.map((variant: Variant, index: number) => (
-              <TableRow key={index}>
-                <TableCell>{variant.Id}</TableCell>
-                <TableCell>{variant.ColorName}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityDelivered?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
+                      <TableCell>
+                        {variant.TrakingModels.QuantityReceived?.map(
+                          (e: any) => e.label + ":" + e.value
+                        ).join(" , ") || "-"}
+                      </TableCell>
 
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                
-                <TableCell>{variant.TrakingModels.QuantityDelivered?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
-                <TableCell>{variant.TrakingModels.QuantityReceived?.map((e:any)=> e.label + ":" + e.value).join(" , ") || '-'}</TableCell>
+                      <TableCell>
+                        {format(variant.StartDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>
+                        {format(variant.EndDataTime, "yyyy-MM-dd HH:mm:ss")}
+                      </TableCell>
+                      <TableCell>{variant.Duration}</TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
 
-                <TableCell>{format(variant.StartDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-                <TableCell>{format(variant.EndDataTime , "yyyy-MM-dd HH:mm:ss")}</TableCell>
-                <TableCell>{variant.Duration}</TableCell>
-
-              </TableRow>
-            ))
-          }
-        </TableBody>
-      </Table>
-    </CardContent>
-  </Card>
-</div>   
-
-
-{/* <div className="grid grid-cols-1 gap-2 mt-2">
+      {/* <div className="grid grid-cols-1 gap-2 mt-2">
   <Card>
     <CardHeader>
       <CardTitle>{t("النتائج النهائية")}</CardTitle>
@@ -601,9 +753,7 @@ export default function ViewModelSummary() {
   </Card>
 </div>  */}
 
-
-
-{/* <div className="grid grid-cols-1 gap-2 mt-2">
+      {/* <div className="grid grid-cols-1 gap-2 mt-2">
   <Card>
     <CardHeader>
       <CardTitle>{t("التقييم التقني")}</CardTitle>
@@ -637,8 +787,7 @@ export default function ViewModelSummary() {
   </Card>
 </div> */}
 
-
- {/* <div className="grid grid-cols-1 gap-2 mt-2">
+      {/* <div className="grid grid-cols-1 gap-2 mt-2">
   <Card>
     <CardHeader>
       <CardTitle>{t("التقييم الإداري")}</CardTitle>
@@ -677,7 +826,7 @@ export default function ViewModelSummary() {
 </div>  */}
 
       <div className="flex justify-end mt-4 print:hidden">
-          <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
+        <Button onClick={handlePrint}>{t("DownloadPDF")}</Button>
       </div>
     </div>
   );
