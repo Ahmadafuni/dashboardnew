@@ -31,7 +31,8 @@ export type ModelTypes = {
   Status: string; // From backend
   Description: string;
   RunningStatus: string;
-  Order:{
+  Order: {
     Status: string;
+    OrderName: string;
   }
 };
