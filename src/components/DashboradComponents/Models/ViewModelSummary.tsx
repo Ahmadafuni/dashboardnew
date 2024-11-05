@@ -278,6 +278,8 @@ export default function ViewModelSummary() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>{t("اسم المادة")}</TableHead>
+                  <TableHead>{t("العدد")}</TableHead>
                   <TableHead>{t("رقم الصبغة")}</TableHead>
                   <TableHead>{t("لون الصبغة")}</TableHead>
                   <TableHead>{t("الوزن / كغ")}</TableHead>
@@ -287,13 +289,19 @@ export default function ViewModelSummary() {
                   <TableHead>{t("الغراماج")}</TableHead>
                   <TableHead>{t("الحليل")}</TableHead>
                   <TableHead>{t("الفتالن")}</TableHead>
-                  <TableHead>{t("االستهالك")}</TableHead>
+                  <TableHead>{t("الاستهلاك")}</TableHead>
                   <TableHead>{t("المرتجع")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {summary?.warehouseSummary?.map((data: any, index: number) => (
                   <TableRow key={index}>
+                    <TableCell>
+                      {data.ChildMaterial?.ParentMaterial?.Name}
+                    </TableCell>
+                    <TableCell>
+                      {data.Quantity + " " + data.UnitOfQuantity}
+                    </TableCell>
                     <TableCell>{data.ChildMaterial?.DyeNumber}</TableCell>
                     <TableCell>{data.ChildMaterial?.Name}</TableCell>
                     <TableCell>
