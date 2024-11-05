@@ -125,20 +125,28 @@ const NewOrder = ({ getAllOrders }: Props) => {
         (item) => item.label == model["القالب"]
       );
 
+      console.log("tmplatelabel", tmplate?.label)
       if (tmplate) {
         model["القالب"] = tmplate.value;
       } else {
-        errors.push(
-          `القالب غير موجود لـ ${model["القالب"]} للموديل '${model["رقم الموديل"]}'....`
-        );
+        if (model["القالب"] != null)
+          errors.push(
+            `القالب غير موجود لـ ${model["القالب"]} للموديل '${model["رقم الموديل"]}'....`
+          );
       }
-
       return model;
     });
 
     if (errors.length > 0) {
       const errorMessage = errors.join("\n");
-      toast.error(errorMessage);
+      toast.error(errorMessage, {
+        duration: 30000,
+        style: {
+          direction: 'rtl',
+          textAlign: 'right',
+          whiteSpace: 'pre-line'
+        },
+      });
       return null;
     }
     return updatedModels;
