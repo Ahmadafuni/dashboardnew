@@ -88,30 +88,47 @@ export default function Models() {
       cell: ({ row }) => {
         return (
           <div className="space-x-1">
-
             {row.original.RunningStatus === "ONGOING" ? (
               <BasicConfirmationDialog
                 btnText={t("Pause")}
-                takeAction={(reason: string) => holdModel(setModels, row.original.Id,
-                  {
-                    StartStopTime: new Date(),
-                    EndStopTime: null,
-                    ReasonText: reason,
-                  }
-                )}
+                takeAction={(reason: string) =>
+                  holdModel(
+                    setModels,
+                    row.original.Id,
+                    {
+                      StartStopTime: new Date(),
+                      EndStopTime: null,
+                      ReasonText: reason,
+                    },
+                    id!,
+                    pages,
+                    sizes,
+                    setTotalPages,
+                    setIsLoading
+                  )
+                }
                 className="bg-orange-500 hover:bg-orange-600"
                 showInput={true}
               />
             ) : (
               <BasicConfirmationDialog
                 btnText={t("StartModel")}
-                takeAction={() => restartModel(setModels, row.original.Id)}
+                takeAction={() =>
+                  restartModel(
+                    setModels,
+                    row.original.Id,
+                    id!,
+                    pages,
+                    sizes,
+                    setTotalPages,
+                    setIsLoading
+                  )
+                }
                 className="bg-green-500 hover:bg-green-600"
               />
-            )
-            }
+            )}
           </div>
-        )
+        );
       },
     },
     {
@@ -120,7 +137,7 @@ export default function Models() {
         return (
           <div className="flex gap-1">
             <DeleteConfirmationDialog
-              deleteRow={() => deleteModel(setModels, row.original.Id, id)}
+              deleteRow={() => deleteModel(setModels, row.original.Id, id! , pages , sizes, setTotalPages , setIsLoading)}
             />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

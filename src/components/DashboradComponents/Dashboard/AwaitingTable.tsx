@@ -49,6 +49,7 @@ interface Props {
   totalPages: number;
   works: WorkType;
   setWorks: any;
+  setIsLoading?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function AwaitingTable({
@@ -59,6 +60,7 @@ export default function AwaitingTable({
   totalPages,
   works,
   setWorks,
+  setIsLoading
 }: Props) {
   const user = useRecoilValue(userInfo);
   const userRole = user?.userRole;
@@ -102,90 +104,117 @@ export default function AwaitingTable({
     {
       header: t("Color"),
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Color.ColorName?
-          row.original.ModelVariant.Color.ColorName:t("N/A")
-        }</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Color.ColorName
+              ? row.original.ModelVariant.Color.ColorName
+              : t("N/A")}
+          </p>
+        );
       },
     },
     {
       header: t("Sizes"),
       cell: ({ row }) => {
-        return <p>{
-          row.original.ModelVariant.Sizes?
-          row.original.ModelVariant.Sizes.map((e: any) => e.label)
-          .join(", "):t("N/A")}</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Sizes
+              ? row.original.ModelVariant.Sizes.map((e: any) => e.label).join(
+                  ", "
+                )
+              : t("N/A")}
+          </p>
+        );
       },
     },
     {
-      header:  t("Quantity"),
+      header: t("Quantity"),
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Quantity?
-          row.original.ModelVariant.Quantity:t("N/A")
-        }</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Quantity
+              ? row.original.ModelVariant.Quantity
+              : t("N/A")}
+          </p>
+        );
       },
     },
   ];
 
   if (userRole === "FACTORYMANAGER" || userRole === "ENGINEERING") {
     templateColumns.push(
-        {
-            header: t("CurrentStage"),
-            cell: ({ row }) => {
-                // @ts-ignore
-                return <p>{row.original.CurrentStage?.Department?.Name}</p>; 
-            },
+      {
+        header: t("CurrentStage"),
+        cell: ({ row }) => {
+          // @ts-ignore
+          return <p>{row.original.CurrentStage?.Department?.Name}</p>;
         },
-        {
-            header: t("NextStage"),
-            cell: ({ row }) => {
-              // @ts-ignore
-                return <p>{row.original.NextStage?.Department?.Name}</p>;
-            },
+      },
+      {
+        header: t("NextStage"),
+        cell: ({ row }) => {
+          // @ts-ignore
+          return <p>{row.original.NextStage?.Department?.Name}</p>;
         },
-        {
-          header: t("StartTime") ,
-          cell: ({row}) => {
-            return <p>{row.original.StartTime
-              ? format(new Date(row.original.StartTime), "yyyy-MM-dd HH:mm:ss"):t("N/A")}</p>
-          },
+      },
+      {
+        header: t("StartTime"),
+        cell: ({ row }) => {
+          return (
+            <p>
+              {row.original.StartTime
+                ? format(
+                    new Date(row.original.StartTime),
+                    "yyyy-MM-dd HH:mm:ss"
+                  )
+                : t("N/A")}
+            </p>
+          );
         },
-        {
-          header: t("Action") ,
-          cell: ({row}) => {
-            return  <Button
-            variant="secondary"
-            onClick={() =>
-              window.open(
-                `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
-                "_blank"
-              )
-            }
-          >
-            {t("Details")}
-          </Button>
-          },
-        }
+      },
+      {
+        header: t("Action"),
+        cell: ({ row }) => {
+          return (
+            <Button
+              variant="secondary"
+              onClick={() =>
+                window.open(
+                  `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+                  "_blank"
+                )
+              }
+            >
+              {t("Details")}
+            </Button>
+          );
+        },
+      }
     );
-}
-else {
-  templateColumns.push(
-    {
+  } else {
+    templateColumns.push({
       header: t("Action"),
       cell: ({ row }) => {
         const item = row.original;
-    
+
         return (
           <div className="flex space-x-1">
             {item.MainStatus === "TODO" ? (
               <BasicConfirmationDialog
                 btnText={t("Start")}
-                takeAction={() => startVariant(setWorks, item.ModelVariant.Id)}
+                takeAction={() =>
+                  startVariant(setWorks, item.ModelVariant.Id, setIsLoading)
+                }
                 className=""
               />
             ) : (
               <ConfirmRejectAlertDialog
-                acceptVariant={() => confirmVariant(setWorks, item.Id)}
-                rejectVariant={() => rejectVariant(setWorks, item.Id)}
+                acceptVariant={() =>
+                  confirmVariant(setWorks, item.Id, setIsLoading)
+                }
+                rejectVariant={() =>
+                  rejectVariant(setWorks, item.Id, setIsLoading)
+                }
                 quantityReceivedFromPreviousDep={renderQuantity(
                   item.QuantityInKg !== null
                     ? item.QuantityInNum
@@ -207,27 +236,23 @@ else {
           </div>
         );
       },
-    }
-    
-);
-
-}
+    });
+  }
 
   return (
     <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Awaiting")}</h2>
       <div className="overflow-x-auto">
-
-      <DataTable 
-      columns={templateColumns} 
-      data={works.awaiting}
-      tableName="TrakingModels"
-      isDashboard={true}
-      fieldFilter={{
-        "ModelNumber" : "ModelNumber"
-      }}
-      stage="1"
-      />
+        <DataTable
+          columns={templateColumns}
+          data={works.awaiting}
+          tableName="TrakingModels"
+          isDashboard={true}
+          fieldFilter={{
+            ModelNumber: "ModelNumber",
+          }}
+          stage="1"
+        />
       </div>
 
       {/* pagination */}
@@ -258,23 +283,23 @@ else {
           </Button>
         </div>
         <div className="flex-1 flex items-center justify-end space-x-2">
-         <Select
-            value={size.toString()} 
+          <Select
+            value={size.toString()}
             onValueChange={(value) =>
-              setSize((prev) => ({ ...prev, awaitingSize: +value })) 
+              setSize((prev) => ({ ...prev, awaitingSize: +value }))
             }
           >
             <SelectTrigger className="w-[100px]">
               <SelectValue placeholder={t("Rows per page")} />
             </SelectTrigger>
             <SelectContent>
-            <SelectScrollUpButton />
-                {[2, 5, 10, 20, 40, 50, 100, 200].map((s) => (
-                  <SelectItem key={s} value={s.toString()}>
-                    {s}
-                  </SelectItem>
-                ))}
-                <SelectScrollDownButton />
+              <SelectScrollUpButton />
+              {[2, 5, 10, 20, 40, 50, 100, 200].map((s) => (
+                <SelectItem key={s} value={s.toString()}>
+                  {s}
+                </SelectItem>
+              ))}
+              <SelectScrollDownButton />
             </SelectContent>
           </Select>
         </div>

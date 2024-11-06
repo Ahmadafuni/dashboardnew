@@ -125,24 +125,34 @@ export default function Dashboard() {
   return (
     <div className="w-full p-4 space-y-6">
       <PausingUnpausingReasoneModal
-        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
       />
       <CuttingSendForConfirmationModal
-          getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
         selectedSizes={selectedSizes}
       />
       <OthersSendForConfirmation
-          getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <CompleteDialog
-        getAllWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getAllWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
         selectedSizes={selectedSizes}
         quantityReceived={quantityReceived}
       />
       <RejectVariantDialog
-        getWorks={() => getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)}
+        getWorks={() =>
+          getAllWork(pages, sizes, setWorks, setTotalPages, setIsLoading)
+        }
       />
 
       <div className="w-full p-4 space-y-6">
@@ -154,7 +164,7 @@ export default function Dashboard() {
         </div>
 
         <DialogSec open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent >
+          <DialogContent>
             <DialogHeader>
               <DialogTitle>{t("ModelDetails")}</DialogTitle>
             </DialogHeader>
@@ -163,32 +173,48 @@ export default function Dashboard() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>{"حالة العمل"}</TableHead>
-                    <TableHead >{"عدد الموديلات"}</TableHead>
-                    <TableHead >{"كمية المنتجات المستلمة"}</TableHead>
-                    <TableHead >{"كمية المنتجات المسلمة"}</TableHead>
+                    <TableHead>{"عدد الموديلات"}</TableHead>
+                    <TableHead>{"كمية المنتجات المستلمة"}</TableHead>
+                    <TableHead>{"كمية المنتجات المسلمة"}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow >
-                    <TableCell >{"جاهز للعمل"}</TableCell>
-                    <TableCell >{modelDetails.awaitingModels} {"موديل"}</TableCell>
-                    <TableCell >{modelDetails.awaitingReceivedQuantity} {"قطعة"}</TableCell>
-                    <TableCell >{modelDetails.awaitingDeliveredQuantity} {"قطعة"}</TableCell>
-
-                  </TableRow>
-                  <TableRow >
-                    <TableCell >{"جار العمل"}</TableCell>
-                    <TableCell >{modelDetails.inProgressModels} {"موديل"}</TableCell>
-                    <TableCell >{modelDetails.inProgressReceivedQuantity} {"قطعة"}</TableCell>
-                    <TableCell >{modelDetails.inProgressDeliveredQuantity} {"قطعة"}</TableCell>
-
+                  <TableRow>
+                    <TableCell>{"جاهز للعمل"}</TableCell>
+                    <TableCell>
+                      {modelDetails.awaitingModels} {"موديل"}
+                    </TableCell>
+                    <TableCell>
+                      {modelDetails.awaitingReceivedQuantity} {"قطعة"}
+                    </TableCell>
+                    <TableCell>
+                      {modelDetails.awaitingDeliveredQuantity} {"قطعة"}
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell >{"في انتظار التأكيد"}</TableCell>
-                    <TableCell >{modelDetails.givingConfirmationModels} {"موديل"}</TableCell>
-                    <TableCell >{modelDetails.givingConfirmationReceivedQuantity} {"قطعة"}</TableCell>
-                    <TableCell >{modelDetails.givingConfirmationDeliveredQuantity} {"قطعة"}</TableCell>
-
+                    <TableCell>{"جار العمل"}</TableCell>
+                    <TableCell>
+                      {modelDetails.inProgressModels} {"موديل"}
+                    </TableCell>
+                    <TableCell>
+                      {modelDetails.inProgressReceivedQuantity} {"قطعة"}
+                    </TableCell>
+                    <TableCell>
+                      {modelDetails.inProgressDeliveredQuantity} {"قطعة"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>{"في انتظار التأكيد"}</TableCell>
+                    <TableCell>
+                      {modelDetails.givingConfirmationModels} {"موديل"}
+                    </TableCell>
+                    <TableCell>
+                      {modelDetails.givingConfirmationReceivedQuantity} {"قطعة"}
+                    </TableCell>
+                    <TableCell>
+                      {modelDetails.givingConfirmationDeliveredQuantity}{" "}
+                      {"قطعة"}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -204,25 +230,30 @@ export default function Dashboard() {
 
       <Separator />
 
-      <div id="datatable" className="mt-10" style={{ position: "relative", top: "50%" }}>
-        {isLoading && 
-            <Dialog.Root open={isLoading}>
-                    <Dialog.Overlay className="fixed inset-0 bg-gradient-to-r from-blue-950 via-blue-900 to-blue-700 opacity-40 animate-pulse z-50" />
-                    
-                    <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg border-t-4 border-blue-500 animate-fade-in z-50">
-                        <div className="flex flex-col items-center">
-                            <Loader className="w-16 h-16 animate-spin text-blue-600" />
-                            
-                            <p className="text-lg font-semibold mt-4 text-gray-700">
-                                {t("Loading...")}
-                            </p>
+      <div
+        id="datatable"
+        className="mt-10"
+        style={{ position: "relative", top: "50%" }}
+      >
+        {isLoading && (
+          <Dialog.Root open={isLoading}>
+            <Dialog.Overlay className="fixed inset-0 bg-gradient-to-r from-blue-950 via-blue-900 to-blue-700 opacity-40 animate-pulse z-50" />
 
-                            <p className="text-sm mt-2 text-gray-500">
-                                {t("Please wait, your request is being processed now.")}
-                            </p>
-                        </div>
-                    </Dialog.Content>
-                </Dialog.Root>}
+            <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg border-t-4 border-blue-500 animate-fade-in z-50">
+              <div className="flex flex-col items-center">
+                <Loader className="w-16 h-16 animate-spin text-blue-600" />
+
+                <p className="text-lg font-semibold mt-4 text-gray-700">
+                  {t("Loading...")}
+                </p>
+
+                <p className="text-sm mt-2 text-gray-500">
+                  {t("Please wait, your request is being processed now.")}
+                </p>
+              </div>
+            </Dialog.Content>
+          </Dialog.Root>
+        )}
       </div>
 
       <AwaitingTable
@@ -233,6 +264,7 @@ export default function Dashboard() {
         totalPages={totalPages.totalPagesAwaiting}
         setWorks={setWorks}
         works={works}
+        setIsLoading={setIsLoading}
       />
       <OngoingTable
         page={pages.inProgressPage}
@@ -244,6 +276,7 @@ export default function Dashboard() {
         setWorks={setWorks}
         setSelectedSizes={setSelectedSizes}
         setQuantityReceived={setQuantityReceived}
+        setIsLoading={setIsLoading}
       />
       {!hideConfirmationTable && (
         <OnConfirmationTable
@@ -263,16 +296,18 @@ export default function Dashboard() {
         totalPages={totalPages.totalPagesCompleted}
         works={works}
       />
-      {!showFinishTable && (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") && (
-      <FinishedTable
-          page={pages.finishedPage}
-          setPage={setPages}
-          size={sizes.finishedSize}
-          setSize={setSizes}
-          totalPages={totalPages.totalPagesFinished}
-          works={works}
-      />
-      )}
+      {!showFinishTable &&
+        (user?.userRole === "FACTORYMANAGER" ||
+          user?.userRole === "ENGINEERING") && (
+          <FinishedTable
+            page={pages.finishedPage}
+            setPage={setPages}
+            size={sizes.finishedSize}
+            setSize={setSizes}
+            totalPages={totalPages.totalPagesFinished}
+            works={works}
+          />
+        )}
     </div>
   );
 }

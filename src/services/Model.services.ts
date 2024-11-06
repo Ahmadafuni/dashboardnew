@@ -72,16 +72,22 @@ export const getModelById = async (
 export const deleteModel = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number,
-  orderId: string | undefined
+  orderId: string,
+  pages?: number,
+  sizes?: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
     await axios.delete(`model/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
     toast.success("Model deleted successfully");
-    getModelsByOrderId(setData, orderId);
+    if (setIsLoading) setIsLoading(false);
+    getModelsByOrderId(setData, orderId, pages, sizes, setTotalPages, setIsLoading);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
@@ -110,9 +116,17 @@ export const getModelSummary = async (
 export const holdModel = async (
   setData: Dispatch<SetStateAction<any>>,
   id: number,
-  stopData: any
+  stopData: any,
+  orderId: string,
+  pages?: number,
+  sizes?: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
+
     await axios.put(
       `model/hold/${id}`,
       { stopData },
@@ -123,7 +137,11 @@ export const holdModel = async (
       }
     );
     // Replace getAllModels with your function to fetch updated models data
-    getAllModel(setData);
+    if (setIsLoading) setIsLoading(false);
+
+    getModelsByOrderId(setData, orderId, pages, sizes, setTotalPages, setIsLoading);
+    //getAllModel(setData);
+    
     toast.success("Model on hold successfully!");
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -134,20 +152,28 @@ export const holdModel = async (
 
 export const restartModel = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: number,
+  orderId: string,
+  pages?: number,
+  sizes?: number,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
+
     await axios.put(
       `model/restart/${id}`,
-      {},
       {
         headers: {
           Authorization: `bearer ${Cookies.get("access_token")}`,
         },
       }
     );
+    if (setIsLoading) setIsLoading(false);
     // Replace getAllModels with your function to fetch updated models data
-    getAllModel(setData);
+    getModelsByOrderId(setData, orderId , pages , sizes , setTotalPages , setIsLoading);
+    //getAllModel(setData);
     toast.success("Model restarted successfully!");
   } catch (error) {
     if (error instanceof AxiosError) {

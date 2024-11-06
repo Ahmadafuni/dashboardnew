@@ -4,21 +4,21 @@ import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export const getAllWork = async (
-    pages: {
-      awaitingPage: number;
-      inProgressPage: number;
-      completedPage: number;
-      givingConfirmationPage: number;
-    },
-    sizes: {
-      awaitingSize: number;
-      inProgressSize: number;
-      completedSize: number;
-      givingConfirmationSize: number;
-    },
-    setData: Dispatch<SetStateAction<any>>,
-    setTotalPages?: Dispatch<SetStateAction<any>>,
-    setIsLoading?: Dispatch<SetStateAction<boolean>>
+  pages: {
+    awaitingPage: number;
+    inProgressPage: number;
+    completedPage: number;
+    givingConfirmationPage: number;
+  },
+  sizes: {
+    awaitingSize: number;
+    inProgressSize: number;
+    completedSize: number;
+    givingConfirmationSize: number;
+  },
+  setData: Dispatch<SetStateAction<any>>,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     setIsLoading && setIsLoading(true);
@@ -41,7 +41,7 @@ export const getAllWork = async (
   }
 };
 
-export const getAllTracking= async (
+export const getAllTracking = async (
   pages: {
     awaitingPage: number;
     inProgressPage: number;
@@ -71,7 +71,7 @@ export const getAllTracking= async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
-  
+
     setData(data.data);
     setTotalPages && setTotalPages(data.totalPages);
     setIsLoading && setIsLoading(false);
@@ -84,8 +84,8 @@ export const getAllTracking= async (
 
 
 export const getModelDetailsDepartment = async (
-    setData: Dispatch<SetStateAction<any>>,
-    setIsLoading?: Dispatch<SetStateAction<boolean>>  
+  setData: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 
 ) => {
 
@@ -108,33 +108,37 @@ export const getModelDetailsDepartment = async (
 
 export const getModelDetailsManager = async (
   setData: Dispatch<SetStateAction<any>>,
-  setIsLoading?: Dispatch<SetStateAction<boolean>>  
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 
 ) => {
 
-try {
-  setIsLoading && setIsLoading(true);
-  const { data } = await axios.get("trackingmodels/model/details/mang", {
-    
-    headers: {
-      Authorization: `bearer ${Cookies.get("access_token")}`,
-    },
-  });
-  setData(data.data);
-  setIsLoading && setIsLoading(false);
-} catch (error) {
-  if (error instanceof AxiosError) {
-    toast.error(error.response?.data.message);
+  try {
+    setIsLoading && setIsLoading(true);
+    const { data } = await axios.get("trackingmodels/model/details/mang", {
+
+      headers: {
+        Authorization: `bearer ${Cookies.get("access_token")}`,
+      },
+    });
+    setData(data.data);
+    setIsLoading && setIsLoading(false);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+    }
   }
-}
 };
 
 
 export const startVariant = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: number,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
+
     const { data } = await axios.get(`trackingmodels/start/variant/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -147,14 +151,20 @@ export const startVariant = async (
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 
 export const completeVariant = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: number,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
+
     const { data } = await axios.get(`trackingmodels/complete/variant/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -167,14 +177,20 @@ export const completeVariant = async (
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 
 export const sentForCheckingVariant = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: number,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
+
     const { data } = await axios.get(
       `trackingmodels/sent/checking/variant/${id}`,
       {
@@ -190,14 +206,20 @@ export const sentForCheckingVariant = async (
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 
 export const confirmVariant = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: number,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
+
     const { data } = await axios.get(`trackingmodels/confirm/variant/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -210,14 +232,20 @@ export const confirmVariant = async (
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };
 
 export const rejectVariant = async (
   setData: Dispatch<SetStateAction<any>>,
-  id: number
+  id: number,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+
 ) => {
   try {
+    if (setIsLoading) setIsLoading(true);
+
     const { data } = await axios.get(`trackingmodels/reject/variant/${id}`, {
       headers: {
         Authorization: `bearer ${Cookies.get("access_token")}`,
@@ -230,5 +258,7 @@ export const rejectVariant = async (
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
 };

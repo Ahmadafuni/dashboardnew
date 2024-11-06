@@ -52,12 +52,14 @@ interface Props {
       givingConfirmationSize: number;
     }>
   >;
-  
   totalPages: number;
   works: WorkType;
   setWorks: (data: any) => void;
-  setSelectedSizes: Dispatch<SetStateAction<{ label: string; value: string; }[]>>;
+  setSelectedSizes: Dispatch<
+    SetStateAction<{ label: string; value: string }[]>
+  >;
   setQuantityReceived: (quantity: any[]) => void;
+  setIsLoading?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function OngoingTable({
@@ -70,9 +72,9 @@ export default function OngoingTable({
   setWorks,
   setSelectedSizes,
   setQuantityReceived,
+  setIsLoading,
 }: Props) {
   const { t } = useTranslation();
-
 
   const renderQuantity = (quantity: any) => {
     if (Array.isArray(quantity)) {
@@ -101,27 +103,30 @@ export default function OngoingTable({
   }, [actionInProgress]);
 
   const fetchWorks = async () => {
-    await getAllWork({
-      awaitingPage: 0,
-      inProgressPage: 0,
-      completedPage: 0,
-      givingConfirmationPage: 0
-    }, {
-      awaitingSize: 0,
-      inProgressSize: 0,
-      completedSize: 0,
-      givingConfirmationSize: 0
-    },setWorks);
+    await getAllWork(
+      {
+        awaitingPage: 0,
+        inProgressPage: 0,
+        completedPage: 0,
+        givingConfirmationPage: 0,
+      },
+      {
+        awaitingSize: 0,
+        inProgressSize: 0,
+        completedSize: 0,
+        givingConfirmationSize: 0,
+      },
+      setWorks
+    );
   };
 
-
   const handleSendConfirmation = (item: any, type: string) => {
-    const sizes = item.ModelVariant.Sizes ;
+    const sizes = item.ModelVariant.Sizes;
     const quantityReceived = item.QuantityReceived || [];
     // @ts-ignore
     setSelectedSizes(sizes);
     setQuantityReceived(quantityReceived);
-    
+
     setCurrentVariant(item.ModelVariant.Id);
     if (type === "CONFIRMATION") setConfirmationOthers(true);
     else if (type === "COMPLETE") {
@@ -132,7 +137,7 @@ export default function OngoingTable({
 
   const handleSendCuttingConfirmation = (item: any) => {
     const sizes = item.ModelVariant.Sizes;
-        // @ts-ignore
+    // @ts-ignore
     setSelectedSizes(sizes);
     setCurrentVariant(item.ModelVariant.Id);
     setCuttingConfirmation(true);
@@ -144,7 +149,8 @@ export default function OngoingTable({
         setCurrentVariant,
         item.ModelVariant.Id,
         reason,
-        item.ModelVariant.Model.Id
+        item.ModelVariant.Model.Id,
+        setIsLoading
       );
       setActionInProgress(true);
     }
@@ -155,7 +161,8 @@ export default function OngoingTable({
       await restartModelVarinte(
         setCurrentVariant,
         item.ModelVariant.Id,
-        item.ModelVariant.Model.Id
+        item.ModelVariant.Model.Id,
+        setIsLoading
       );
       setActionInProgress(true);
     }
@@ -191,95 +198,125 @@ export default function OngoingTable({
     {
       header: t("Color"),
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Color.ColorName?
-          row.original.ModelVariant.Color.ColorName:t("N/A")
-        }</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Color.ColorName
+              ? row.original.ModelVariant.Color.ColorName
+              : t("N/A")}
+          </p>
+        );
       },
     },
     {
       header: t("Sizes"),
       cell: ({ row }) => {
-        return <p>{
-          row.original.ModelVariant.Sizes?
-          row.original.ModelVariant.Sizes.map((e: any) => e.label)
-          .join(", "):t("N/A")}</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Sizes
+              ? row.original.ModelVariant.Sizes.map((e: any) => e.label).join(
+                  ", "
+                )
+              : t("N/A")}
+          </p>
+        );
       },
     },
     {
-      header:  t("TargetQuantity"),
+      header: t("TargetQuantity"),
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Quantity?
-          row.original.ModelVariant.Quantity:t("N/A")
-        }</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Quantity
+              ? row.original.ModelVariant.Quantity
+              : t("N/A")}
+          </p>
+        );
       },
     },
     {
       accessorKey: "QuantityReceived",
       header: t("ReceivedQuantity"),
-      cell: ({row}) => {
-        return  renderQuantity(row.original.QuantityReceived);
+      cell: ({ row }) => {
+        return renderQuantity(row.original.QuantityReceived);
       },
     },
-    
   ];
 
   if (userRole === "FACTORYMANAGER" || userRole === "ENGINEERING") {
     templateColumns.push(
-        {
-            header: t("CurrentStage"),
-            cell: ({ row }) => {
-                // @ts-ignore
-                return <p>{row.original.CurrentStage?.Department?.Name}</p>; 
-            },
+      {
+        header: t("CurrentStage"),
+        cell: ({ row }) => {
+          // @ts-ignore
+          return <p>{row.original.CurrentStage?.Department?.Name}</p>;
         },
-        {
-            header: t("NextStage"),
-            cell: ({ row }) => {
-              // @ts-ignore
-                return <p>{row.original.NextStage?.Department?.Name}</p>;
-            },
+      },
+      {
+        header: t("NextStage"),
+        cell: ({ row }) => {
+          // @ts-ignore
+          return <p>{row.original.NextStage?.Department?.Name}</p>;
         },
-        {
-          header: t("StartTime") ,
-          cell: ({row}) => {
-            return <p>{row.original.StartTime
-              ? format(new Date(row.original.StartTime), "yyyy-MM-dd HH:mm:ss"):t("N/A")}</p>
-          },
+      },
+      {
+        header: t("StartTime"),
+        cell: ({ row }) => {
+          return (
+            <p>
+              {row.original.StartTime
+                ? format(
+                    new Date(row.original.StartTime),
+                    "yyyy-MM-dd HH:mm:ss"
+                  )
+                : t("N/A")}
+            </p>
+          );
         },
-        {
-          header: t("Action") ,
-          cell: ({row}) => {
-            return  <Button
-            variant="secondary"
-            onClick={() =>
-              window.open(
-                `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
-                "_blank"
-              )
-            }
-          >
-            {t("Details")}
-          </Button>
-          },
-        }
+      },
+      {
+        header: t("Action"),
+        cell: ({ row }) => {
+          return (
+            <Button
+              variant="secondary"
+              onClick={() =>
+                window.open(
+                  `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+                  "_blank"
+                )
+              }
+            >
+              {t("Details")}
+            </Button>
+          );
+        },
+      }
     );
-}
-else { // user
-  templateColumns.push(
-    {
-      header: t("StartTime") ,
-          cell: ({row}) => {
-            return <p>{row.original.StartTime
-              ? format(new Date(row.original.StartTime), "yyyy-MM-dd HH:mm:ss"):t("N/A")}</p>
-          },
-    },
-    {
-      header: t("Action"),
-      cell: ({ row }) => {
-        const item = row.original;
-        return (
-          <div className="flex space-x-1">
-                  {item.ModelVariant.RunningStatus === "ONGOING" ? (
+  } else {
+    // user
+    templateColumns.push(
+      {
+        header: t("StartTime"),
+        cell: ({ row }) => {
+          return (
+            <p>
+              {row.original.StartTime
+                ? format(
+                    new Date(row.original.StartTime),
+                    "yyyy-MM-dd HH:mm:ss"
+                  )
+                : t("N/A")}
+            </p>
+          );
+        },
+      },
+      {
+        header: t("Action"),
+        cell: ({ row }) => {
+          const item = row.original;
+          return (
+            <div className="flex space-x-1">
+              {item.ModelVariant.RunningStatus === "ONGOING" ? (
                 <BasicConfirmationDialog
                   key={`pause-${item.Id}`}
                   btnText={t("Pause")}
@@ -302,47 +339,47 @@ else { // user
                 />
               )}
               {user?.category === "CUTTING" ? (
-                <Button onClick={() => {
-                    
-                  return handleSendCuttingConfirmation(item) ;
-                }}>
+                <Button
+                  onClick={() => {
+                    return handleSendCuttingConfirmation(item);
+                  }}
+                >
                   {t("SendForConfirmation")}
                 </Button>
               ) : user?.category !== "QUALITYASSURANCE" ? (
-                <Button onClick={() => handleSendConfirmation(item, "CONFIRMATION")}>
+                <Button
+                  onClick={() => handleSendConfirmation(item, "CONFIRMATION")}
+                >
                   {t("SendForConfirmation")}
                 </Button>
               ) : (
-                <Button onClick={() => handleSendConfirmation(item, "COMPLETE")}>
+                <Button
+                  onClick={() => handleSendConfirmation(item, "COMPLETE")}
+                >
                   {t("Complete")}
                 </Button>
               )}
-          </div>
-        );
-      },
-    }
-    
-);
-
-
-}
+            </div>
+          );
+        },
+      }
+    );
+  }
 
   return (
     <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Ongoing")}</h2>
       <div className="overflow-x-auto">
-       
-      <DataTable 
-      columns={templateColumns} 
-      data={works.inProgress}
-      tableName="TrakingModels"
-      isDashboard={true}
-      fieldFilter={{
-        "ModelNumber" : "ModelNumber"
-      }}
-      stage="2"
-      />
-
+        <DataTable
+          columns={templateColumns}
+          data={works.inProgress}
+          tableName="TrakingModels"
+          isDashboard={true}
+          fieldFilter={{
+            ModelNumber: "ModelNumber",
+          }}
+          stage="2"
+        />
 
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-2">
