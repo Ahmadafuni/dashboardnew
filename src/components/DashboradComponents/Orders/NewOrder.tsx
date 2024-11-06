@@ -23,7 +23,7 @@ import NewCollection from "@/components/DashboradComponents/Entities/Collections
 import { CollectionList } from "@/store/Collection.ts";
 import { getAllCollectionsList } from "@/services/Collection.services.ts";
 
-import {  templateList } from "@/store/Template";
+import { templateList } from "@/store/Template";
 import { textileList } from "@/store/Textiles";
 import { productCategoryOneList } from "@/store/ProductCategoryOne";
 import { productCategoryTwoList } from "@/store/ProductCategoryTwo";
@@ -35,7 +35,7 @@ import { getAllTextilesList } from "@/services/Textiles.services";
 
 import * as XLSX from "xlsx";
 import { getAllTemplatesList } from "@/services/Templates.services.ts";
-import { getAllColorsList} from "@/services/Colors.services.ts";
+import { getAllColorsList } from "@/services/Colors.services.ts";
 
 type Props = {
   getAllOrders: any;
@@ -47,7 +47,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
   const { t } = useTranslation();
   const setCollectionList = useSetRecoilState(CollectionList);
   const [xslModels, setXslModels] = useState<any[]>([]);
-  const [colors , setColors] = useState<any>([]);
+  const [colors, setColors] = useState<any>([]);
 
   // lists
   const setTemplates = useSetRecoilState(templateList);
@@ -72,44 +72,65 @@ const NewOrder = ({ getAllOrders }: Props) => {
   ): any => {
     const errors: string[] = [];
 
-    const updatedModels = models.map((model:any) => {
-
-      const categoryOne = categoryOneList.find((item) => item.label === model['الصنف']);
+    const updatedModels = models.map((model: any) => {
+      const categoryOne = categoryOneList.find(
+        (item) => item.label === model["الصنف"]
+      );
       if (categoryOne) {
-        model['الصنف'] = categoryOne.value;
+        model["الصنف"] = categoryOne.value;
       } else {
-        if(model['الصنف'] != null)
-        errors.push(`الصنف  غير موجود لـ ${model['الصنف']} للموديل '${model['رقم الموديل']}'....`);
+        if (model["الصنف"] != null)
+          errors.push(
+            `الصنف  غير موجود لـ ${model["الصنف"]} للموديل '${model["رقم الموديل"]}'....`
+          );
       }
 
-      const categoryTwo = categoryTwoList.find((item) => item.label === model['الفئة']);
+      const categoryTwo = categoryTwoList.find(
+        (item) => item.label === model["الفئة"]
+      );
       if (categoryTwo) {
-        model['الفئة'] = categoryTwo.value;
+        model["الفئة"] = categoryTwo.value;
       } else {
-        if(model['الفئة'] != null)
-        errors.push(`الفئة غير موجود لـ ${model['الفئة']} للموديل '${model['رقم الموديل']}'....`);
+        if (model["الفئة"] != null)
+          errors.push(
+            `الفئة غير موجود لـ ${model["الفئة"]} للموديل '${model["رقم الموديل"]}'....`
+          );
       }
 
-      const product = CatalogueList.find((item) => item.label === model['الزمرة']);
+      const product = CatalogueList.find(
+        (item) => item.label === model["الزمرة"]
+      );
       if (product) {
-        model['الزمرة'] = product.value;
+        model["الزمرة"] = product.value;
       } else {
-        if(model['الزمرة'] != null)
-          errors.push(`الزمرة غير موجود لـ ${model['الزمرة']} للموديل '${model['رقم الموديل']}'....`);
+        if (model["الزمرة"] != null)
+          errors.push(
+            `الزمرة غير موجود لـ ${model["الزمرة"]} للموديل '${model["رقم الموديل"]}'....`
+          );
       }
 
-      const textile = textilesList.find((item) => item.label === model['القماش']);
+      const textile = textilesList.find(
+        (item) => item.label === model["القماش"]
+      );
       if (textile) {
-        model['القماش'] = textile.value;
+        model["القماش"] = textile.value;
       } else {
-        if(model['القماش'] != null)
-        errors.push(`القماش غير موجود لـ ${model['القماش']} للموديل '${model['رقم الموديل']}'....`);
+        if (model["القماش"] != null)
+          errors.push(
+            `القماش غير موجود لـ ${model["القماش"]} للموديل '${model["رقم الموديل"]}'....`
+          );
       }
 
-      
-      const tmplate = templatesList.find((item) => item.label == model['القالب']);
+      const tmplate = templatesList.find(
+        (item) => item.label == model["القالب"]
+      );
+
       if (tmplate) {
-        model['القالب'] = tmplate.value;
+        model["القالب"] = tmplate.value;
+      } else {
+        errors.push(
+          `القالب غير موجود لـ ${model["القالب"]} للموديل '${model["رقم الموديل"]}'....`
+        );
       }
 
       return model;
@@ -123,8 +144,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
     return updatedModels;
   };
 
-
-  const handleXSLUpload = (e: any) => { 
+  const handleXSLUpload = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (event: any) => {
@@ -153,10 +173,10 @@ const NewOrder = ({ getAllOrders }: Props) => {
     let isValid = true;
     const errors: string[] = [];
     models.forEach((model) => {
-      const scales = model['القياس'] ? model['القياس'].split('-') : [];
-  
+      const scales = model["القياس"] ? model["القياس"].split("-") : [];
+
       const arrColors = colors.map((colorObj: any) => colorObj.label);
-  
+
       arrColors?.forEach((color: any) => {
         if (model[color]) {
           const quantity = model[color];
@@ -164,7 +184,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
             const quantityPerScale = quantity / scales.length;
             if (!Number.isInteger(quantityPerScale)) {
               errors.push(
-                `عدد الموديلات (${quantity}) للون "${color}" لا يمكن تقسيمه على عدد القياسات (${scales.length}) للموديل "${model['رقم الموديل']}" .... \n`
+                `عدد الموديلات (${quantity}) للون "${color}" لا يمكن تقسيمه على عدد القياسات (${scales.length}) للموديل "${model["رقم الموديل"]}" .... \n`
               );
               isValid = false;
             }
@@ -172,7 +192,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
         }
       });
     });
-  
+
     return { isValid, errors };
   };
 
@@ -200,7 +220,8 @@ const NewOrder = ({ getAllOrders }: Props) => {
       formData.append("deadline", data.deadline);
 
       if (xslModels.length > 0) {
-        const { isValid, errors: distributionErrors } = checkModelsDistribution(xslModels);
+        const { isValid, errors: distributionErrors } =
+          checkModelsDistribution(xslModels);
         if (!isValid) {
           errors.push(...distributionErrors);
         }
@@ -213,47 +234,51 @@ const NewOrder = ({ getAllOrders }: Props) => {
             }
           });
         });
-        
+
         const keys = allKeys;
 
-      const firstColorIndex = keys.findIndex((key) => key === "أسود");
+        const firstColorIndex = keys.findIndex((key) => key === "أسود");
 
-      if (firstColorIndex !== -1) {
-        const colorFields = keys.slice(firstColorIndex);
+        if (firstColorIndex !== -1) {
+          const colorFields = keys.slice(firstColorIndex);
 
+          const arrColors = colors.map((colorObj: any) => colorObj.label);
 
-        const arrColors = colors.map((colorObj :any) => colorObj.label);
+          colorFields.forEach((color: any) => {
+            if (!arrColors.includes(color)) {
+              errors.push(
+                `اللون "${color}" الموجود في ملف الاكسل غير موجود في النظام.`
+              );
+            }
+          });
+        } else {
+          errors.push("لم يتم العثور على حقل اللون 'أسود' في البيانات.");
+        }
 
-        colorFields.forEach((color: any) => {
-          if (!arrColors.includes(color)) {
-            errors.push(`اللون "${color}" الموجود في ملف الاكسل غير موجود في النظام.`);
-          }
-        });
-      } else {
-        errors.push("لم يتم العثور على حقل اللون 'أسود' في البيانات.");
-      }
-      
-        const invalidModels = xslModels.filter((model) => !model['رقم الموديل']);
+        const invalidModels = xslModels.filter(
+          (model) => !model["رقم الموديل"]
+        );
 
         if (invalidModels.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون رقم موديل.");
         }
 
-        const invalidProductName = xslModels.filter((model) => !model['الصنف']);
+        const invalidProductName = xslModels.filter((model) => !model["الصنف"]);
         if (invalidProductName.length > 0) {
           errors.push(`يرجى التحقق من البيانات هناك سجلات بدون صنف للموديل`);
         }
 
-        const invalidCategoryOne = xslModels.filter((model) => !model['الفئة']);
+        const invalidCategoryOne = xslModels.filter((model) => !model["الفئة"]);
         if (invalidCategoryOne.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون فئة.");
         }
 
-        const invalidCategoryTwo = xslModels.filter((model) => !model['الزمرة']);
+        const invalidCategoryTwo = xslModels.filter(
+          (model) => !model["الزمرة"]
+        );
         if (invalidCategoryTwo.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون زمرة.");
         }
-        
 
         if (errors.length > 0) {
           const errorMessage = errors.join("\n");
@@ -273,11 +298,15 @@ const NewOrder = ({ getAllOrders }: Props) => {
           Models: xslModels,
         };
 
-        const multiModel = await axios.post(`/model/addFileXsl/${orderId}`, payload, {
-          headers: {
-            Authorization: `bearer ${Cookies.get("access_token")}`,
-          },
-        });
+        const multiModel = await axios.post(
+          `/model/addFileXsl/${orderId}`,
+          payload,
+          {
+            headers: {
+              Authorization: `bearer ${Cookies.get("access_token")}`,
+            },
+          }
+        );
         toast.success(multiModel.data.message);
 
         getAllOrders();
