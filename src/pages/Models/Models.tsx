@@ -40,25 +40,25 @@ export default function Models() {
     {
       header: t("ProductCatalogues"),
       cell: ({ row }) => {
-        return <p>{row.original.ProductCatalog.ProductCatalogName}</p>;
+        return <p>{row.original.ProductCatalog?.ProductCatalogName}</p>;
       },
     },
     {
       header: t("ProductCategoryOne"),
       cell: ({ row }) => {
-        return <p>{row.original.CategoryOne.CategoryName}</p>;
+        return <p>{row.original.CategoryOne?.CategoryName}</p>;
       },
     },
     {
       header: t("ProductCategoryTwo"),
       cell: ({ row }) => {
-        return <p>{row.original.categoryTwo.CategoryName}</p>;
+        return <p>{row.original.categoryTwo?.CategoryName}</p>;
       },
     },
     {
       header: t("Textiles"),
       cell: ({ row }) => {
-        return <p>{row.original.Textile.TextileName}</p>;
+        return <p>{row.original.Textile?.TextileName}</p>;
       },
     },
     {
@@ -66,7 +66,6 @@ export default function Models() {
       cell: ({ row }) => {
         if (row.original.Template?.TemplateName)
           return <p>{row.original.Template.TemplateName}</p>;
-
       },
     },
     {
@@ -74,9 +73,13 @@ export default function Models() {
       header: t("ModelName"),
       cell: ({ row }) => {
         if (row.original.Template?.TemplateName)
-          return <p>{`${row.original.ProductCatalog.ProductCatalogName} - ${row.original.CategoryOne.CategoryName} - ${row.original.categoryTwo.CategoryName} - ${row.original.Template.TemplateName}`}</p>;
+          return (
+            <p>{`${row.original.ProductCatalog?.ProductCatalogName} - ${row.original.CategoryOne?.CategoryName} - ${row.original.categoryTwo?.CategoryName} - ${row.original.Template?.TemplateName}`}</p>
+          );
         else
-          return <p>{`${row.original.ProductCatalog.ProductCatalogName} - ${row.original.CategoryOne.CategoryName} - ${row.original.categoryTwo.CategoryName}`}</p>;
+          return (
+            <p>{`${row.original.ProductCatalog?.ProductCatalogName} - ${row.original.CategoryOne?.CategoryName} - ${row.original.categoryTwo?.CategoryName}`}</p>
+          );
       },
     },
     {
@@ -137,7 +140,17 @@ export default function Models() {
         return (
           <div className="flex gap-1">
             <DeleteConfirmationDialog
-              deleteRow={() => deleteModel(setModels, row.original.Id, id! , pages , sizes, setTotalPages , setIsLoading)}
+              deleteRow={() =>
+                deleteModel(
+                  setModels,
+                  row.original.Id,
+                  id!,
+                  pages,
+                  sizes,
+                  setTotalPages,
+                  setIsLoading
+                )
+              }
             />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -229,12 +242,12 @@ export default function Models() {
             totalPages={totalPages}
             fieldFilter={{
               "ModelNumber": "ModelNumber",
-              "ProductCatalogName": "ProductCatalogId.ProductCatalogName",
-              "ProductCategoryOne": "CategoryOneId.CategoryName",
-              "ProductCategoryTwo": "CategoryTwoId.CategoryName",
-              "TextileName": "TextileId.TextileName",
-              "TemplateName": "TemplateId.TemplateName",
-              "Barcode": "Barcode"
+              // "ProductCatalogName": "ProductCatalogId.ProductCatalogName",
+              // "ProductCategoryOne": "CategoryOneId.CategoryName",
+              // "ProductCategoryTwo": "CategoryTwoId.CategoryName",
+              // "TextileName": "TextileId.TextileName",
+              // "TemplateName": "TemplateId.TemplateName",
+              // "Barcode": "Barcode"
             }}
           />
         </div>

@@ -421,6 +421,7 @@
   "Consumption": "استهلاك",
   "Unit" : "وحدة القياس",
   "ChooseaModelFirst" : "اختر موديل اولا",
-  "ChooseaDepartmentFirst" : "اختر قسم اولا"
+  "ChooseaDepartmentFirst" : "اختر قسم اولا",
+  "ProductCatalogName" : "اسم المنتج"
 
 }

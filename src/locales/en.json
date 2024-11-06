@@ -415,5 +415,6 @@
   "Consumption" : "Consumption",
   "Unit" : "Unit",
   "ChooseaModelFirst" : "Choose a model first",
-  "ChooseaDepartmentFirst" : "Choose a department first"
+  "ChooseaDepartmentFirst" : "Choose a department first",
+  "ProductCatalogName" : "Product Catalog Name"
 }

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 export const getModelsByOrderId = async (
   setData: Dispatch<SetStateAction<any>>,
-  id?: string | undefined ,
+  id?: string | undefined,
   pages?: number,
   sizes?: number,
   setTotalPages?: Dispatch<SetStateAction<any>>,
@@ -13,7 +13,7 @@ export const getModelsByOrderId = async (
 
 ) => {
   try {
-    if(setIsLoading)setIsLoading(true);
+    if (setIsLoading) setIsLoading(true);
 
     const response = await axios.get(`model/all/${id}`, {
       params: {
@@ -26,12 +26,13 @@ export const getModelsByOrderId = async (
     });
     if (setTotalPages) setTotalPages(response.data.totalPages);
 
+    console.log("resp", response.data.data);
     setData(response.data.data);
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(error.response?.data.message);
     }
-  }finally {
+  } finally {
     if (setIsLoading) setIsLoading(false);
   }
 };
@@ -141,7 +142,7 @@ export const holdModel = async (
 
     getModelsByOrderId(setData, orderId, pages, sizes, setTotalPages, setIsLoading);
     //getAllModel(setData);
-    
+
     toast.success("Model on hold successfully!");
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -172,7 +173,7 @@ export const restartModel = async (
     );
     if (setIsLoading) setIsLoading(false);
     // Replace getAllModels with your function to fetch updated models data
-    getModelsByOrderId(setData, orderId , pages , sizes , setTotalPages , setIsLoading);
+    getModelsByOrderId(setData, orderId, pages, sizes, setTotalPages, setIsLoading);
     //getAllModel(setData);
     toast.success("Model restarted successfully!");
   } catch (error) {
@@ -245,29 +246,29 @@ export const filterModels = async (
 };
 
 export const filterProductionModels = async (
-    setData: Dispatch<SetStateAction<any>>,
-    searchParams: any,
-    pages: number,
-    sizes: number,
-    setSummary: Dispatch<SetStateAction<any>>,
-    setTotalPages?: Dispatch<SetStateAction<any>>,
-    setIsLoading?: Dispatch<SetStateAction<boolean>>
+  setData: Dispatch<SetStateAction<any>>,
+  searchParams: any,
+  pages: number,
+  sizes: number,
+  setSummary: Dispatch<SetStateAction<any>>,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     if (setIsLoading) setIsLoading(true);
 
     const response = await axios.post(
-        "reports/productionReport",
-        { ...searchParams },
-        {
-          params: {
-            page: pages,
-            size: sizes,
-          },
-          headers: {
-            Authorization: `Bearer ${Cookies.get("access_token")}`,
-          },
-        }
+      "reports/productionReport",
+      { ...searchParams },
+      {
+        params: {
+          page: pages,
+          size: sizes,
+        },
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      }
     );
 
     const responseData = response.data.data.data;
@@ -285,35 +286,35 @@ export const filterProductionModels = async (
 };
 
 export const filterOrderReport = async (
-    setData: Dispatch<SetStateAction<any>>,
-    searchParams: any,
-    pages: number,
-    sizes: number,
-    setSummary: Dispatch<SetStateAction<any>>,
-    setTotalPages?: Dispatch<SetStateAction<any>>,
-    setIsLoading?: Dispatch<SetStateAction<boolean>>,
+  setData: Dispatch<SetStateAction<any>>,
+  searchParams: any,
+  pages: number,
+  sizes: number,
+  setSummary: Dispatch<SetStateAction<any>>,
+  setTotalPages?: Dispatch<SetStateAction<any>>,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>,
 ) => {
   try {
     if (setIsLoading) setIsLoading(true);
 
     // Make POST request to orderReport endpoint
     const response = await axios.post(
-        "reports/orderReport",
-        { ...searchParams },
-        {
-          params: {
-            page: pages,
-            size: sizes,
-          },
-          headers: {
-            Authorization: `Bearer ${Cookies.get("access_token")}`,
-          },
-        }
+      "reports/orderReport",
+      { ...searchParams },
+      {
+        params: {
+          page: pages,
+          size: sizes,
+        },
+        headers: {
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      }
     );
 
     const responseData = response.data.data.data;
     const responseSummary = response.data.data.summary;
-  
+
 
     // 
     // Set the data for the UI
