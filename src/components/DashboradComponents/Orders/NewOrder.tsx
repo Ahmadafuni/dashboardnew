@@ -44,6 +44,7 @@ type Props = {
 const NewOrder = ({ getAllOrders }: Props) => {
   const [open, setOpen] = useRecoilState(newOrderModal);
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const { t } = useTranslation();
   const setCollectionList = useSetRecoilState(CollectionList);
   const [xslModels, setXslModels] = useState<any[]>([]);
@@ -125,20 +126,28 @@ const NewOrder = ({ getAllOrders }: Props) => {
         (item) => item.label == model["القالب"]
       );
 
+      console.log("tmplatelabel", tmplate?.label)
       if (tmplate) {
         model["القالب"] = tmplate.value;
       } else {
-        errors.push(
-          `القالب غير موجود لـ ${model["القالب"]} للموديل '${model["رقم الموديل"]}'....`
-        );
+        if (model["القالب"] != null)
+          errors.push(
+            `القالب غير موجود لـ ${model["القالب"]} للموديل '${model["رقم الموديل"]}'....`
+          );
       }
-
       return model;
     });
 
     if (errors.length > 0) {
       const errorMessage = errors.join("\n");
-      toast.error(errorMessage);
+      toast.error(errorMessage, {
+        duration: 30000,
+        style: {
+          direction: 'rtl',
+          textAlign: 'right',
+          whiteSpace: 'pre-line'
+        },
+      });
       return null;
     }
     return updatedModels;
@@ -209,6 +218,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
 
   const onSubmit = async (data: z.infer<typeof OrderSchema>) => {
     setIsLoading(true);
+    setProgress(0); // Start at 0%
     const errors: string[] = [];
 
     try {
@@ -219,12 +229,14 @@ const NewOrder = ({ getAllOrders }: Props) => {
       formData.append("quantity", data.quantity);
       formData.append("deadline", data.deadline);
 
+      setProgress(10); // Progress after initial setup
+
       if (xslModels.length > 0) {
-        const { isValid, errors: distributionErrors } =
-          checkModelsDistribution(xslModels);
+        const { isValid, errors: distributionErrors } = checkModelsDistribution(xslModels);
         if (!isValid) {
           errors.push(...distributionErrors);
         }
+        setProgress(20); // Progress after distribution check
 
         const allKeys: string[] = [];
         xslModels.forEach((model) => {
@@ -236,29 +248,25 @@ const NewOrder = ({ getAllOrders }: Props) => {
         });
 
         const keys = allKeys;
-
         const firstColorIndex = keys.findIndex((key) => key === "أسود");
 
         if (firstColorIndex !== -1) {
           const colorFields = keys.slice(firstColorIndex);
-
           const arrColors = colors.map((colorObj: any) => colorObj.label);
 
           colorFields.forEach((color: any) => {
             if (!arrColors.includes(color)) {
-              errors.push(
-                `اللون "${color}" الموجود في ملف الاكسل غير موجود في النظام.`
-              );
+              errors.push(`اللون "${color}" الموجود في ملف الاكسل غير موجود في النظام.`);
             }
           });
         } else {
           errors.push("لم يتم العثور على حقل اللون 'أسود' في البيانات.");
         }
 
-        const invalidModels = xslModels.filter(
-          (model) => !model["رقم الموديل"]
-        );
+        setProgress(40); // Progress after color check
 
+        // Validate fields
+        const invalidModels = xslModels.filter((model) => !model["رقم الموديل"]);
         if (invalidModels.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون رقم موديل.");
         }
@@ -273,17 +281,18 @@ const NewOrder = ({ getAllOrders }: Props) => {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون فئة.");
         }
 
-        const invalidCategoryTwo = xslModels.filter(
-          (model) => !model["الزمرة"]
-        );
+        const invalidCategoryTwo = xslModels.filter((model) => !model["الزمرة"]);
         if (invalidCategoryTwo.length > 0) {
           errors.push("يرجى التحقق من البيانات هناك سجلات بدون زمرة.");
         }
+
+        setProgress(60); // Progress after validation checks
 
         if (errors.length > 0) {
           const errorMessage = errors.join("\n");
           toast.error(errorMessage);
           setIsLoading(false);
+          setProgress(0); // Reset progress on error
           return;
         }
 
@@ -292,22 +301,20 @@ const NewOrder = ({ getAllOrders }: Props) => {
             Authorization: `bearer ${Cookies.get("access_token")}`,
           },
         });
+        setProgress(80); // Progress after order creation
+
         const orderId = newOrder.data.data.Id;
         toast.success(newOrder.data.message);
-        const payload = {
-          Models: xslModels,
-        };
 
-        const multiModel = await axios.post(
-          `/model/addFileXsl/${orderId}`,
-          payload,
-          {
-            headers: {
-              Authorization: `bearer ${Cookies.get("access_token")}`,
-            },
-          }
-        );
+        const payload = { Models: xslModels };
+        const multiModel = await axios.post(`/model/addFileXsl/${orderId}`, payload, {
+          headers: {
+            Authorization: `bearer ${Cookies.get("access_token")}`,
+          },
+        });
+
         toast.success(multiModel.data.message);
+        setProgress(100); // Final progress at 100%
 
         getAllOrders();
         form.reset();
@@ -331,8 +338,10 @@ const NewOrder = ({ getAllOrders }: Props) => {
         toast.error(error.response?.data.message);
       }
       setIsLoading(false);
+      setProgress(0); // Reset progress on error
     }
   };
+
 
   // Page on load
   useEffect(() => {
@@ -366,7 +375,7 @@ const NewOrder = ({ getAllOrders }: Props) => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t("Please wait")}
+                  {progress}% {/* Shows the loading percentage */}
                 </>
               ) : (
                 t("Add")
