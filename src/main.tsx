@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -89,6 +89,7 @@ i18n
       escapeValue: false, // React already escapes values
     },
   });
+
 // Routes
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -183,17 +184,39 @@ const router = createBrowserRouter([
   { path: "/templates/viewdetails/:id", element: <TemplateViewDetails /> },
   { path: "/models/viewdetails/:id", element: <ViewModelDetails /> },
   { path: "/models/viewsummary/:id", element: <ViewModelSummary /> },
-
-  
 ]);
+
+const App = () => {
+  const [direction, setDirection] = useState(
+    i18n.language === "ar" ? "rtl" : "ltr"
+  );
+
+  useEffect(() => {
+    const updateDirection = (lang: any) => {
+      setDirection(lang === "ar" ? "rtl" : "ltr");
+    };
+
+    i18n.on("languageChanged", updateDirection);
+
+    return () => {
+      i18n.off("languageChanged", updateDirection);
+    };
+  }, []);
+
+  return (
+    <div id="root" dir={direction}>
+      <RecoilRoot>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <RouterProvider router={router} />
+          <Toaster richColors />
+        </ThemeProvider>
+      </RecoilRoot>
+    </div>
+  );
+};
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RecoilRoot>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <RouterProvider router={router} />
-        <Toaster richColors />
-      </ThemeProvider>
-    </RecoilRoot>
+    <App />
   </React.StrictMode>
 );
