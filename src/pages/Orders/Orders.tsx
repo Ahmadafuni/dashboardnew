@@ -100,21 +100,33 @@ export default function Orders() {
                 takeAction={() => restartOrder(setOrders, row.original.Id)}
                 className="bg-green-500 hover:bg-green-600"
               />
-            ) : (
-              <BasicConfirmationDialog
-                btnText={t("HoldOrder")}
-                takeAction={(reason: string) => holdOrder(setOrders, row.original.Id,
-                    {
-                      StartStopTime: new Date(),
-                      EndStopTime: null,
-                      ReasonText: reason,
-                    }
-                )}
-                className="bg-orange-500 hover:bg-orange-600"
-                showInput={true}
-              />
+            ) :
+              row.original.RunningStatus === "COMPLETED" ? (
+                <Button
+                  className="bg-blue-500"
+                  disabled
+                  style={{
+                    background: "linear-gradient(135deg, #3b82f6, #60a5fa)",
+                  }}
+                >
+                  {t("Complete")}
+                </Button>
+              ) :
+                (
+                  <BasicConfirmationDialog
+                    btnText={t("HoldOrder")}
+                    takeAction={(reason: string) => holdOrder(setOrders, row.original.Id,
+                      {
+                        StartStopTime: new Date(),
+                        EndStopTime: null,
+                        ReasonText: reason,
+                      }
+                    )}
+                    className="bg-orange-500 hover:bg-orange-600"
+                    showInput={true}
+                  />
 
-            )}
+                )}
           </div>
         );
       },
@@ -166,7 +178,7 @@ export default function Orders() {
                     onClick={() =>
                       downLoadFile(
                         "https://dashboardbackendnew.onrender.com" +
-                          row.original.FilePath
+                        row.original.FilePath
                       )
                     }
                   >
@@ -183,18 +195,18 @@ export default function Orders() {
   ];
 
   useEffect(() => {
-    getAllOrders(setOrders , pages , sizes , setTotalPages , setIsLoading);
-  }, [pages , sizes]);
-  
+    getAllOrders(setOrders, pages, sizes, setTotalPages, setIsLoading);
+  }, [pages, sizes]);
+
   return (
     <div className="w-full space-y-2">
 
-             {isLoading && 
-                  <LoadingDialog 
-                  isOpen={isLoading} 
-                  message="Loading..." 
-                  subMessage="Please wait, your request is being processed now." 
-                />}
+      {isLoading &&
+        <LoadingDialog
+          isOpen={isLoading}
+          message="Loading..."
+          subMessage="Please wait, your request is being processed now."
+        />}
 
       <NewOrder getAllOrders={() => getAllOrders(setOrders)} />
       <UpdateOrder getAllOrders={() => getAllOrders(setOrders)} />
@@ -216,18 +228,18 @@ export default function Orders() {
         </div>
         <div className="rounded-md border overflow-x-scroll">
           <DataTable columns={orderColumns} data={orders} tableName="Orders"
-           page={pages}
-           setPage={setPages}
-           size={sizes}
-           setSize={setSizes}
-           totalPages={totalPages}
+            page={pages}
+            setPage={setPages}
+            size={sizes}
+            setSize={setSizes}
+            totalPages={totalPages}
             fieldFilter={{
-              "OrderNumber" : "OrderNumber" ,
-              "OrderName" : "OrderName" ,
-              "CollectionName" : "CollectionId.CollectionName" ,
-              "Quantity" : "Quantity" ,
-              "DeadlineDate" : "DeadlineDate" ,
-              "Description" : "Description"
+              "OrderNumber": "OrderNumber",
+              "OrderName": "OrderName",
+              "CollectionName": "CollectionId.CollectionName",
+              "Quantity": "Quantity",
+              "DeadlineDate": "DeadlineDate",
+              "Description": "Description"
 
             }}
           />

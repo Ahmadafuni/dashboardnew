@@ -105,15 +105,27 @@ export default function ModelVarients() {
                 className="bg-orange-500 hover:bg-orange-600"
                 showInput={true}
               />
-            ) : (
-              <BasicConfirmationDialog
-                btnText={t("StartModel")}
-                takeAction={() =>
-                  restartModelVarinte(setModelVarients, row.original.Id, id)
-                }
-                className="bg-green-500 hover:bg-green-600"
-              />
-            )}
+            ) :
+              row.original.RunningStatus === "COMPLETED" ? (
+                <Button
+                  className="bg-blue-500"
+                  disabled
+                  style={{
+                    background: "linear-gradient(135deg, #3b82f6, #60a5fa)",
+                  }}
+                >
+                  {t("Complete")}
+                </Button>
+              ) :
+                (
+                  <BasicConfirmationDialog
+                    btnText={t("StartModel")}
+                    takeAction={() =>
+                      restartModelVarinte(setModelVarients, row.original.Id, id)
+                    }
+                    className="bg-green-500 hover:bg-green-600"
+                  />
+                )}
           </div>
         );
       },
@@ -153,7 +165,7 @@ export default function ModelVarients() {
       setTotalPages,
       setIsLoading
     );
-  }, [pages , sizes]);
+  }, [pages, sizes]);
 
   return (
     <div className="w-full space-y-2">
