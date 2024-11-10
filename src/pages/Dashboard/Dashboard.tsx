@@ -34,7 +34,6 @@ export default function Dashboard() {
     givingConfirmation: [],
   });
 
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,7 +86,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (user?.userRole === "FACTORYMANAGER" || user?.userRole === "ENGINEERING") {
-
       getAllTracking(pages, sizes, setWorks, setTotalPages, setIsLoading);
       getModelDetailsManager(setModelDetails , setIsLoading);
     } else {
@@ -182,38 +180,38 @@ export default function Dashboard() {
                   <TableRow>
                     <TableCell>{"جاهز للعمل"}</TableCell>
                     <TableCell>
-                      {modelDetails.awaitingModels} {"موديل"}
+                      {modelDetails?.awaitingModels} {" موديل"}
                     </TableCell>
                     <TableCell>
-                      {modelDetails.awaitingReceivedQuantity} {"قطعة"}
+                      {modelDetails?.awaitingReceivedQuantity} {" قطعة"}
                     </TableCell>
                     <TableCell>
-                      {modelDetails.awaitingDeliveredQuantity} {"قطعة"}
+                      {modelDetails?.awaitingDeliveredQuantity} {" قطعة"}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>{"جار العمل"}</TableCell>
                     <TableCell>
-                      {modelDetails.inProgressModels} {"موديل"}
+                      {modelDetails?.inProgressModels? modelDetails?.inProgressModels:0} {" موديل"}
                     </TableCell>
                     <TableCell>
-                      {modelDetails.inProgressReceivedQuantity} {"قطعة"}
+                      {modelDetails?.inProgressReceivedQuantity?  modelDetails?.inProgressReceivedQuantity:0} {" قطعة"}
                     </TableCell>
                     <TableCell>
-                      {modelDetails.inProgressDeliveredQuantity} {"قطعة"}
+                      {modelDetails?.inProgressDeliveredQuantity?  modelDetails?.inProgressDeliveredQuantity:0} {" قطعة"}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>{"في انتظار التأكيد"}</TableCell>
                     <TableCell>
-                      {modelDetails.givingConfirmationModels} {"موديل"}
+                      {modelDetails?.givingConfirmationModels?  modelDetails?.givingConfirmationModels:0} {" موديل"}
                     </TableCell>
                     <TableCell>
-                      {modelDetails.givingConfirmationReceivedQuantity} {"قطعة"}
+                      {modelDetails?.givingConfirmationReceivedQuantity?  modelDetails?.givingConfirmationReceivedQuantity:0} {" قطعة"}
                     </TableCell>
                     <TableCell>
-                      {modelDetails.givingConfirmationDeliveredQuantity}{" "}
-                      {"قطعة"}
+                      {modelDetails?.givingConfirmationDeliveredQuantity?  modelDetails?.givingConfirmationDeliveredQuantity:0}
+                      {" قطعة"}
                     </TableCell>
                   </TableRow>
                 </TableBody>

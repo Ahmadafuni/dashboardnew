@@ -79,57 +79,44 @@ export default function DataTable<TData, TValue>({
             } finally {
                 setIsLoading(false);
             }
-        } else if (tableName == "Models") {
+        } 
+        else if (tableName == "Models") {
+
+            for (const filter of filters) {
+              if (!filter.column || !filter.value) {
+                toast.error(
+                  "Please select a column and enter a value for all filters."
+                );
+                setIsLoading(false);
+                return;
+              }
+            }
+
+            const formattedFilters = filters.map((filter) => ({
+              // @ts-ignore
+              column: fieldFilter[filter.column] || filter.column,
+              value: filter.value,
+            }));
+
           try {
-            const modelDemoNumber = filters[0].value;
-            const response = await axios.get(
-              `/datatable/filter/report/${modelDemoNumber}`
+           // const modelDemoNumber = filters[0].value;
+            const response = await axios.post(
+              `/datatable/filter/models`,
+              {
+                filters: formattedFilters,
+              }
             );
-            // const reports = Array.isArray(response.data.data)
-            //   ? response.data.data.flatMap((item: any) => {
-            //       const demoModelNumber = item.DemoModelNumber;
-            //       const modelName = item.ModelName;
-            //       // Map over each variant, ensuring the first variant has model info
-            //       return item.Details.map((detail: any, index: any) => ({
-            //         modelNumber: index === 0 ? demoModelNumber : "", // First row gets the model number
-            //         name: index === 0 ? modelName : "", // First row gets the model name
-            //         barcode: index === 0 ? item.Barcode : "", // Example: barcode data if present
-            //         textile: index === 0 ? item.Textiles : "", // Only the first row has textile
-            //         colors: detail.Color ? detail.Color.ColorName : "",
-            //         sizes: detail.Sizes.map(
-            //           (size: { label: string; value: string }) =>
-            //             `${size.label} : ${size.value}`
-            //         ).join(", "),
-            //         currentStage: detail.DepartmentName || "N/A",
-            //         QuantityDelivered: detail.QuantityDelivered
-            //           ? Object.entries(detail.QuantityDelivered)
-            //               .map(([size, value]) => `${size} : ${value}`)
-            //               .join(" , ")
-            //           : "N/A",
-            //         QuantityReceived: detail.QuantityReceived
-            //           ? Object.entries(detail.QuantityReceived)
-            //               .map(([size, value]) => `${size} : ${value}`)
-            //               .join(" , ")
-            //           : "N/A",
-            //         DamagedItem: detail.DamagedItem
-            //           ? Object.entries(detail.DamagedItem)
-            //               .map(([size, value]) => `${size} : ${value}`)
-            //               .join(" , ")
-            //           : "N/A",
-            //         duration: detail.DurationInHours || "N/A",
-            //       }));
-            //     })
-            //   : [];
-
-            // console.log("response", response.data.data);
-
+            console.log("result of filter models" , response.data.data);
             setFilteredData(response.data.data);
           } catch (error) {
             console.error("Error applying filters:", error);
           } finally {
             setIsLoading(false);
           }
-        } else {
+        
+        }
+         else {
+
           for (const filter of filters) {
             if (!filter.column || !filter.value) {
               toast.error(
@@ -140,7 +127,6 @@ export default function DataTable<TData, TValue>({
             }
           }
 
-          // تحويل أسماء الحقول من الأسماء المعروضة إلى الأسماء الفعلية
           const formattedFilters = filters.map((filter) => ({
             // @ts-ignore
             column: fieldFilter[filter.column] || filter.column,

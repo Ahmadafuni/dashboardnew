@@ -113,6 +113,17 @@ export default function Models() {
                 className="bg-orange-500 hover:bg-orange-600"
                 showInput={true}
               />
+            ) : row.original.RunningStatus === "COMPLETED" ? (
+              <button
+                className="bg-blue-500 text-white  font-semibold py-2 px-1 rounded-lg shadow-md cursor-not-allowed opacity-80"
+                disabled
+                style={{
+                  background: "linear-gradient(135deg, #3b82f6, #60a5fa)",
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                {t("Complete")}
+              </button>
             ) : (
               <BasicConfirmationDialog
                 btnText={t("StartModel")}
@@ -247,7 +258,7 @@ export default function Models() {
               // "ProductCategoryTwo": "CategoryTwoId.CategoryName",
               // "TextileName": "TextileId.TextileName",
               // "TemplateName": "TemplateId.TemplateName",
-              // "Barcode": "Barcode"
+              "Barcode": "Barcode"
             }}
           />
         </div>
