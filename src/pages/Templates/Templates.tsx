@@ -32,36 +32,47 @@ export default function Templates() {
     },
     {
       header: t("ProductCatalogueName"),
+      accessorFn: (row) => row.ProductCatalogue.ProductCatalogName || t("N/A"),
       cell: ({ row }) => {
         return <p>{row.original.ProductCatalogue.ProductCatalogName}</p>;
       },
     },
     {
       header: t("Season"),
+      accessorFn: (row) => row.Season || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{row.original.Season}</p>;
       },
     },
     {
       header: t("ProductCatalogCategoryOne"),
+      accessorFn: (row) => row.CategoryOne.CategoryName || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{row.original.CategoryOne.CategoryName}</p>;
       },
     },
     {
       header: t("ProductCatalogCategoryTwo"),
+      accessorFn: (row) => row.CategoryTwo.CategoryName || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{row.original.CategoryTwo.CategoryName}</p>;
       },
     },
     {
-      header:  t("TemplateType"),
+      header: t("TemplateType"),
+      accessorFn: (row) => row.TemplateType.TemplateTypeName || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{row.original.TemplateType.TemplateTypeName}</p>;
       },
     },
     {
       header: t("TemplatePattern"),
+      accessorFn: (row) => row.TemplatePattern.TemplatePatternName || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{row.original.TemplatePattern.TemplatePatternName}</p>;
       },

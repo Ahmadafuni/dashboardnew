@@ -64,6 +64,8 @@ export default function Orders() {
     },
     {
       header: t("Collections"),
+      accessorFn: (row) => row.Collection.CollectionName || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{row.original.Collection.CollectionName}</p>;
       },
@@ -74,6 +76,7 @@ export default function Orders() {
     },
     {
       header: t("DeadlineDate"),
+      accessorFn: (row) => row.DeadlineDate || t("N/A"),
       cell: ({ row }) => {
         // @ts-expect-error
         return <p>{row.original.DeadlineDate.split("T")[0]}</p>;
@@ -85,6 +88,7 @@ export default function Orders() {
     },
     {
       header: t("Status"),
+      accessorFn: (row) => row.RunningStatus || t("N/A"),
       cell: ({ row }) => {
         return (
           <div className="space-x-1">
@@ -100,33 +104,30 @@ export default function Orders() {
                 takeAction={() => restartOrder(setOrders, row.original.Id)}
                 className="bg-green-500 hover:bg-green-600"
               />
-            ) :
-              row.original.RunningStatus === "COMPLETED" ? (
-                <Button
-                  className="bg-blue-500"
-                  disabled
-                  style={{
-                    background: "linear-gradient(135deg, #3b82f6, #60a5fa)",
-                  }}
-                >
-                  {t("Complete")}
-                </Button>
-              ) :
-                (
-                  <BasicConfirmationDialog
-                    btnText={t("HoldOrder")}
-                    takeAction={(reason: string) => holdOrder(setOrders, row.original.Id,
-                      {
-                        StartStopTime: new Date(),
-                        EndStopTime: null,
-                        ReasonText: reason,
-                      }
-                    )}
-                    className="bg-orange-500 hover:bg-orange-600"
-                    showInput={true}
-                  />
-
-                )}
+            ) : row.original.RunningStatus === "COMPLETED" ? (
+              <Button
+                className="bg-blue-500"
+                disabled
+                style={{
+                  background: "linear-gradient(135deg, #3b82f6, #60a5fa)",
+                }}
+              >
+                {t("Complete")}
+              </Button>
+            ) : (
+              <BasicConfirmationDialog
+                btnText={t("HoldOrder")}
+                takeAction={(reason: string) =>
+                  holdOrder(setOrders, row.original.Id, {
+                    StartStopTime: new Date(),
+                    EndStopTime: null,
+                    ReasonText: reason,
+                  })
+                }
+                className="bg-orange-500 hover:bg-orange-600"
+                showInput={true}
+              />
+            )}
           </div>
         );
       },
@@ -178,7 +179,7 @@ export default function Orders() {
                     onClick={() =>
                       downLoadFile(
                         "https://dashboardbackendnew.onrender.com" +
-                        row.original.FilePath
+                          row.original.FilePath
                       )
                     }
                   >

@@ -79,6 +79,7 @@ export default function CompletedTable({
   const templateColumns: ColumnDef<Tracking>[] = [
     {
       header: t("ModelNumber"),
+      accessorFn: (row) => row.ModelVariant.Model.DemoModelNumber || t("N/A"),
       cell: ({ row }) => {
         return <p>{row.original.ModelVariant.Model.DemoModelNumber}</p>;
       },
@@ -106,67 +107,96 @@ export default function CompletedTable({
     },
     {
       header: t("Color"),
+      accessorFn: (row) => row.ModelVariant.Color.ColorName || t("N/A"),
+
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Color.ColorName?
-          row.original.ModelVariant.Color.ColorName:t("N/A")
-        }</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Color.ColorName
+              ? row.original.ModelVariant.Color.ColorName
+              : t("N/A")}
+          </p>
+        );
       },
     },
     {
       header: t("Sizes"),
+      accessorFn: (row) => row.ModelVariant.Sizes || t("N/A"),
+
       cell: ({ row }) => {
-        return <p>{
-          row.original.ModelVariant.Sizes?
-          row.original.ModelVariant.Sizes.map((e: any) => e.label)
-          .join(", "):t("N/A")}</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Sizes
+              ? row.original.ModelVariant.Sizes.map((e: any) => e.label).join(
+                  ", "
+                )
+              : t("N/A")}
+          </p>
+        );
       },
     },
     {
-      header:  t("TargetQuantity"),
+      header: t("TargetQuantity"),
+      accessorFn: (row) => row.ModelVariant.Quantity || t("N/A"),
+
       cell: ({ row }) => {
-        return <p>{row.original.ModelVariant.Quantity?
-          row.original.ModelVariant.Quantity:t("N/A")
-        }</p>;
+        return (
+          <p>
+            {row.original.ModelVariant.Quantity
+              ? row.original.ModelVariant.Quantity
+              : t("N/A")}
+          </p>
+        );
       },
     },
-    
   ];
 
 
   if (userRole === "FACTORYMANAGER" || userRole === "ENGINEERING") {
     templateColumns.push(
-        {
-            header: t("CurrentStage"),
-            cell: ({ row }) => {
-                // @ts-ignore
-                return <p>{row.original.CurrentStage?.Department?.Name}</p>; 
-            },
+      {
+        header: t("CurrentStage"),
+        // @ts-ignore
+        accessorFn: (row) => row.CurrentStage?.Department?.Name || t("N/A"),
+        cell: ({ row }) => {
+          // @ts-ignore
+          return <p>{row.original.CurrentStage?.Department?.Name}</p>;
         },
-        {
-          header: t("Duration") ,
-          cell: ({row}) => {
-            
-            if(row.original.StartTime && row.original.EndTime)
-            return calculateDuration(new Date(row.original.StartTime), new Date(row.original.EndTime));
-          else t("NA") ;
+      },
+      {
+        header: t("Duration"),
+        accessorFn: (row) =>
+          (row.StartTime && row.EndTime) || t("N/A"),
 
-          },
+        cell: ({ row }) => {
+          if (row.original.StartTime && row.original.EndTime)
+            return calculateDuration(
+              new Date(row.original.StartTime),
+              new Date(row.original.EndTime)
+            );
+          else t("NA");
         },
-        {
-          header: t("Action") ,
-          cell: ({row}) => {
-            return  <div className="flex space-x-2">
+      },
+      {
+        header: t("Action"),
+        cell: ({ row }) => {
+          return (
+            <div className="flex space-x-2">
               <Button
                 variant="secondary"
                 onClick={() =>
-                  window.open(`/models/viewdetails/${row.original.ModelVariant.Model.Id}`, "_blank")
+                  window.open(
+                    `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+                    "_blank"
+                  )
                 }
               >
                 {t("Details")}
               </Button>
             </div>
-          },
-        }
+          );
+        },
+      }
     );
 }
 else {
@@ -174,15 +204,19 @@ else {
   if(user?.category === "CUTTING"){
     templateColumns.push(
       {
-         header: t("ReceivedQuantity"),
-        cell: ({row}) => {
-          return  renderQuantity(row.original.QuantityInKg);
+        header: t("ReceivedQuantity"),
+        accessorFn: (row) => row.QuantityInKg || t("N/A"),
+
+        cell: ({ row }) => {
+          return renderQuantity(row.original.QuantityInKg);
         },
       },
       {
-         header: t("DeliveredQuantity"),
-        cell: ({row}) => {
-          return  renderQuantity(row.original.QuantityInNum);
+        header: t("DeliveredQuantity"),
+        accessorFn: (row) => row.QuantityInNum || t("N/A"),
+
+        cell: ({ row }) => {
+          return renderQuantity(row.original.QuantityInNum);
         },
       }
     );
@@ -190,15 +224,18 @@ else {
   }else {
     templateColumns.push(
       {
-         header: t("ReceivedQuantity"),
-        cell: ({row}) => {
-          return  renderQuantity(row.original.QuantityReceived);
+        header: t("ReceivedQuantity"),
+        accessorFn: (row) => row.QuantityReceived || t("N/A"),
+
+        cell: ({ row }) => {
+          return renderQuantity(row.original.QuantityReceived);
         },
       },
       {
-         header: t("DeliveredQuantity"),
-        cell: ({row}) => {
-          return  renderQuantity(row.original.QuantityDelivered);
+        header: t("DeliveredQuantity"),
+        accessorFn: (row) => row.QuantityDelivered || t("N/A"),
+        cell: ({ row }) => {
+          return renderQuantity(row.original.QuantityDelivered);
         },
       }
     );
@@ -207,25 +244,29 @@ else {
 
   templateColumns.push(
     {
-       header: t("DamageQuantity"),
-      cell: ({row}) => {
-        return  renderQuantity(row.original.DamagedItem);
+      header: t("DamageQuantity"),
+      accessorFn: (row) => row.DamagedItem || t("N/A"),
+
+      cell: ({ row }) => {
+        return renderQuantity(row.original.DamagedItem);
       },
     },
     {
-      header: t("Action") ,
-      cell: ({row}) => {
-        return  <Button
-        variant="secondary"
-        onClick={() =>
-          window.open(
-            `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
-            "_blank"
-          )
-        }
-      >
-        {t("Details")}
-      </Button>
+      header: t("Action"),
+      cell: ({ row }) => {
+        return (
+          <Button
+            variant="secondary"
+            onClick={() =>
+              window.open(
+                `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+                "_blank"
+              )
+            }
+          >
+            {t("Details")}
+          </Button>
+        );
       },
     }
   );

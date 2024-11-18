@@ -18,9 +18,20 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, EllipsisVertical, Eye, ScanEye } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  EllipsisVertical,
+  Eye,
+  ScanEye,
+} from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/common/DataTable";
 import {
@@ -65,14 +76,10 @@ export default function FinishedTable({
   totalPages,
   works,
 }: Props) {
-
   const { t } = useTranslation();
 
   const [summaryData, setSummaryData] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-
-
 
   // @ts-ignore
   const [pageSize, setPageSize] = useState(10);
@@ -84,9 +91,7 @@ export default function FinishedTable({
     return quantity;
   };
 
-  useEffect(() => {
-
-  }, [works]);
+  useEffect(() => {}, [works]);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -96,6 +101,8 @@ export default function FinishedTable({
   const templateColumns: ColumnDef<Tracking>[] = [
     {
       header: t("ModelNumber"),
+      // @ts-ignore
+      accessorFn: (row) => row.modelDemoNumber || t("N/A"),
       cell: ({ row }) => {
         // @ts-ignore
         return <p>{row.original.modelDemoNumber}</p>;
@@ -124,78 +131,87 @@ export default function FinishedTable({
     },
     {
       header: t("Color"),
+      // @ts-ignore
+      accessorFn: (row) => row.colors || t("N/A"),
+
       cell: ({ row }) => {
         // @ts-ignore
-        return <p>{row.original.colors ? row.original.colors : t("N/A")
-        }</p>;
+        return <p>{row.original.colors ? row.original.colors : t("N/A")}</p>;
       },
     },
     {
       header: t("Sizes"),
+      // @ts-ignore
+      accessorFn: (row) => row.sizes || t("N/A"),
+
       cell: ({ row }) => {
-        return <p>{
-          // @ts-ignore
-          row.original.sizes ? row.original.sizes.map((e: any) => e)
-            .join(", ") : t("N/A")}</p>;
+        return (
+          <p>
+            {
+              // @ts-ignore
+              row.original.sizes? row.original.sizes.map((e: any) => e).join(", ")
+                : t("N/A")
+            }
+          </p>
+        );
       },
     },
     {
       header: t("Action"),
       cell: ({ row }) => {
-        return <div className="flex gap-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <EllipsisVertical className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-52">
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  // @ts-ignore
-                  onClick={() => window.open(`/models/viewdetails/${row.original.modelId}`,
-                    "_blank"
-                  )
-
-                  }
-                >
-                  <Eye className="mr-2 h-4 w-4" />
-                  <span>{t("Details")}</span>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onClick={() => window.open(
+        return (
+          <div className="flex gap-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <EllipsisVertical className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-52">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
                     // @ts-ignore
-                    `/models/viewsummary/${row.original.modelId}`,
-                    "_blank"
-                  )
-                  }
-                >
-                  <ScanEye className="mr-2 h-4 w-4" />
-                  <span>{t("ViewSummary")}</span>
-                </DropdownMenuItem>
+                    onClick={() => window.open(`/models/viewdetails/${row.original.modelId}`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    <span>{t("Details")}</span>
+                  </DropdownMenuItem>
 
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      window.open(
+                        // @ts-ignore
+                        `/models/viewsummary/${row.original.modelId}`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    <ScanEye className="mr-2 h-4 w-4" />
+                    <span>{t("ViewSummary")}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
       },
-    }
+    },
   ];
-
 
   return (
     <div className="space-y-2">
       <h2 className="text-2xl font-bold">{t("Finished")}</h2>
       <div className="overflow-x-auto">
-
         <DataTable
           columns={templateColumns}
           data={works.finished}
           tableName="TrakingModels"
           isDashboard={true}
           fieldFilter={{
-            "ModelNumber": "ModelNumber"
+            ModelNumber: "ModelNumber",
           }}
           stage="5"
         />
@@ -211,21 +227,41 @@ export default function FinishedTable({
               <Table className="min-w-full border border-gray-600">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-gray-300">{t("Stage Name")}</TableHead>
-                    <TableHead className="text-gray-300">{t("Start Time")}</TableHead>
-                    <TableHead className="text-gray-300">{t("End Time")}</TableHead>
-                    <TableHead className="text-gray-300">{t("Duration (hours)")}</TableHead>
-                    <TableHead className="text-gray-300">{t("Quantity Received")}</TableHead>
-                    <TableHead className="text-gray-300">{t("Quantity Delivered")}</TableHead>
+                    <TableHead className="text-gray-300">
+                      {t("Stage Name")}
+                    </TableHead>
+                    <TableHead className="text-gray-300">
+                      {t("Start Time")}
+                    </TableHead>
+                    <TableHead className="text-gray-300">
+                      {t("End Time")}
+                    </TableHead>
+                    <TableHead className="text-gray-300">
+                      {t("Duration (hours)")}
+                    </TableHead>
+                    <TableHead className="text-gray-300">
+                      {t("Quantity Received")}
+                    </TableHead>
+                    <TableHead className="text-gray-300">
+                      {t("Quantity Delivered")}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {summaryData?.stages.map((stage: any, index: number) => (
                     <TableRow key={index} className="hover:bg-gray-700">
-                      <TableCell className="text-gray-300">{stage.stageName}</TableCell>
-                      <TableCell className="text-gray-300">{new Date(stage.startTime).toLocaleString()}</TableCell>
-                      <TableCell className="text-gray-300">{new Date(stage.endTime).toLocaleString()}</TableCell>
-                      <TableCell className="text-gray-300">{stage.duration}</TableCell>
+                      <TableCell className="text-gray-300">
+                        {stage.stageName}
+                      </TableCell>
+                      <TableCell className="text-gray-300">
+                        {new Date(stage.startTime).toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-gray-300">
+                        {new Date(stage.endTime).toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-gray-300">
+                        {stage.duration}
+                      </TableCell>
                       <TableCell className="text-gray-300">
                         {renderQuantity(stage.quantityReceived)}
                       </TableCell>

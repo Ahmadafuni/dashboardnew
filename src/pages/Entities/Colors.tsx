@@ -39,15 +39,18 @@ export default function Colors() {
     {
       id: "ColorName",
       header: t("ColorName"),
-      accessorFn:(row) => row.ColorName
+      accessorFn: (row) => row.ColorName,
     },
     {
       id: "ColorCode",
+      accessorFn: (row) => row.ColorCode,
       header: t("ColorCode"),
     },
     {
       id: "Demo",
       header: t("Demo"),
+      accessorFn: (row) => row.ColorCode,
+
       cell: ({ row }) => {
         return (
           <div
@@ -60,6 +63,7 @@ export default function Colors() {
     {
       id: "Description",
       header: t("Description"),
+      accessorFn: (row) => row.Description,
     },
     {
       header: t("Action"),

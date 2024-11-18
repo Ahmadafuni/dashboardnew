@@ -171,6 +171,7 @@ export default function OngoingTable({
   const templateColumns: ColumnDef<Tracking>[] = [
     {
       header: t("ModelNumber"),
+      accessorFn: (row) => row.ModelVariant.Model.DemoModelNumber || t("N/A"),
       cell: ({ row }) => {
         return <p>{row.original.ModelVariant.Model.DemoModelNumber}</p>;
       },
@@ -197,6 +198,7 @@ export default function OngoingTable({
     },
     {
       header: t("Color"),
+      accessorFn: (row) => row.ModelVariant?.Color?.ColorName || t("N/A"),
       cell: ({ row }) => {
         return (
           <p>
@@ -209,6 +211,7 @@ export default function OngoingTable({
     },
     {
       header: t("Sizes"),
+      accessorFn: (row) => row.ModelVariant?.Sizes || t("N/A"),
       cell: ({ row }) => {
         return (
           <p>
@@ -223,6 +226,7 @@ export default function OngoingTable({
     },
     {
       header: t("TargetQuantity"),
+      accessorFn: (row) => row.ModelVariant?.Quantity || t("N/A"),
       cell: ({ row }) => {
         return (
           <p>
@@ -246,6 +250,8 @@ export default function OngoingTable({
     templateColumns.push(
       {
         header: t("CurrentStage"),
+        // @ts-ignore
+        accessorFn: (row) => row.CurrentStage?.Department?.Name || t("N/A"),
         cell: ({ row }) => {
           // @ts-ignore
           return <p>{row.original.CurrentStage?.Department?.Name}</p>;
@@ -253,6 +259,8 @@ export default function OngoingTable({
       },
       {
         header: t("NextStage"),
+        // @ts-ignore
+        accessorFn: (row) => row.NextStage?.Department?.Name || t("N/A"),
         cell: ({ row }) => {
           // @ts-ignore
           return <p>{row.original.NextStage?.Department?.Name}</p>;
@@ -260,6 +268,7 @@ export default function OngoingTable({
       },
       {
         header: t("StartTime"),
+        accessorFn: (row) => row.StartTime || t("N/A"),
         cell: ({ row }) => {
           return (
             <p>
@@ -297,6 +306,7 @@ export default function OngoingTable({
     templateColumns.push(
       {
         header: t("StartTime"),
+        accessorFn: (row) => row.StartTime || t("N/A"),
         cell: ({ row }) => {
           return (
             <p>

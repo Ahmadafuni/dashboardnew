@@ -57,6 +57,8 @@ export default function ModelVarients() {
     },
     {
       header: t("Sizes"),
+      accessorFn: (row) => row.Sizes || t("N/A"),
+
       cell: ({ row }) => {
         return (
           <Button
@@ -78,6 +80,8 @@ export default function ModelVarients() {
     },
     {
       header: t("QuantityDetails"),
+      accessorFn: (row) => row.Quantity || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{+row.original.Quantity / row.original.Sizes.length}</p>;
       },
@@ -105,27 +109,25 @@ export default function ModelVarients() {
                 className="bg-orange-500 hover:bg-orange-600"
                 showInput={true}
               />
-            ) :
-              row.original.RunningStatus === "COMPLETED" ? (
-                <Button
-                  className="bg-blue-500"
-                  disabled
-                  style={{
-                    background: "linear-gradient(135deg, #3b82f6, #60a5fa)",
-                  }}
-                >
-                  {t("Complete")}
-                </Button>
-              ) :
-                (
-                  <BasicConfirmationDialog
-                    btnText={t("StartModel")}
-                    takeAction={() =>
-                      restartModelVarinte(setModelVarients, row.original.Id, id)
-                    }
-                    className="bg-green-500 hover:bg-green-600"
-                  />
-                )}
+            ) : row.original.RunningStatus === "COMPLETED" ? (
+              <Button
+                className="bg-blue-500"
+                disabled
+                style={{
+                  background: "linear-gradient(135deg, #3b82f6, #60a5fa)",
+                }}
+              >
+                {t("Complete")}
+              </Button>
+            ) : (
+              <BasicConfirmationDialog
+                btnText={t("StartModel")}
+                takeAction={() =>
+                  restartModelVarinte(setModelVarients, row.original.Id, id)
+                }
+                className="bg-green-500 hover:bg-green-600"
+              />
+            )}
           </div>
         );
       },

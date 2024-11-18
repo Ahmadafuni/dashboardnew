@@ -39,30 +39,37 @@ export default function Models() {
     },
     {
       header: t("ProductCatalogues"),
+      accessorFn: (row) => row.ProductCatalog?.ProductCatalogName || t("N/A"),
       cell: ({ row }) => {
         return <p>{row.original.ProductCatalog?.ProductCatalogName}</p>;
       },
     },
     {
       header: t("ProductCategoryOne"),
+      accessorFn: (row) => row.CategoryOne?.CategoryName || t("N/A"),
+
       cell: ({ row }) => {
         return <p>{row.original.CategoryOne?.CategoryName}</p>;
       },
     },
     {
       header: t("ProductCategoryTwo"),
+      accessorFn: (row) => row.categoryTwo?.CategoryName || t("N/A"),
       cell: ({ row }) => {
         return <p>{row.original.categoryTwo?.CategoryName}</p>;
       },
     },
     {
       header: t("Textiles"),
+      accessorFn: (row) => row.Textile?.TextileName || t("N/A"),
       cell: ({ row }) => {
         return <p>{row.original.Textile?.TextileName}</p>;
       },
     },
     {
       header: t("Template"),
+      accessorFn: (row) => row.Template?.TemplateName || t("N/A"),
+
       cell: ({ row }) => {
         if (row.original.Template?.TemplateName)
           return <p>{row.original.Template.TemplateName}</p>;
