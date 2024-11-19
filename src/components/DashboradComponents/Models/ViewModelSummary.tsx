@@ -33,17 +33,35 @@ export default function ViewModelSummary() {
     getModelSummary(setSummary, id);
   }, [summary]);
 
+
+  function parseClothValue(value:string) {
+    try {
+      
+      const jsonValue = JSON.parse(value);
+      if (typeof jsonValue === "object" && jsonValue !== null) {
+        return Object.entries(jsonValue)
+          .map(([key, val]) => `${key.replace("_", "-")}: ${val}`)
+          .join(" , ");
+      }
+    } catch (error) {
+      // error
+    }
+
+    return value;
+  }
+
+
   interface Size {
     label: string;
     value: number | string;
   }
 
   interface TrakingModel {
-    ClothWeight: string | null;
-    ReplacedItemInKG: string | null;
-    ClothCount: string | null;
-    ClothLength: string | null;
-    ClothWidth: string | null;
+    ClothWeight: string ;
+    ReplacedItemInKG: string ;
+    ClothCount: string ;
+    ClothLength: string ;
+    ClothWidth: string ;
     DamagedItem: [];
     QuantityReceived: [];
     QuantityDelivered: [];
@@ -387,15 +405,16 @@ export default function ViewModelSummary() {
                       </TableCell>
 
                       <TableCell>
-                        {variant.TrakingModels?.ClothWidth}{" "}
+                        {parseClothValue(variant.TrakingModels?.ClothWidth)}{" "}
                         {variant.TrakingModels?.ClothWidth ? "*" : "-"}{" "}
-                        {variant.TrakingModels?.ClothLength}
+                        {parseClothValue(variant.TrakingModels?.ClothLength)}
                       </TableCell>
                       <TableCell>
-                        {variant.TrakingModels?.ClothCount || "غير متوفر"}
+                        {parseClothValue(variant.TrakingModels?.ClothCount) ||
+                          "غير متوفر"}
                       </TableCell>
                       <TableCell>
-                        {variant.TrakingModels?.ClothWeight || "غير متوفر"}
+                        {parseClothValue(variant.TrakingModels?.ClothWidth)}{" "}
                       </TableCell>
                       <TableCell>
                         {variant.TrakingModels?.ReplacedItemInKG || "-"}

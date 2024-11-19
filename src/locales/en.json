@@ -416,5 +416,8 @@
   "Unit" : "Unit",
   "ChooseaModelFirst" : "Choose a model first",
   "ChooseaDepartmentFirst" : "Choose a department first",
-  "ProductCatalogName" : "Product Catalog Name"
+  "ProductCatalogName" : "Product Catalog Name",
+  "AddCloth" : "Add Cloth",
+  "RemoveLastCloth" : "Remove Last Cloth",
+  "Cloth" : "Cloth"
 }

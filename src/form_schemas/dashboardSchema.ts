@@ -14,17 +14,37 @@ export const pauseUnpuaseReasoneSchema = z.object({
   StopData: z.any(),
 });
 export const cuttingSendConfirmationSchema = z.object({
-    ClothCount: z.string().nonempty("ClothCount is required."),
-    ClothLength: z.string().nonempty("ClothLength is required."),
-    ClothWeight: z.string().nonempty("ClothWeight is required."),
-    ClothWidth: z.string().nonempty("ClothWidth is required."),
-    Notes: z.string().optional(),
-    QuantityInKg: z.string().nonempty("QuantityInKg is required."),
-    ReplacedItemInKG: z.string().optional(),
-    DamagedItem: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
-    QuantityInNum: z.array(z.object({ size: z.string(), value: z.string() })).optional(),
-
+  ClothGroups: z
+    .array(
+      z.object({
+        ClothCount: z.string().nonempty("ClothCount is required."),
+        ClothLength: z.string().nonempty("ClothLength is required."),
+        ClothWeight: z.string().nonempty("ClothWeight is required."),
+        ClothWidth: z.string().nonempty("ClothWidth is required."),
+      })
+    )
+    .min(1, "At least one ClothGroup is required."),
+  Notes: z.string().optional(),
+  QuantityInKg: z.string().nonempty("QuantityInKg is required."),
+  ReplacedItemInKG: z.string().optional(),
+  DamagedItem: z
+    .array(
+      z.object({
+        size: z.string(),
+        value: z.string(),
+      })
+    )
+    .optional(),
+  QuantityInNum: z
+    .array(
+      z.object({
+        size: z.string(),
+        value: z.string(),
+      })
+    )
+    .optional(),
 });
+
 export const othersSendConfirmationSchema = z.object({
     QuantityReceived: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
     QuantityDelivered: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
