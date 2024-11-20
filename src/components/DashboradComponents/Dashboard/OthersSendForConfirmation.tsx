@@ -107,7 +107,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
     });
   };
 
-  const renderTable = (pairs: { label: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ label: string; value: string }[]>>, label: string) => (
+  const renderTable = (pairs: { label: string; value: string }[], setPairs: React.Dispatch<React.SetStateAction<{ label: string; value: string }[]>>, label: string ,readOnly?: boolean) => (
       <div className="space-y-2">
         <label className="block font-medium text-sm">{label}</label>
         {pairs.map((pair, index) => (
@@ -120,11 +120,16 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
                   placeholder="Size"
               />
               <Input
-                  type="text"
-                  value={pair.value}
-                  onChange={(e) => updatePair(index, e.target.value, setPairs)}
-                  className="w-full border p-1"
-                  placeholder="Value"
+                type="text"
+                value={pair.value}
+                onChange={(e) => {
+                  if (!readOnly) {
+                    updatePair(index, e.target.value, setPairs);
+                  }
+                }}
+                className="w-full border p-1"
+                placeholder="Value"
+                readOnly={readOnly}
               />
             </div>
         ))}
@@ -143,9 +148,9 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
                 className="grid grid-cols-1 gap-2"
                 id="sent-confirmation-others"
             >
-              {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("QuantityReceived"))}
-              {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("QuantityDelivered"))}
-              {renderTable(damagedItemPairs, setDamagedItemPairs, t("DamagedItems"))}
+              {renderTable(quantityReceivedPairs, setQuantityReceivedPairs, t("QuantityReceived") , true)}
+              {renderTable(quantityDeliveredPairs, setQuantityDeliveredPairs, t("QuantityDelivered") , false)}
+              {renderTable(damagedItemPairs, setDamagedItemPairs, t("DamagedItems") , false)}
               <FormField
                   control={form.control}
                   name="Notes"
