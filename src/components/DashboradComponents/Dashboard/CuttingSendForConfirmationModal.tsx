@@ -17,7 +17,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
-import { Loader2 } from "lucide-react";
+import { Loader2, Minus, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -200,7 +200,7 @@ export default function CuttingSendForConfirmationModal({
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={`${t("ClothCount")} (${t("Cloth")} #${index + 1})`}
+              label={`${t("ClothCount")} (#${index + 1})`}
               field={field}
             />
           )}
@@ -212,7 +212,7 @@ export default function CuttingSendForConfirmationModal({
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={`${t("ClothLength")} (${t("Cloth")} #${index + 1})`}
+              label={`${t("ClothLength")} (#${index + 1})`}
               field={field}
             />
           )}
@@ -224,7 +224,7 @@ export default function CuttingSendForConfirmationModal({
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={`${t("ClothWidth")} (${t("Cloth")} #${index + 1})`}
+              label={`${t("ClothWidth")} (#${index + 1})`}
               field={field}
             />
           )}
@@ -236,7 +236,7 @@ export default function CuttingSendForConfirmationModal({
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={`${t("ClothWeight")} (${t("Cloth")} #${index + 1})`}
+              label={`${t("ClothWeight")} (#${index + 1})`}
               field={field}
             />
           )}
@@ -329,17 +329,22 @@ export default function CuttingSendForConfirmationModal({
             </div> */}
             {renderClothGroups()}
             <div className="flex space-x-2">
-              <Button type="button" onClick={addClothGroup} variant="default">
-                {t("AddCloth")}
-              </Button>
+              <button
+                type="button"
+                onClick={addClothGroup}
+                className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-md flex items-center justify-center"
+              >
+                <Plus size={20} />
+              </button>
+
               {clothGroups.length > 1 && (
-                <Button
+                <button
                   type="button"
                   onClick={removeLastClothGroup}
-                  variant="destructive"
+                  className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-md flex items-center justify-center"
                 >
-                  {t("RemoveLastCloth")}
-                </Button>
+                  <Minus size={20} />
+                </button>
               )}
             </div>
 
