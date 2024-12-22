@@ -21,12 +21,13 @@ export const cuttingSendConfirmationSchema = z.object({
         ClothLength: z.string().nonempty("ClothLength is required."),
         ClothWeight: z.string().nonempty("ClothWeight is required."),
         ClothWidth: z.string().nonempty("ClothWidth is required."),
+        QuantityInKg: z.string().nonempty("QuantityInKg is required."),
+        ReplacedItemInKG: z.string().nonempty("Replaced Item In KG is required."),
+        ClothPiecesPerPeriod: z.string().nonempty("Cloth Pieces Per Period is required."),
       })
     )
     .min(1, "At least one ClothGroup is required."),
   Notes: z.string().optional(),
-  QuantityInKg: z.string().nonempty("QuantityInKg is required."),
-  ReplacedItemInKG: z.string().optional(),
   DamagedItem: z
     .array(
       z.object({

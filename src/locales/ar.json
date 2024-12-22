@@ -425,5 +425,12 @@
   "ProductCatalogName": "اسم المنتج",
   "AddCloth": "إضافة مدة جديدة",
   "RemoveLastCloth": "حذف آخر مدة",
-  "Cloth": "مدة"
+  "Cloth": "مدة",
+  "FabricCalculations": "حسابات القماش",
+  "RequiredFabric": "الكمية المطلوبة",
+  "Wastage": "نسبة الهدر",
+  "PieceWeight": "وزن القطعة",
+  "ClothPiecesPerPeriod": "عدد القطع بالمدة الواحدة"
+
+  
 }

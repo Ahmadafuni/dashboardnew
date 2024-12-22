@@ -30,6 +30,17 @@ type Props = {
   selectedSizes: { label: string; value: string }[];
 };
 
+type ClothGroup = {
+  ClothCount: string;
+  ClothLength: string;
+  ClothWidth: string;
+  ClothWeight: string;
+  QuantityInKg: string;
+  ReplacedItemInKG: string;
+  ClothPiecesPerPeriod: string; 
+
+};
+
 export default function CuttingSendForConfirmationModal({
   getAllWorks,
   selectedSizes,
@@ -50,10 +61,16 @@ export default function CuttingSendForConfirmationModal({
     resolver: zodResolver(cuttingSendConfirmationSchema),
     defaultValues: {
       ClothGroups: [
-        { ClothCount: "", ClothLength: "", ClothWidth: "", ClothWeight: "" },
+        { 
+          ClothCount: "", 
+          ClothLength: "", 
+          ClothWidth: "", 
+          ClothWeight: "",
+          QuantityInKg: "",
+          ReplacedItemInKG: "",
+          ClothPiecesPerPeriod: ""
+        },
       ],
-      QuantityInKg: "",
-      ReplacedItemInKG: "",
       DamagedItem: [],
       QuantityInNum: [],
       Notes: "",
@@ -74,8 +91,17 @@ export default function CuttingSendForConfirmationModal({
   const handleSubmit = async (
     data: z.infer<typeof cuttingSendConfirmationSchema>
   ) => {
+
     setIsLoading(true);
     try {
+      const errors = data.ClothGroups.map(validateClothGroup).filter(Boolean);
+
+      if (errors.length > 0) {
+        toast.error(errors[0]);
+        setIsLoading(false);
+        return;
+      }
+      
       const payload = {
         ...data,
         DamagedItem: JSON.stringify(damagedItemPairs),
@@ -154,22 +180,32 @@ export default function CuttingSendForConfirmationModal({
     </div>
   );
 
-  const [clothGroups, setClothGroups] = useState([
-    { ClothCount: "", ClothLength: "", ClothWidth: "", ClothWeight: "" },
+  const [clothGroups, setClothGroups] = useState<ClothGroup[]>([
+    { 
+      ClothCount: "", 
+      ClothLength: "", 
+      ClothWidth: "", 
+      ClothWeight: "",
+      QuantityInKg: "",
+      ReplacedItemInKG: "",
+      ClothPiecesPerPeriod: ""
+    },
   ]);
 
   const addClothGroup = () => {
     setClothGroups((prev) => {
-      const updatedGroups = [
-        ...prev,
-        { ClothCount: "", ClothLength: "", ClothWidth: "", ClothWeight: "" },
-      ];
+      const newGroup: ClothGroup = {
+        ClothCount: "",
+        ClothLength: "",
+        ClothWidth: "",
+        ClothWeight: "",
+        QuantityInKg: "",
+        ReplacedItemInKG: "",
+        ClothPiecesPerPeriod: ""
+      };
+      const updatedGroups = [...prev, newGroup];
 
-
-      form.setValue("ClothGroups", [
-        ...form.getValues("ClothGroups"),
-        { ClothCount: "", ClothLength: "", ClothWidth: "", ClothWeight: "" },
-      ]);
+      form.setValue("ClothGroups", updatedGroups);
 
       return updatedGroups;
     });
@@ -177,37 +213,53 @@ export default function CuttingSendForConfirmationModal({
 
   const removeLastClothGroup = () => {
     setClothGroups((prev) => {
-      if (prev.length === 0) return prev; 
+      if (prev.length <= 1) return prev;
       const updatedGroups = prev.slice(0, -1);
-      form.setValue(
-        "ClothGroups",
-        form.getValues("ClothGroups").slice(0, -1) 
-      );
-
+      form.setValue("ClothGroups", updatedGroups);
       return updatedGroups;
     });
   };
 
-  // Render dynamic groups
   const renderClothGroups = () =>
-    // @ts-ignore
     form.watch("ClothGroups")?.map((group, index) => (
-      <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
+      <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4 p-4 border rounded-lg">
+         <FormField
+        control={form.control}
+        name={`ClothGroups.${index}.QuantityInKg`}
+        render={({ field }) => (
+          <TextInputFieldForForm
+            placeholder="أدخل الكمية بالكيلو"
+            label={`${t("QuantityInKg")} (#${index + 1})`}
+            field={field}
+          />
+        )}
+      />
+        <FormField
+        control={form.control}
+        name={`ClothGroups.${index}.ClothCount`}
+        render={({ field }) => (
+          <TextInputFieldForForm
+            placeholder="أدخل عدد المدد"
+            label={`${t("ClothCount")} (#${index + 1})`}
+            field={{
+              ...field,
+              onChange: (e:any) => {
+                field.onChange(e);
+                // Add immediate validation if needed
+                const value = e.target.value;
+                if (!/^\d*$/.test(value)) {
+                  form.setError(`ClothGroups.${index}.ClothCount`, {
+                    type: 'manual',
+                    message: 'يجب إدخال أرقام فقط'
+                  });
+                }
+              }
+            }}
+          />
+        )}
+      />
         <FormField
           control={form.control}
-          // @ts-ignore
-          name={`ClothGroups.${index}.ClothCount`}
-          render={({ field }) => (
-            <TextInputFieldForForm
-              placeholder=""
-              label={`${t("ClothCount")} (#${index + 1})`}
-              field={field}
-            />
-          )}
-        />
-        <FormField
-          control={form.control}
-          // @ts-ignore
           name={`ClothGroups.${index}.ClothLength`}
           render={({ field }) => (
             <TextInputFieldForForm
@@ -219,7 +271,6 @@ export default function CuttingSendForConfirmationModal({
         />
         <FormField
           control={form.control}
-          // @ts-ignore
           name={`ClothGroups.${index}.ClothWidth`}
           render={({ field }) => (
             <TextInputFieldForForm
@@ -229,105 +280,99 @@ export default function CuttingSendForConfirmationModal({
             />
           )}
         />
+         <FormField
+        control={form.control}
+        name={`ClothGroups.${index}.ClothWeight`}
+        render={({ field }) => (
+          <TextInputFieldForForm
+            placeholder="أدخل الوزن بالكيلو (أقل من 5)"
+            label={`${t("ClothWeight")} (#${index + 1})`}
+            field={{
+              ...field,
+              onChange: (e: any) => {
+                const value = e.target.value;
+                if (!/^\d*(\.\d*)?$/.test(value)) {
+                  form.setError(`ClothGroups.${index}.ClothWeight`, {
+                    type: "manual",
+                    message: "الوزن يجب أن يكون رقمًا فقط.",
+                  });
+                } else if (parseFloat(value) > 5) {
+                  form.setError(`ClothGroups.${index}.ClothWeight`, {
+                    type: "manual",
+                    message: "الوزن يجب أن يكون أقل من 5 كيلوغرامات.",
+                  });
+                } else {
+                  form.clearErrors(`ClothGroups.${index}.ClothWeight`);
+                }
+                field.onChange(e);
+              },
+            }}
+          />
+        )}
+      />
         <FormField
           control={form.control}
-          // @ts-ignore
-          name={`ClothGroups.${index}.ClothWeight`}
+          name={`ClothGroups.${index}.ReplacedItemInKG`}
           render={({ field }) => (
             <TextInputFieldForForm
               placeholder=""
-              label={`${t("ClothWeight")} (#${index + 1})`}
+              label={`${t("ReplacedItemInKg")} (#${index + 1})`}
               field={field}
             />
           )}
         />
+        <FormField
+        control={form.control}
+        name={`ClothGroups.${index}.ClothPiecesPerPeriod`}
+        render={({ field }) => (
+          <TextInputFieldForForm
+            placeholder=""
+            label={`${t("ClothPiecesPerPeriod")} (#${index + 1})`}
+            field={field}
+          />
+        )}
+      />
       </div>
     ));
 
+    const validateClothGroup = (group: ClothGroup) => {
+      const { ClothCount, ClothWeight, QuantityInKg, ReplacedItemInKG } = group;
+    
+      if (!/^\d+(\.\d+)?$/.test(ClothWeight) || parseFloat(ClothWeight) > 5) {
+        return "وزن المدة يجب أن يكون رقمًا وأقل من 5 كيلوغرامات.";
+      }
+    
+      const totalWeight =
+        (parseInt(ClothCount) || 0) * (parseFloat(ClothWeight) || 0) +
+        (parseFloat(ReplacedItemInKG) || 0);
+    
+      if (totalWeight > parseFloat(QuantityInKg || "0")) {
+        return `الوزن الكلي (${totalWeight}) يجب أن يكون أقل أو يساوي كمية الكيلو المدخلة (${QuantityInKg}).`;
+      }
+    
+      return null;
+    };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* Ensure max height and scroll when necessary */}
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[425px]">
-        {" "}
-        {/* Scroll if the content exceeds 90vh */}
         <DialogHeader>
           <DialogTitle>{t("CuttingConfirmation")}</DialogTitle>
         </DialogHeader>
-        {/* Form structure */}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="grid grid-cols-1 gap-4" // Use minimal gap for better spacing
+            className="grid grid-cols-1 gap-4"
             id="sent-confirmation"
           >
-            {/* Single Column for better small screen experience */}
-            <FormField
-              control={form.control}
-              name="QuantityInKg"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("QuantityInKg")}
-                  field={field}
-                />
-              )}
-            />
-
-            {/* Render QuantityInNumber Table */}
             {renderTable(
               quantityInNumPairs,
               setQuantityInNumPairs,
               t("QuantityInNumber")
             )}
 
-            {/* Cloth fields in a single column on small screens */}
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <FormField
-                control={form.control}
-                name="ClothCount"
-                render={({ field }) => (
-                  <TextInputFieldForForm
-                    placeholder=""
-                    label={t("ClothCount")}
-                    field={field}
-                  />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ClothLength"
-                render={({ field }) => (
-                  <TextInputFieldForForm
-                    placeholder=""
-                    label={t("ClothLength")}
-                    field={field}
-                  />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ClothWidth"
-                render={({ field }) => (
-                  <TextInputFieldForForm
-                    placeholder=""
-                    label={t("ClothWidth")}
-                    field={field}
-                  />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ClothWeight"
-                render={({ field }) => (
-                  <TextInputFieldForForm
-                    placeholder=""
-                    label={t("ClothWeight")}
-                    field={field}
-                  />
-                )}
-              />
-            </div> */}
             {renderClothGroups()}
+            
             <div className="flex space-x-2">
               <button
                 type="button"
@@ -348,24 +393,12 @@ export default function CuttingSendForConfirmationModal({
               )}
             </div>
 
-            {/* Render Damaged Item Table */}
             {renderTable(
               damagedItemPairs,
               setDamagedItemPairs,
               t("DamagedItem")
             )}
 
-            <FormField
-              control={form.control}
-              name="ReplacedItemInKG"
-              render={({ field }) => (
-                <TextInputFieldForForm
-                  placeholder=""
-                  label={t("ReplacedItemInKg")}
-                  field={field}
-                />
-              )}
-            />
             <FormField
               control={form.control}
               name="Notes"
@@ -379,7 +412,6 @@ export default function CuttingSendForConfirmationModal({
             />
           </form>
         </Form>
-        {/* Footer with Buttons */}
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
             {t("Close")}

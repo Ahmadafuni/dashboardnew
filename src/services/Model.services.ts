@@ -106,6 +106,7 @@ export const getModelSummary = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+    console.log("summary" , response);
     setData(response.data.data);
   } catch (error) {
     if (error instanceof AxiosError) {

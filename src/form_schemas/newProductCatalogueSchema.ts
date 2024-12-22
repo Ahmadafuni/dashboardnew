@@ -19,11 +19,14 @@ export const productCatalogueDetailSchema = z.object({
     .regex(/^\d+(\.\d{1,2})?$/, {
       message: "Please enter a valid decimal point number(e.x 0.1, 12.11, 12)",
     }),
-  standardWeight: z
+    standardWeight: z
     .string()
     .min(1, { message: "Please enter standard weight!" })
     .regex(/^\d+(\.\d{1,2})?$/, {
-      message: "Please enter a valid decimal point number(e.x 0.1, 12.11, 12)",
+      message: "Please enter a valid decimal point number(e.x 0.1, 0.2, etc.)",
+    })
+    .refine((val) => parseFloat(val) >= 0 && parseFloat(val) <= 2, {
+      message: "Standard weight must be between 0 and 2",
     }),
   // name: z.string(),
   category1: z.string().min(1, { message: "Please select category one!" }),

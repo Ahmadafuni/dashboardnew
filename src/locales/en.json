@@ -419,5 +419,12 @@
   "ProductCatalogName" : "Product Catalog Name",
   "AddCloth" : "Add Cloth",
   "RemoveLastCloth" : "Remove Last Cloth",
-  "Cloth" : "Cloth"
+  "Cloth" : "Cloth",
+  "FabricCalculations": "Fabric Calculations",
+  "RequiredFabric": "Required Fabric",
+  "Wastage": "Wastage",
+  "PieceWeight": "Piece Weight",
+  "ClothPiecesPerPeriod": "Cloth Pieces Per Period"
+
+
 }
