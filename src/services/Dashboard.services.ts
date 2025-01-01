@@ -251,6 +251,7 @@ export const rejectVariant = async (
         Authorization: `bearer ${Cookies.get("access_token")}`,
       },
     });
+
     // @ts-ignore
     getAllWork({}, {}, setData);
     toast.success(data.message);

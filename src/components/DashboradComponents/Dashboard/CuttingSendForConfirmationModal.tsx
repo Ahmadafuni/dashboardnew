@@ -149,7 +149,7 @@ export default function CuttingSendForConfirmationModal({
       return updatedPairs;
     });
   };
-
+  
   const renderTable = (
     pairs: { label: string; value: string }[],
     setPairs: React.Dispatch<
@@ -174,6 +174,7 @@ export default function CuttingSendForConfirmationModal({
             onChange={(e) => updatePair(index, e.target.value, setPairs)}
             className="w-full border p-1"
             placeholder="Value"
+            required
           />
         </div>
       ))}
@@ -221,6 +222,7 @@ export default function CuttingSendForConfirmationModal({
   };
 
   const renderClothGroups = () =>
+    // @ts-ignore
     form.watch("ClothGroups")?.map((group, index) => (
       <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4 p-4 border rounded-lg">
          <FormField
@@ -233,7 +235,7 @@ export default function CuttingSendForConfirmationModal({
             field={field}
           />
         )}
-      />
+      />                      
         <FormField
         control={form.control}
         name={`ClothGroups.${index}.ClothCount`}
@@ -355,7 +357,7 @@ export default function CuttingSendForConfirmationModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[425px]">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>{t("CuttingConfirmation")}</DialogTitle>
         </DialogHeader>

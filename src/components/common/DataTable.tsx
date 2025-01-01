@@ -42,6 +42,8 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { Loader } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
+import { useRecoilValue } from "recoil";
+import { userInfo } from "@/store/authentication";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -79,6 +81,9 @@ export default function DataTable<TData, TValue>({
   const [filteredData, setFilteredData] = useState<TData[]>(data);
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
+
+  const user = useRecoilValue(userInfo);
+  const userRole = user?.userRole;
 
   const clearAllFilters = () => {
     setFilteredData(data);
@@ -408,32 +413,42 @@ export default function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    className={
-                      // @ts-ignore
-                      isDashboard && row.original.RunningStatus === "ONHOLD"
-                        ? "bg-orange-500"
-                        : ""
-                    }
-                    key={cell.id}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="text-center py-4">
-                No data available.
-              </TableCell>
+      {table.getRowModel().rows?.length ? (
+        table.getRowModel().rows.map((row) => {
+          // Skip REJECT status rows for regular users
+                              // @ts-ignore
+          if (userRole !== "FACTORYMANAGER" && userRole !== "ENGINEERING" && row.original.RunningStatus === "REJECT") {
+            return null;
+          }
+          
+          return (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell
+                  className={
+                    // @ts-ignore
+                    isDashboard && row.original.RunningStatus === "ONHOLD" 
+                      ? "bg-orange-500"
+                      :
+                                          // @ts-ignore
+                       (row.original.RunningStatus === "REJECT" ? "bg-green-500" : "")
+                  }
+                  key={cell.id}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
             </TableRow>
-          )}
-        </TableBody>
+          );
+        })
+      ) : (
+        <TableRow>
+          <TableCell colSpan={columns.length} className="text-center py-4">
+            No data available.
+          </TableCell>
+        </TableRow>
+      )}
+    </TableBody>
       </Table>
 
       {/* Pagination */}

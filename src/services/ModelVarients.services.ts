@@ -135,3 +135,31 @@ export const restartModelVarinte = async (
     }
   }
 };
+
+
+export const restartRejectedModel = async (
+  trackingId: number,
+  setIsLoading?: Dispatch<SetStateAction<boolean>>
+) => {
+  try {
+    if (setIsLoading) setIsLoading(true);
+
+    const response = await axios.get(
+      `trackingmodels/restart/${trackingId}`,      
+    );
+    
+    toast.success("تم إعادة تشغيل الموديل بنجاح");
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 403) {
+        toast.error("ليس لديك الصلاحية لإعادة تشغيل هذا الموديل");
+      } else {
+        toast.error(error.response?.data.message);
+      }
+    }
+    throw error;
+  } finally {
+    if (setIsLoading) setIsLoading(false);
+  }
+};

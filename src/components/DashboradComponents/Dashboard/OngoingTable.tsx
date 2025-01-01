@@ -16,6 +16,7 @@ import BasicConfirmationDialog from "@/components/common/BasicConfirmationDialog
 import {
   holdModelVarinte,
   restartModelVarinte,
+  restartRejectedModel,
 } from "@/services/ModelVarients.services.ts";
 import {
   Select,
@@ -134,7 +135,7 @@ export default function OngoingTable({
       setComplete(true);
     }
   };
-
+  
   const handleSendCuttingConfirmation = (item: any) => {
     const sizes = item.ModelVariant.Sizes;
     // @ts-ignore
@@ -165,6 +166,18 @@ export default function OngoingTable({
         setIsLoading
       );
       setActionInProgress(true);
+    }
+  };
+
+  const handleRestartRejected = async (trackingId: number) => {
+    try {
+      if (setIsLoading) setIsLoading(true);
+      await restartRejectedModel(trackingId, setIsLoading);
+      setActionInProgress(true); // This will trigger data refresh
+    } catch (error) {
+      console.error('Error restarting model:', error);
+    } finally {
+      if (setIsLoading) setIsLoading(false);
     }
   };
 
@@ -286,17 +299,28 @@ export default function OngoingTable({
         header: t("Action"),
         cell: ({ row }) => {
           return (
-            <Button
-              variant="secondary"
-              onClick={() =>
-                window.open(
-                  `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
-                  "_blank"
-                )
-              }
-            >
-              {t("Details")}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  window.open(
+                    `/models/viewdetails/${row.original.ModelVariant.Model.Id}`,
+                    "_blank"
+                  )
+                }
+              >
+                {t("Details")}
+              </Button>
+              {row.original.RunningStatus === 'REJECT' &&          
+                (
+                <Button
+                  variant="default"
+                  onClick={() => handleRestartRejected(row.original.Id )}
+                >
+                  {t("Restarted")}
+                </Button>
+                )}
+            </div>
           );
         },
       }
@@ -390,7 +414,6 @@ export default function OngoingTable({
           }}
           stage="2"
         />
-
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-2">
             <Button

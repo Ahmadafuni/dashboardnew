@@ -93,8 +93,8 @@ export default function Dashboard() {
       getModelDetailsDepartment(setModelDetails , setIsLoading);
     }
 
-  }, [user, pages, sizes ]);
-  
+  }, [user, pages, sizes ]);  
+    
   const hasNullNextStage = (workList: any) => {
 
     if(workList)
