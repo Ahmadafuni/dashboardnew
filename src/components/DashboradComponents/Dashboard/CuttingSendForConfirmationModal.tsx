@@ -348,10 +348,11 @@ export default function CuttingSendForConfirmationModal({
         (parseInt(ClothCount) || 0) * (parseFloat(ClothWeight) || 0) +
         (parseFloat(ReplacedItemInKG) || 0);
     
-      if (totalWeight > parseFloat(QuantityInKg || "0")) {
-        return `الوزن الكلي (${totalWeight}) يجب أن يكون أقل أو يساوي كمية الكيلو المدخلة (${QuantityInKg}).`;
+      if (totalWeight != parseFloat(QuantityInKg || "0")) {
+        return "لا يمكن إكمال العملية بسبب أخطاء الإدخال" ;
+        // return `الوزن الكلي (${totalWeight}) يجب أن يكون أقل أو يساوي كمية الكيلو المدخلة (${QuantityInKg}).`;
       }
-    
+      
       return null;
     };
 

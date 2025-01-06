@@ -58,7 +58,7 @@ export default function OthersSendForConfirmation({ getAllWorks, selectedSizes, 
       const damaged = parseInt(damagedItemPairs[index]?.value || '0');
       const delivered = parseInt(pair.value || '0');
 
-      if (delivered !== (received + damaged)) {
+      if (received !== (delivered + damaged)) {
         isValidQuantities = false;
       }
     });

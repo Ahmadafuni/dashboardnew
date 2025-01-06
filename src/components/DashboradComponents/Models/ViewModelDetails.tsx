@@ -33,10 +33,17 @@ export default function ViewModelDetails() {
 
   // Fabric calculations helper function
   const calculateFabricNeeds = (quantity: number, standardWeight: number) => {
-    const WASTE_PERCENTAGE = 0.20; // 20% waste
+    const WASTE_PERCENTAGE = 0.2; // 20% waste
+
+
     const totalFabric = quantity * standardWeight;
+    
+
     const wastage = totalFabric * WASTE_PERCENTAGE;
     const pieceWeight = standardWeight * (1 - WASTE_PERCENTAGE);
+
+
+    console.log("quantity" , quantity , "standardWeight" ,standardWeight);
 
     return {
       totalFabric: Number(totalFabric.toFixed(3)),
@@ -170,7 +177,7 @@ export default function ViewModelDetails() {
                     <TableHead>{t("MeasurementName")}</TableHead>
                     {Object.entries(summary?.cutting[0])
                       .sort()
-                      .map(([key, value]) =>
+                      .map(([key]) =>
                         key !== "MeasurementName" &&
                         key !== "MeasurementUnit" ? (
                           <TableHead key={key}>{key}</TableHead>
@@ -188,6 +195,7 @@ export default function ViewModelDetails() {
                         .map(([key, value]) =>
                           key !== "MeasurementName" &&
                           key !== "MeasurementUnit" ? (
+                            // @ts-ignore
                             <TableCell key={key}>{value}</TableCell>
                           ) : null
                         )}
