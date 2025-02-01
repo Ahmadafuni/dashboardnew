@@ -31,7 +31,7 @@ export const parentMaterialSchema = z.object({
       message: "Please enter a valid decimal point number(e.x 0.1, 12.11, 12)",
     }),
   description: z.string(),
-  color: z.string().min(1, { message: "Please select color." }),
+  color: z.string().optional(),
 });
 
 export const childMaterialSchema = z.object({

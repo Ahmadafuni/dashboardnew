@@ -69,20 +69,19 @@ export default function MaterialForm({ form, onSubmit }: Props) {
                         </div>
                     )}
                 />
-
-                <FormField
+                    <FormField
                     control={form.control}
                     name="color"
                     render={({ field }) => (
                         <div className="flex gap-x-1">
                             <ComboSelectFieldForForm
                                 field={field}
-                                label={t("MaterialColor")}
+                                label={t("Color")}
                                 placeholder={t("SearchMaterialColor")}
                                 emptyBox={t("NoColorFound")}
                                 form={form}
                                 name="color"
-                                selectText={t("SelectColor")}
+                                selectText={t("Color")}
                                 items={colorsList}
                             />
                            
