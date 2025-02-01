@@ -55,7 +55,7 @@ import ModelVarients from "./pages/Models/ModelVarients.tsx";
 import ViewModelSummary from "./components/DashboradComponents/Models/ViewModelSummary.tsx";
 import Dashboard from "./pages/Dashboard/Dashboard.tsx";
 import ChildMaterials from "@/pages/Warehouse/ChildMaterials.tsx";
-import IncomingMovement from "@/pages/Warehouse/IncomingMovement.tsx";
+import MaterialMovement from "@/pages/Warehouse/MaterialMovement.tsx";
 import OutgoingMovement from "@/pages/Warehouse/OutgoingMovement.tsx";
 import MaterialReport from "@/pages/Warehouse/MaterialReport.tsx";
 import NewModelBlock from "@/components/DashboradComponents/Models/NewModelBlock.tsx";
@@ -156,7 +156,7 @@ const router = createBrowserRouter([
         path: "/dashboard/materials/child/:materialID",
         element: <ChildMaterials />,
       },
-      { path: "/dashboard/incoming", element: <IncomingMovement /> },
+      { path: "/dashboard/materialmovement", element: <MaterialMovement /> },
       { path: "/dashboard/outgoing", element: <OutgoingMovement /> },
       { path: "/dashboard/materialreport", element: <MaterialReport /> },
 

@@ -424,7 +424,14 @@
   "RequiredFabric": "Required Fabric",
   "Wastage": "Wastage",
   "PieceWeight": "Piece Weight",
-  "ClothPiecesPerPeriod": "Cloth Pieces Per Period"
+  "ClothPiecesPerPeriod": "Cloth Pieces Per Period",
+  "EditMovement": "Edit Movement",
+  "NewMovement": "New Movement",
+  "EditDetailsForMovement": "Edit Details for Movement",
+  "FillTheDetailsForNewMovement": "Fill the Details for New Movement",
+  "EditMaterialMovement": "Edit Material Movement",
+  "movementType": "Movement Type",
+  "Edit": "Edit"
 
 
 }

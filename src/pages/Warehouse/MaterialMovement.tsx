@@ -29,20 +29,23 @@ import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Eye, Pen, Plus } from "lucide-react";
 
 
-export default function IncomingMovement() {
+export default function MaterialMovement() {
     const { t } = useTranslation();
     const [materialMovements, setMaterialMovements] = useRecoilState(materialMovementList);
 
     const [selectedMovement, setSelectedMovement] = useState(null);
-    const [isEditing, setIsEditing] = useState(false); 
-    const [isDialogOpen, setIsDialogOpen] = useState(false); 
+    const [isEditing, setIsEditing] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const movementFromOptions = [
         { label: t("Department"), value: "Department" },
         { label: t("Warehouse"), value: "Warehouse" },
         { label: t("Supplier"), value: "Supplier" },
     ];
-    const movementToOptions = [{ label: t("Warehouse"), value: "Warehouse" }];
+    const movementToOptions = [
+        { label: t("Department"), value: "Department" },
+        { label: t("Warehouse"), value: "Warehouse" },
+        { label: t("Supplier"), value: "Supplier" },];
 
     const materialMovementsColumns: ColumnDef<any>[] = [
         { accessorKey: "invoiceNumber", header: t("InvoiceNumber") },
@@ -87,12 +90,12 @@ export default function IncomingMovement() {
                                 <DropdownMenuItem
                                     onClick={() => {
                                         setSelectedMovement(row.original);
-                                        setIsEditing(true); 
+                                        setIsEditing(true);
                                         setIsDialogOpen(true);
                                     }}
                                 >
                                     <Pen className="mr-2 h-4 w-4" />
-                                    <span>{t("EditParentMaterial")}</span>
+                                    <span>{t("EditMaterialMovement")}</span>
                                 </DropdownMenuItem>
 
                                 <DropdownMenuItem
@@ -172,7 +175,7 @@ export default function IncomingMovement() {
                     </NewMovement>
                 </DialogContent>
             </Dialog>
-         
+
             <div className="space-y-2">
                 <div className="rounded-md border overflow-x-scroll">
                     <DataTable

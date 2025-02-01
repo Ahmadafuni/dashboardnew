@@ -230,7 +230,7 @@ export default function Sidebar() {
         },
         {
           name: t("MaterialMovements"),
-          link: "/dashboard/incoming",
+          link: "/dashboard/materialmovement",
           icon: Package,
           userRole: ["FACTORYMANAGER", "WAREHOUSEMANAGER", "ENGINEERING"],
         },

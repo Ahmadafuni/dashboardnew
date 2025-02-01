@@ -112,7 +112,7 @@ export default function MovementForm({
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" id="incoming-movement">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" id="materialmovement">
                 {/* @ts-ignore */}
                 <NewChildMaterial getChildMaterialByParentId={() => getChildMaterialByParentId(setChildMaterials, selectedMaterial)} />
                 {/* Main Information Card */}
@@ -250,7 +250,7 @@ export default function MovementForm({
                                     <div className="flex gap-x-1">
                                         <ComboSelectFieldForForm
                                             field={field}
-                                            label={t("MovmentType")}
+                                            label={t("movementType")}
                                             placeholder={t("SelectMovmentType")}
                                             items={movmentTypesOptions}
                                             form={form}
@@ -363,8 +363,6 @@ export default function MovementForm({
                                 <TextInputFieldForForm placeholder="" label={t("Description")} field={field} />
                             )}
                         />
-
-                        
                     </CardContent>
                 </Card>
             </form>

@@ -21,15 +21,13 @@ interface Props {
     defaultValues?: any;
     typeAction?:string;
     children?:any
-    
-
 }
 
-export default function NewMovement({ 
-    movementFromOptions, 
-    movementToOptions, 
-    movementType , 
-    defaultValues = {}, 
+export default function NewMovement({
+    movementFromOptions,
+    movementToOptions,
+    movementType ,
+    defaultValues = {},
     typeAction,
     children,
 }: Props) {
@@ -43,10 +41,8 @@ export default function NewMovement({
     });
 
     const onSubmit = async (data: z.infer<typeof newMaterialMovementSchema>) => {
-       // data.movementType = movementType;
         setIsLoading(true);
         try {
-
             if (typeAction === t("Add")) {
                 const newMovement = await axios.post("materialmovement/", data, {
                     headers: {
@@ -62,7 +58,6 @@ export default function NewMovement({
                 });
                 toast.success(updatedMovement.data.message);
             }
-            
             getMaterialMovementsByMovementType(setMaterialMovement, movementType);
 
             form.reset({
@@ -81,8 +76,6 @@ export default function NewMovement({
             }
             setIsLoading(false);
         }
-
-
     };
 
     return (
@@ -90,12 +83,11 @@ export default function NewMovement({
             <div className="space-y-1">
                 <MovementForm form={form} onSubmit={onSubmit} movementFromOptions={movementFromOptions} movementToOptions={movementToOptions} />
                 <div className="flex justify-end space-x-4">
-                  
                     {children}
                     <Button type="button" variant="secondary" onClick={() => form.reset()}>
                         {t("Clear")}
                     </Button>
-                    <Button type="submit" disabled={isLoading} form="incoming-movement">
+                    <Button type="submit" disabled={isLoading} form="materialmovement">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -105,8 +97,6 @@ export default function NewMovement({
                             typeAction
                         )}
                     </Button>
-                    
-
                 </div>
             </div>
         </div>

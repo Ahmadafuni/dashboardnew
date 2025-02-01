@@ -430,7 +430,14 @@
   "RequiredFabric": "الكمية المطلوبة",
   "Wastage": "نسبة الهدر",
   "PieceWeight": "وزن القطعة",
-  "ClothPiecesPerPeriod": "عدد القطع بالمدة الواحدة"
+  "ClothPiecesPerPeriod": "عدد القطع بالمدة الواحدة",
+  "EditMovement": "تعديل الحركة",
+  "NewMovement": "حركة جديدة",
+  "EditDetailsForMovement": "تعديل تفاصيل الحركة",
+  "FillTheDetailsForNewMovement": "املأ تفاصيل الحركة الجديدة",
+  "EditMaterialMovement": "تعديل حركة المواد",
+  "movementType": "نوع الحركة",
+  "Edit": "تعديل"
 
-  
+
 }
