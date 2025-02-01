@@ -96,9 +96,9 @@ export default function ViewManufacturingStageModel() {
   };
 
   // Toggle Up
-  const toggleUp = async (id: number) => {
+  const toggleUp = async (ID: number) => {
     try {
-      await toggleStageUpModel(id);
+      await toggleStageUpModel(ID);
       getAllStageModel(setStages, id);
     } catch (error) {}
   };
